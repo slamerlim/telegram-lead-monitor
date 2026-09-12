@@ -1,0 +1,168 @@
+# Weights are additive. Scores are capped at 100.
+# Matching is case-insensitive and Unicode-aware.
+thresholds:
+  high: 75
+  medium: 50
+
+categories:
+  customer_intent: 35
+  trading_bot: 25
+  exchange_api: 20
+  execution: 20
+  strategy_automation: 20
+  arbitrage: 25
+  copy_trading: 20
+  solana_dex: 25
+  quant_ml: 20
+  explicit_budget: 10
+  urgency: 10
+  python: 8
+  negative_promotion: -25
+
+terms:
+  customer_intent:
+    - need developer
+    - looking for developer
+    - need a developer
+    - developer needed
+    - need someone
+    - who can build
+    - who can fix
+    - who can modify
+    - hire developer
+    - developer wanted
+    - нужен разработчик
+    - ищу разработчика
+    - нужен программист
+    - нужен разработчик бота
+    - ищу программиста
+    - кто может сделать
+    - кто может починить
+    - кто может доработать
+    - нужно доработать
+    - нужно исправить
+    - срочно нужен разработчик
+  trading_bot:
+    - trading bot
+    - crypto bot
+    - bybit bot
+    - binance bot
+    - bitget bot
+    - okx bot
+    - telegram trading bot
+    - торговый бот
+    - торгового бота
+    - бот для bybit
+    - бот для binance
+    - бот для bitget
+    - бот для okx
+  exchange_api:
+    - exchange api
+    - api trading
+    - binance api
+    - bybit api
+    - bitget api
+    - okx api
+    - python developer binance api
+    - python developer bybit api
+    - api issue
+    - api error
+    - websocket issue
+    - ошибка api
+    - проблема api
+    - интеграция api
+    - api биржи
+    - торговый api
+  execution:
+    - order execution
+    - execution engine
+    - trading execution
+    - execution system
+    - partial fill
+    - partial fills
+    - order management
+    - slippage
+    - latency
+    - исполнение ордеров
+    - частичное исполнение
+    - система исполнения
+  strategy_automation:
+    - grid bot
+    - dca bot
+    - scalping bot
+    - automation
+    - automated trading
+    - автоматизация торговли
+    - бот для фьючерсов
+  arbitrage:
+    - arbitrage bot
+    - funding arbitrage
+    - cross exchange arbitrage
+    - basis trading
+    - арбитражный бот
+    - funding arbitrage
+  copy_trading:
+    - copy trading
+    - copy-trading bot
+    - wallet copy trading
+    - trade copier
+    - telegram copy trading
+    - бот для копитрейдинга
+    - копитрейдинг
+  solana_dex:
+    - solana trading bot
+    - solana bot
+    - dex bot
+    - sniper bot
+    - token sniper
+    - jupiter bot
+    - raydium bot
+    - jito bot
+    - mev bot
+    - solana
+    - jupiter
+    - raydium
+    - jito
+    - dex
+  quant_ml:
+    - ai trading bot
+    - ml trading bot
+    - quant trading
+    - signal filtering
+    - machine learning trading
+    - quant developer
+    - quant researcher
+    - algorithmic trading
+    - алготрейдинг
+    - квант
+    - квантовый разработчик
+  explicit_budget:
+    - budget
+    - usd
+    - usdt
+    - pay
+    - paid
+    - compensation
+    - "$"
+    - бюджет
+    - оплата
+    - стоимость
+    - зарплата
+  urgency:
+    - urgent
+    - asap
+    - immediately
+    - срочно
+    - как можно скорее
+  python:
+    - python
+    - python developer
+  negative_promotion:
+    - buy our bot
+    - our bot
+    - subscribe to our signals
+    - join vip
+    - продаем торгового бота
+    - купить бота
+    - наши сигналы
+    - vip сигналы

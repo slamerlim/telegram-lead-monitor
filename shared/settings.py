@@ -1,0 +1,57 @@
+from functools import lru_cache
+from pathlib import Path
+
+from pydantic_settings import BaseSettings, SettingsConfigDict
+
+
+class Settings(BaseSettings):
+    app_env: str = "development"
+    log_level: str = "INFO"
+
+    postgres_host: str = "postgres"
+    postgres_port: int = 5432
+    postgres_db: str = "telegram_leads"
+    postgres_user: str = "telegram_leads"
+    postgres_password: str = "change-me"
+
+    redis_url: str = "redis://redis:6379/0"
+
+    telegram_api_id: int
+    telegram_api_hash: str
+    telegram_phone: str
+    telegram_session_path: str = "/data/telegram/telegram_lead_monitor.session"
+
+    collector_concurrency: int = 3
+    collector_batch_size: int = 200
+    collector_flood_wait_buffer_seconds: int = 5
+    scan_default_days: int = 30
+    scheduler_interval_seconds: int = 900
+    scheduler_scan_days: int = 2
+
+    semantic_enabled: bool = False
+    semantic_model: str = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
+    semantic_threshold: float = 0.48
+    scoring_config: str = "/app/config/scoring.yaml"
+
+    model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8", extra="ignore")
+
+    @property
+    def database_url(self) -> str:
+        return (
+            f"postgresql+asyncpg://{self.postgres_user}:{self.postgres_password}"
+            f"@{self.postgres_host}:{self.postgres_port}/{self.postgres_db}"
+        )
+
+    @property
+    def database_url_sync(self) -> str:
+        return self.database_url.replace("+asyncpg", "")
+
+
+@lru_cache
+
+def get_settings() -> Settings:
+    return Settings()
+
+
+def scoring_path(settings: Settings) -> Path:
+    return Path(settings.scoring_config)
