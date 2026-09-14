@@ -263,8 +263,6 @@ patterns:
 
   recruiter:
     - '#(?:vacancy|hiring|job)'
-    - '\b(?:freelance|contract)\s+opportunity\b'
-    - '\b(?:gig|freelance\s+gig)\b.{0,80}\b(?:developer|engineer|programmer|quant|ml|ai)\b'
     - '\b(?:we\s+are\s+)?hiring\b'
     - '\b(?:vacancy|position)\b.{0,100}\b(?:developer|engineer|trader|quant|programmer|ml|ai)\b'
     - '\b(?:looking\s+for|seeking)\b.{0,100}\b(?:developer|engineer|trader|quant|programmer|ml|ai)\b'
@@ -297,9 +295,6 @@ patterns:
 
   job_aggregator:
     - '\b(?:top[- ]paying\s+projects|jobs\s+this\s+week|job\s+of\s+the\s+day|daily\s+jobs|weekly\s+jobs)\b'
-    - '(?is)\b(?:coinbase|trust\s+wallet|stripe|ellipsis\s+labs|allium)\b.{0,600}\b(?:hiring|is\s+hiring)\b.*\b(?:hiring|is\s+hiring)\b'
-    - '(?is)\b(?:\w[\w .&+-]{1,40}\s+is\s+hiring\b).*(?:\b\w[\w .&+-]{1,40}\s+is\s+hiring\b){2,}'
-    - '(?is)\bis\s+hiring\b.*\bis\s+hiring\b.*\bis\s+hiring\b'
     - '\b(?:apply\s+(?:here|below)|see\s+more\s+(?:jobs|vacancies)|our\s+other\s+communities)\b'
     - '\b(?:\d+\s+—\s+.*\b(?:hiring|developer|designer|manager)\b){2,}\b'
 

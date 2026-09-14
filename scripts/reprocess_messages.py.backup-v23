@@ -1,5 +1,13 @@
 #!/usr/bin/env python3
-"""Re-score already stored messages using community-aware commercial semantics."""
+"""Re-score messages already stored in PostgreSQL without contacting Telegram.
+
+Run inside the project environment/container:
+  python scripts/reprocess_messages.py
+  python scripts/reprocess_messages.py --since-days 30
+
+The operation is idempotent: matching leads are updated, and messages that now score LOW
+have their existing lead record removed.
+"""
 from __future__ import annotations
 
 import argparse
@@ -19,23 +27,18 @@ async def reprocess(since_days: int | None) -> None:
     settings = get_settings()
     scorer = LeadScorer(settings.scoring_config)
     since = datetime.now(timezone.utc) - timedelta(days=since_days) if since_days else None
+
     async with SessionLocal() as db:
-        stmt = (
-            select(Message, Community, Author)
-            .join(Community, Message.community_id == Community.id)
-            .outerjoin(Author, Message.author_id == Author.id)
-            .order_by(Message.id.asc())
-        )
+        stmt = select(Message, Community, Author).join(Community, Message.community_id == Community.id).outerjoin(
+            Author, Message.author_id == Author.id
+        ).order_by(Message.id.asc())
         if since is not None:
             stmt = stmt.where(Message.message_date >= since)
+
         rows = (await db.execute(stmt)).all()
         processed = high = medium = low = 0
-        for message, community, _author in rows:
-            result = scorer.score(
-                message.text,
-                community_username=community.username,
-                community_name=community.name,
-            )
+        for message, _community, _author in rows:
+            result = scorer.score(message.text)
             lead = await db.scalar(select(Lead).where(Lead.message_id == message.id))
             if result.tier == "LOW":
                 if lead:
@@ -77,4 +80,5 @@ async def reprocess(since_days: int | None) -> None:
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--since-days", type=int, default=None)
-    asyncio.run(reprocess(parser.parse_args().since_days))
+    args = parser.parse_args()
+    asyncio.run(reprocess(args.since_days))

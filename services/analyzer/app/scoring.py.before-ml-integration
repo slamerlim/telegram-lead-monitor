@@ -1,0 +1,379 @@
+from __future__ import annotations
+
+import re
+from dataclasses import dataclass
+from decimal import Decimal, InvalidOperation
+from pathlib import Path
+
+import yaml
+
+
+@dataclass
+class ScoreResult:
+    score: float
+    tier: str
+    buyer_type: str
+    lead_type: str
+    intent_score: float
+    technical_score: float
+    commercial_score: float
+    promotion_score: float
+    matched_keywords: list[str]
+    matched_categories: list[str]
+    reasons: list[str]
+    contact_usernames: list[str]
+    contact_urls: list[str]
+    budget_amount: float | None = None
+    budget_currency: str | None = None
+    semantic_score: float | None = None
+
+
+class LeadScorer:
+    """Commercial lead scorer for custom trading-system development.
+
+    Target leads are strictly commercial:
+      * buy/commission a trading bot
+      * fix/repair/debug an existing trading bot
+      * hire a trading-system/quant/ML/AI engineer on contract
+      * implement/automate a trading strategy
+
+    Technical discussion, exchange/account support, product feedback, job seekers,
+    and service-provider advertisements are NOT commercial leads.
+    """
+
+    _username_rx = re.compile(r"(?<![\w@])@([A-Za-z0-9_]{4,32})")
+    _http_rx = re.compile(r"https?://\S+", re.IGNORECASE)
+    _money_patterns = [
+        re.compile(r"(?P<cur>\$|€|₽)\s*(?P<num>\d+(?:[.,]\d+)?\s*[kKmM]?)"),
+        re.compile(
+            r"(?P<num>\d+(?:[.,]\d+)?\s*[kKmM]?)\s*"
+            r"(?P<cur>USD|USDT|USDC|EUR|RUB|\$|€|₽)\b",
+            re.IGNORECASE,
+        ),
+        re.compile(
+            r"(?P<num>\d+(?:[.,]\d+)?\s*[kKmM]?)\s*"
+            r"(?P<cur>dollars?|euros?|руб(?:лей|\.)|доллар(?:ов|а)?)",
+            re.IGNORECASE,
+        ),
+    ]
+    _multiplier = {"k": 1_000.0, "m": 1_000_000.0}
+    _currency_map = {
+        "$": "USD", "usd": "USD", "usdt": "USDT", "usdc": "USDC",
+        "eur": "EUR", "€": "EUR", "rub": "RUB", "₽": "RUB",
+        "руб": "RUB", "рублей": "RUB", "доллар": "USD", "долларов": "USD",
+        "dollar": "USD", "dollars": "USD", "euro": "EUR", "euros": "EUR",
+    }
+
+    def __init__(self, path: str, high: float = 75, medium: float = 50) -> None:
+        data = yaml.safe_load(Path(path).read_text(encoding="utf-8")) or {}
+        self.thresholds = data.get("thresholds", {})
+        self.weights: dict[str, float] = data.get("categories", {})
+        self.terms: dict[str, list[str]] = data.get("terms", {})
+        self.patterns: dict[str, list[re.Pattern[str]]] = {
+            key: [re.compile(pattern, re.IGNORECASE | re.UNICODE) for pattern in values]
+            for key, values in data.get("patterns", {}).items()
+        }
+        self.high = float(self.thresholds.get("high", high))
+        self.medium = float(self.thresholds.get("medium", medium))
+        self.compiled = {
+            category: [
+                (
+                    term,
+                    re.compile(rf"(?<!\w){re.escape(term)}(?!\w)", re.IGNORECASE | re.UNICODE),
+                )
+                for term in terms
+            ]
+            for category, terms in self.terms.items()
+        }
+
+    def _matches(self, text: str) -> tuple[list[str], list[str], dict[str, list[str]]]:
+        matched_keywords: list[str] = []
+        categories: list[str] = []
+        by_category: dict[str, list[str]] = {}
+        for category, pairs in self.compiled.items():
+            matches = [term for term, rx in pairs if rx.search(text)]
+            if matches:
+                matched_keywords.extend(matches)
+                categories.append(category)
+                by_category[category] = matches
+        return list(dict.fromkeys(matched_keywords)), list(dict.fromkeys(categories)), by_category
+
+    def _pattern_hits(self, text: str, category: str) -> list[str]:
+        return [p.pattern for p in self.patterns.get(category, []) if p.search(text)]
+
+    def _classify_actor(self, text: str) -> tuple[str, list[str]]:
+        provider_hits = self._pattern_hits(text, "service_provider")
+        seeker_hits = self._pattern_hits(text, "job_seeker")
+        support_hits = self._pattern_hits(text, "platform_support")
+        commercial_hits = self._pattern_hits(text, "commercial_request")
+        contract_hire_hits = self._pattern_hits(text, "contract_hiring")
+        target_hiring_hits = (
+            self._pattern_hits(text, "trading_system_hiring_request")
+            or self._pattern_hits(text, "quant_hiring_request")
+            or self._pattern_hits(text, "ml_ai_hiring_request")
+        )
+        reasons: list[str] = []
+
+        # Strong non-buyer signals take precedence unless there is an explicit commercial
+        # request in the same message.
+        if seeker_hits and not commercial_hits and not target_hiring_hits:
+            reasons.append("job-seeker/CV language detected")
+            return "JOB_SEEKER", reasons
+        if provider_hits and not commercial_hits and not target_hiring_hits:
+            reasons.append("service-provider/self-promotion language detected")
+            return "SERVICE_PROVIDER", reasons
+        if support_hits and not commercial_hits and not target_hiring_hits:
+            reasons.append("exchange/account/platform support request detected")
+            return "SUPPORT_SEEKER", reasons
+
+        if target_hiring_hits or contract_hire_hits:
+            reasons.append("explicit commercial hiring request detected")
+            return "RECRUITER", reasons
+        if commercial_hits:
+            reasons.append("explicit commercial request detected")
+            return "CLIENT", reasons
+
+        return "UNKNOWN", reasons
+
+    def _classify_lead_type(self, text: str, categories: list[str], buyer_type: str) -> str:
+        if buyer_type == "SERVICE_PROVIDER":
+            return "SERVICE_ADVERTISEMENT"
+        if buyer_type == "JOB_SEEKER":
+            return "JOB_SEEKER"
+        if buyer_type == "SUPPORT_SEEKER":
+            return "PLATFORM_SUPPORT"
+        if buyer_type == "RECRUITER":
+            if self._pattern_hits(text, "quant_hiring_request"):
+                return "QUANT_ENGINEERING_HIRE"
+            if self._pattern_hits(text, "ml_ai_hiring_request"):
+                return "ML_AI_ENGINEERING_HIRE"
+            if self._pattern_hits(text, "trading_system_hiring_request"):
+                return "TRADING_SYSTEM_HIRE"
+            return "CONTRACT_DEVELOPER_HIRE"
+        if buyer_type != "CLIENT":
+            return "NOISE"
+
+        if self._pattern_hits(text, "bot_repair_request"):
+            return "BOT_REPAIR"
+        if self._pattern_hits(text, "bot_customization_request"):
+            return "BOT_CUSTOMIZATION"
+        if self._pattern_hits(text, "bot_purchase_request"):
+            return "BOT_PURCHASE"
+        if self._pattern_hits(text, "strategy_implementation_request"):
+            return "STRATEGY_IMPLEMENTATION"
+        if self._pattern_hits(text, "quant_hiring_request") or "quant_ml" in categories:
+            return "QUANT_ENGINEERING_HIRE"
+        if self._pattern_hits(text, "ml_ai_hiring_request"):
+            return "ML_AI_ENGINEERING_HIRE"
+        if self._pattern_hits(text, "trading_system_hiring_request"):
+            return "TRADING_SYSTEM_HIRE"
+        if "arbitrage" in categories:
+            return "ARBITRAGE_PROJECT"
+        if "copy_trading" in categories:
+            return "COPY_TRADING_PROJECT"
+        if "solana_dex" in categories:
+            return "SOLANA_DEX_PROJECT"
+        if "trading_bot" in categories:
+            return "TRADING_SYSTEM_BUILD"
+        return "COMMERCIAL_TRADING_PROJECT"
+
+    def _extract_contacts(self, text: str) -> tuple[list[str], list[str]]:
+        usernames: list[str] = []
+        for username in self._username_rx.findall(text):
+            lowered = username.lower()
+            if lowered in {"username", "channelname", "example", "everyone", "here"}:
+                continue
+            usernames.append(username)
+        usernames = list(dict.fromkeys(usernames))
+        return usernames, [f"https://t.me/{u}" for u in usernames]
+
+    def _extract_budget(self, text: str) -> tuple[float | None, str | None]:
+        for rx in self._money_patterns:
+            match = rx.search(text)
+            if not match:
+                continue
+            raw_num = re.sub(r"\s+", "", match.group("num"))
+            # Accept both decimal commas ("2,5") and thousands separators ("3,000").
+            if "," in raw_num and "." in raw_num:
+                if raw_num.rfind(",") > raw_num.rfind("."):
+                    raw_num = raw_num.replace(".", "").replace(",", ".")
+                else:
+                    raw_num = raw_num.replace(",", "")
+            elif "," in raw_num:
+                head, tail = raw_num.rsplit(",", 1)
+                raw_num = raw_num.replace(",", "") if len(tail) == 3 else raw_num.replace(",", ".")
+            suffix = raw_num[-1].lower() if raw_num and raw_num[-1].lower() in self._multiplier else ""
+            if suffix:
+                raw_num = raw_num[:-1]
+            try:
+                amount = float(Decimal(raw_num)) * self._multiplier.get(suffix, 1.0)
+            except (InvalidOperation, ValueError):
+                continue
+            raw_cur = match.group("cur").lower()
+            return amount, self._currency_map.get(raw_cur, raw_cur.upper())
+        return None, None
+
+    def score(self, text: str) -> ScoreResult:
+        clean = " ".join(text.split())
+        matched_keywords, categories, by_category = self._matches(clean)
+        lower = clean.lower()
+
+        # Contextual technical categories are added only when the message actually contains
+        # the relevant concept. These categories are NOT sufficient for commercial qualification.
+        technical_hits = self._pattern_hits(clean, "technical_problem")
+        if technical_hits and any(token in lower for token in ("api", "pybit", "/v5/", "websocket", "order", "errcode", "error code")):
+            if "exchange_api" not in categories:
+                categories.append("exchange_api")
+                by_category["exchange_api"] = ["technical API problem"]
+                matched_keywords.append("technical API problem")
+        if any(token in lower for token in ("bot", "trading bot", "торговый бот", "торгового бота")) and technical_hits:
+            if "trading_bot" not in categories:
+                categories.append("trading_bot")
+                by_category["trading_bot"] = ["existing bot problem"]
+                matched_keywords.append("existing bot problem")
+
+        buyer_type, actor_reasons = self._classify_actor(clean)
+        lead_type = self._classify_lead_type(clean, categories, buyer_type)
+        contacts, contact_urls = self._extract_contacts(clean)
+        budget_amount, budget_currency = self._extract_budget(clean)
+
+        reasons = list(actor_reasons)
+        score = 0.0
+        intent_score = 0.0
+        technical_score = 0.0
+        commercial_score = 0.0
+        promotion_score = 0.0
+
+        technical_categories = {
+            "trading_bot", "exchange_api", "execution", "strategy_automation", "arbitrage",
+            "copy_trading", "solana_dex", "quant_ml", "python",
+        }
+
+        # Base technical relevance is informative but never sufficient to create a lead.
+        for category in categories:
+            weight = float(self.weights.get(category, 0.0))
+            if category == "negative_promotion":
+                promotion_score += weight
+                score += weight
+                reasons.append(f"promotion penalty: {', '.join(by_category[category][:3])}")
+                continue
+            score += weight
+            if category in technical_categories:
+                technical_score += max(0.0, weight)
+            reasons.append(f"{category}: {', '.join(by_category[category][:4])}")
+
+        commercial_hit_count = len(self._pattern_hits(clean, "commercial_request"))
+        hiring_hit_count = len(
+            self._pattern_hits(clean, "contract_hiring")
+            + self._pattern_hits(clean, "trading_system_hiring_request")
+            + self._pattern_hits(clean, "quant_hiring_request")
+            + self._pattern_hits(clean, "ml_ai_hiring_request")
+        )
+        if buyer_type in {"CLIENT", "RECRUITER"}:
+            intent_score += 35
+            commercial_score += 35
+            score += 35
+            reasons.append("explicit buyer/hiring request for a commercial trading-development service")
+
+        if buyer_type == "SUPPORT_SEEKER":
+            score = 0.0
+            tier = "LOW"
+            lead_type = "PLATFORM_SUPPORT"
+            reasons.append("support-only request is outside the commercial target")
+            return ScoreResult(
+                score=score, tier=tier, buyer_type=buyer_type, lead_type=lead_type,
+                intent_score=0.0, technical_score=round(technical_score, 2), commercial_score=0.0,
+                promotion_score=round(promotion_score, 2), matched_keywords=list(dict.fromkeys(matched_keywords)),
+                matched_categories=list(dict.fromkeys(categories)), reasons=list(dict.fromkeys(reasons)),
+                contact_usernames=contacts, contact_urls=contact_urls,
+                budget_amount=budget_amount, budget_currency=budget_currency,
+            )
+
+        if buyer_type in {"SERVICE_PROVIDER", "JOB_SEEKER"}:
+            promotion_score -= 50
+            score = min(score - 50, 20.0)
+            reasons.append("non-buyer message suppressed")
+
+        # Commercial lead-type bonuses reflect the services we actually sell.
+        lead_type_bonus = {
+            "BOT_PURCHASE": 32,
+            "BOT_REPAIR": 32,
+            "BOT_CUSTOMIZATION": 30,
+            "STRATEGY_IMPLEMENTATION": 32,
+            "TRADING_SYSTEM_HIRE": 32,
+            "CONTRACT_DEVELOPER_HIRE": 32,
+            "QUANT_ENGINEERING_HIRE": 32,
+            "ML_AI_ENGINEERING_HIRE": 32,
+            "ARBITRAGE_PROJECT": 28,
+            "COPY_TRADING_PROJECT": 28,
+            "SOLANA_DEX_PROJECT": 26,
+            "TRADING_SYSTEM_BUILD": 28,
+            "COMMERCIAL_TRADING_PROJECT": 24,
+        }
+        if lead_type in lead_type_bonus and buyer_type in {"CLIENT", "RECRUITER"}:
+            bonus = lead_type_bonus[lead_type]
+            score += bonus
+            commercial_score += bonus
+            reasons.append(f"commercial target type: {lead_type}")
+
+        if buyer_type in {"CLIENT", "RECRUITER"} and any(c in categories for c in technical_categories):
+            score += 10
+            commercial_score += 10
+            reasons.append("commercial intent paired with relevant trading-development technology")
+
+        if budget_amount is not None and buyer_type in {"CLIENT", "RECRUITER"}:
+            score += 12
+            commercial_score += 12
+            reasons.append(f"explicit budget: {budget_amount:g} {budget_currency}")
+
+        if "urgency" in categories and buyer_type in {"CLIENT", "RECRUITER"}:
+            score += 8
+            commercial_score += 8
+
+        if len([c for c in categories if c != "negative_promotion"]) >= 3 and buyer_type in {"CLIENT", "RECRUITER"}:
+            score += 5
+            commercial_score += 5
+            reasons.append("multiple independent trading-development signals")
+
+        if len(self._http_rx.findall(clean)) >= 3:
+            score -= 5
+            reasons.append("link-heavy message")
+
+        # HARD COMMERCIAL GATE: without explicit purchase/commission/hiring language,
+        # a technical problem is not a commercial lead. This is the critical distinction
+        # between a person who needs a developer and a person asking exchange support.
+        if buyer_type not in {"CLIENT", "RECRUITER"}:
+            score = 0.0
+        elif buyer_type == "CLIENT" and commercial_hit_count == 0:
+            score = 0.0
+            lead_type = "TECHNICAL_QUESTION"
+            reasons.append("no explicit commercial request; technical discussion excluded")
+        elif buyer_type == "RECRUITER" and hiring_hit_count == 0:
+            score = 0.0
+            lead_type = "JOB_VACANCY"
+            reasons.append("generic hiring post lacks contract/freelance target evidence")
+
+        score = max(0.0, min(100.0, score))
+        tier = "HIGH" if score >= self.high else "MEDIUM" if score >= self.medium else "LOW"
+
+        # Only commercial target types are eligible to be stored as leads.
+        if lead_type in {"PLATFORM_SUPPORT", "TECHNICAL_QUESTION", "SERVICE_ADVERTISEMENT", "JOB_SEEKER", "NOISE"}:
+            tier = "LOW"
+
+        return ScoreResult(
+            score=score,
+            tier=tier,
+            buyer_type=buyer_type,
+            lead_type=lead_type,
+            intent_score=round(intent_score, 2),
+            technical_score=round(technical_score, 2),
+            commercial_score=round(commercial_score, 2),
+            promotion_score=round(promotion_score, 2),
+            matched_keywords=list(dict.fromkeys(matched_keywords)),
+            matched_categories=list(dict.fromkeys(categories)),
+            reasons=list(dict.fromkeys(reasons)),
+            contact_usernames=contacts,
+            contact_urls=contact_urls,
+            budget_amount=budget_amount,
+            budget_currency=budget_currency,
+        )

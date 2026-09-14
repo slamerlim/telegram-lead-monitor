@@ -138,11 +138,7 @@ class Analyzer:
                 message.text = event.message_text
                 message.is_reply = event.is_reply
 
-            result = self.scorer.score(
-                event.message_text,
-                community_username=event.community_username,
-                community_name=event.community_name,
-            )
+            result = self.scorer.score(event.message_text)
             semantic_score = self.semantic.score(event.message_text)
             if semantic_score is not None:
                 result.semantic_score = semantic_score

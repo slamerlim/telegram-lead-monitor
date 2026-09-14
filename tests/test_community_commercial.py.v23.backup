@@ -1,0 +1,99 @@
+from services.analyzer.app.scoring import LeadScorer
+
+
+def scorer() -> LeadScorer:
+    return LeadScorer("config/scoring.yaml")
+
+
+def test_bybit_support_question_is_not_commercial():
+    r = scorer().score(
+        "My Bybit API key returns 10003. Why is the API rejecting it? Please clarify.",
+        community_username="BybitAPI",
+    )
+    assert r.tier == "LOW"
+    assert r.lead_type not in {"BOT_REPAIR", "TRADING_SYSTEM_CONTRACT"}
+
+
+def test_direct_bot_repair_is_commercial():
+    r = scorer().score(
+        "I have a Python Bybit trading bot. It stopped placing orders after a websocket reconnect. "
+        "I need a developer to diagnose and fix it.",
+        community_username="BybitAPI",
+    )
+    assert r.tier == "HIGH"
+    assert r.buyer_type == "CLIENT"
+    assert r.lead_type == "BOT_REPAIR"
+
+
+def test_buy_bot_is_commercial():
+    r = scorer().score(
+        "Looking to buy a custom Binance futures trading bot. Budget $3000.",
+        community_username="cryptojobslist",
+    )
+    assert r.tier == "HIGH"
+    assert r.lead_type == "BOT_PURCHASE"
+
+
+def test_contract_quant_is_commercial():
+    r = scorer().score(
+        "We are looking for a quantitative engineer on a 6-month contract to build an algorithmic crypto trading system.",
+        community_username="web3hiring",
+    )
+    assert r.tier == "HIGH"
+    assert r.buyer_type == "RECRUITER"
+    assert r.lead_type == "QUANT_ENGINEERING_CONTRACT"
+
+
+def test_generic_full_time_job_is_not_target_lead():
+    r = scorer().score(
+        "We are hiring a Senior Software Engineer for our crypto company.",
+        community_username="web3hiring",
+    )
+    assert r.tier == "LOW"
+    assert r.lead_type == "JOB_VACANCY"
+
+
+def test_service_provider_is_not_client():
+    r = scorer().score(
+        "I develop crypto trading bots. DM me for your project.",
+        community_username="solanadev",
+    )
+    assert r.tier == "LOW"
+    assert r.buyer_type == "SERVICE_PROVIDER"
+
+
+def test_job_seeker_is_not_client():
+    r = scorer().score(
+        "#ищу_работу Python developer. Open to remote contract work. CV available.",
+        community_username="solana_jobs",
+    )
+    assert r.tier == "LOW"
+    assert r.buyer_type == "JOB_SEEKER"
+
+
+def test_product_support_is_not_customization():
+    r = scorer().score(
+        "Is there a guide for multi-pair DCA bots? Why is the pair limit 50? Can you add a USD pair filter?",
+        community_username="Community_3Commas",
+    )
+    assert r.tier == "LOW"
+    assert r.lead_type == "TECHNICAL_QUESTION"
+
+
+def test_strategy_implementation_is_commercial():
+    r = scorer().score(
+        "I have a TradingView strategy and need a developer to implement it as an automated futures trading bot.",
+        community_username="algofoxchat",
+    )
+    assert r.tier == "HIGH"
+    assert r.lead_type == "STRATEGY_IMPLEMENTATION"
+
+
+def test_ml_contract_is_commercial():
+    r = scorer().score(
+        "Hiring an ML engineer on contract to build a signal filtering model for our crypto trading system.",
+        community_username="cryptoDevJobs",
+    )
+    assert r.tier == "HIGH"
+    assert r.buyer_type == "RECRUITER"
+    assert r.lead_type == "ML_AI_ENGINEERING_CONTRACT"

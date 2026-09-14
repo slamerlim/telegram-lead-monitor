@@ -73,9 +73,8 @@ class LeadScorer:
         "trading_bot", "exchange_api", "execution", "strategy_automation", "arbitrage",
         "copy_trading", "solana_dex", "quant_ml", "python", "market_making",
     }
-    _target_financial_domain_rx = re.compile(
-        r"\b(?:crypto(?:currency)?|trading|trader|market|financial|finance|fintech|exchange|execution|order\s+book|strategy|algorithmic|algorithm|portfolio|alpha|derivatives|futures|perpetuals?|spot|defi|web3|blockchain|solana|ethereum|bybit|binance|okx|bitget|coinbase)\b|"
-        r"(?:крипт|трейд|торг|финанс|бирж|исполнен|стратег|алгоритм|портфел|дериватив|фьючерс|спот|дефи|блокчейн)",
+    _commercial_action_rx = re.compile(
+        r"\b(?:need|looking for|seeking|want|hire|hiring|commission|purchase|buy|quote|proposal|заказать|купить|нанять|ищу|нужен)\b",
         re.IGNORECASE | re.UNICODE,
     )
     _developer_role_rx = re.compile(
@@ -158,10 +157,14 @@ class LeadScorer:
         hits: list[str] = []
         for category in ("commercial_purchase", "commercial_repair", "commercial_customization", "commercial_hire", "commercial_implementation"):
             hits.extend(self._pattern_hits(text, category))
+        if not hits:
+            # Compact fallback for natural phrasing covered by the business rules but not a
+            # single YAML pattern. It still requires a commercial action + target role/object.
+            if self._commercial_action_rx.search(text) and (
+                self._developer_role_rx.search(text) or self._bot_context_rx.search(text) or self._strategy_context_rx.search(text)
+            ):
+                hits.append("commercial action + target development object")
         return bool(hits), hits
-
-    def _has_target_financial_domain(self, text: str) -> bool:
-        return self._target_financial_domain_rx.search(text) is not None
 
     def _is_support_like(self, text: str) -> bool:
         return bool(self._pattern_hits(text, "platform_support"))
@@ -172,13 +175,6 @@ class LeadScorer:
     def _is_job_aggregation(self, text: str) -> bool:
         hits = self._pattern_hits(text, "job_aggregator")
         return bool(hits)
-
-    def _is_multi_job_aggregation(self, text: str) -> bool:
-        # A digest containing several independent vacancies must not be promoted merely
-        # because one item happens to mention a target role such as AI/ML or quant.
-        hiring_occurrences = len(re.findall(r"\b(?:hiring|is\s+hiring)\b", text, re.IGNORECASE))
-        vacancy_occurrences = len(re.findall(r"\b(?:vacancy|position|job)\b", text, re.IGNORECASE))
-        return hiring_occurrences >= 3 or vacancy_occurrences >= 4
 
     def _classify_buyer(self, text: str) -> tuple[str, list[str]]:
         reasons: list[str] = []
@@ -192,14 +188,12 @@ class LeadScorer:
         if vendor:
             reasons.append("vendor/support response language detected")
             return "SERVICE_PROVIDER", reasons
-        # A service-provider advertisement is not a buyer simply because it contains
-        # words such as "develop", "fix", "build", or a price.
-        if provider:
-            reasons.append("service-provider/self-promotion language detected")
-            return "SERVICE_PROVIDER", reasons
         if seeker and not explicit:
             reasons.append("job-seeker/CV language detected")
             return "JOB_SEEKER", reasons
+        if provider and not explicit:
+            reasons.append("service-provider/self-promotion language detected")
+            return "SERVICE_PROVIDER", reasons
         if recruiter:
             if explicit:
                 reasons.append("commercial hiring/contract language detected")
@@ -224,10 +218,9 @@ class LeadScorer:
         if buyer_type == "RECRUITER":
             # Contract/freelance target roles are commercial; otherwise just a vacancy.
             contract = bool(self._pattern_hits(text, "contract_engagement"))
-            target_domain = self._has_target_financial_domain(text)
-            target_quant = ("quant_ml" in categories and bool(re.search(r"\bquant(?:itative)?\b", lower)) and target_domain)
-            target_ml = ("quant_ml" in categories and bool(re.search(r"\b(?:ml|ai|machine learning|artificial intelligence)\b", lower)) and target_domain)
-            target_trading = target_domain and bool(re.search(r"\b(?:trading system|algorithmic trading|trading bot|execution|market making|crypto trading)\b", lower))
+            target_quant = "quant_ml" in categories and bool(re.search(r"\bquant(?:itative)?\b", lower))
+            target_ml = "quant_ml" in categories and bool(re.search(r"\b(?:ml|ai|machine learning|artificial intelligence)\b", lower))
+            target_trading = bool(re.search(r"\b(?:trading system|algorithmic trading|trading bot|execution|market making|crypto trading)\b", lower))
             if explicit and contract and target_quant:
                 return "QUANT_ENGINEERING_CONTRACT"
             if explicit and contract and target_ml:
@@ -273,7 +266,7 @@ class LeadScorer:
             return "MARKET_MAKING_PROJECT"
         if "solana_dex" in categories and explicit:
             return "SOLANA_DEX_BOT_PROJECT"
-        if "quant_ml" in categories and explicit and self._has_target_financial_domain(text):
+        if "quant_ml" in categories and explicit:
             if re.search(r"\b(?:ml|ai|machine learning|artificial intelligence)\b", lower):
                 return "ML_AI_ENGINEERING_CONTRACT"
             if re.search(r"\bquant(?:itative)?\b", lower):
@@ -334,7 +327,6 @@ class LeadScorer:
         support = self._is_support_like(clean)
         vendor = self._is_vendor_response(clean)
         job_agg = self._is_job_aggregation(clean)
-        multi_job_agg = self._is_multi_job_aggregation(clean)
 
         reasons = list(buyer_reasons)
         technical_score = 0.0
@@ -406,10 +398,6 @@ class LeadScorer:
         if job_agg and not contract_target:
             score = min(score, 25.0)
             reasons.append("job-aggregator veto")
-        if multi_job_agg:
-            score = min(score, 25.0)
-            lead_type = "JOB_VACANCY"
-            reasons.append("multi-job aggregation veto")
 
         # Questions about how a vendor's product works are not repair/customization orders.
         if self._pattern_hits(clean, "product_feedback") and not explicit:
@@ -426,8 +414,6 @@ class LeadScorer:
         if not qualifying_type:
             tier = "LOW"
         if support and not explicit:
-            tier = "LOW"
-        if multi_job_agg:
             tier = "LOW"
 
         return ScoreResult(
