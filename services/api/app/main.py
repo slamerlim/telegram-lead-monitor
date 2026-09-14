@@ -1,6 +1,7 @@
 import csv
 import io
 import json
+
 from datetime import datetime, timedelta, timezone
 
 from fastapi import Depends, FastAPI, HTTPException, Query
@@ -15,10 +16,9 @@ from shared.redis_bus import RedisBus, SCAN_STREAM
 from shared.settings import get_settings
 from services.api.app.schemas import CommunityCreate, CommunityOut, HealthOut, LeadOut, ScanOut, StatsOut
 
-
 settings = get_settings()
 configure_logging(settings.log_level)
-app = FastAPI(title="Telegram Lead Monitor API", version="0.1.0")
+app = FastAPI(title="Telegram Lead Monitor API", version="0.2.0")
 
 
 @app.on_event("shutdown")
@@ -68,7 +68,11 @@ async def list_communities(session: AsyncSession = Depends(get_session)) -> list
 
 
 @app.patch("/communities/{community_id}/enabled", response_model=CommunityOut)
-async def set_community_enabled(community_id: int, enabled: bool, session: AsyncSession = Depends(get_session)) -> CommunityOut:
+async def set_community_enabled(
+    community_id: int,
+    enabled: bool,
+    session: AsyncSession = Depends(get_session),
+) -> CommunityOut:
     community = await session.get(Community, community_id)
     if not community:
         raise HTTPException(status_code=404, detail="Community not found")
@@ -92,7 +96,6 @@ async def request_scan(
     count = int((await session.scalar(query)) or 0)
     if count == 0:
         raise HTTPException(status_code=400, detail="No enabled communities selected")
-
     run = ScanRun(community_id=community_id, days=days, status="queued")
     session.add(run)
     await session.commit()
@@ -106,7 +109,10 @@ async def request_scan(
 
 
 @app.get("/scans")
-async def list_scans(limit: int = Query(default=50, ge=1, le=500), session: AsyncSession = Depends(get_session)):
+async def list_scans(
+    limit: int = Query(default=50, ge=1, le=500),
+    session: AsyncSession = Depends(get_session),
+):
     rows = (await session.scalars(select(ScanRun).order_by(ScanRun.id.desc()).limit(limit))).all()
     return [
         {
@@ -129,6 +135,9 @@ async def list_scans(limit: int = Query(default=50, ge=1, le=500), session: Asyn
 async def list_leads(
     min_score: float = Query(default=50, ge=0, le=100),
     tier: str | None = Query(default=None),
+    lead_type: str | None = Query(default=None),
+    buyer_type: str | None = Query(default=None),
+    status: str | None = Query(default=None),
     since_days: int = Query(default=30, ge=1, le=365),
     limit: int = Query(default=100, ge=1, le=1000),
     session: AsyncSession = Depends(get_session),
@@ -145,6 +154,12 @@ async def list_leads(
     )
     if tier:
         stmt = stmt.where(Lead.tier == tier.upper())
+    if lead_type:
+        stmt = stmt.where(Lead.lead_type == lead_type.upper())
+    if buyer_type:
+        stmt = stmt.where(Lead.buyer_type == buyer_type.upper())
+    if status:
+        stmt = stmt.where(Lead.status == status.upper())
     results = (await session.execute(stmt)).all()
     return [_lead_out(lead, message, community, author) for lead, message, community, author in results]
 
@@ -154,9 +169,20 @@ def _lead_out(lead: Lead, message: Message, community: Community, author: Author
         id=lead.id,
         score=lead.score,
         tier=lead.tier,
+        lead_type=lead.lead_type,
+        buyer_type=lead.buyer_type,
+        status=lead.status,
+        intent_score=lead.intent_score,
+        technical_score=lead.technical_score,
+        commercial_score=lead.commercial_score,
+        promotion_score=lead.promotion_score,
         matched_keywords=json.loads(lead.matched_keywords or "[]"),
         matched_categories=json.loads(lead.matched_categories or "[]"),
         reasons=json.loads(lead.reasons or "[]"),
+        contact_usernames=json.loads(lead.contact_usernames or "[]"),
+        contact_urls=json.loads(lead.contact_urls or "[]"),
+        budget_amount=lead.budget_amount,
+        budget_currency=lead.budget_currency,
         semantic_score=lead.semantic_score,
         message_id=message.telegram_message_id,
         message_url=message.message_url,
@@ -171,6 +197,20 @@ def _lead_out(lead: Lead, message: Message, community: Community, author: Author
         author_name=author.name if author else None,
         author_bio=author.bio if author else None,
     )
+
+
+@app.patch("/leads/{lead_id}/status")
+async def update_lead_status(
+    lead_id: int,
+    status: str = Query(pattern="^(NEW|REVIEWED|CONTACTED|RESPONDED|QUALIFIED|REJECTED|WON|LOST)$"),
+    session: AsyncSession = Depends(get_session),
+):
+    lead = await session.get(Lead, lead_id)
+    if not lead:
+        raise HTTPException(status_code=404, detail="Lead not found")
+    lead.status = status.upper()
+    await session.commit()
+    return {"id": lead.id, "status": lead.status}
 
 
 @app.get("/stats", response_model=StatsOut)
@@ -215,6 +255,16 @@ async def search_messages(
     ]
 
 
+async def _export_rows(session: AsyncSession, min_score: float, since_days: int) -> list[dict]:
+    leads = await list_leads(
+        min_score=min_score,
+        since_days=since_days,
+        limit=1000,
+        session=session,
+    )
+    return [lead.model_dump() for lead in leads]
+
+
 @app.get("/exports/leads.xlsx")
 async def export_xlsx(
     min_score: float = Query(default=50, ge=0, le=100),
@@ -223,8 +273,7 @@ async def export_xlsx(
 ):
     import pandas as pd
 
-    leads = await list_leads(min_score=min_score, since_days=since_days, limit=1000, session=session)
-    rows = [lead.model_dump() for lead in leads]
+    rows = await _export_rows(session, min_score, since_days)
     frame = pd.DataFrame(rows)
     out = io.BytesIO()
     with pd.ExcelWriter(out, engine="openpyxl") as writer:
@@ -243,20 +292,16 @@ async def export_csv(
     since_days: int = Query(default=30, ge=1, le=365),
     session: AsyncSession = Depends(get_session),
 ):
-    leads = await list_leads(min_score=min_score, since_days=since_days, limit=1000, session=session)
+    rows = await _export_rows(session, min_score, since_days)
+    if rows:
+        fieldnames = list(rows[0].keys())
+    else:
+        fieldnames = list(LeadOut.model_fields.keys())
     buf = io.StringIO()
-    writer = csv.DictWriter(
-        buf,
-        fieldnames=[
-            "score", "tier", "matched_keywords", "matched_categories", "reasons",
-            "semantic_score", "message_date", "message_url", "community_name",
-            "community_username", "community_url", "author_id", "author_username",
-            "author_name", "author_bio", "text",
-        ],
-    )
+    writer = csv.DictWriter(buf, fieldnames=fieldnames, extrasaction="ignore")
     writer.writeheader()
-    for lead in leads:
-        writer.writerow(lead.model_dump())
+    for row in rows:
+        writer.writerow(row)
     buf.seek(0)
     return StreamingResponse(
         iter([buf.getvalue()]),

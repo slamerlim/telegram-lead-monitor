@@ -17,6 +17,8 @@ class Community(Base):
     url: Mapped[str | None] = mapped_column(String(1000), nullable=True)
     kind: Mapped[str | None] = mapped_column(String(32), nullable=True)
     enabled: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
+    resolve_status: Mapped[str] = mapped_column(String(32), default="pending", nullable=False)
+    last_error: Mapped[str | None] = mapped_column(Text, nullable=True)
     last_scanned_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
     last_message_id: Mapped[int | None] = mapped_column(Integer, nullable=True)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=datetime.utcnow)
@@ -64,17 +66,35 @@ class Message(Base):
 
 class Lead(Base):
     __tablename__ = "leads"
-    __table_args__ = (Index("ix_leads_score", "score"), Index("ix_leads_created", "created_at"))
+    __table_args__ = (
+        Index("ix_leads_score", "score"),
+        Index("ix_leads_created", "created_at"),
+        Index("ix_leads_lead_type", "lead_type"),
+        Index("ix_leads_buyer_type", "buyer_type"),
+        Index("ix_leads_status", "status"),
+    )
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     message_id: Mapped[int] = mapped_column(ForeignKey("messages.id", ondelete="CASCADE"), unique=True)
     score: Mapped[float] = mapped_column(Float, default=0.0)
     tier: Mapped[str] = mapped_column(String(16), default="LOW")
+    lead_type: Mapped[str] = mapped_column(String(64), default="NOISE")
+    buyer_type: Mapped[str] = mapped_column(String(32), default="UNKNOWN")
+    status: Mapped[str] = mapped_column(String(32), default="NEW")
+    intent_score: Mapped[float] = mapped_column(Float, default=0.0)
+    technical_score: Mapped[float] = mapped_column(Float, default=0.0)
+    commercial_score: Mapped[float] = mapped_column(Float, default=0.0)
+    promotion_score: Mapped[float] = mapped_column(Float, default=0.0)
     matched_keywords: Mapped[str] = mapped_column(Text, default="[]")
     matched_categories: Mapped[str] = mapped_column(Text, default="[]")
     reasons: Mapped[str] = mapped_column(Text, default="[]")
+    contact_usernames: Mapped[str] = mapped_column(Text, default="[]")
+    contact_urls: Mapped[str] = mapped_column(Text, default="[]")
+    budget_amount: Mapped[float | None] = mapped_column(Float, nullable=True)
+    budget_currency: Mapped[str | None] = mapped_column(String(16), nullable=True)
     semantic_score: Mapped[float | None] = mapped_column(Float, nullable=True)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=datetime.utcnow)
+    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=datetime.utcnow, onupdate=datetime.utcnow)
 
     message: Mapped[Message] = relationship(back_populates="lead")
 

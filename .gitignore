@@ -14,3 +14,6 @@ exports/
 # IDE
 .vscode/
 .idea/
+
+# secrets
+docker-secrets/

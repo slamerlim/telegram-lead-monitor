@@ -79,14 +79,17 @@ class Collector:
         import structlog
 
         me = await self.client.get_me()
+
+
         if not await self.client.is_user_authorized():
             raise RuntimeError("Telegram authentication failed")
 
-        log.info(
+        import structlog
+
             "telegram_authenticated",
-            user_id=getattr(me, "id", None),
+            user_id=me.id,
             username=getattr(me, "username", None),
-        )
+    )
 
     async def run_forever(self) -> None:
         await self.ensure_login()

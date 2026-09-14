@@ -1,36 +1,31 @@
-# Weights are additive. Scores are capped at 100.
-# Matching is case-insensitive and Unicode-aware.
 thresholds:
   high: 75
   medium: 50
 
 categories:
-  customer_intent: 35
-  trading_bot: 25
-  exchange_api: 20
+  customer_intent: 20
+  trading_bot: 20
+  exchange_api: 18
   execution: 20
-  strategy_automation: 20
-  arbitrage: 25
-  copy_trading: 20
-  solana_dex: 25
-  quant_ml: 20
-  explicit_budget: 10
-  urgency: 10
-  python: 8
-  negative_promotion: -25
+  strategy_automation: 16
+  arbitrage: 20
+  copy_trading: 18
+  solana_dex: 18
+  quant_ml: 18
+  urgency: 8
+  python: 5
+  negative_promotion: -35
 
 terms:
   customer_intent:
     - need developer
     - looking for developer
+    - looking for a developer
     - need a developer
     - developer needed
-    - need someone
-    - who can build
-    - who can fix
-    - who can modify
-    - hire developer
     - developer wanted
+    - need programmer
+    - looking for programmer
     - нужен разработчик
     - ищу разработчика
     - нужен программист
@@ -39,9 +34,11 @@ terms:
     - кто может сделать
     - кто может починить
     - кто может доработать
+    - кто может разработать
     - нужно доработать
     - нужно исправить
     - срочно нужен разработчик
+    - нужен программист для бота
   trading_bot:
     - trading bot
     - crypto bot
@@ -50,12 +47,14 @@ terms:
     - bitget bot
     - okx bot
     - telegram trading bot
+    - trading bot developer
     - торговый бот
     - торгового бота
     - бот для bybit
     - бот для binance
     - бот для bitget
     - бот для okx
+    - бот для фьючерсов
   exchange_api:
     - exchange api
     - api trading
@@ -68,11 +67,14 @@ terms:
     - api issue
     - api error
     - websocket issue
+    - websocket error
+    - rest api
     - ошибка api
     - проблема api
     - интеграция api
     - api биржи
     - торговый api
+    - ошибка 170140
   execution:
     - order execution
     - execution engine
@@ -81,11 +83,14 @@ terms:
     - partial fill
     - partial fills
     - order management
+    - order rejected
+    - order rejection
     - slippage
     - latency
     - исполнение ордеров
     - частичное исполнение
     - система исполнения
+    - ордер отклонен
   strategy_automation:
     - grid bot
     - dca bot
@@ -93,14 +98,13 @@ terms:
     - automation
     - automated trading
     - автоматизация торговли
-    - бот для фьючерсов
+    - strategy automation
   arbitrage:
     - arbitrage bot
     - funding arbitrage
     - cross exchange arbitrage
     - basis trading
     - арбитражный бот
-    - funding arbitrage
   copy_trading:
     - copy trading
     - copy-trading bot
@@ -133,30 +137,25 @@ terms:
     - quant developer
     - quant researcher
     - algorithmic trading
+    - algorithmic trading developer
+    - trading infrastructure
+    - execution infrastructure
     - алготрейдинг
     - квант
     - квантовый разработчик
-  explicit_budget:
-    - budget
-    - usd
-    - usdt
-    - pay
-    - paid
-    - compensation
-    - "$"
-    - бюджет
-    - оплата
-    - стоимость
-    - зарплата
   urgency:
     - urgent
     - asap
     - immediately
+    - urgently
     - срочно
     - как можно скорее
   python:
     - python
     - python developer
+    - pybit
+    - ccxt
+    - aiogram
   negative_promotion:
     - buy our bot
     - our bot
@@ -166,3 +165,75 @@ terms:
     - купить бота
     - наши сигналы
     - vip сигналы
+    - i can build
+    - i can help you build
+    - i develop
+    - we develop
+    - hire me
+    - dm me for your project
+    - feel free to dm me
+
+patterns:
+  # Only phrases that indicate a concrete request for a person, implementation or repair.
+  # Do not use a broad "I need ... trading" regex: it falsely matches support questions.
+  buyer_intent:
+    - '\b(?:i|we)\s+(?:need|want|am looking for|are looking for)\s+(?:a\s+|an\s+|somebody\s+|someone\s+)?(?:developer|programmer|engineer|coder|freelancer)\b'
+    - '\b(?:i|we)\s+(?:need|want)\s+(?:someone|a\s+developer|a\s+programmer|help|assistance)\b.{0,80}\b(?:trading|bot|api|automation|strategy|exchange|quant)\b'
+    - '\b(?:need|want|looking for)\b.{0,100}\b(?:fix|repair|debug|modify|customi[sz]e|build|develop|create)\b.{0,100}\b(?:bot|trading|api|strategy|exchange)\b'
+    - '\b(?:looking for|need|want)\s+(?:someone|a\s+developer|a\s+programmer)\b.{0,120}\b(?:fix|repair|debug|modify|customi[sz]e|build|develop|create)\b'
+    - '\b(?:my|our)\b.{0,120}\b(?:bot|trading\s+bot)\b.{0,120}\b(?:error|issue|bug|broken|fails|failed|not working|doesn\x27t work|problem|reject(?:ed|s|ing)?)\b'
+    - '\b(?:who\s+can|can\s+someone|is\s+there\s+someone)\b.{0,100}\b(?:build|fix|repair|debug|modify|develop|create)\b.{0,100}\b(?:bot|trading|api|strategy|exchange)\b'
+    - '\b(?:кто-нибудь|кто\s+может)\b.{0,100}\b(?:починить|сделать|доработать|разработать|исправить)\b'
+    - '\b(?:мой|наш|у\s+меня|у\s+нас)\b.{0,120}\b(?:бот|торгов(?:ый|ого)\s+бот)\b.{0,120}\b(?:ошибк\w*|проблем\w*|не\s+работ\w*|слом\w*)\b'
+    - '\b(?:нужен|ищу)\s+(?:разработчик|программист|человек|фрилансер)\b.{0,100}\b(?:бот|трейдинг|api|стратег|арбитраж|копитрейдинг|бирж)\b'
+
+  service_provider:
+    - '\b(?:i|we)\s+(?:can|will)\s+(?:build|develop|fix|create|help)\b'
+    - '\b(?:i|we)\s+(?:develop|build|offer|provide)\b.*\b(?:bot|trading|web3|solana|crypto)\b'
+    - '\bfeel\s+free\s+to\s+dm\s+me\b'
+    - '\bdm\s+me\s+for\s+(?:your|a)\s+project\b'
+    - '\bhire\s+me\b'
+    - '\bavailable\s+for\s+(?:work|projects|hire)\b'
+    - '\bя\s+могу\s+(?:сделать|разработать|починить|помочь)\b'
+    - '\bобращайтесь\s+в\s+личку\b'
+    - '\bпишите\s+в\s+лс\b'
+
+  job_seeker:
+    - '#(?:ищу_работу|open_to_work|looking_for_work)'
+    - '\blooking\s+for\s+(?:work|a\s+job|a\s+position)\b'
+    - '\b(?:cv|resume)\b'
+    - '\bavailability\s*:\s*(?:remote|full-time|part-time|contract)\b'
+    - '\bищу\s+работу\b'
+    - '\bрезюме\b'
+    - '\bготов\s+к\s+работе\b'
+
+  recruiter:
+    - '#(?:vacancy|hiring|job)'
+    - '\bwe\s+are\s+hiring\b'
+    - '\b(?:vacancy|position)\b.*\b(?:developer|engineer|trader|quant)\b'
+    - '\bтребуется\b.*\b(?:разработчик|программист|инженер|квант)\b'
+    - '\bищем\b.*\b(?:разработчика|программиста|инженера|разработчика)\b'
+
+  platform_support:
+    - '\b(?:reactivat|suspend|appeal|verify|kyc|withdraw|deposit|transfer funds|account restricted|account locked)\w*\b'
+    - '\b(?:help me|please help|can you help)\b.{0,60}\b(?:account|subaccount|uid|verification|suspension|withdraw|deposit)\b'
+    - '\b(?:check my account|reactivate my account|unblock my account)\b'
+    - '\b(?:помогите|помоги)\b.{0,80}\b(?:аккаунт|субаккаунт|верификац|блокиров|вывод|пополн)\w*\b'
+
+  technical_problem:
+    - '\b(?:bug|error|issue|problem|broken|fails|failed|not working|doesn\x27t work|reject(?:ed|s|ing)?|exception)\b'
+    - '\b(?:errcode|error code|stack trace|traceback|api\s+returns|returns\s+(?:an?\s+)?error)\b'
+    - '\b(?:ошибк\w*|проблем\w*|не\s+работает|слом\w*|отклон\w*|исключен\w*)\b'
+    - '\bwhy\s+(?:is|does|are)\b'
+    - '\bкак\s+исправить\b'
+    - '\b(?:почему|из-за\s+чего)\b.{0,100}\b(?:ошибка|проблем|не\s+работ|отклон)\w*\b'
+
+  budget_context:
+    - '\bbudget\b'
+    - '\bcompensation\b'
+    - '\bpaid\b'
+    - '\bpayment\b'
+    - '\bоплата\b'
+    - '\bбюджет\b'
+    - '\bстоимость\b'
+    - '\bзарплата\b'

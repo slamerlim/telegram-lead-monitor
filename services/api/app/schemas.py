@@ -1,5 +1,4 @@
 from datetime import datetime
-from typing import Any
 
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -19,6 +18,8 @@ class CommunityOut(BaseModel):
     url: str | None
     kind: str | None
     enabled: bool
+    resolve_status: str
+    last_error: str | None
     last_scanned_at: datetime | None
 
 
@@ -33,9 +34,20 @@ class LeadOut(BaseModel):
     id: int
     score: float
     tier: str
+    lead_type: str
+    buyer_type: str
+    status: str
+    intent_score: float
+    technical_score: float
+    commercial_score: float
+    promotion_score: float
     matched_keywords: list[str]
     matched_categories: list[str]
     reasons: list[str]
+    contact_usernames: list[str]
+    contact_urls: list[str]
+    budget_amount: float | None
+    budget_currency: str | None
     semantic_score: float | None
     message_id: int
     message_url: str | None
