@@ -195,6 +195,7 @@ patterns:
   commercial_purchase:
     - '\b(?:i|we)\s+(?:want|would like|am looking|are looking)\s+to\s+(?:buy|purchase)\b.{0,120}\b(?:bot|trading|software|system|automation)\b'
     - '\b(?:looking to buy|looking to purchase|want to buy|need to buy|need to purchase)\b.{0,100}\b(?:bot|trading|software|system)\b'
+    - '\b(?:commission|commissioning)\b.{0,140}\b(?:developer|programmer|engineer|freelancer|contractor)\b.{0,140}\b(?:build|create|develop|make)\b.{0,140}\b(?:bot|trading|system|strategy)\b'
     - '\b(?:купить|хочу купить|ищу где купить|нужен)\b.{0,100}\b(?:бот|торгов(?:ый|ая)|система|автоматизац)\w*\b'
 
   commercial_repair:

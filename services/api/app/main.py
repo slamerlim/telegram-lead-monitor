@@ -96,6 +96,28 @@ async def request_scan(
     count = int((await session.scalar(query)) or 0)
     if count == 0:
         raise HTTPException(status_code=400, detail="No enabled communities selected")
+
+    # Mirror scheduler dedupe: do not pile queued/running scans for the same scope.
+    if community_id is None:
+        existing = await session.scalar(
+            select(ScanRun.id).where(
+                ScanRun.community_id.is_(None),
+                ScanRun.status.in_(["queued", "running"]),
+            ).limit(1)
+        )
+    else:
+        existing = await session.scalar(
+            select(ScanRun.id).where(
+                ScanRun.community_id == community_id,
+                ScanRun.status.in_(["queued", "running"]),
+            ).limit(1)
+        )
+    if existing:
+        raise HTTPException(
+            status_code=409,
+            detail="A scan is already queued or running for this scope",
+        )
+
     run = ScanRun(community_id=community_id, days=days, status="queued")
     session.add(run)
     await session.commit()

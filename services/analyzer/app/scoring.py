@@ -73,6 +73,11 @@ class LeadScorer:
         "trading_bot", "exchange_api", "execution", "strategy_automation", "arbitrage",
         "copy_trading", "solana_dex", "quant_ml", "python", "market_making",
     }
+    _commercial_action_rx = re.compile(
+        r"\b(?:need|looking for|seeking|want|hire|hiring|commission|purchase|buy|quote|proposal|"
+        r"заказать|купить|нанять|ищу|нужен)\b",
+        re.IGNORECASE | re.UNICODE,
+    )
     _target_financial_domain_rx = re.compile(
         r"\b(?:crypto(?:currency)?|trading|trader|market|financial|finance|fintech|exchange|execution|order\s+book|strategy|algorithmic|algorithm|portfolio|alpha|derivatives|futures|perpetuals?|spot|defi|web3|blockchain|solana|ethereum|bybit|binance|okx|bitget|coinbase)\b|"
         r"(?:крипт|трейд|торг|финанс|бирж|исполнен|стратег|алгоритм|портфел|дериватив|фьючерс|спот|дефи|блокчейн)",
@@ -156,9 +161,19 @@ class LeadScorer:
 
     def _has_explicit_commercial_intent(self, text: str) -> tuple[bool, list[str]]:
         hits: list[str] = []
-        for category in ("commercial_purchase", "commercial_repair", "commercial_customization", "commercial_hire", "commercial_implementation"):
+        for category in (
+            "commercial_purchase",
+            "commercial_repair",
+            "commercial_customization",
+            "commercial_hire",
+            "commercial_implementation",
+        ):
             hits.extend(self._pattern_hits(text, category))
         return bool(hits), hits
+
+    @classmethod
+    def is_commercial_lead_type(cls, lead_type: str) -> bool:
+        return lead_type in cls._COMMERCIAL_TYPES
 
     def _has_target_financial_domain(self, text: str) -> bool:
         return self._target_financial_domain_rx.search(text) is not None
@@ -201,6 +216,22 @@ class LeadScorer:
             reasons.append("job-seeker/CV language detected")
             return "JOB_SEEKER", reasons
         if recruiter:
+            # Vacancy/job-ad language stays RECRUITER. Explicit commercial commission
+            # phrasing ("looking for a developer to build …") is buyer-side CLIENT.
+            vacancy_ad = bool(
+                re.search(
+                    r"#(?:vacancy|hiring|job)\b|"
+                    r"\bhiring\b|"
+                    r"\bwe\s+(?:are\s+)?(?:looking\s+for|seeking|hiring)\b|"
+                    r"\b(?:vacancy|position)\b.{0,100}\b(?:developer|engineer|trader|quant|programmer|ml|ai)\b|"
+                    r"\b(?:freelance|contract)\s+opportunity\b",
+                    text,
+                    re.IGNORECASE,
+                )
+            )
+            if explicit and not vacancy_ad:
+                reasons.append("commercial hiring/contract language detected")
+                return "CLIENT", reasons
             if explicit:
                 reasons.append("commercial hiring/contract language detected")
             else:
@@ -208,7 +239,7 @@ class LeadScorer:
             return "RECRUITER", reasons
         if support and not explicit:
             reasons.append("exchange/product/account support language without commercial request")
-            return "UNKNOWN", reasons
+            return "SUPPORT_SEEKER", reasons
         if explicit:
             reasons.append(f"explicit commercial intent: {', '.join(explicit_hits[:4])}")
             return "CLIENT", reasons
@@ -237,6 +268,8 @@ class LeadScorer:
             return "JOB_VACANCY"
 
         if buyer_type != "CLIENT":
+            if buyer_type == "SUPPORT_SEEKER":
+                return "PLATFORM_SUPPORT"
             return "TECHNICAL_QUESTION" if categories else "NOISE"
 
         if not explicit:
@@ -263,7 +296,7 @@ class LeadScorer:
             return "BOT_REPAIR"
         if customize and ("trading_bot" in categories or "strategy_automation" in categories):
             return "BOT_CUSTOMIZATION"
-        if implementation and ("strategy_automation" in categories or "trading_bot" in categories):
+        if implementation:
             return "STRATEGY_IMPLEMENTATION"
         if "arbitrage" in categories and explicit:
             return "ARBITRAGE_PROJECT"
@@ -291,12 +324,40 @@ class LeadScorer:
         usernames = list(dict.fromkeys(usernames))
         return usernames, [f"https://t.me/{u}" for u in usernames]
 
+    def _normalize_money_number(self, raw_num: str) -> str:
+        """Normalize money number tokens, preserving thousand separators.
+
+        `$3,000` must become 3000, not 3.0. A single comma/dot with 1-2 fraction
+        digits is treated as a decimal separator (e.g. `3,5` → `3.5`).
+        """
+        raw_num = re.sub(r"\s+", "", raw_num)
+        if not raw_num:
+            return raw_num
+
+        if "," in raw_num and "." in raw_num:
+            if raw_num.rfind(",") > raw_num.rfind("."):
+                # European style: 1.234,56
+                return raw_num.replace(".", "").replace(",", ".")
+            # US style: 1,234.56
+            return raw_num.replace(",", "")
+
+        if "," in raw_num:
+            left, right = raw_num.split(",", 1)
+            if right.isdigit() and len(right) == 3 and left.replace(",", "").isdigit():
+                return raw_num.replace(",", "")
+            return raw_num.replace(",", ".")
+
+        if raw_num.count(".") > 1:
+            return raw_num.replace(".", "")
+
+        return raw_num
+
     def _extract_budget(self, text: str) -> tuple[float | None, str | None]:
         for rx in self._money_patterns:
             match = rx.search(text)
             if not match:
                 continue
-            raw_num = re.sub(r"\s+", "", match.group("num")).replace(",", ".")
+            raw_num = self._normalize_money_number(match.group("num"))
             suffix = raw_num[-1].lower() if raw_num and raw_num[-1].lower() in self._multiplier else ""
             if suffix:
                 raw_num = raw_num[:-1]
@@ -327,6 +388,12 @@ class LeadScorer:
                 matched_keywords.append("existing bot problem")
 
         buyer_type, buyer_reasons = self._classify_buyer(clean)
+        # Strategy implementation posts often lack keyword-category hits; attach the
+        # category so commercial scoring and lead typing stay consistent.
+        if self._pattern_hits(clean, "commercial_implementation") and "strategy_automation" not in categories:
+            categories.append("strategy_automation")
+            by_category["strategy_automation"] = ["strategy implementation request"]
+            matched_keywords.append("strategy implementation request")
         lead_type = self._classify_lead_type(clean, categories, buyer_type)
         contacts, contact_urls = self._extract_contacts(clean)
         budget_amount, budget_currency = self._extract_budget(clean)

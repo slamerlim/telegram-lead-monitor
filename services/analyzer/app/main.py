@@ -71,11 +71,15 @@ class Analyzer:
                                 errors=self.errors,
                                 messages_per_second=round(self.processed / elapsed, 2),
                             )
+                        await self.bus.ack(
+                            MESSAGES_STREAM,
+                            "analyzer-workers",
+                            redis_message_id,
+                        )
                     except Exception as exc:
                         self.errors += 1
                         log.exception("message_analysis_failed", error=str(exc))
-                    finally:
-                        await self.bus.ack(MESSAGES_STREAM, "analyzer-workers", redis_message_id)
+                        # Do not ACK: leave the entry pending for retry/inspection.
 
     async def process(self, event: MessageEvent):
         async with SessionLocal() as db:
@@ -146,9 +150,22 @@ class Analyzer:
             semantic_score = self.semantic.score(event.message_text)
             if semantic_score is not None:
                 result.semantic_score = semantic_score
-                if semantic_score >= settings.semantic_threshold and result.tier == "LOW" and result.buyer_type == "CLIENT":
+                # Never promote non-commercial / out-of-domain messages past the
+                # deterministic commercial gate via semantic similarity alone.
+                if (
+                    semantic_score >= settings.semantic_threshold
+                    and result.tier == "LOW"
+                    and result.buyer_type == "CLIENT"
+                    and LeadScorer.is_commercial_lead_type(result.lead_type)
+                    and self.scorer._has_target_financial_domain(event.message_text)
+                ):
                     result.score = min(100.0, result.score + 12.0)
-                    result.tier = "HIGH" if result.score >= self.scorer.high else "MEDIUM"
+                    if result.score >= self.scorer.high:
+                        result.tier = "HIGH"
+                    elif result.score >= self.scorer.medium:
+                        result.tier = "MEDIUM"
+                    else:
+                        result.tier = "LOW"
                     result.reasons.append(f"semantic relevance {semantic_score:.2f}")
 
             lead = await db.scalar(select(Lead).where(Lead.message_id == message.id))
