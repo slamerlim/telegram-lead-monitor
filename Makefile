@@ -29,15 +29,18 @@ reprocess:
 reprocess-10k:
 	docker compose exec -T analyzer python scripts/reprocess_messages.py --max-messages 10000 --batch-size 250
 
+PYTHON ?= python3
+
 # Local/host smoke with DB invariant checks (no Docker required).
 smoke-reprocess:
-	PYTHONPATH=. python scripts/smoke_reprocess_verify.py --max-messages 1000 --batch-size 250 --second-pass
+	PYTHONPATH=. $(PYTHON) scripts/smoke_reprocess_verify.py --max-messages 1000 --batch-size 250 --second-pass
 
 smoke-reprocess-10k:
-	PYTHONPATH=. python scripts/smoke_reprocess_verify.py --max-messages 10000 --batch-size 250 --second-pass
+	PYTHONPATH=. $(PYTHON) scripts/smoke_reprocess_verify.py --max-messages 10000 --batch-size 250 --second-pass
 
-# Production Remote-SSH host: rebuild images + in-container 1k smoke.
-# Optional: RUN_10K=1 make remote-verify
+# Production host (My Machines worker / Remote-SSH): rebuild + in-container 1k smoke.
+# Optional: RUN_10K=1 RESTART_SCHEDULER=1 make remote-verify
+# Never uses docker compose down -v. Fails if duplicate leads appear.
 remote-verify:
 	bash scripts/remote_ssh_verify.sh
 
@@ -45,7 +48,7 @@ stats:
 	curl '$(API_URL)/stats'
 
 test:
-	python -m pytest -q
+	$(PYTHON) -m pytest -q
 
 lint:
 	ruff check services shared tests scripts
