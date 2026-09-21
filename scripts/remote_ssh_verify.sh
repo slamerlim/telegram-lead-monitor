@@ -106,12 +106,18 @@ if [[ "$ready" != "1" ]]; then
 fi
 
 echo "== ensure schema (never drops) =="
-if [[ -z "$(psql_q -Atc "SELECT to_regclass('public.messages');" | tr -d '[:space:]')" ]]; then
+messages_reg="$(psql_q -Atc "SELECT to_regclass('public.messages');" | tr -d '[:space:]')"
+alembic_reg="$(psql_q -Atc "SELECT to_regclass('public.alembic_version');" | tr -d '[:space:]')"
+if [[ -z "$messages_reg" ]]; then
   echo "messages table missing — create_all + alembic stamp head"
   docker compose exec -T api python -m services.api.app.init_db
   docker compose exec -T api alembic stamp head
+elif [[ -z "$alembic_reg" ]]; then
+  echo "messages present without alembic_version — stamp 0001_initial then upgrade"
+  docker compose exec -T api alembic stamp 0001_initial
+  docker compose exec -T api alembic upgrade head
 else
-  echo "messages present — alembic upgrade head"
+  echo "messages + alembic_version present — alembic upgrade head"
   docker compose exec -T api alembic upgrade head
 fi
 
