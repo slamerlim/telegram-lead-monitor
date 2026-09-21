@@ -40,6 +40,7 @@ smoke-reprocess-10k:
 
 # Production host (My Machines worker / Remote-SSH): rebuild + in-container 1k smoke.
 # Optional: RUN_10K=1 RESTART_SCHEDULER=1 make remote-verify
+# Optional: SKIP_GIT=1 make remote-verify  (keep current checkout; for PR branches)
 # Never uses docker compose down -v. Fails if duplicate leads appear.
 remote-verify:
 	bash scripts/remote_ssh_verify.sh

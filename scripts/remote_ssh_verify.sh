@@ -68,11 +68,16 @@ if [[ "${ALLOW_COMPOSE_DOWN_V:-0}" == "1" ]]; then
 fi
 
 echo "== git =="
-git fetch origin
-git checkout main
-git pull origin main
-git rev-parse --short HEAD
-git status -sb
+if [[ "${SKIP_GIT:-0}" == "1" ]]; then
+  echo "SKIP_GIT=1 — using current checkout $(git rev-parse --short HEAD)"
+  git status -sb
+else
+  git fetch origin
+  git checkout main
+  git pull origin main
+  git rev-parse --short HEAD
+  git status -sb
+fi
 
 echo "== disk =="
 df -h / || true
