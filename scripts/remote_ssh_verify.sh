@@ -18,6 +18,7 @@ MAX_MESSAGES="${MAX_MESSAGES:-1000}"
 BATCH_SIZE="${BATCH_SIZE:-250}"
 RUN_10K="${RUN_10K:-0}"
 RESTART_SCHEDULER="${RESTART_SCHEDULER:-0}"
+REQUIRE_REAL_DATA="${REQUIRE_REAL_DATA:-0}"
 PG_USER="${POSTGRES_USER:-telegram_leads}"
 PG_DB="${POSTGRES_DB:-telegram_leads}"
 
@@ -124,6 +125,25 @@ fi
 echo "== confirm --max-messages in analyzer image =="
 docker compose exec -T analyzer python scripts/reprocess_messages.py --help | grep -F -- '--max-messages'
 
+echo "== host / data class =="
+echo "HOSTNAME=$(hostname 2>/dev/null || echo unknown)"
+echo "APP_ENV=${APP_ENV:-unset}"
+real_communities="$(psql_q -Atc "SELECT COUNT(*) FROM communities WHERE telegram_ref IS DISTINCT FROM '@SmokeTestCommunity';" | tr -d '[:space:]')"
+smoke_communities="$(psql_q -Atc "SELECT COUNT(*) FROM communities WHERE telegram_ref = '@SmokeTestCommunity';" | tr -d '[:space:]')"
+echo "REAL_COMMUNITIES=${real_communities:-0}"
+echo "SMOKE_COMMUNITIES=${smoke_communities:-0}"
+if [[ "${real_communities:-0}" =~ ^[1-9][0-9]*$ ]]; then
+  echo "HOST_CLASS=production_like"
+else
+  echo "HOST_CLASS=synthetic_or_empty"
+fi
+if [[ "${REQUIRE_REAL_DATA}" == "1" ]]; then
+  if [[ ! "${real_communities:-0}" =~ ^[1-9][0-9]*$ ]]; then
+    echo "ERROR: REQUIRE_REAL_DATA=1 but no non-smoke communities found — refusing to treat this as production verify"
+    exit 1
+  fi
+fi
+
 echo "== redis pending (scan + messages) =="
 docker compose exec -T redis redis-cli XINFO GROUPS telegram:scan_requests || true
 docker compose exec -T redis redis-cli XINFO GROUPS telegram:messages || true
@@ -165,3 +185,6 @@ else
 fi
 
 echo "REMOTE_SSH_VERIFY_OK"
+if [[ "${REQUIRE_REAL_DATA}" == "1" ]]; then
+  echo "PRODUCTION_VERIFY_OK"
+fi

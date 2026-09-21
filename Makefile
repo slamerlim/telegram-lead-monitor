@@ -39,9 +39,10 @@ smoke-reprocess-10k:
 	PYTHONPATH=. $(PYTHON) scripts/smoke_reprocess_verify.py --max-messages 10000 --batch-size 250 --second-pass
 
 # Production host (My Machines worker / Remote-SSH): rebuild + in-container 1k smoke.
-# Optional: RUN_10K=1 RESTART_SCHEDULER=1 make remote-verify
+# Optional: RUN_10K=1 RESTART_SCHEDULER=1 REQUIRE_REAL_DATA=1 make remote-verify
 # Optional: SKIP_GIT=1 make remote-verify  (keep current checkout; for PR branches)
 # Never uses docker compose down -v. Fails if duplicate leads appear.
+# REQUIRE_REAL_DATA=1 fails closed when only @SmokeTestCommunity (or empty) is present.
 remote-verify:
 	bash scripts/remote_ssh_verify.sh
 
