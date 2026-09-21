@@ -6,9 +6,22 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT"
 
+# Load compose credentials when present (do not override already-exported vars).
+if [[ -f .env ]]; then
+  set -a
+  # shellcheck disable=SC1091
+  source .env
+  set +a
+fi
+
 MAX_MESSAGES="${MAX_MESSAGES:-1000}"
 BATCH_SIZE="${BATCH_SIZE:-250}"
 RUN_10K="${RUN_10K:-0}"
+
+echo "== preflight =="
+command -v docker >/dev/null || { echo "ERROR: docker not found on this host"; exit 1; }
+docker compose version >/dev/null || { echo "ERROR: docker compose not found"; exit 1; }
+test -f docker-compose.yml || { echo "ERROR: run from telegram-lead-monitor repo root"; exit 1; }
 
 echo "== git =="
 git fetch origin
