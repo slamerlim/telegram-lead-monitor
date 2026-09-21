@@ -139,11 +139,16 @@ class Collector:
         try:
             for community in communities:
                 try:
-                    seen, published = await self.scan_community(
-                        community.id,
-                        community.telegram_ref,
-                        since,
-                        run_id,
+                    # Bound each community so one hung Telethon call cannot stall the run.
+                    # On timeout/failure the prior Community.last_message_id is kept.
+                    seen, published = await asyncio.wait_for(
+                        self.scan_community(
+                            community.id,
+                            community.telegram_ref,
+                            since,
+                            run_id,
+                        ),
+                        timeout=180,
                     )
                     total_seen += seen
                     total_published += published
@@ -207,6 +212,20 @@ class Collector:
                     await db.commit()
             raise
 
+    async def _get_entity(self, telegram_ref: str):
+        while True:
+            try:
+                return await self.client.get_entity(telegram_ref)
+            except FloodWaitError as exc:
+                log.warning(
+                    "telegram_flood_wait_get_entity",
+                    seconds=exc.seconds,
+                    telegram_ref=telegram_ref,
+                )
+                await asyncio.sleep(
+                    exc.seconds + settings.collector_flood_wait_buffer_seconds
+                )
+
     async def scan_community(
         self,
         community_id: int,
@@ -214,15 +233,18 @@ class Collector:
         since: datetime,
         run_id: int,
     ) -> tuple[int, int]:
-        entity = await self.client.get_entity(telegram_ref)
+        entity = await self._get_entity(telegram_ref)
         username = getattr(entity, "username", None)
         name = getattr(entity, "title", None) or getattr(entity, "first_name", None) or telegram_ref
         kind = entity_kind(entity)
         chat_id = int(entity.id)
 
+        # Incremental cursor: only fetch messages with id > last_message_id.
+        last_message_id = 0
         async with SessionLocal() as db:
             row = await db.get(Community, community_id)
             if row:
+                last_message_id = int(row.last_message_id or 0)
                 row.telegram_chat_id = chat_id
                 row.name = name
                 row.username = username
@@ -235,7 +257,7 @@ class Collector:
         seen = 0
         published = 0
         latest_message_id: int | None = None
-        async for message in self._iter_messages(entity, since):
+        async for message in self._iter_messages(entity, since, min_id=last_message_id):
             seen += 1
             latest_message_id = max(latest_message_id or 0, int(message.id))
             text = message.message or ""
@@ -269,19 +291,22 @@ class Collector:
             await self.bus.publish(MESSAGES_STREAM, event.model_dump(mode="json"))
             published += 1
 
+        # Advance cursor only after a fully successful iteration. Failures/timeouts
+        # leave the previous last_message_id untouched.
         async with SessionLocal() as db:
             row = await db.get(Community, community_id)
             if row and latest_message_id is not None:
-                row.last_message_id = latest_message_id
+                row.last_message_id = max(int(row.last_message_id or 0), latest_message_id)
                 await db.commit()
         return seen, published
 
-    async def _iter_messages(self, entity: object, since: datetime):
+    async def _iter_messages(self, entity: object, since: datetime, min_id: int = 0):
         while True:
             try:
                 async for message in self.client.iter_messages(
                     entity,
                     offset_date=datetime.now(timezone.utc),
+                    min_id=min_id,
                     limit=None,
                 ):
                     msg_date = message.date if message.date.tzinfo else message.date.replace(tzinfo=timezone.utc)
