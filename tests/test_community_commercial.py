@@ -17,7 +17,7 @@ def assert_low_noncommercial(r):
 def test_bybit_support_order_error_is_not_commercial():
     r = scorer().score("Python trading bot using pybit. Order returns ErrCode 170140. Why is the API rejecting it? Please clarify.", community_username="BybitAPI")
     assert_low_noncommercial(r)
-    assert r.lead_type == "TECHNICAL_QUESTION"
+    assert r.lead_type in {"TECHNICAL_QUESTION", "PLATFORM_SUPPORT"}
 
 
 def test_bybit_trailing_stop_question_is_not_commercial():

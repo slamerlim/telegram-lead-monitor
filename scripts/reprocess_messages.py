@@ -198,16 +198,19 @@ async def reprocess(
                     db.add(lead)
                     existing_leads[message.id] = lead
                     created += 1
-
-                new_values = lead_values_from_result(
-                    result,
-                    lead.status or "NEW",
-                )
-
-                if apply_lead_values(lead, new_values):
-                    updated += 1
+                    apply_lead_values(
+                        lead,
+                        lead_values_from_result(result, "NEW"),
+                    )
                 else:
-                    unchanged += 1
+                    new_values = lead_values_from_result(
+                        result,
+                        lead.status or "NEW",
+                    )
+                    if apply_lead_values(lead, new_values):
+                        updated += 1
+                    else:
+                        unchanged += 1
 
                 if result.tier == "HIGH":
                     high += 1
