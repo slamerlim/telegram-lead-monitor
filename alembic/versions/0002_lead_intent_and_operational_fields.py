@@ -1,7 +1,8 @@
 from alembic import op
 import sqlalchemy as sa
 
-revision = "0002_lead_intent_and_operational_fields"
+# Keep revision id ≤ 32 chars (alembic_version.version_num default width).
+revision = "0002_lead_intent"
 down_revision = "0001_initial"
 branch_labels = None
 depends_on = None

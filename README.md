@@ -198,7 +198,7 @@ docker compose exec api alembic stamp 0001_initial
 docker compose exec api alembic upgrade head
 ```
 
-This applies `0002_lead_intent_and_operational_fields` without dropping the existing 2,558 messages.
+This applies `0002_lead_intent` without dropping the existing 2,558 messages.
 
 ## Production workflow
 

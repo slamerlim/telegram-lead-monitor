@@ -105,6 +105,16 @@ if [[ "$ready" != "1" ]]; then
   exit 1
 fi
 
+echo "== ensure schema (never drops) =="
+if [[ -z "$(psql_q -Atc "SELECT to_regclass('public.messages');" | tr -d '[:space:]')" ]]; then
+  echo "messages table missing — create_all + alembic stamp head"
+  docker compose exec -T api python -m services.api.app.init_db
+  docker compose exec -T api alembic stamp head
+else
+  echo "messages present — alembic upgrade head"
+  docker compose exec -T api alembic upgrade head
+fi
+
 echo "== confirm --max-messages in analyzer image =="
 docker compose exec -T analyzer python scripts/reprocess_messages.py --help | grep -F -- '--max-messages'
 
