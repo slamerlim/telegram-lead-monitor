@@ -1,6 +1,6 @@
 API_URL ?= http://127.0.0.1:8010
 
-.PHONY: up down logs test lint init-db migrate stamp-baseline scan reprocess reprocess-10k stats smoke-reprocess smoke-reprocess-10k remote-verify
+.PHONY: up down logs test lint init-db migrate stamp-baseline scan reprocess reprocess-10k stats smoke-reprocess smoke-reprocess-10k remote-verify ssh-remote-verify
 
 up:
 	docker compose up --build -d
