@@ -1,0 +1,74 @@
+# Manual production verify on a self-hosted runner attached to the Compose host.
+# Does not run on GitHub-hosted runners. Never uses docker compose down -v.
+name: remote-verify
+
+on:
+  workflow_dispatch:
+    inputs:
+      run_10k:
+        description: "Also run 10k reprocess after 1k"
+        type: boolean
+        default: true
+      restart_scheduler:
+        description: "Restart scheduler after verify"
+        type: boolean
+        default: true
+      ref:
+        description: "Git ref to verify (branch or SHA)"
+        type: string
+        default: "cursor/remote-verify-hardening-bf0e"
+
+jobs:
+  verify:
+    runs-on: [self-hosted, linux, telegram-lead-monitor]
+    timeout-minutes: 120
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref }}
+
+      - name: Preflight (refuse hosted runners)
+        run: |
+          set -euo pipefail
+          echo "RUNNER_NAME=${RUNNER_NAME:-}"
+          echo "RUNNER_OS=${RUNNER_OS:-}"
+          test -f docker-compose.yml
+          command -v docker
+          docker compose version
+          case "${RUNNER_NAME:-}" in
+            *GitHub*Actions*|"")
+              if [[ "${RUNNER_ENVIRONMENT:-}" == "github-hosted" ]]; then
+                echo "ERROR: refusing GitHub-hosted runner"
+                exit 1
+              fi
+              ;;
+          esac
+
+      - name: Remote verify
+        env:
+          SKIP_GIT: "1"
+          REQUIRE_REAL_DATA: "1"
+          MAX_MESSAGES: "1000"
+          BATCH_SIZE: "250"
+          RUN_10K: ${{ inputs.run_10k && '1' || '0' }}
+          RESTART_SCHEDULER: ${{ inputs.restart_scheduler && '1' || '0' }}
+        run: bash scripts/remote_ssh_verify.sh | tee remote_verify.log
+
+      - name: Assert production markers
+        run: |
+          set -euo pipefail
+          grep -F 'PRODUCTION_VERIFY_OK' remote_verify.log
+          grep -E 'DUP_CHECK_baseline=0' remote_verify.log
+          grep -E 'DUP_CHECK_smoke_1000=0' remote_verify.log
+          if grep -q 'RUN_10K=1\|== reprocess 10k' remote_verify.log || [[ "${{ inputs.run_10k }}" == "true" ]]; then
+            grep -F 'DUP_CHECK_smoke_10000=0' remote_verify.log
+          fi
+
+      - name: Upload logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: remote-verify-logs
+          path: remote_verify.log
+          if-no-files-found: ignore

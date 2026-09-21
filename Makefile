@@ -43,6 +43,9 @@ smoke-reprocess-10k:
 # Optional: SKIP_GIT=1 make remote-verify  (keep current checkout; for PR branches)
 # Never uses docker compose down -v. Fails if duplicate leads appear.
 # REQUIRE_REAL_DATA=1 fails closed when only @SmokeTestCommunity (or empty) is present.
+# Alternate: register a GitHub Actions self-hosted runner on the prod host with labels
+#   self-hosted,linux,telegram-lead-monitor
+# then run workflow_dispatch on .github/workflows/remote-verify.yml
 remote-verify:
 	bash scripts/remote_ssh_verify.sh
 
