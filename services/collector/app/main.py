@@ -107,10 +107,14 @@ class Collector:
                     try:
                         payload = json.loads(fields["payload"])
                         await self.execute_scan(payload)
+                        await self.bus.ack(
+                            SCAN_STREAM,
+                            "collector-workers",
+                            redis_message_id,
+                        )
                     except Exception as exc:
                         log.exception("scan_failed", error=str(exc))
-                    finally:
-                        await self.bus.ack(SCAN_STREAM, "collector-workers", redis_message_id)
+                        # Do not ACK failed scans so they can be retried/inspected.
 
     async def execute_scan(self, payload: dict) -> None:
         run_id = int(payload["run_id"])
@@ -213,14 +217,19 @@ class Collector:
             raise
 
     async def _get_entity(self, telegram_ref: str):
+        waits = 0
         while True:
             try:
                 return await self.client.get_entity(telegram_ref)
             except FloodWaitError as exc:
+                waits += 1
+                if waits > 5:
+                    raise
                 log.warning(
                     "telegram_flood_wait_get_entity",
                     seconds=exc.seconds,
                     telegram_ref=telegram_ref,
+                    attempt=waits,
                 )
                 await asyncio.sleep(
                     exc.seconds + settings.collector_flood_wait_buffer_seconds
@@ -301,13 +310,14 @@ class Collector:
         return seen, published
 
     async def _iter_messages(self, entity: object, since: datetime, min_id: int = 0):
+        waits = 0
         while True:
             try:
                 async for message in self.client.iter_messages(
                     entity,
                     offset_date=datetime.now(timezone.utc),
                     min_id=min_id,
-                    limit=None,
+                    limit=settings.collector_batch_size,
                 ):
                     msg_date = message.date if message.date.tzinfo else message.date.replace(tzinfo=timezone.utc)
                     if msg_date < since:
@@ -315,7 +325,14 @@ class Collector:
                     yield message
                 break
             except FloodWaitError as exc:
-                log.warning("telegram_flood_wait", seconds=exc.seconds)
+                waits += 1
+                if waits > 5:
+                    raise
+                log.warning(
+                    "telegram_flood_wait",
+                    seconds=exc.seconds,
+                    attempt=waits,
+                )
                 await asyncio.sleep(exc.seconds + settings.collector_flood_wait_buffer_seconds)
 
     async def _get_sender(self, sender_id: int):

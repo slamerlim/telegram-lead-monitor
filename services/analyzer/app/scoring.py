@@ -73,6 +73,11 @@ class LeadScorer:
         "trading_bot", "exchange_api", "execution", "strategy_automation", "arbitrage",
         "copy_trading", "solana_dex", "quant_ml", "python", "market_making",
     }
+    _commercial_action_rx = re.compile(
+        r"\b(?:need|looking for|seeking|want|hire|hiring|commission|purchase|buy|quote|proposal|"
+        r"заказать|купить|нанять|ищу|нужен)\b",
+        re.IGNORECASE | re.UNICODE,
+    )
     _target_financial_domain_rx = re.compile(
         r"\b(?:crypto(?:currency)?|trading|trader|market|financial|finance|fintech|exchange|execution|order\s+book|strategy|algorithmic|algorithm|portfolio|alpha|derivatives|futures|perpetuals?|spot|defi|web3|blockchain|solana|ethereum|bybit|binance|okx|bitget|coinbase)\b|"
         r"(?:крипт|трейд|торг|финанс|бирж|исполнен|стратег|алгоритм|портфел|дериватив|фьючерс|спот|дефи|блокчейн)",
@@ -156,9 +161,19 @@ class LeadScorer:
 
     def _has_explicit_commercial_intent(self, text: str) -> tuple[bool, list[str]]:
         hits: list[str] = []
-        for category in ("commercial_purchase", "commercial_repair", "commercial_customization", "commercial_hire", "commercial_implementation"):
+        for category in (
+            "commercial_purchase",
+            "commercial_repair",
+            "commercial_customization",
+            "commercial_hire",
+            "commercial_implementation",
+        ):
             hits.extend(self._pattern_hits(text, category))
         return bool(hits), hits
+
+    @classmethod
+    def is_commercial_lead_type(cls, lead_type: str) -> bool:
+        return lead_type in cls._COMMERCIAL_TYPES
 
     def _has_target_financial_domain(self, text: str) -> bool:
         return self._target_financial_domain_rx.search(text) is not None
