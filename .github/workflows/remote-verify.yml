@@ -14,9 +14,9 @@ on:
         type: boolean
         default: true
       ref:
-        description: "Git ref to verify (branch or SHA)"
+        description: "Git ref to verify (branch or SHA). Use cursor/remote-verify-hardening-bf0e until PR #2 merges."
         type: string
-        default: "cursor/remote-verify-hardening-bf0e"
+        default: "main"
 
 jobs:
   verify:
