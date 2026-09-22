@@ -6,6 +6,7 @@ import json
 from typing import Any
 
 from sqlalchemy import select
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from shared.opportunity import opportunity_key as make_opportunity_key
@@ -15,6 +16,10 @@ from shared.models import Lead, Message
 _PROTECTED_STATUSES = frozenset(
     {"REVIEWED", "CONTACTED", "RESPONDED", "QUALIFIED", "WON", "LOST", "REJECTED"}
 )
+
+
+def _is_protected(lead: Lead) -> bool:
+    return (lead.status or "NEW").upper() in _PROTECTED_STATUSES
 
 
 def apply_score_result(lead: Lead, result: Any, *, status: str | None = None) -> None:
@@ -64,6 +69,24 @@ def _lead_snapshot(lead: Lead) -> dict[str, Any]:
     }
 
 
+async def _assign_opportunity_key_if_free(
+    db: AsyncSession,
+    lead: Lead,
+    key: str,
+) -> None:
+    """Set opportunity_key only when free/owned; clear on conflict (incl. concurrent writers)."""
+    owner = await db.scalar(select(Lead.message_id).where(Lead.opportunity_key == key))
+    if owner is not None and owner != lead.message_id:
+        lead.opportunity_key = None
+        return
+    try:
+        async with db.begin_nested():
+            lead.opportunity_key = key
+            await db.flush()
+    except IntegrityError:
+        lead.opportunity_key = None
+
+
 async def upsert_opportunity_lead(
     db: AsyncSession,
     message: Message,
@@ -76,6 +99,9 @@ async def upsert_opportunity_lead(
     Returns (action, lead) where action is one of:
     deleted | demoted | noop | created | updated | unchanged |
     deduped_updated | deduped_skipped
+
+    Concurrent UNIQUE races on opportunity_key are absorbed via savepoints
+    (key cleared or path re-resolved) so the outer transaction can still commit.
     """
     key = make_opportunity_key(message.community_id, message.text)
     lead_for_message = await db.scalar(select(Lead).where(Lead.message_id == message.id))
@@ -83,49 +109,82 @@ async def upsert_opportunity_lead(
     if result.tier == "LOW":
         if not lead_for_message:
             return "noop", None
-        if (lead_for_message.status or "NEW").upper() in _PROTECTED_STATUSES:
-            # Keep human pipeline state; demote scores instead of deleting.
+        if _is_protected(lead_for_message):
             before = _lead_snapshot(lead_for_message)
             apply_score_result(lead_for_message, result)
-            lead_for_message.opportunity_key = key
+            await _assign_opportunity_key_if_free(db, lead_for_message, key)
             return ("unchanged" if _lead_snapshot(lead_for_message) == before else "demoted"), lead_for_message
         await db.delete(lead_for_message)
+        await db.flush()
         return "deleted", None
 
     existing = await db.scalar(select(Lead).where(Lead.opportunity_key == key))
 
     if existing and existing.message_id != message.id:
-        # Same commercial opportunity already represented by another message.
         if lead_for_message:
-            if (lead_for_message.status or "NEW").upper() in _PROTECTED_STATUSES:
-                # Prefer the CRM-advanced row as the survivor.
-                if (existing.status or "NEW").upper() not in _PROTECTED_STATUSES:
-                    await db.delete(existing)
-                    existing = lead_for_message
-                else:
-                    await db.delete(lead_for_message)
+            if _is_protected(lead_for_message) and not _is_protected(existing):
+                await db.delete(existing)
+                await db.flush()
+                existing = lead_for_message
+            elif _is_protected(lead_for_message) and _is_protected(existing):
+                lead_for_message.opportunity_key = None
+                await db.flush()
+                apply_score_result(lead_for_message, result)
+                return "updated", lead_for_message
             else:
                 await db.delete(lead_for_message)
-        if result.score > existing.score:
-            before = _lead_snapshot(existing)
+                await db.flush()
+                lead_for_message = None
+
+        before = _lead_snapshot(existing)
+        if existing.message_id == message.id:
+            # Survivor is this message's own lead (after replacing an unprotected duplicate).
             apply_score_result(existing, result)
-            existing.opportunity_key = key
-            # Repoint representative message so CRM joins match the winning text instance.
+            await _assign_opportunity_key_if_free(db, existing, key)
+            action = "unchanged" if _lead_snapshot(existing) == before else "deduped_updated"
+            return action, existing
+        if result.score > existing.score and not _is_protected(existing):
+            apply_score_result(existing, result)
             existing.message_id = message.id
-            return (
-                "unchanged" if _lead_snapshot(existing) == before else "deduped_updated"
-            ), existing
+            action = "unchanged" if _lead_snapshot(existing) == before else "deduped_updated"
+            return action, existing
         return "deduped_skipped", existing
 
     if not lead_for_message:
-        lead_for_message = Lead(message_id=message.id, opportunity_key=key)
+        lead_for_message = Lead(message_id=message.id, opportunity_key=None)
         db.add(lead_for_message)
         apply_score_result(lead_for_message, result, status=status_default)
-        return "created", lead_for_message
+        try:
+            async with db.begin_nested():
+                lead_for_message.opportunity_key = key
+                await db.flush()
+            return "created", lead_for_message
+        except IntegrityError:
+            # Concurrent writer took the key — keep own row without key and attach to survivor.
+            lead_for_message.opportunity_key = None
+            await db.flush()
+            existing = await db.scalar(select(Lead).where(Lead.opportunity_key == key))
+            if existing and existing.message_id != message.id:
+                if _is_protected(lead_for_message) and _is_protected(existing):
+                    apply_score_result(lead_for_message, result)
+                    return "updated", lead_for_message
+                if not _is_protected(lead_for_message):
+                    await db.delete(lead_for_message)
+                    await db.flush()
+                    if result.score > existing.score and not _is_protected(existing):
+                        before = _lead_snapshot(existing)
+                        apply_score_result(existing, result)
+                        existing.message_id = message.id
+                        return (
+                            ("unchanged" if _lead_snapshot(existing) == before else "deduped_updated"),
+                            existing,
+                        )
+                    return "deduped_skipped", existing
+            return "created", lead_for_message
 
     before = _lead_snapshot(lead_for_message)
     apply_score_result(lead_for_message, result)
-    lead_for_message.opportunity_key = key
+    await _assign_opportunity_key_if_free(db, lead_for_message, key)
     if _lead_snapshot(lead_for_message) == before:
         return "unchanged", lead_for_message
     return "updated", lead_for_message
