@@ -1,6 +1,6 @@
 API_URL ?= http://127.0.0.1:8010
 
-.PHONY: up down logs test lint init-db migrate stamp-baseline scan reprocess reprocess-10k stats smoke-reprocess smoke-reprocess-10k remote-verify
+.PHONY: up down logs test lint init-db migrate stamp-baseline scan reprocess reprocess-10k stats smoke-reprocess smoke-reprocess-10k remote-verify ssh-remote-verify
 
 up:
 	docker compose up --build -d
@@ -29,15 +29,23 @@ reprocess:
 reprocess-10k:
 	docker compose exec -T analyzer python scripts/reprocess_messages.py --max-messages 10000 --batch-size 250
 
+PYTHON ?= python3
+
 # Local/host smoke with DB invariant checks (no Docker required).
 smoke-reprocess:
-	PYTHONPATH=. python scripts/smoke_reprocess_verify.py --max-messages 1000 --batch-size 250 --second-pass
+	PYTHONPATH=. $(PYTHON) scripts/smoke_reprocess_verify.py --max-messages 1000 --batch-size 250 --second-pass
 
 smoke-reprocess-10k:
-	PYTHONPATH=. python scripts/smoke_reprocess_verify.py --max-messages 10000 --batch-size 250 --second-pass
+	PYTHONPATH=. $(PYTHON) scripts/smoke_reprocess_verify.py --max-messages 10000 --batch-size 250 --second-pass
 
-# Production Remote-SSH host: rebuild images + in-container 1k smoke.
-# Optional: RUN_10K=1 make remote-verify
+# Production host (My Machines worker / Remote-SSH): rebuild + in-container 1k smoke.
+# Optional: RUN_10K=1 RESTART_SCHEDULER=1 REQUIRE_REAL_DATA=1 make remote-verify
+# Optional: SKIP_GIT=1 make remote-verify  (keep current checkout; for PR branches)
+# Never uses docker compose down -v. Fails if duplicate leads appear.
+# REQUIRE_REAL_DATA=1 fails closed when only @SmokeTestCommunity (or empty) is present.
+# Alternate: register a GitHub Actions self-hosted runner on the prod host with labels
+#   self-hosted,linux,telegram-lead-monitor
+# then run workflow_dispatch on .github/workflows/remote-verify.yml
 remote-verify:
 	bash scripts/remote_ssh_verify.sh
 
@@ -45,7 +53,7 @@ stats:
 	curl '$(API_URL)/stats'
 
 test:
-	python -m pytest -q
+	$(PYTHON) -m pytest -q
 
 lint:
 	ruff check services shared tests scripts
