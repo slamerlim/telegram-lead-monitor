@@ -87,13 +87,16 @@ class StatsOut(BaseModel):
     false_positive_labels: int = 0
 
 
+_FP_CLASS_PATTERN = (
+    "^(MARKETING_BROADCAST|JOB_VACANCY|SUPPORT_REQUEST|SERVICE_AD|"
+    "JOB_SEEKER|NEWS_DIGEST|OFF_DOMAIN|DUPLICATE)$"
+)
+
+
 class LabelCreate(BaseModel):
     message_id: int  # internal messages.id
     label: str = Field(pattern="^(TRUE_LEAD|FALSE_POSITIVE|AMBIGUOUS)$")
-    fp_class: str | None = Field(
-        default=None,
-        pattern="^(MARKETING_BROADCAST|JOB_VACANCY|SUPPORT_REQUEST|SERVICE_AD|JOB_SEEKER|NEWS_DIGEST|OFF_DOMAIN|DUPLICATE)$",
-    )
+    fp_class: str | None = Field(default=None, pattern=_FP_CLASS_PATTERN)
     commercially_actionable: bool | None = None
     language: str | None = Field(default=None, max_length=16)
     notes: str | None = None
@@ -170,6 +173,8 @@ class IndependentReviewQueueItem(BaseModel):
     author_username: str | None
     message_url: str | None
     message_date: datetime | None
+    # HMAC attestation binding reviewer + message + blind mode; required on POST.
+    review_token: str | None = None
     # Only populated when blind=false
     scorer_score: float | None = None
     scorer_tier: str | None = None
@@ -188,16 +193,15 @@ _INDEPENDENT_LABEL_PATTERN = (
 
 class IndependentReviewCreate(BaseModel):
     message_id: int
-    sample_batch_id: str | None = None
+    sample_batch_id: str = Field(min_length=1, max_length=64)
     reviewer_id: str = Field(min_length=1, max_length=64)
     label: str = Field(pattern=_INDEPENDENT_LABEL_PATTERN)
-    fp_class: str | None = Field(
-        default=None,
-        pattern="^(MARKETING_BROADCAST|JOB_VACANCY|SUPPORT_REQUEST|SERVICE_AD|JOB_SEEKER|NEWS_DIGEST|OFF_DOMAIN|DUPLICATE)$",
-    )
+    fp_class: str | None = Field(default=None, pattern=_FP_CLASS_PATTERN)
     commercially_actionable: bool | None = None
-    scorer_shown: bool = False
-    prior_label_shown: bool = False
+    # Deprecated client fields — ignored; blind flags come from review_token attestation.
+    scorer_shown: bool = True
+    prior_label_shown: bool = True
+    review_token: str = Field(min_length=1, max_length=512)
     notes: str | None = None
 
 

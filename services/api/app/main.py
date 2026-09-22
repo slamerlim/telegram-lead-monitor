@@ -1,16 +1,26 @@
 import csv
 import io
 import json
-import random
+import secrets
 
 from datetime import datetime, timedelta, timezone
 
-from fastapi import Depends, FastAPI, HTTPException, Query
+from fastapi import Depends, FastAPI, Header, HTTPException, Query
 from fastapi.responses import StreamingResponse
-from sqlalchemy import func, select, text
+from sqlalchemy import func, or_, select, text
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from shared.db import engine, get_session
+from shared.independent_review_auth import (
+    like_prefix_patterns,
+    mint_queue_token,
+    parse_id_csv,
+    parse_queue_token,
+    parse_reviewer_tokens,
+    reserved_id_match,
+    verify_reviewer_token,
+)
 from shared.logging import configure_logging
 from shared.models import (
     Author,
@@ -23,20 +33,6 @@ from shared.models import (
     MessageScore,
     ScanRun,
 )
-
-# Normalize legacy aliases into independent-review vocabulary on write.
-_INDEPENDENT_LABEL_NORMALIZE = {
-    "TRUE_LEAD": "HUMAN_REVIEWED_TRUE",
-    "FALSE_POSITIVE": "HUMAN_REVIEWED_FALSE",
-    "AMBIGUOUS": "HUMAN_REVIEWED_AMBIGUOUS",
-    "UNCERTAIN": "HUMAN_REVIEWED_AMBIGUOUS",
-    "HUMAN_REVIEWED_TRUE": "HUMAN_REVIEWED_TRUE",
-    "HUMAN_REVIEWED_FALSE": "HUMAN_REVIEWED_FALSE",
-    "HUMAN_REVIEWED_AMBIGUOUS": "HUMAN_REVIEWED_AMBIGUOUS",
-}
-_INDEPENDENT_TRUE = ("HUMAN_REVIEWED_TRUE", "TRUE_LEAD")
-_INDEPENDENT_FALSE = ("HUMAN_REVIEWED_FALSE", "FALSE_POSITIVE")
-_INDEPENDENT_UNCERTAIN = ("HUMAN_REVIEWED_AMBIGUOUS", "AMBIGUOUS", "UNCERTAIN")
 from shared.opportunity import opportunity_key as make_opportunity_key
 from shared.redis_bus import RedisBus, SCAN_STREAM
 from shared.settings import get_settings
@@ -55,6 +51,83 @@ from services.api.app.schemas import (
     ScanOut,
     StatsOut,
 )
+
+# Normalize legacy aliases into independent-review vocabulary on write.
+_INDEPENDENT_LABEL_NORMALIZE = {
+    "TRUE_LEAD": "HUMAN_REVIEWED_TRUE",
+    "FALSE_POSITIVE": "HUMAN_REVIEWED_FALSE",
+    "AMBIGUOUS": "HUMAN_REVIEWED_AMBIGUOUS",
+    "UNCERTAIN": "HUMAN_REVIEWED_AMBIGUOUS",
+}
+_INDEPENDENT_TRUE = ("HUMAN_REVIEWED_TRUE", "TRUE_LEAD")
+_INDEPENDENT_FALSE = ("HUMAN_REVIEWED_FALSE", "FALSE_POSITIVE")
+_INDEPENDENT_UNCERTAIN = ("HUMAN_REVIEWED_AMBIGUOUS", "AMBIGUOUS", "UNCERTAIN")
+# Reviewer / labeled_by prefixes reserved for automation — never count as human/independent.
+_NON_INDEPENDENT_REVIEWER_PREFIXES = (
+    "agent",
+    "audit",
+    "blind_adjudicator",
+    "smoke",
+    "phaseD_smoke",
+    "prod_phase0",
+)
+_PROVISIONAL_LABEL_PREFIXES = ("agent", "audit")
+
+
+def _provisional_like_clause(column):
+    parts = []
+    for p in _PROVISIONAL_LABEL_PREFIXES:
+        exact, delimited = like_prefix_patterns(p)
+        parts.append(column.ilike(exact, escape="\\"))
+        parts.append(column.ilike(delimited, escape="\\"))
+    return or_(*parts)
+
+
+def _reviewer_is_non_independent(reviewer_id: str) -> bool:
+    return reserved_id_match(reviewer_id, _NON_INDEPENDENT_REVIEWER_PREFIXES)
+
+
+def _filter_reserved_ids(ids: set[str]) -> set[str]:
+    return {i for i in ids if not reserved_id_match(i, _NON_INDEPENDENT_REVIEWER_PREFIXES)}
+
+
+def _independence_auth_config() -> tuple[dict[str, str], set[str], str, bool]:
+    """Return (tokens, allowlist, hmac_secret, ready).
+
+    ready requires tokens + HMAC + non-empty allowlist. Partial config never
+    opens gates or enables independent endpoints.
+    """
+    cfg = get_settings()
+    tokens = parse_reviewer_tokens(cfg.independent_human_reviewer_tokens)
+    ids = parse_id_csv(cfg.independent_human_reviewer_ids)
+    secret = (cfg.independent_review_hmac_secret or "").strip()
+    if not tokens or not secret:
+        return tokens, set(), secret, False
+    allowlist = _filter_reserved_ids(set(tokens.keys()) if not ids else (ids & set(tokens.keys())))
+    return tokens, allowlist, secret, bool(allowlist)
+
+
+def _require_independent_reviewer(
+    reviewer_id: str,
+    token_header: str | None,
+) -> tuple[dict[str, str], set[str], str]:
+    tokens, allowlist, secret, ready = _independence_auth_config()
+    if not ready:
+        raise HTTPException(
+            status_code=503,
+            detail="independence auth not configured (tokens + HMAC + allowlist required)",
+        )
+    if _reviewer_is_non_independent(reviewer_id):
+        raise HTTPException(
+            status_code=400,
+            detail="reviewer_id prefix is reserved for non-independent/automation use",
+        )
+    if reviewer_id not in tokens or not verify_reviewer_token(tokens, reviewer_id, token_header):
+        raise HTTPException(status_code=401, detail="invalid or missing X-Reviewer-Token")
+    if reviewer_id not in allowlist:
+        raise HTTPException(status_code=403, detail="reviewer_id is not allowlisted")
+    return tokens, allowlist, secret
+
 
 settings = get_settings()
 configure_logging(settings.log_level)
@@ -284,9 +357,6 @@ async def stats(session: AsyncSession = Depends(get_session)) -> StatsOut:
     distinct_opportunities = int(
         (await session.scalar(select(func.count(func.distinct(Lead.opportunity_key))))) or 0
     )
-    unkeyed_leads = int(
-        (await session.scalar(select(func.count(Lead.id)).where(Lead.opportunity_key.is_(None)))) or 0
-    )
     # After migration + unique constraint this should be 0; kept for monitoring.
     dup_groups = int(
         (
@@ -436,16 +506,35 @@ async def label_queue(
 
 
 @app.post("/labels", response_model=LabelOut, status_code=201)
-async def create_label(payload: LabelCreate, session: AsyncSession = Depends(get_session)) -> LabelOut:
+async def create_label(
+    payload: LabelCreate,
+    session: AsyncSession = Depends(get_session),
+    x_label_token: str | None = Header(default=None),
+) -> LabelOut:
     message = await session.get(Message, payload.message_id)
     if not message:
         raise HTTPException(status_code=404, detail="Message not found")
+    write_token = (get_settings().label_write_token or "").strip()
+    if write_token:
+        if not x_label_token or not secrets.compare_digest(write_token, x_label_token):
+            raise HTTPException(status_code=401, detail="invalid or missing X-Label-Token")
+    labeled_by = payload.labeled_by or "human"
+    if _reviewer_is_non_independent(labeled_by):
+        raise HTTPException(
+            status_code=400,
+            detail="labeled_by prefix is reserved for non-independent/automation use",
+        )
     if payload.label == "FALSE_POSITIVE" and not payload.fp_class:
         raise HTTPException(status_code=400, detail="fp_class required when label=FALSE_POSITIVE")
     if payload.label == "TRUE_LEAD" and payload.fp_class:
         raise HTTPException(status_code=400, detail="fp_class must be null when label=TRUE_LEAD")
 
     existing = await session.scalar(select(HumanLabel).where(HumanLabel.message_id == message.id))
+    if existing and existing.labeled_by != labeled_by:
+        raise HTTPException(
+            status_code=409,
+            detail="human_labels provenance conflict: labeled_by does not match existing row",
+        )
     lead = await session.scalar(select(Lead).where(Lead.message_id == message.id))
     key = (lead.opportunity_key if lead else None) or make_opportunity_key(message.community_id, message.text)
 
@@ -466,7 +555,7 @@ async def create_label(payload: LabelCreate, session: AsyncSession = Depends(get
     )
     row.language = payload.language
     row.notes = payload.notes
-    row.labeled_by = payload.labeled_by or "human"
+    row.labeled_by = labeled_by
     row.labeled_at = datetime.now(timezone.utc)
 
     if lead and lead.status == "NEW":
@@ -475,7 +564,11 @@ async def create_label(payload: LabelCreate, session: AsyncSession = Depends(get
     score_row = await session.scalar(select(MessageScore).where(MessageScore.message_id == message.id))
     community = await session.get(Community, message.community_id)
     author = await session.get(Author, message.author_id) if message.author_id else None
-    await session.commit()
+    try:
+        await session.commit()
+    except IntegrityError:
+        await session.rollback()
+        raise HTTPException(status_code=409, detail="label write conflict")
     await session.refresh(row)
 
     return LabelOut(
@@ -540,41 +633,93 @@ async def label_stats(session: AsyncSession = Depends(get_session)) -> LabelStat
         )
         or 0
     )
-    independent_reviews = int((await session.scalar(select(func.count(LabelReview.id)))) or 0)
-    independent_true = int(
-        (
-            await session.scalar(
-                select(func.count(LabelReview.id)).where(LabelReview.label.in_(_INDEPENDENT_TRUE))
-            )
+    tokens, independent_allowlist, hmac_secret, gate_auth_ready = _independence_auth_config()
+
+    # Displayed independent_* use the same ready gate as ml_gate_independence_ready.
+    if not gate_auth_ready:
+        independent_reviews = independent_true = independent_false = independent_uncertain = 0
+    else:
+        indep_base = select(func.count(LabelReview.id)).where(
+            LabelReview.reviewer_id.in_(sorted(independent_allowlist)),
         )
-        or 0
-    )
-    independent_false = int(
-        (
-            await session.scalar(
-                select(func.count(LabelReview.id)).where(LabelReview.label.in_(_INDEPENDENT_FALSE))
-            )
+        independent_reviews = int((await session.scalar(indep_base)) or 0)
+        independent_true = int(
+            (await session.scalar(indep_base.where(LabelReview.label.in_(_INDEPENDENT_TRUE)))) or 0
         )
-        or 0
-    )
-    independent_uncertain = int(
-        (
-            await session.scalar(
-                select(func.count(LabelReview.id)).where(LabelReview.label.in_(_INDEPENDENT_UNCERTAIN))
-            )
+        independent_false = int(
+            (await session.scalar(indep_base.where(LabelReview.label.in_(_INDEPENDENT_FALSE)))) or 0
         )
-        or 0
-    )
+        independent_uncertain = int(
+            (await session.scalar(indep_base.where(LabelReview.label.in_(_INDEPENDENT_UNCERTAIN)))) or 0
+        )
     agent_provisional = int(
         (
             await session.scalar(
-                select(func.count(HumanLabel.id)).where(
-                    HumanLabel.labeled_by.like("agent%") | HumanLabel.labeled_by.like("audit%")
-                )
+                select(func.count(HumanLabel.id)).where(_provisional_like_clause(HumanLabel.labeled_by))
             )
         )
         or 0
     )
+    # M1/positive: require both human allowlist and write token (shared-token limit documented).
+    human_allow = _filter_reserved_ids(parse_id_csv(get_settings().human_label_reviewer_ids))
+    label_tok = (get_settings().label_write_token or "").strip()
+    if not human_allow or not label_tok:
+        human_only_reviewed = 0
+        human_only_true = 0
+    else:
+        human_filter = HumanLabel.labeled_by.in_(sorted(human_allow))
+        human_only_reviewed = int(
+            (await session.scalar(select(func.count(HumanLabel.id)).where(human_filter))) or 0
+        )
+        human_only_true = int(
+            (
+                await session.scalar(
+                    select(func.count(HumanLabel.id)).where(
+                        HumanLabel.label == "TRUE_LEAD",
+                        human_filter,
+                    )
+                )
+            )
+            or 0
+        )
+
+    if not gate_auth_ready:
+        independent_blind = 0
+        independent_blind_true = 0
+    else:
+        blind_filters = (
+            LabelReview.scorer_shown.is_(False),
+            LabelReview.prior_label_shown.is_(False),
+            LabelReview.sample_batch_id.is_not(None),
+            LabelReview.reviewer_id.in_(sorted(independent_allowlist)),
+        )
+        base = (
+            select(func.count(func.distinct(LabelReview.message_id)))
+            .select_from(LabelReview)
+            .join(
+                LabelReviewSample,
+                (LabelReviewSample.message_id == LabelReview.message_id)
+                & (LabelReviewSample.sample_batch_id == LabelReview.sample_batch_id),
+            )
+            .where(*blind_filters)
+        )
+        independent_blind = int((await session.scalar(base)) or 0)
+        false_msgs = (
+            select(LabelReview.message_id)
+            .where(*blind_filters, LabelReview.label.in_(_INDEPENDENT_FALSE))
+            .distinct()
+        )
+        independent_blind_true = int(
+            (
+                await session.scalar(
+                    base.where(
+                        LabelReview.label.in_(_INDEPENDENT_TRUE),
+                        LabelReview.message_id.not_in(false_msgs),
+                    )
+                )
+            )
+            or 0
+        )
     return LabelStatsOut(
         reviewed_labels=reviewed,
         true_lead=true_lead,
@@ -584,80 +729,86 @@ async def label_stats(session: AsyncSession = Depends(get_session)) -> LabelStat
         by_language={str(k): int(v) for k, v in lang_rows if k},
         commercially_actionable_true=actionable_true,
         commercially_actionable_false=actionable_false,
-        ml_gate_m1_ready=reviewed >= 500,
-        ml_gate_positive_ready=true_lead >= 150,
+        ml_gate_m1_ready=human_only_reviewed >= 500,
+        ml_gate_positive_ready=human_only_true >= 150,
         independent_reviews=independent_reviews,
         independent_true=independent_true,
         independent_false=independent_false,
         independent_uncertain=independent_uncertain,
         agent_provisional_labels=agent_provisional,
-        ml_gate_independence_ready=independent_reviews >= 100 and independent_true >= 30,
+        ml_gate_independence_ready=independent_blind >= 100 and independent_blind_true >= 30,
     )
 
 
 @app.get("/labels/independent-queue", response_model=list[IndependentReviewQueueItem])
 async def independent_review_queue(
     sample_batch_id: str = Query(..., min_length=1, max_length=64),
-    reviewer_id: str = Query(default="human", max_length=64),
+    reviewer_id: str = Query(..., min_length=1, max_length=64),
     blind: bool = Query(default=True, description="Hide scorer + prior agent labels when true"),
     stratum: str | None = Query(default=None, max_length=64),
     limit: int = Query(default=25, ge=1, le=200),
     session: AsyncSession = Depends(get_session),
+    x_reviewer_token: str | None = Header(default=None),
 ) -> list[IndependentReviewQueueItem]:
     """Queue items from a stratified sample for independent review.
 
     Does not mutate human_labels. Prefer blind=true for evaluation samples.
     """
+    _, _, hmac_secret = _require_independent_reviewer(reviewer_id, x_reviewer_token)
+    if not blind:
+        raise HTTPException(
+            status_code=403,
+            detail="blind=false is forbidden for independent review (use adjudication outside this API)",
+        )
+    if stratum:
+        raise HTTPException(
+            status_code=400,
+            detail="stratum filter is forbidden when blind=true (sampling-key leak)",
+        )
+
     already = select(LabelReview.message_id).where(
         LabelReview.reviewer_id == reviewer_id,
         LabelReview.sample_batch_id == sample_batch_id,
     )
-    # Blind stratum filter still works server-side; response never reveals real stratum.
     stmt = (
-        select(LabelReviewSample, Message, Community, Author, MessageScore, Lead, HumanLabel)
+        select(LabelReviewSample, Message, Community, Author)
         .join(Message, LabelReviewSample.message_id == Message.id)
         .join(Community, Message.community_id == Community.id)
         .outerjoin(Author, Message.author_id == Author.id)
-        .outerjoin(MessageScore, MessageScore.message_id == Message.id)
-        .outerjoin(Lead, Lead.message_id == Message.id)
-        .outerjoin(HumanLabel, HumanLabel.message_id == Message.id)
         .where(LabelReviewSample.sample_batch_id == sample_batch_id)
         .where(LabelReviewSample.message_id.not_in(already))
-        .order_by(LabelReviewSample.id.asc())
+        .order_by(func.random())
+        .limit(limit)
     )
-    if stratum:
-        stmt = stmt.where(LabelReviewSample.stratum == stratum)
 
     rows = list((await session.execute(stmt)).all())
-    # Blind mode: shuffle so stratum-block ordering cannot leak the sampling key.
-    if blind:
-        random.shuffle(rows)
-    rows = rows[:limit]
-
     items: list[IndependentReviewQueueItem] = []
-    for sample, message, community, author, score_row, lead, prior in rows:
+    for sample, message, _community, _author in rows:
         items.append(
             IndependentReviewQueueItem(
                 message_id=message.id,
                 community_id=message.community_id,
                 sample_batch_id=sample.sample_batch_id,
-                stratum="blinded" if blind else sample.stratum,
+                stratum="blinded",
                 text=message.text,
-                community_username=community.username,
-                community_name=community.name,
-                author_username=author.username if author else None,
-                message_url=message.message_url,
-                message_date=message.message_date,
-                scorer_score=None if blind else (score_row.score if score_row else (lead.score if lead else None)),
-                scorer_tier=None if blind else (score_row.tier if score_row else (lead.tier if lead else None)),
-                scorer_decision=None if blind else (score_row.decision if score_row else None),
-                scorer_lead_type=None
-                if blind
-                else (score_row.lead_type if score_row else (lead.lead_type if lead else None)),
-                scorer_buyer_type=None
-                if blind
-                else (score_row.buyer_type if score_row else (lead.buyer_type if lead else None)),
-                prior_agent_label=None if blind else (prior.label if prior else None),
+                community_username=None,
+                community_name=None,
+                author_username=None,
+                message_url=None,
+                message_date=None,
+                review_token=mint_queue_token(
+                    hmac_secret,
+                    reviewer_id=reviewer_id,
+                    sample_batch_id=sample.sample_batch_id,
+                    message_id=message.id,
+                    blind=True,
+                ),
+                scorer_score=None,
+                scorer_tier=None,
+                scorer_decision=None,
+                scorer_lead_type=None,
+                scorer_buyer_type=None,
+                prior_agent_label=None,
             )
         )
     return items
@@ -667,16 +818,42 @@ async def independent_review_queue(
 async def create_independent_review(
     payload: IndependentReviewCreate,
     session: AsyncSession = Depends(get_session),
+    x_reviewer_token: str | None = Header(default=None),
 ) -> IndependentReviewOut:
     """Append an independent human review without overwriting human_labels."""
+    _, _, hmac_secret = _require_independent_reviewer(payload.reviewer_id, x_reviewer_token)
     message = await session.get(Message, payload.message_id)
     if not message:
         raise HTTPException(status_code=404, detail="Message not found")
+    sample_ok = await session.scalar(
+        select(LabelReviewSample.id).where(
+            LabelReviewSample.sample_batch_id == payload.sample_batch_id,
+            LabelReviewSample.message_id == payload.message_id,
+        )
+    )
+    if not sample_ok:
+        raise HTTPException(
+            status_code=400,
+            detail="message_id is not in label_review_samples for this sample_batch_id",
+        )
     label = _INDEPENDENT_LABEL_NORMALIZE.get(payload.label, payload.label)
     if label == "HUMAN_REVIEWED_FALSE" and not payload.fp_class:
         raise HTTPException(status_code=400, detail="fp_class required when label is FALSE")
     if label == "HUMAN_REVIEWED_TRUE" and payload.fp_class:
         raise HTTPException(status_code=400, detail="fp_class must be null when label is TRUE")
+
+    if not payload.review_token:
+        raise HTTPException(status_code=400, detail="review_token required")
+    attest = parse_queue_token(hmac_secret, payload.review_token)
+    if (
+        attest is None
+        or attest.reviewer_id != payload.reviewer_id
+        or attest.sample_batch_id != payload.sample_batch_id
+        or attest.message_id != payload.message_id
+        or not attest.blind
+    ):
+        raise HTTPException(status_code=400, detail="invalid or expired review_token")
+    # Attestation binds blind mode; client scorer_shown / prior_label_shown ignored.
 
     existing = await session.scalar(
         select(LabelReview).where(
@@ -695,11 +872,20 @@ async def create_independent_review(
     row.label = label
     row.fp_class = payload.fp_class
     row.commercially_actionable = payload.commercially_actionable
-    row.scorer_shown = payload.scorer_shown
-    row.prior_label_shown = payload.prior_label_shown
+    # Never lower shown flags (blocks non-blind → blind laundering on upsert).
+    if existing:
+        row.scorer_shown = bool(existing.scorer_shown)
+        row.prior_label_shown = bool(existing.prior_label_shown)
+    else:
+        row.scorer_shown = False
+        row.prior_label_shown = False
     row.notes = payload.notes
     row.reviewed_at = datetime.now(timezone.utc)
-    await session.commit()
+    try:
+        await session.commit()
+    except IntegrityError:
+        await session.rollback()
+        raise HTTPException(status_code=409, detail="review write conflict")
     await session.refresh(row)
     return IndependentReviewOut(
         id=row.id,

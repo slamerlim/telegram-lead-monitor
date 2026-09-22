@@ -135,7 +135,7 @@ class MessageScore(Base):
 
 
 class HumanLabel(Base):
-    """Independent human ground truth for commercial classification."""
+    """Agent- or human-assigned provisional labels (not independent evaluation ground truth)."""
 
     __tablename__ = "human_labels"
     __table_args__ = (
@@ -164,6 +164,7 @@ class LabelReviewSample(Base):
 
     __tablename__ = "label_review_samples"
     __table_args__ = (
+        UniqueConstraint("sample_batch_id", "message_id", name="uq_label_review_samples_batch_msg"),
         Index("ix_label_review_samples_batch", "sample_batch_id"),
         Index("ix_label_review_samples_stratum", "stratum"),
     )
@@ -181,6 +182,12 @@ class LabelReview(Base):
 
     __tablename__ = "label_reviews"
     __table_args__ = (
+        UniqueConstraint(
+            "message_id",
+            "reviewer_id",
+            "sample_batch_id",
+            name="uq_label_reviews_msg_reviewer_batch",
+        ),
         Index("ix_label_reviews_reviewer_id", "reviewer_id"),
         Index("ix_label_reviews_label", "label"),
         Index("ix_label_reviews_batch", "sample_batch_id"),

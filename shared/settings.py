@@ -32,6 +32,20 @@ class Settings(BaseSettings):
     semantic_model: str = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
     semantic_threshold: float = 0.48
     scoring_config: str = "/app/config/scoring.yaml"
+    # Comma-separated reviewer_ids that may satisfy ml_gate_independence_ready.
+    # Empty (default) => independence gate never opens (safe until humans are allowlisted).
+    independent_human_reviewer_ids: str = ""
+    # id:token pairs required for independent queue/write when non-empty.
+    # Format: alice:secret1,bob:secret2
+    independent_human_reviewer_tokens: str = ""
+    # HMAC secret for queue attestations that bind blind mode to POST /labels/reviews.
+    # Empty => independence gate never opens (blind flags cannot be server-proven).
+    independent_review_hmac_secret: str = ""
+    # Comma-separated labeled_by values that count toward M1/positive gates.
+    # Empty (default) => those gates never open (client cannot inflate via arbitrary labeled_by).
+    human_label_reviewer_ids: str = ""
+    # Optional shared secret for POST /labels. Empty => writes allowed without header.
+    label_write_token: str = ""
 
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8", extra="ignore")
 
