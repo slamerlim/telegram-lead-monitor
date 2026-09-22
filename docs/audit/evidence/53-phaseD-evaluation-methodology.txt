@@ -1,0 +1,55 @@
+Phase D — Evaluation methodology (pre-adjudication freeze)
+==========================================================
+Timestamp: 2026-09-22T16:33:05Z
+
+## Purpose
+Evaluate the existing deterministic scorer against independently reviewed,
+blinded human judgments — without circular validation from agent labels or
+scorer-gated seeding.
+
+## Sample
+- batch_id: indep_review_2026-09-22
+- n = 128 exclusive messages
+- strata (disproportionate by design):
+  high_leads(3), agent_true(25), agent_fp(25), recruiter_job(25),
+  support_like(25), random_negatives(25)
+- Inclusion: stratified scripts/build_independent_review_sample.py
+  (NOT scorer-preferred-only; high_leads is one stratum among several)
+
+## Blinding requirements (mandatory for countable reviews)
+- Queue: blind=true
+- Response must not expose: scorer_*, prior_agent_label, real stratum name
+- POST: scorer_shown=false, prior_label_shown=false
+- Reviewer decides from message text (+ community context only)
+
+## Label vocabulary (label_reviews only)
+- HUMAN_REVIEWED_TRUE
+- HUMAN_REVIEWED_FALSE (+ fp_class required)
+- HUMAN_REVIEWED_AMBIGUOUS
+Legacy aliases accepted but normalized on write.
+Never written into human_labels by this API.
+
+## Metrics (compute only after adjudication; report with n + strata)
+Because strata are disproportionate, do NOT report a single pooled "overall
+precision" as production precision without design weights.
+
+Allowed reports:
+1. Scorer-positive precision within high_leads stratum:
+   P = (# HUMAN_REVIEWED_TRUE ∩ scorer HIGH/MEDIUM) / (# scorer HIGH/MEDIUM in reviewed set)
+   state n explicitly (currently at most 3 in sample).
+2. Per-stratum confusion vs human labels (TRUE/FALSE/AMBIGUOUS counts).
+3. Agreement with agent_true / agent_fp strata (secondary; agent is NOT ground truth).
+4. Support/recruiter/random_negatives: false-positive rate among scorer positives
+   if any appear; false-negative discovery among human TRUE outside high_leads.
+
+Always state: n, strata, blinding, inclusion method, CI method if used.
+
+## Out of scope for this methodology freeze
+- ML training / LightGBM / Optuna / SHAP
+- Lowering scorer thresholds
+- Treating agent human_labels as independent ground truth
+- Treating Phase 8 n=6 as production precision
+
+## Status
+Methodology frozen for Phase D.
+Adjudication n = 0 → metrics not yet computed.

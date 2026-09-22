@@ -1,0 +1,2 @@
+SUMMARY {"rule_version": "2.4", "processed": 24, "before_tier": {"HIGH": 15, "MEDIUM": 7, "LOW": 2}, "after_tier": {"LOW": 21, "HIGH": 3}, "transitions": {"HIGH->LOW": 12, "HIGH->HIGH": 3, "MEDIUM->LOW": 7, "LOW->LOW": 2}, "demoted_to_low": 19, "kept_medium_or_high": 3, "deleted_leads": 19, "created_leads": 0, "unchanged": 4, "remaining_lead_rows": 5, "remaining_high": 3}
+DONE processed=24 demoted=19 kept=3 deleted=19 created=0 remaining_leads=5

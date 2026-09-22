@@ -1,0 +1,38 @@
+=== analyzer progress ===
+analyzer-1  | {"processed": 4250, "high": 0, "medium": 0, "errors": 0, "messages_per_second": 17.13, "event": "analyzer_progress", "level": "info", "timestamp": "2026-09-22T09:08:23.095226Z"}
+analyzer-1  | {"processed": 4500, "high": 0, "medium": 0, "errors": 0, "messages_per_second": 18.05, "event": "analyzer_progress", "level": "info", "timestamp": "2026-09-22T09:08:24.246166Z"}
+analyzer-1  | {"processed": 4750, "high": 0, "medium": 0, "errors": 0, "messages_per_second": 18.83, "event": "analyzer_progress", "level": "info", "timestamp": "2026-09-22T09:08:27.178060Z"}
+analyzer-1  | {"processed": 5000, "high": 0, "medium": 0, "errors": 0, "messages_per_second": 19.64, "event": "analyzer_progress", "level": "info", "timestamp": "2026-09-22T09:08:29.490522Z"}
+analyzer-1  | {"processed": 5250, "high": 0, "medium": 0, "errors": 0, "messages_per_second": 20.55, "event": "analyzer_progress", "level": "info", "timestamp": "2026-09-22T09:08:30.455140Z"}
+analyzer-1  | {"processed": 5500, "high": 0, "medium": 0, "errors": 0, "messages_per_second": 21.32, "event": "analyzer_progress", "level": "info", "timestamp": "2026-09-22T09:08:32.989410Z"}
+analyzer-1  | {"processed": 5750, "high": 0, "medium": 0, "errors": 0, "messages_per_second": 18.34, "event": "analyzer_progress", "level": "info", "timestamp": "2026-09-22T09:09:28.413225Z"}
+analyzer-1  | {"processed": 6000, "high": 0, "medium": 0, "errors": 0, "messages_per_second": 19.09, "event": "analyzer_progress", "level": "info", "timestamp": "2026-09-22T09:09:29.299861Z"}
+analyzer-1  | {"processed": 6250, "high": 0, "medium": 0, "errors": 0, "messages_per_second": 6.31, "event": "analyzer_progress", "level": "info", "timestamp": "2026-09-22T09:20:45.484826Z"}
+analyzer-1  | {"processed": 6500, "high": 0, "medium": 0, "errors": 0, "messages_per_second": 3.4, "event": "analyzer_progress", "level": "info", "timestamp": "2026-09-22T09:36:07.760555Z"}
+analyzer-1  | {"processed": 6750, "high": 0, "medium": 0, "errors": 0, "messages_per_second": 2.42, "event": "analyzer_progress", "level": "info", "timestamp": "2026-09-22T09:50:45.111369Z"}
+analyzer-1  | {"processed": 7000, "high": 0, "medium": 0, "errors": 0, "messages_per_second": 1.91, "event": "analyzer_progress", "level": "info", "timestamp": "2026-09-22T10:05:11.866589Z"}
+analyzer-1  | {"processed": 7250, "high": 0, "medium": 0, "errors": 0, "messages_per_second": 1.96, "event": "analyzer_progress", "level": "info", "timestamp": "2026-09-22T10:05:51.829662Z"}
+analyzer-1  | {"processed": 7500, "high": 0, "medium": 0, "errors": 0, "messages_per_second": 1.64, "event": "analyzer_progress", "level": "info", "timestamp": "2026-09-22T10:20:15.171299Z"}
+analyzer-1  | {"processed": 7750, "high": 0, "medium": 0, "errors": 0, "messages_per_second": 1.68, "event": "analyzer_progress", "level": "info", "timestamp": "2026-09-22T10:21:08.881616Z"}
+=== collector ===
+collector-1  | {"run_id": 1453, "communities": 1, "messages_seen": 0, "messages_published": 0, "community_errors": 0, "event": "scan_completed", "level": "info", "timestamp": "2026-09-22T10:21:09.669371Z"}
+collector-1  | {"community_id": 103, "telegram_ref": "@AscendEXAnnoucement", "seen": 0, "published": 0, "event": "community_scan_completed", "level": "info", "timestamp": "2026-09-22T10:21:09.897273Z"}
+collector-1  | {"run_id": 1454, "communities": 1, "messages_seen": 0, "messages_published": 0, "community_errors": 0, "event": "scan_completed", "level": "info", "timestamp": "2026-09-22T10:21:09.899324Z"}
+collector-1  | {"community_id": 109, "telegram_ref": "@bitunixglobal", "seen": 0, "published": 0, "event": "community_scan_completed", "level": "info", "timestamp": "2026-09-22T10:21:10.085959Z"}
+collector-1  | {"run_id": 1455, "communities": 1, "messages_seen": 0, "messages_published": 0, "community_errors": 0, "event": "scan_completed", "level": "info", "timestamp": "2026-09-22T10:21:10.087627Z"}
+collector-1  | {"community_id": 12, "telegram_ref": "@careers_crypto", "seen": 0, "published": 0, "event": "community_scan_completed", "level": "info", "timestamp": "2026-09-22T10:21:10.359745Z"}
+collector-1  | {"run_id": 1456, "communities": 1, "messages_seen": 0, "messages_published": 0, "community_errors": 0, "event": "scan_completed", "level": "info", "timestamp": "2026-09-22T10:21:10.361664Z"}
+collector-1  | {"community_id": 123, "telegram_ref": "@hyperliquid_announcements", "seen": 0, "published": 0, "event": "community_scan_completed", "level": "info", "timestamp": "2026-09-22T10:21:10.655499Z"}
+collector-1  | {"run_id": 1457, "communities": 1, "messages_seen": 0, "messages_published": 0, "community_errors": 0, "event": "scan_completed", "level": "info", "timestamp": "2026-09-22T10:21:10.657241Z"}
+collector-1  | {"community_id": 1, "telegram_ref": "@cryptojobslist", "seen": 0, "published": 0, "event": "community_scan_completed", "level": "info", "timestamp": "2026-09-22T10:21:10.866859Z"}
+collector-1  | {"run_id": 1458, "communities": 1, "messages_seen": 0, "messages_published": 0, "community_errors": 0, "event": "scan_completed", "level": "info", "timestamp": "2026-09-22T10:21:10.868860Z"}
+collector-1  | {"community_id": 77, "telegram_ref": "@PhemexFutures_en", "seen": 0, "published": 0, "event": "community_scan_completed", "level": "info", "timestamp": "2026-09-22T10:21:11.088673Z"}
+collector-1  | {"run_id": 1459, "communities": 1, "messages_seen": 0, "messages_published": 0, "community_errors": 0, "event": "scan_completed", "level": "info", "timestamp": "2026-09-22T10:21:11.090395Z"}
+collector-1  | {"community_id": 20, "telegram_ref": "@web3modglobal", "seen": 0, "published": 0, "event": "community_scan_completed", "level": "info", "timestamp": "2026-09-22T10:21:11.323458Z"}
+collector-1  | {"run_id": 1460, "communities": 1, "messages_seen": 0, "messages_published": 0, "community_errors": 0, "event": "scan_completed", "level": "info", "timestamp": "2026-09-22T10:21:11.328114Z"}
+=== scheduler ===
+=== restart counts ===
+api restarts=0
+collector restarts=0
+analyzer restarts=0
+scheduler restarts=0

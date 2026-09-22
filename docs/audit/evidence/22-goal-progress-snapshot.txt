@@ -1,0 +1,15 @@
+# Evaluation loop status — 2026-09-22 (goal in progress)
+
+| Gate | State | Evidence |
+|------|-------|----------|
+| Blocker 6 live drip | IN PROGRESS (24h window) | `16-blocker6-live-drip-t0.txt`, `16b-…-t1.txt` — ingest healthy; ~0 new HIGH leads on corrected scorer |
+| Phase 7 controlled rescore | DONE | `21-phase7-controlled-rescore.txt` — 158→104 leads; Bitunix inflation gone; TRUE_LEAD retention 100% |
+| Phase 8 precision | DONE (NOT READY) | `20-phase8-precision-round3.json` — unit precision ~35%, row ~39%; FP elimination ~92%; gate <40% NOT READY |
+| Labels | PARTIAL | 157 census labels imported (`audit_census_2026-09-22`); TRUE_LEAD=6 — M1 (≥500 / ≥150) unmet |
+| ML | NO-GO | No LightGBM/Optuna/SHAP |
+
+## Live metrics
+- lead_rows / opportunities: 104 / 104 (dup groups 0)
+- persisted_negatives: ≥6.7k (M2 met)
+- Redis pending/lag: 0
+- 6/6 services up

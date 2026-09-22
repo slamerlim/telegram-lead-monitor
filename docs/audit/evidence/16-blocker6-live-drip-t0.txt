@@ -1,0 +1,70 @@
+TS=2026-09-22T11:06:38Z
+=== WINDOW_START (Blocker 6 observation t0) ===
+WINDOW_HOURS=24
+NOTE=Observe corrected scorer on incremental traffic only; no full reprocess.
+
+=== compose ===
+NAME                                STATUS
+telegram-lead-monitor-analyzer-1    Up 12 minutes
+telegram-lead-monitor-api-1         Up 9 minutes
+telegram-lead-monitor-collector-1   Up 2 hours
+telegram-lead-monitor-postgres-1    Up 8 days (healthy)
+telegram-lead-monitor-redis-1       Up 8 days (healthy)
+telegram-lead-monitor-scheduler-1   Up 2 hours
+
+=== redis stream ===
+name
+analyzer-workers
+consumers
+1
+pending
+0
+last-delivered-id
+1790075172484-0
+entries-read
+8641388
+lag
+0
+
+=== db counters ===
+ messages | max_message_id |    max_message_created_at     | lead_rows | distinct_opportunities | leads_created_7d | leads_created_24h | messages_created_24h | scored_messages | persisted_negatives | reviewed_labels 
+----------+----------------+-------------------------------+-----------+------------------------+------------------+-------------------+----------------------+-----------------+---------------------+-----------------
+  8513398 |        8513402 | 2026-09-22 11:06:12.488475+00 |       158 |                    158 |               37 |                 1 |                 9234 |            6346 |                6346 |               3
+(1 row)
+
+
+=== leads by community (current CRM) ===
+       username       | lead_rows | opportunities | avg_score | high 
+----------------------+-----------+---------------+-----------+------
+ jobstash             |        16 |            16 |      77.9 |   12
+ MEXCEnglish          |        15 |            15 |      62.1 |    1
+ solana_jobs          |        11 |            11 |      73.1 |    6
+ BybitEnglish         |        10 |            10 |      77.9 |    6
+ BybitAPI             |         7 |             7 |      87.3 |    7
+ Kucoin_Exchange      |         7 |             7 |      66.7 |    2
+ rabotaweb3           |         7 |             7 |      80.4 |    5
+ LaborXWeb3Jobs       |         7 |             7 |      88.7 |    7
+ blockchain_job       |         7 |             7 |      80.9 |    4
+ CoinExOfficialEN     |         6 |             6 |      67.3 |    2
+ bitunixglobal        |         4 |             4 |      97.5 |    4
+ KCEX_English         |         3 |             3 |      87.7 |    3
+ DeJob_Global_group   |         3 |             3 |      70.7 |    1
+ laborx               |         3 |             3 |      74.7 |    1
+ DeJob_Global         |         3 |             3 |      70.7 |    1
+ chronotech           |         3 |             3 |      70.7 |    1
+ mevdao               |         3 |             3 |      97.3 |    3
+ Toobit_announcements |         3 |             3 |      97.3 |    3
+ BloFin_Official      |         3 |             3 |      91.7 |    3
+ BitgetENOfficial     |         3 |             3 |      73.0 |    2
+(20 rows)
+
+
+=== duplicate opportunity groups (must be 0) ===
+ dup_opportunity_groups 
+------------------------
+                      0
+(1 row)
+
+
+=== api /stats ===
+{"communities":136,"messages":8513398,"leads":158,"high_leads":100,"lead_rows":158,"distinct_opportunities":158,"duplicate_opportunity_groups":0,"scored_messages":6346,"persisted_negatives":6346,"persisted_positives":0,"persisted_ambiguous":0,"reviewed_labels":3,"true_lead_labels":1,"false_positive_labels":1}

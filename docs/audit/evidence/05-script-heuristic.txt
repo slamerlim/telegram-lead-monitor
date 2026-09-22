@@ -1,0 +1,16 @@
+=== lead script heuristic ===
+ script_class | lead_rows | distinct_texts 
+--------------+-----------+----------------
+ LATIN_SCRIPT |       223 |            117
+ MIXED        |        33 |             27
+(2 rows)
+
+=== message corpus script heuristic (FULL scan — may take time) ===
+  script_class   | messages 
+-----------------+----------
+ LATIN_SCRIPT    |  8385495
+ OTHER           |    98422
+ MIXED           |    14924
+ CYRILLIC_SCRIPT |    12716
+(4 rows)
+

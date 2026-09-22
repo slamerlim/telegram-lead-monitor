@@ -1,0 +1,41 @@
+# BLOCKERS 1+3 acceptance — 2026-09-22
+
+## Changes
+- `config/scoring.yaml` v2.4: marketing_broadcast, news_digest, expanded job_aggregator,
+  smarter commercial_hire (exclude Smart Contract titles), stronger service_provider /
+  job_seeker patterns, restored `community_profiles` (EXCHANGE_OFFICIAL / JOB_BOARD /
+  DEV_COMMUNITY / TRADER_COMMUNITY / OTHER).
+- `services/analyzer/app/scoring.py`: marketing/news vetoes, exchange-official non-buyer
+  veto, job-board vacancy veto, multi-job detection without relying on newlines,
+  commercial-type target boost for all `_COMMERCIAL_TYPES`, seeker prioritized over
+  false hire matches, profile weight reasons logged.
+- `tests/test_blockers_precision.py`: regression corpus for Bitunix / LaborX / vacancies /
+  seekers / vendors / support / genuine RFQs.
+
+## Pytest
+54 passed (`test_blockers_precision`, `test_scoring_commercial_gate`,
+`test_community_commercial`, `test_scoring`).
+
+## Offline FP/TP replay
+| case | tier | result |
+|------|------|--------|
+| bitunix promo | LOW | PASS |
+| blofin TWAP promo | LOW | PASS |
+| laborx hot gigs | LOW JOB_VACANCY | PASS |
+| ethena vacancy | LOW JOB_VACANCY | PASS |
+| RU job seeker | LOW JOB_SEEKER | PASS |
+| vendor outreach | LOW SERVICE_PROVIDER | PASS |
+| Polymarket repair RFQ | HIGH | PASS |
+| trading bot RFQ | HIGH | PASS |
+| copy-trading buyer RU | HIGH | PASS |
+| MEXC commentary | LOW | PASS |
+| Toobit listing | LOW | PASS |
+
+## Profile check
+- `_profile('bitunixglobal')` → EXCHANGE_OFFICIAL support_weight=45 job_weight=15
+- `_profile('LaborXWeb3Jobs')` → JOB_BOARD job_weight=25 commercial_boost=20
+- unlisted community → OTHER zeros (no longer empty `{}` from missing config)
+
+## Phase 0
+Ingestion pipeline untouched (no collector/redis/ACK/volume changes). Analyzer rebuilt
+to load scoring.py; scoring.yaml served via existing `./config` mount.

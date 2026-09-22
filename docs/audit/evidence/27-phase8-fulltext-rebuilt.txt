@@ -1,0 +1,76 @@
+{
+  "rule_version": "2.4",
+  "audit_source": "/tmp/09.tsv",
+  "text_source": {
+    "full_message_rows": 157,
+    "preview_fallback_rows": 0
+  },
+  "note": "Labels are the 2026-09-22 audit census (agent business-rule review), not a fully independent human M1 dataset. Scored against full DB message text when available.",
+  "units_total": 157,
+  "unit_weighted": {
+    "true_lead_retained": 6,
+    "false_positive_remaining": 44,
+    "ambiguous": 13,
+    "true_lead_lost_fn": 0,
+    "precision": 0.12,
+    "precision_95ci": [
+      0.0562,
+      0.2381
+    ],
+    "binary_n": 50
+  },
+  "row_weighted": {
+    "true_lead_retained_rows": 7,
+    "false_positive_remaining_rows": 45,
+    "ambiguous_rows": 14,
+    "true_lead_lost_rows": 0,
+    "precision": 0.1346,
+    "precision_95ci": [
+      0.0668,
+      0.2527
+    ],
+    "binary_n": 52
+  },
+  "fp_elimination_rate_units": 0.6812,
+  "true_lead_retention_rate_units": 1.0,
+  "fp_taxonomy_remaining_on_scorer_lead": {
+    "MARKETING_BROADCAST": 18,
+    "JOB_VACANCY": 13,
+    "SERVICE_AD": 1,
+    "JOB_CHANNEL_NO_CLEAR_CONTRACT": 3,
+    "SUPPORT_OR_HOWTO": 3,
+    "OFF_DOMAIN": 3,
+    "MARKET_COMMENTARY": 1,
+    "JOB_SEEKER": 1,
+    "JOB_CHANNEL_INSUFFICIENT_BUYER_RFQ": 1
+  },
+  "fp_taxonomy_in_census": {
+    "MARKETING_BROADCAST": 48,
+    "JOB_SEEKER": 8,
+    "JOB_VACANCY": 43,
+    "OFF_DOMAIN": 18,
+    "SERVICE_AD": 2,
+    "JOB_CHANNEL_NO_CLEAR_CONTRACT": 9,
+    "SUPPORT_OR_HOWTO": 3,
+    "VENDOR_COLD_OUTREACH": 2,
+    "MARKET_COMMENTARY": 3,
+    "JOB_CHANNEL_INSUFFICIENT_BUYER_RFQ": 2
+  },
+  "by_script": {
+    "LATIN_SCRIPT": {
+      "units": 128,
+      "true_retained": 5
+    },
+    "MIXED": {
+      "units": 29,
+      "true_retained": 1
+    }
+  },
+  "gate": {
+    "precision_70_ready_unit": false,
+    "precision_70_ready_row": false,
+    "conditions_40_70_unit": false,
+    "not_ready_under_40_unit": true
+  }
+}
+WROTE /tmp/27-phase8-fulltext.json

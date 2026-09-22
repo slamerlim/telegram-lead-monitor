@@ -1,0 +1,57 @@
+Phase C — Independent human-review infrastructure
+=================================================
+Measured: 2026-09-22T16:27Z (runtime + repository)
+
+## Confirmed (current runtime)
+
+### Schema
+- Alembic head: `0006_label_reviews`
+- Tables: `label_review_samples`, `label_reviews` (append-only)
+- `human_labels` unchanged: 1524 rows (389 TRUE_LEAD / 932 FP / 203 AMBIGUOUS)
+- Provenance in human_labels: 1374 agent_business_review + 150 audit_census (all agent-provisional)
+- Independent reviews: 1 smoke UNCERTAIN (reviewer_id=smoke_human_2026-09-22) — not adjudication
+
+### API (127.0.0.1:8010)
+- GET `/labels/stats` exposes independence fields:
+  independent_reviews / independent_true / independent_false / independent_uncertain
+  agent_provisional_labels / ml_gate_independence_ready
+- GET `/labels/independent-queue?sample_batch_id=...&blind=true`
+  hides scorer_* and prior_agent_label
+- POST `/labels/reviews` appends LabelReview; does not mutate human_labels
+- Reviewed message excluded from same-reviewer queue (103 remaining after smoke on 104→128 sample)
+
+### Stratified sample batch `indep_review_2026-09-22`
+See `47-independent-review-sample.json`
+
+| stratum          | n  |
+|------------------|----|
+| high_leads       |  3 |  (CRM-limited; not expanded to manufacture volume)
+| agent_true       | 25 |
+| agent_fp         | 25 |
+| recruiter_job    | 25 |
+| support_like     | 25 |
+| random_negatives | 25 |
+| **unique total** | **128** |
+
+Exclusive message IDs across strata. Methodology documented in sample rows.
+
+### Tests
+- 72 passed (reprocess unit tests retargeted to `shared.lead_write.apply_score_result`
+  after helpers moved out of scripts/reprocess_messages.py)
+
+### ML / M1
+- Numeric M1 gates: still true (reviewed≥500, TRUE≥150)
+- Independence gate: false (1 independent review; need ≥100 with ≥30 TRUE)
+- ML: remains **NO-GO**
+
+## Historical (unchanged)
+- Phase 8 n=6 precision 1.00 — not production precision
+- 3 HIGH CRM rows — scorer positives only, not sales-validated
+- Incremental collector — do not roll back
+
+## Next (Phase D)
+Human reviewers pull blind queue for batch `indep_review_2026-09-22`,
+submit POST /labels/reviews, then measure agreement vs agent_true/agent_fp
+and vs scorer (unblind only after decision recorded).
+
+Do NOT train ML. Do NOT loosen scorer thresholds.

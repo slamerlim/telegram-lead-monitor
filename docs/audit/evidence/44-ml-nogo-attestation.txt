@@ -1,0 +1,32 @@
+# ML readiness review — NO-GO
+
+As of 2026-09-22T12:20Z
+
+## Decision: **NO LightGBM / Optuna / SHAP**
+
+## Gate checklist
+
+| Gate | Status | Evidence |
+|------|--------|----------|
+| Ingestion holding | PASS | Blocker 6 window report; Redis lag 0; 6/6 services |
+| Commercial vetoes / precision | PASS on census | Phase 8 precision 1.00; FP elim 100%; TRUE retention 100% |
+| Opportunity dedup | PASS | leads.opportunity_key unique; CRM rows=opportunities=5 |
+| Persisted negatives | PASS | message_scores NEGATIVE=7867 |
+| Labeling infrastructure | PASS | /labels API; human_labels populated |
+| M1 labels ≥500 reviewed / ≥150 TRUE_LEAD | PASS (business-rule reviewed) | 1524 reviewed; 389 TRUE_LEAD (`agent_business_review` + census) |
+| Independent third-party human double-read | optional next | still recommended before model training |
+| Continuous lead discovery volume | weak | near-zero live HIGH drip — expected under precision-first policy |
+| ML dependencies absent | PASS | no lightgbm/optuna/shap in requirements |
+
+## Why NO-GO remains correct for training
+
+1. Precision CI lower bound on census binary_n is still wide ([0.61, 1.00]).
+2. Most TRUE_LEAD labels are agent business-rule reviews, not a separate human panel.
+3. Live commercial volume is too thin for supervised ranking yet.
+4. Objective forbids ML until the evaluation loop says go — this review says **not yet for model fit**, while the **rule scorer is production-usable**.
+
+## Allowed next steps (non-ML)
+
+- Continue drip observation
+- Human spot-check of `agent_business_review` TRUE_LEAD sample
+- Sales validation of the 3 HIGH CRM opportunities

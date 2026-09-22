@@ -1,0 +1,30 @@
+# Blocker 6 mid-window (t1) — 2026-09-22T11:24Z approx
+
+## vs t0 (2026-09-22T11:06:38Z)
+
+| metric | t0 | t1 (~18m later) | delta |
+|--------|----|-----------------|-------|
+| messages | 8,513,398 | 8,513,703 | +305 |
+| max_message_id | 8,513,402 | 8,513,707 | +305 |
+| messages_created_24h | 9,234 | 9,539 | +305 |
+| lead_rows | 158 | 104* | see Phase 7 |
+| leads_created_24h | 1 | 1 | 0 new drip |
+| scored_messages | 6,346 | 6,651+ | growing |
+| persisted_negatives | 6,346 | 6,651+ | all LOW so far |
+| Redis pending/lag | 0/0 | 0/0 | healthy |
+| 6/6 services | up | up | holding |
+
+\*Lead row drop is from Phase 7 controlled rescore of historical CRM, not live drip.
+
+## Live drip finding (critical for Blocker 6)
+
+Corrected scorer on incremental traffic is producing **almost no new MEDIUM/HIGH leads**:
+- ~3.2k messages / 2h ingested
+- `message_scores` non-NEGATIVE in last 2h: **0**
+- leads_created_24h: **1** (stale CRM artifact window)
+
+Interpretation: commercial funnel is precision-tight; continuous discovery rate is near-zero until genuine buyer RFQs appear in traffic. Do **not** lower thresholds. Continue observing through full 24h window.
+
+## Community / broadcast inflation
+
+After Phase 7, Bitunix family no longer dominates CRM. Remaining concentration: job boards + exchange channels (see Phase 7 evidence).

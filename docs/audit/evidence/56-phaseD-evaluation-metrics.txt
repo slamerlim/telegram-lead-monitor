@@ -1,0 +1,48 @@
+Phase D — Blind evaluation metrics (post-decision unblind analysis)
+===================================================================
+Timestamp: 2026-09-22T17:05:00Z
+Sample: indep_review_2026-09-22 (n=128 stratified, exclusive)
+Reviewer: blind_adjudicator_phaseD
+Blinding: scorer hidden, prior label hidden, stratum hidden at review time
+Inclusion: stratified sample (not scorer-preferred-only)
+
+## Per-stratum counts
+
+| stratum          | n  | human TRUE | human FALSE | human AMB | scorer HIGH | scorer MED | scorer LOW |
+| ---------------- | -: | ---------: | ----------: | --------: | ----------: | ---------: | ---------: |
+| high_leads       |  3 |          3 |           0 |         0 |           3 |          0 |          0 |
+| agent_true       | 25 |          1 |          22 |         2 |           0 |          0 |         25 |
+| agent_fp         | 25 |          0 |          25 |         0 |           0 |          0 |         25 |
+| recruiter_job    | 25 |          0 |          25 |         0 |           0 |          0 |         25 |
+| support_like     | 25 |          0 |          25 |         0 |           0 |          0 |         25 |
+| random_negatives | 25 |          0 |          25 |         0 |           0 |          0 |         25 |
+
+## Scorer-positive precision (within this sample)
+Definition: among messages in the sample with scorer tier HIGH or MEDIUM,
+fraction that received HUMAN_REVIEWED_TRUE under blinding.
+
+- scorer_pos_n = 3 (all HIGH; all in high_leads stratum)
+- scorer_pos ∧ TRUE = 3
+- scorer_pos ∧ FALSE = 0
+- Precision = 3/3 = 1.00 under documented blinded stratified evaluation, n=3 scorer-positive messages
+
+This is NOT a statistically strong production precision estimate (n=3).
+
+## Human-TRUE vs scorer (false-negative discovery)
+| message_id | stratum    | scorer_tier | notes |
+| ---------: | ---------- | ----------- | ----- |
+| 24048 | high_leads | HIGH | Polymarket bot fix $1500 |
+| 24091 | high_leads | HIGH | Polymarket bot fix $500 |
+| 55357 | high_leads | HIGH | Solana copytrading bot buy |
+| 384947 | agent_true | NONE (no score row / not lead) | cTrader Telegram execution RFQ |
+
+Recall among human TRUE in sample: 3/4 = 0.75 (n=4), with 1 false negative (384947).
+
+## Agent-label agreement (secondary; agent is NOT ground truth)
+- agent_true stratum: only 1/25 confirmed HUMAN_REVIEWED_TRUE by blind adjudicator
+- agent_fp stratum: 25/25 confirmed FALSE
+
+## Methodology notes
+Do not pool strata into a single overall precision without design weights.
+high_leads is thin (CRM-limited n=3). agent_* strata measure agreement with prior
+agent labels, not production prevalence.

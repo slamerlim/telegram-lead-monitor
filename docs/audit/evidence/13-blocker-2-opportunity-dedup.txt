@@ -1,0 +1,24 @@
+# BLOCKER 2 acceptance — opportunity dedup — 2026-09-22
+
+## Change
+- `shared/opportunity.py`: SHA-256 text hash + `(community_id, text_hash)` key
+- `shared/lead_write.py`: upsert with at-most-one lead per opportunity
+- `leads.opportunity_key` unique (alembic `0003_opportunity_key`)
+- Analyzer + reprocess use opportunity upsert
+- `/stats` reports `lead_rows` vs `distinct_opportunities`
+
+## Migration result (live DB)
+| metric | before | after |
+|--------|--------|-------|
+| lead rows | 257 | 158 |
+| distinct opportunities | — | 158 |
+| duplicate (text, community) groups | 12 | 0 |
+| leads.message_id duplicates | 0 | 0 |
+| null opportunity_key | — | 0 |
+
+Bitunix-style broadcast inflation collapsed at the opportunity layer.
+Same text in different communities remains separate opportunities.
+
+## Phase 0
+Collector/redis/ACK/volumes untouched. API+analyzer rebuilt only. Migration
+deleted surplus lead rows only (no volume wipe / truncate).

@@ -1,0 +1,118 @@
+=== counts ===
+ messages 
+----------
+  8511557
+(1 row)
+
+ leads 
+-------
+   256
+(1 row)
+
+ communities | enabled 
+-------------+---------
+         136 |     136
+(1 row)
+
+ authors 
+---------
+  187871
+(1 row)
+
+=== UNIQUE constraints ===
+           conname            | conrelid | contype 
+------------------------------+----------+---------
+ messages_pkey                | messages | p
+ uq_message_community_message | messages | u
+ leads_pkey                   | leads    | p
+ leads_message_id_key         | leads    | u
+(4 rows)
+
+=== lead rows vs opportunity identity ===
+ lead_rows | distinct_text_hashes | distinct_text_community | distinct_authors | distinct_author_text 
+-----------+----------------------+-------------------------+------------------+----------------------
+       256 |                  144 |                     157 |               94 |                  163
+(1 row)
+
+=== lead distributions ===
+  tier  | count 
+--------+-------
+ HIGH   |   196
+ MEDIUM |    60
+(2 rows)
+
+         lead_type          | count 
+----------------------------+-------
+ TRADING_SYSTEM_CONTRACT    |   143
+ SOLANA_DEX_BOT_PROJECT     |    66
+ ML_AI_ENGINEERING_CONTRACT |    17
+ COPY_TRADING_PROJECT       |    12
+ QUANT_ENGINEERING_CONTRACT |     6
+ MARKET_MAKING_PROJECT      |     5
+ BOT_CUSTOMIZATION          |     3
+ STRATEGY_IMPLEMENTATION    |     2
+ ARBITRAGE_PROJECT          |     1
+ BOT_REPAIR                 |     1
+(10 rows)
+
+ buyer_type | count 
+------------+-------
+ CLIENT     |   216
+ RECRUITER  |    40
+(2 rows)
+
+ status | count 
+--------+-------
+ NEW    |   256
+(1 row)
+
+=== ingestion growth by created_at (NOT message_date) ===
+          day           | messages_inserted 
+------------------------+-------------------
+ 2026-09-13 00:00:00+00 |              2559
+ 2026-09-14 00:00:00+00 |           1668727
+ 2026-09-15 00:00:00+00 |           6831379
+ 2026-09-16 00:00:00+00 |              1499
+ 2026-09-22 00:00:00+00 |              7393
+(5 rows)
+
+ inserted_7d | inserted_30d | inserted_90d | msgs_per_day_7d | msgs_per_day_30d 
+-------------+--------------+--------------+-----------------+------------------
+     3511043 |      8511557 |      8511557 |        501577.6 |         283718.6
+(1 row)
+
+=== source content age (message_date) last 7d — diagnostic only ===
+          day           | count 
+------------------------+-------
+ 2026-09-15 00:00:00+00 | 14988
+ 2026-09-16 00:00:00+00 |  1485
+ 2026-09-20 00:00:00+00 |   617
+ 2026-09-21 00:00:00+00 |  1412
+ 2026-09-22 00:00:00+00 |  5364
+(5 rows)
+
+=== empty/near-empty text ===
+ empty | near_empty |  total  
+-------+------------+---------
+     0 |    2760955 | 8511557
+(1 row)
+
+=== communities cursor / errors ===
+ with_cursor | with_error | resolve_flagged 
+-------------+------------+-----------------
+         126 |          1 |               1
+(1 row)
+
+=== scan_runs ===
+        status         | count |  seen  | published 
+-----------------------+-------+--------+-----------
+ completed             |  1233 | 141644 |    137078
+ completed_with_errors |    89 |      0 |         0
+ failed                |     1 |   3561 |      3000
+(3 rows)
+
+ scans_24h | seen_24h | pub_24h 
+-----------+----------+---------
+       680 |     7823 |    7393
+(1 row)
+

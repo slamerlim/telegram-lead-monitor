@@ -1,0 +1,46 @@
+Phase D — Blind API audit
+=========================
+Timestamp: 2026-09-22T16:33:05Z
+Batch: indep_review_2026-09-22
+
+## Pre-fix finding (STOP condition triggered)
+
+GET /labels/independent-queue?blind=true leaked answer-key metadata via:
+1. `stratum` values: high_leads, agent_true, agent_fp, recruiter_job, support_like, random_negatives
+2. Stable order by sample id (stratum blocks contiguous)
+
+Scorer fields and prior_agent_label were already null — PASS for those fields only.
+
+Classification:
+- scorer_* / prior_agent_label omitted: PASS
+- answer-key inference via stratum/order: FAIL (pre-fix)
+
+## Fix applied (minimal)
+
+services/api/app/main.py + schemas.py:
+- blind response: stratum forced to "blinded"
+- blind response: shuffle rows before limit (no stratum-block ordering)
+- independent label vocabulary: HUMAN_REVIEWED_TRUE|FALSE|AMBIGUOUS
+  (legacy TRUE_LEAD/FALSE_POSITIVE/AMBIGUOUS/UNCERTAIN normalized on write)
+- stats count both vocabularies for independence tallies
+
+Unblind (blind=false) still returns real stratum + scorer + prior for analysis only.
+Reviewers must use blind=true and must not pass stratum= filter during evaluation.
+
+## Post-fix verification
+
+Request:
+  GET /labels/independent-queue?sample_batch_id=indep_review_2026-09-22&blind=true&reviewer_id=phaseD_smoke&limit=25
+
+Observed:
+- n=25
+- all stratum == "blinded"
+- scorer_score/tier/decision/lead_type/buyer_type = null
+- prior_agent_label = null
+- text, community context, message_url present
+- message order shuffled (not high_leads-first)
+
+Result: POST_FIX_BLIND_AUDIT=PASS
+
+Tests after fix: 72 passed
+API rebuilt/restarted with fix.

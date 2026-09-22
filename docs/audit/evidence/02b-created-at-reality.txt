@@ -1,0 +1,16 @@
+=== created_at distribution (ingestion timestamp reality check) ===
+    day     |  count  
+------------+---------
+ 2026-09-22 |    7631
+ 2026-09-16 |    1499
+ 2026-09-15 | 6831379
+ 2026-09-14 | 1668727
+ 2026-09-13 |    2559
+(5 rows)
+
+          min_created          |          max_created          |      min_msg_date      |      max_msg_date      
+-------------------------------+-------------------------------+------------------------+------------------------
+ 2026-09-13 18:21:31.589026+00 | 2026-09-22 10:20:17.977523+00 | 2025-09-19 18:27:39+00 | 2026-09-22 10:20:12+00
+(1 row)
+
+=== NOTE: if most created_at cluster on few days, bulk backfill dominates; capacity still uses created_at but interpret carefully ===

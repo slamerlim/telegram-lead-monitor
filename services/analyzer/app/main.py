@@ -4,14 +4,16 @@ import os
 import time
 
 import structlog
-from sqlalchemy import delete, select
+from sqlalchemy import select
 
 from services.analyzer.app.scoring import LeadScorer
 from services.analyzer.app.semantic import SemanticMatcher
 from shared.db import SessionLocal
 from shared.events import MessageEvent
 from shared.logging import configure_logging
-from shared.models import Author, Community, Lead, Message
+from shared.models import Author, Community, Message
+from shared.lead_write import upsert_opportunity_lead
+from shared.score_persist import persist_message_score
 from shared.redis_bus import MESSAGES_STREAM, RedisBus
 from shared.settings import get_settings
 
@@ -168,34 +170,23 @@ class Analyzer:
                         result.tier = "LOW"
                     result.reasons.append(f"semantic relevance {semantic_score:.2f}")
 
-            lead = await db.scalar(select(Lead).where(Lead.message_id == message.id))
-            if result.tier == "LOW":
-                if lead:
-                    await db.delete(lead)
-                await db.commit()
-                return result
-
-            if not lead:
-                lead = Lead(message_id=message.id)
-                db.add(lead)
-            lead.score = result.score
-            lead.tier = result.tier
-            lead.lead_type = result.lead_type
-            lead.buyer_type = result.buyer_type
-            lead.status = lead.status or "NEW"
-            lead.intent_score = result.intent_score
-            lead.technical_score = result.technical_score
-            lead.commercial_score = result.commercial_score
-            lead.promotion_score = result.promotion_score
-            lead.matched_keywords = json.dumps(result.matched_keywords, ensure_ascii=False)
-            lead.matched_categories = json.dumps(result.matched_categories, ensure_ascii=False)
-            lead.reasons = json.dumps(result.reasons, ensure_ascii=False)
-            lead.contact_usernames = json.dumps(result.contact_usernames, ensure_ascii=False)
-            lead.contact_urls = json.dumps(result.contact_urls, ensure_ascii=False)
-            lead.budget_amount = result.budget_amount
-            lead.budget_currency = result.budget_currency
-            lead.semantic_score = result.semantic_score
+            action, _lead = await upsert_opportunity_lead(db, message, result)
+            await persist_message_score(
+                db,
+                message,
+                result,
+                rule_version=self.scorer.rule_version,
+            )
             await db.commit()
+            if action in {"deduped_skipped", "deduped_updated"}:
+                log.info(
+                    "opportunity_deduped",
+                    message_id=message.id,
+                    community_id=message.community_id,
+                    action=action,
+                    tier=result.tier,
+                    score=result.score,
+                )
             return result
 
 

@@ -1,0 +1,1282 @@
+[
+  {
+    "message_id": 2417,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "JOB_VACANCY",
+    "notes": "employment vacancy / aggregator",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 1193749,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "SUPPORT_REQUEST",
+    "notes": "exchange/account support",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 8521618,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "OFF_DOMAIN",
+    "notes": "casual / too thin / off-domain chat",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 1195313,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "SUPPORT_REQUEST",
+    "notes": "exchange/account support",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 8521628,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "OFF_DOMAIN",
+    "notes": "casual / too thin / off-domain chat",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 1191084,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "SUPPORT_REQUEST",
+    "notes": "exchange/account support",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 200,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "OFF_DOMAIN",
+    "notes": "freelance outside trading-bot CRM scope",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 8519479,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "NEWS_DIGEST",
+    "notes": "market/news digest",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 8515584,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "SERVICE_AD",
+    "notes": "vendor/support reply",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 384947,
+    "label": "HUMAN_REVIEWED_TRUE",
+    "fp_class": null,
+    "notes": "cTrader Telegram auto-execution system RFQ with requirements + cost ask",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 1192642,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "SUPPORT_REQUEST",
+    "notes": "exchange/account support",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 58831,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "JOB_SEEKER",
+    "notes": "job seeker / resume",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 8521612,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "OFF_DOMAIN",
+    "notes": "casual / too thin / off-domain chat",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 58821,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "JOB_SEEKER",
+    "notes": "job seeker / resume",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 265382,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "JOB_VACANCY",
+    "notes": "employment vacancy / aggregator",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 8507142,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "SERVICE_AD",
+    "notes": "vendor/support reply",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 1210259,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "SUPPORT_REQUEST",
+    "notes": "exchange/account support",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 53666,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "SUPPORT_REQUEST",
+    "notes": "exchange/account support",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 1194891,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "SUPPORT_REQUEST",
+    "notes": "exchange/account support",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 8521624,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "OFF_DOMAIN",
+    "notes": "default off-domain after blind review",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 1195996,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "SUPPORT_REQUEST",
+    "notes": "exchange/account support",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 59372,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "JOB_SEEKER",
+    "notes": "job seeker / resume",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 8521625,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "OFF_DOMAIN",
+    "notes": "casual / too thin / off-domain chat",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 2462,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "JOB_VACANCY",
+    "notes": "employment vacancy / aggregator",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 1195830,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "SUPPORT_REQUEST",
+    "notes": "exchange/account support",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 8521623,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "OFF_DOMAIN",
+    "notes": "casual / too thin / off-domain chat",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 8514709,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "OFF_DOMAIN",
+    "notes": "casual / too thin / off-domain chat",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 2436,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "JOB_VACANCY",
+    "notes": "employment vacancy / aggregator",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 1193689,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "SUPPORT_REQUEST",
+    "notes": "exchange/account support",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 59323,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "JOB_VACANCY",
+    "notes": "employment vacancy / aggregator",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 260501,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "JOB_VACANCY",
+    "notes": "employment vacancy / aggregator",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 8521611,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "OFF_DOMAIN",
+    "notes": "casual / too thin / off-domain chat",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 8519766,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "NEWS_DIGEST",
+    "notes": "market/news digest",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 1195105,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "SUPPORT_REQUEST",
+    "notes": "exchange/account support",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 1031985,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "MARKETING_BROADCAST",
+    "notes": "exchange marketing/listing promo",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 1195317,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "SUPPORT_REQUEST",
+    "notes": "exchange/account support",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 1194893,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "SUPPORT_REQUEST",
+    "notes": "exchange/account support",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 58817,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "JOB_SEEKER",
+    "notes": "job seeker / resume",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 265659,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "JOB_VACANCY",
+    "notes": "employment vacancy / aggregator",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 2413,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "JOB_VACANCY",
+    "notes": "employment vacancy / aggregator",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 8509283,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "OFF_DOMAIN",
+    "notes": "trading discussion / content not commercial RFQ",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 5242766,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "OFF_DOMAIN",
+    "notes": "trading discussion / content not commercial RFQ",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 8521621,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "OFF_DOMAIN",
+    "notes": "casual / too thin / off-domain chat",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 2473,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "JOB_VACANCY",
+    "notes": "employment vacancy / aggregator",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 24091,
+    "label": "HUMAN_REVIEWED_TRUE",
+    "fp_class": null,
+    "notes": "Need developer to fix Polymarket trading bot, budget $500",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 8509611,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "OFF_DOMAIN",
+    "notes": "trader journal content",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 59385,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "JOB_VACANCY",
+    "notes": "employment vacancy / aggregator",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 1191859,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "SUPPORT_REQUEST",
+    "notes": "exchange/account support",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 8521627,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "OFF_DOMAIN",
+    "notes": "trading discussion / content not commercial RFQ",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 8521613,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "OFF_DOMAIN",
+    "notes": "casual / too thin / off-domain chat",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 113,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "OFF_DOMAIN",
+    "notes": "freelance outside trading-bot CRM scope",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 59371,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "JOB_VACANCY",
+    "notes": "employment vacancy / aggregator",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 1196257,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "SUPPORT_REQUEST",
+    "notes": "exchange/account support",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 1190902,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "SUPPORT_REQUEST",
+    "notes": "exchange/account support",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 311,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "OFF_DOMAIN",
+    "notes": "freelance outside trading-bot CRM scope",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 8512905,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "OFF_DOMAIN",
+    "notes": "trading discussion / content not commercial RFQ",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 1222331,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "MARKETING_BROADCAST",
+    "notes": "exchange marketing/listing promo",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 58890,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "JOB_VACANCY",
+    "notes": "employment vacancy / aggregator",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 1193650,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "SUPPORT_REQUEST",
+    "notes": "exchange/account support",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 8519110,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "NEWS_DIGEST",
+    "notes": "market/news digest",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 1192227,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "SUPPORT_REQUEST",
+    "notes": "exchange/account support",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 8521617,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "OFF_DOMAIN",
+    "notes": "casual / too thin / off-domain chat",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 24048,
+    "label": "HUMAN_REVIEWED_TRUE",
+    "fp_class": null,
+    "notes": "Need developer to fix Polymarket trading bot, budget $1500",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 8513887,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "OFF_DOMAIN",
+    "notes": "trading discussion / content not commercial RFQ",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 59062,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "JOB_SEEKER",
+    "notes": "job seeker / resume",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 59239,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "JOB_VACANCY",
+    "notes": "employment vacancy / aggregator",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 8519793,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "NEWS_DIGEST",
+    "notes": "market/news digest",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 8520179,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "NEWS_DIGEST",
+    "notes": "market/news digest",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 107,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "OFF_DOMAIN",
+    "notes": "freelance outside trading-bot CRM scope",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 8521616,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "OFF_DOMAIN",
+    "notes": "casual / too thin / off-domain chat",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 8521609,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "OFF_DOMAIN",
+    "notes": "casual / too thin / off-domain chat",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 180,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "OFF_DOMAIN",
+    "notes": "freelance outside trading-bot CRM scope",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 8509287,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "OFF_DOMAIN",
+    "notes": "default off-domain after blind review",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 8518462,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "OFF_DOMAIN",
+    "notes": "trading discussion / content not commercial RFQ",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 8521605,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "OFF_DOMAIN",
+    "notes": "casual / too thin / off-domain chat",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 313,
+    "label": "HUMAN_REVIEWED_AMBIGUOUS",
+    "fp_class": null,
+    "notes": "Web3 Backend Engineer freelance — scope not clearly trading-bot commercial",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 8521610,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "OFF_DOMAIN",
+    "notes": "casual / too thin / off-domain chat",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 1191805,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "SUPPORT_REQUEST",
+    "notes": "exchange/account support",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 259387,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "JOB_VACANCY",
+    "notes": "employment vacancy / aggregator",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 8507143,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "SUPPORT_REQUEST",
+    "notes": "API how-to support not commercial hire",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 58705,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "JOB_SEEKER",
+    "notes": "job seeker / resume",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 8521622,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "OFF_DOMAIN",
+    "notes": "default off-domain after blind review",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 1195849,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "SUPPORT_REQUEST",
+    "notes": "exchange/account support",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 5478764,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "MARKETING_BROADCAST",
+    "notes": "exchange marketing/listing promo",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 8520138,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "NEWS_DIGEST",
+    "notes": "market/news digest",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 1191040,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "SUPPORT_REQUEST",
+    "notes": "exchange/account support",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 8521619,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "OFF_DOMAIN",
+    "notes": "casual / too thin / off-domain chat",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 8521626,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "OFF_DOMAIN",
+    "notes": "default off-domain after blind review",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 8510421,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "OFF_DOMAIN",
+    "notes": "trading discussion / content not commercial RFQ",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 55357,
+    "label": "HUMAN_REVIEWED_TRUE",
+    "fp_class": null,
+    "notes": "Buyer seeking Solana copytrading bot developer to purchase after speed demo",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 59197,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "JOB_SEEKER",
+    "notes": "job seeker / resume",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 8518859,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "NEWS_DIGEST",
+    "notes": "market/news digest",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 8521615,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "OFF_DOMAIN",
+    "notes": "casual / too thin / off-domain chat",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 2398,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "JOB_VACANCY",
+    "notes": "employment vacancy / aggregator",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 106,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "OFF_DOMAIN",
+    "notes": "freelance outside trading-bot CRM scope",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 8521614,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "OFF_DOMAIN",
+    "notes": "casual / too thin / off-domain chat",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 8521620,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "OFF_DOMAIN",
+    "notes": "casual / too thin / off-domain chat",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 1195532,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "SUPPORT_REQUEST",
+    "notes": "exchange/account support",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 8521608,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "OFF_DOMAIN",
+    "notes": "casual / too thin / off-domain chat",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 59402,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "JOB_VACANCY",
+    "notes": "employment vacancy / aggregator",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 2458,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "JOB_VACANCY",
+    "notes": "employment vacancy / aggregator",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 1195316,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "SUPPORT_REQUEST",
+    "notes": "exchange/account support",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 1884,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "JOB_SEEKER",
+    "notes": "job seeker / resume",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 1193440,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "SUPPORT_REQUEST",
+    "notes": "exchange/account support",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 2450,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "JOB_VACANCY",
+    "notes": "employment vacancy / aggregator",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 59329,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "JOB_VACANCY",
+    "notes": "employment vacancy / aggregator",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 1222288,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "MARKETING_BROADCAST",
+    "notes": "exchange marketing/listing promo",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 8519522,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "NEWS_DIGEST",
+    "notes": "market/news digest",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 327,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "OFF_DOMAIN",
+    "notes": "freelance outside trading-bot CRM scope",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 8521604,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "OFF_DOMAIN",
+    "notes": "casual / too thin / off-domain chat",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 22281,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "OFF_DOMAIN",
+    "notes": "freelance outside trading-bot CRM scope",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 8520183,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "NEWS_DIGEST",
+    "notes": "market/news digest",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 349,
+    "label": "HUMAN_REVIEWED_AMBIGUOUS",
+    "fp_class": null,
+    "notes": "Web3 Full-Stack freelance — scope not clearly in CRM target",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 58928,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "JOB_SEEKER",
+    "notes": "job seeker / resume",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 621107,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "OFF_DOMAIN",
+    "notes": "trading discussion / content not commercial RFQ",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 8521606,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "OFF_DOMAIN",
+    "notes": "casual / too thin / off-domain chat",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 176,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "OFF_DOMAIN",
+    "notes": "freelance outside trading-bot CRM scope",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 8519765,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "NEWS_DIGEST",
+    "notes": "market/news digest",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 1193615,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "SUPPORT_REQUEST",
+    "notes": "exchange/account support",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 8519817,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "OFF_DOMAIN",
+    "notes": "default off-domain after blind review",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 2396,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "JOB_VACANCY",
+    "notes": "employment vacancy / aggregator",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 198,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "OFF_DOMAIN",
+    "notes": "freelance outside trading-bot CRM scope",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 1192502,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "SUPPORT_REQUEST",
+    "notes": "exchange/account support",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 8521607,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "OFF_DOMAIN",
+    "notes": "casual / too thin / off-domain chat",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 8521285,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "OFF_DOMAIN",
+    "notes": "trading discussion / content not commercial RFQ",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 8519771,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "NEWS_DIGEST",
+    "notes": "market/news digest",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 8509637,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "OFF_DOMAIN",
+    "notes": "default off-domain after blind review",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  },
+  {
+    "message_id": 1018623,
+    "label": "HUMAN_REVIEWED_FALSE",
+    "fp_class": "MARKETING_BROADCAST",
+    "notes": "exchange marketing/listing promo",
+    "scorer_shown": false,
+    "prior_label_shown": false,
+    "sample_batch_id": "indep_review_2026-09-22",
+    "reviewer_id": "blind_adjudicator_phaseD"
+  }
+]

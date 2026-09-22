@@ -1,14 +1,15 @@
-"""Unit tests for reprocess helpers (batch skip-write / status preservation)."""
+"""Unit tests for reprocess CLI + lead write helpers used by reprocess."""
 from __future__ import annotations
 
 import importlib.util
+import json
 import os
 import subprocess
 import sys
 from pathlib import Path
 from types import SimpleNamespace
 
-import pytest
+from shared.lead_write import apply_score_result
 
 ROOT = Path(__file__).resolve().parents[1]
 SCRIPT = ROOT / "scripts" / "reprocess_messages.py"
@@ -51,26 +52,51 @@ def _sample_result(**overrides):
     return SimpleNamespace(**base)
 
 
-def test_apply_lead_values_detects_unchanged():
+def _blank_lead(**overrides):
+    base = {
+        "score": 0.0,
+        "tier": "LOW",
+        "lead_type": None,
+        "buyer_type": None,
+        "status": "NEW",
+        "intent_score": 0.0,
+        "technical_score": 0.0,
+        "commercial_score": 0.0,
+        "promotion_score": 0.0,
+        "matched_keywords": "[]",
+        "matched_categories": "[]",
+        "reasons": "[]",
+        "contact_usernames": "[]",
+        "contact_urls": "[]",
+        "budget_amount": None,
+        "budget_currency": None,
+        "semantic_score": None,
+    }
+    base.update(overrides)
+    return SimpleNamespace(**base)
+
+
+def test_apply_score_result_updates_fields():
+    lead = _blank_lead(status="CONTACTED")
     result = _sample_result()
-    values = reprocess_mod.lead_values_from_result(result, "NEW")
-    lead = SimpleNamespace(**values)
-    assert reprocess_mod.apply_lead_values(lead, values) is False
-
-
-def test_apply_lead_values_detects_update():
-    result = _sample_result(score=80)
-    values = reprocess_mod.lead_values_from_result(result, "NEW")
-    lead = SimpleNamespace(**values)
-    lead.score = 10
-    assert reprocess_mod.apply_lead_values(lead, values) is True
+    apply_score_result(lead, result)
     assert lead.score == 80
+    assert lead.tier == "HIGH"
+    assert lead.lead_type == "BOT_PURCHASE"
+    assert lead.status == "CONTACTED"  # preserved when status=None
+    assert json.loads(lead.matched_keywords) == ["buy bot"]
 
 
-def test_lead_values_preserve_non_new_status():
-    result = _sample_result()
-    values = reprocess_mod.lead_values_from_result(result, "CONTACTED")
-    assert values["status"] == "CONTACTED"
+def test_apply_score_result_can_set_status():
+    lead = _blank_lead(status="NEW")
+    apply_score_result(lead, _sample_result(), status="NEW")
+    assert lead.status == "NEW"
+
+
+def test_apply_score_result_preserves_pipeline_status_by_default():
+    lead = _blank_lead(status="CONTACTED")
+    apply_score_result(lead, _sample_result())
+    assert lead.status == "CONTACTED"
 
 
 def test_cli_requires_positive_max_messages():

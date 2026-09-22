@@ -1,0 +1,437 @@
+{
+  "rule_version": "2.4",
+  "audit_source": "/tmp/09.tsv",
+  "text_source": {
+    "full_message_rows": 157,
+    "preview_fallback_rows": 0
+  },
+  "note": "Labels are the 2026-09-22 audit census (agent business-rule review), not a fully independent human M1 dataset. Scored against full DB message text when available.",
+  "units_total": 157,
+  "unit_weighted": {
+    "true_lead_retained": 6,
+    "false_positive_remaining": 44,
+    "ambiguous": 13,
+    "true_lead_lost_fn": 0,
+    "precision": 0.12,
+    "precision_95ci": [
+      0.0562,
+      0.2381
+    ],
+    "binary_n": 50
+  },
+  "row_weighted": {
+    "true_lead_retained_rows": 7,
+    "false_positive_remaining_rows": 45,
+    "ambiguous_rows": 14,
+    "true_lead_lost_rows": 0,
+    "precision": 0.1346,
+    "precision_95ci": [
+      0.0668,
+      0.2527
+    ],
+    "binary_n": 52
+  },
+  "fp_elimination_rate_units": 0.6812,
+  "true_lead_retention_rate_units": 1.0,
+  "fp_taxonomy_remaining_on_scorer_lead": {
+    "MARKETING_BROADCAST": 18,
+    "JOB_VACANCY": 13,
+    "SERVICE_AD": 1,
+    "JOB_CHANNEL_NO_CLEAR_CONTRACT": 3,
+    "SUPPORT_OR_HOWTO": 3,
+    "OFF_DOMAIN": 3,
+    "MARKET_COMMENTARY": 1,
+    "JOB_SEEKER": 1,
+    "JOB_CHANNEL_INSUFFICIENT_BUYER_RFQ": 1
+  },
+  "fp_taxonomy_in_census": {
+    "MARKETING_BROADCAST": 48,
+    "JOB_SEEKER": 8,
+    "JOB_VACANCY": 43,
+    "OFF_DOMAIN": 18,
+    "SERVICE_AD": 2,
+    "JOB_CHANNEL_NO_CLEAR_CONTRACT": 9,
+    "SUPPORT_OR_HOWTO": 3,
+    "VENDOR_COLD_OUTREACH": 2,
+    "MARKET_COMMENTARY": 3,
+    "JOB_CHANNEL_INSUFFICIENT_BUYER_RFQ": 2
+  },
+  "by_script": {
+    "LATIN_SCRIPT": {
+      "units": 128,
+      "true_retained": 5
+    },
+    "MIXED": {
+      "units": 29,
+      "true_retained": 1
+    }
+  },
+  "gate": {
+    "precision_70_ready_unit": false,
+    "precision_70_ready_row": false,
+    "conditions_40_70_unit": false,
+    "not_ready_under_40_unit": true
+  },
+  "examples": [
+    {
+      "kind": "FP_REMAINING",
+      "community": "BybitAPI",
+      "fp_class": "MARKETING_BROADCAST",
+      "tier": "MEDIUM",
+      "score": 60.0,
+      "lead_type": "TRADING_SYSTEM_CONTRACT",
+      "preview": "Коля здравствуйте подскажите пожалуйста торгую на p2p создал бота по правилам api 10 правок за 5 минут... но чтобы управляться в 5 мин(300 секунд) мой бот спит 32-35 секунд перед т"
+    },
+    {
+      "kind": "FP_REMAINING",
+      "community": "rabotaweb3",
+      "fp_class": "JOB_VACANCY",
+      "tier": "HIGH",
+      "score": 100.0,
+      "lead_type": "STRATEGY_IMPLEMENTATION",
+      "preview": "⚙️ Нужен разработчик Senior Backend Full-stack developer \n\n📌 О компании и проекте:\n\n🕯 Технологическая компания и liquidity provider в крипто индустрии B2B-сегмента.\n\n➡️ Компания за"
+    },
+    {
+      "kind": "FP_REMAINING",
+      "community": "BybitAPI",
+      "fp_class": "SERVICE_AD",
+      "tier": "HIGH",
+      "score": 94.0,
+      "lead_type": "BOT_CUSTOMIZATION",
+      "preview": "Dear Bybit Technical Support Team,\nWe are developing an automated trading system that manages Futures Grid Bots via the Bybit API. Our system currently uses the following official "
+    },
+    {
+      "kind": "FP_REMAINING",
+      "community": "BybitAPI",
+      "fp_class": "MARKETING_BROADCAST",
+      "tier": "HIGH",
+      "score": 86.0,
+      "lead_type": "TRADING_SYSTEM_CONTRACT",
+      "preview": "First of all, thank you for the previous clarification regarding the Singapore apse1-az2/az3 server location. My infrastructure is now optimized and running within apse1-az3.\n\nTo f"
+    },
+    {
+      "kind": "FP_REMAINING",
+      "community": "rabotaweb3",
+      "fp_class": "JOB_VACANCY",
+      "tier": "HIGH",
+      "score": 91.0,
+      "lead_type": "TRADING_SYSTEM_CONTRACT",
+      "preview": "🖥 Нужен Senior AI Software Engineer (C++ / Python / HFT)\n\n📌 О проекте\n\n✔️ Spectral::Technologies — HFT-фонд с опытом работы более 7 лет\n✔️ Разработка инфраструктуры и торговых стра"
+    },
+    {
+      "kind": "FP_REMAINING",
+      "community": "web3jobs",
+      "fp_class": "JOB_CHANNEL_NO_CLEAR_CONTRACT",
+      "tier": "HIGH",
+      "score": 93.0,
+      "lead_type": "ML_AI_ENGINEERING_CONTRACT",
+      "preview": "🚀 Senior Full Stack AI Engineer | 10+ Years\nivan-portfolio-beige.vercel .app\nHelping startups and businesses build AI-powered products, SaaS platforms, and automation systems.\n\n💡 A"
+    },
+    {
+      "kind": "FP_REMAINING",
+      "community": "BybitAPI",
+      "fp_class": "MARKETING_BROADCAST",
+      "tier": "HIGH",
+      "score": 78.0,
+      "lead_type": "BOT_CUSTOMIZATION",
+      "preview": "the error message is pretty self-explanatory, you've reached the current risk limit: https://bybit-exchange.github.io/docs/v5/market/risk-limit\n\nCan you elaborate more, what should"
+    },
+    {
+      "kind": "FP_REMAINING",
+      "community": "BybitAPI",
+      "fp_class": "SUPPORT_OR_HOWTO",
+      "tier": "HIGH",
+      "score": 78.0,
+      "lead_type": "TRADING_SYSTEM_CONTRACT",
+      "preview": "404 error messages indicate the external application is trying to access non-existent API endpoints. If you're not the developer of the bot, you need to contact customer support of"
+    },
+    {
+      "kind": "FP_REMAINING",
+      "community": "BingXAnnouncement",
+      "fp_class": "OFF_DOMAIN",
+      "tier": "HIGH",
+      "score": 87.0,
+      "lead_type": "TRADING_SYSTEM_CONTRACT",
+      "preview": "🚨 Market Frontline:\n\n1️⃣ Followin 3.0 is now live! The first “intelligent media platform” for crypto just launched with 4 powerful new features — arguably one of the best tools to "
+    },
+    {
+      "kind": "FP_REMAINING",
+      "community": "BingXOfficial",
+      "fp_class": "OFF_DOMAIN",
+      "tier": "HIGH",
+      "score": 87.0,
+      "lead_type": "TRADING_SYSTEM_CONTRACT",
+      "preview": "🚨 Market Frontline:\n\n1️⃣ Followin 3.0 is now live! The first “intelligent media platform” for crypto just launched with 4 powerful new features — arguably one of the best tools to "
+    },
+    {
+      "kind": "FP_REMAINING",
+      "community": "binanceexchange",
+      "fp_class": "MARKETING_BROADCAST",
+      "tier": "HIGH",
+      "score": 81.0,
+      "lead_type": "BOT_REPAIR",
+      "preview": "@Kerrbox Sir I had answered 11  questions before 12th challenge was posted. 10 are right this was my accuracy before but after new challenge has posted and bot error why my accurac"
+    },
+    {
+      "kind": "FP_REMAINING",
+      "community": "CoinExOfficialEN",
+      "fp_class": "OFF_DOMAIN",
+      "tier": "MEDIUM",
+      "score": 66.0,
+      "lead_type": "TRADING_SYSTEM_CONTRACT",
+      "preview": "Hello. A few days ago I transferred a large amount of Tether from Trust Wallet to the Coinex exchange.\n\nFirst, I transferred 10 Tethers for testing by scanning the QR code address "
+    },
+    {
+      "kind": "FP_REMAINING",
+      "community": "rabotaweb3",
+      "fp_class": "JOB_VACANCY",
+      "tier": "HIGH",
+      "score": 76.0,
+      "lead_type": "ML_AI_ENGINEERING_CONTRACT",
+      "preview": "🖥 Нужен AI Specialist / AI Engineer (Funnels / Chatterfy)\n\n📌 О проекте\n\n✔️ Работа с AI-воронками и автоматизацией продаж;\n✔️ Фокус на повышении эффективности сейлз-отдела;\n✔️ Оптим"
+    },
+    {
+      "kind": "FP_REMAINING",
+      "community": "Bybit_Announcements",
+      "fp_class": "MARKETING_BROADCAST",
+      "tier": "HIGH",
+      "score": 81.0,
+      "lead_type": "ML_AI_ENGINEERING_CONTRACT",
+      "preview": "📣 Coming Soon to Bybit Spot: Almanak ($ALMANAK)\n\n✍️ Almanak's AI makes advanced quant trading accessible to all, replacing the need for developers and quants and bringing hedge-fun"
+    },
+    {
+      "kind": "FP_REMAINING",
+      "community": "BybitEnglish",
+      "fp_class": "MARKETING_BROADCAST",
+      "tier": "MEDIUM",
+      "score": 66.0,
+      "lead_type": "TRADING_SYSTEM_CONTRACT",
+      "preview": "One challenge I’ve always had as a trader is consistency.\nNot strategy — consistency.\nI could plan a trade perfectly and still ruin it by entering too early, moving stops, or react"
+    },
+    {
+      "kind": "FP_REMAINING",
+      "community": "blockchain_job",
+      "fp_class": "SUPPORT_OR_HOWTO",
+      "tier": "HIGH",
+      "score": 76.0,
+      "lead_type": "ML_AI_ENGINEERING_CONTRACT",
+      "preview": "#AIENGINEER #BACKEND #GO #FINTECH\n\nJunior AI Engineer at UNIGOX (https://www.unigox.com/)\n\nSalary: 1000$\n\nUnigox is a startup founded by the co-founder of Paxful. We're building a "
+    },
+    {
+      "kind": "FP_REMAINING",
+      "community": "BybitEnglish",
+      "fp_class": "MARKETING_BROADCAST",
+      "tier": "MEDIUM",
+      "score": 66.0,
+      "lead_type": "BOT_CUSTOMIZATION",
+      "preview": "Hello Admin please, \n\nI have an issue…I initially registered on Bybit Telegram community using my Old username :(Pegasus_001 ) which I later changed my username to (web3pirateX) \n\n"
+    },
+    {
+      "kind": "FP_REMAINING",
+      "community": "rabotaweb3",
+      "fp_class": "JOB_VACANCY",
+      "tier": "HIGH",
+      "score": 75.0,
+      "lead_type": "TRADING_SYSTEM_CONTRACT",
+      "preview": "🖥 Нужен Python Middle+ / Senior Developer (AI / LLM)\n\n📌 О проекте\n\n✔️ Банковский проект в сфере AI и управления рисками\n✔️ Разработка цифровых помощников для анализа инвестиционных"
+    },
+    {
+      "kind": "FP_REMAINING",
+      "community": "rabotaweb3",
+      "fp_class": "JOB_VACANCY",
+      "tier": "HIGH",
+      "score": 75.0,
+      "lead_type": "TRADING_SYSTEM_CONTRACT",
+      "preview": "🌐 Нужен Senior ML / NLP Engineer (чат-боты, LLM)\n\n➡️ Компания: FIN\n💵 ЗП: от 4000 до 6000 $\n✉️ Формат: full-time, удалённо или в офисе в Лимассоле\n\n📌 Задачи и ожидания\n\n✔️ Разбирать"
+    },
+    {
+      "kind": "FP_REMAINING",
+      "community": "chronotech",
+      "fp_class": "JOB_VACANCY",
+      "tier": "HIGH",
+      "score": 99.0,
+      "lead_type": "SOLANA_DEX_BOT_PROJECT",
+      "preview": "⭐ FREELANCER OF THE WEEK\n\nSenior Blockchain developer🔷️🔶️[Available for  urgency]\n⭐ 5★ (19 reviews)\n🏆 Reputation: 420\n💰 $25/hr\n🏷 Web, Mobile & Software Dev · Javascript · Blockchai"
+    },
+    {
+      "kind": "FP_REMAINING",
+      "community": "DeJob_Global",
+      "fp_class": "JOB_VACANCY",
+      "tier": "HIGH",
+      "score": 91.0,
+      "lead_type": "SOLANA_DEX_BOT_PROJECT",
+      "preview": "#Recruitment\n🏡  Cygnus    #DeFi\n🐇  Introduction:\nhttps://www.cygnus.finance/\nThe first modular real yield layer, backed by industry pioneers such as OKX Ventures, Optimism Foundati"
+    },
+    {
+      "kind": "FP_REMAINING",
+      "community": "DeJob_Global_group",
+      "fp_class": "JOB_VACANCY",
+      "tier": "HIGH",
+      "score": 91.0,
+      "lead_type": "SOLANA_DEX_BOT_PROJECT",
+      "preview": "#Recruitment\n🏡  Cygnus    #DeFi\n🐇  Introduction:\nhttps://www.cygnus.finance/\nThe first modular real yield layer, backed by industry pioneers such as OKX Ventures, Optimism Foundati"
+    },
+    {
+      "kind": "FP_REMAINING",
+      "community": "laborx",
+      "fp_class": "JOB_VACANCY",
+      "tier": "HIGH",
+      "score": 91.0,
+      "lead_type": "SOLANA_DEX_BOT_PROJECT",
+      "preview": "⭐ FREELANCER OF THE WEEK\n\nSenior Blockchain developer🔷️🔶️[Available for  urgency]\n⭐ 5★ (19 reviews)\n🏆 Reputation: 420\n💰 $25/hr\n🏷 Web, Mobile & Software Dev · Javascript · Blockchai"
+    },
+    {
+      "kind": "FP_REMAINING",
+      "community": "MEXCEnglish",
+      "fp_class": "MARKETING_BROADCAST",
+      "tier": "HIGH",
+      "score": 80.0,
+      "lead_type": "SOLANA_DEX_BOT_PROJECT",
+      "preview": "1⃣. Liquidity Dynamics of $ZAMA\nRecent market analysis indicates that $ZAMA maintains a remarkably healthy liquidity profile. Its 24-hour trading volume often scales significantly "
+    },
+    {
+      "kind": "FP_REMAINING",
+      "community": "BybitAPI",
+      "fp_class": "MARKETING_BROADCAST",
+      "tier": "MEDIUM",
+      "score": 60.0,
+      "lead_type": "TRADING_SYSTEM_CONTRACT",
+      "preview": "It's not an API-sided error message. You should troubleshoot this error message on your side in your code, as it's generated by your code.\n\nIf you come to find out it's caused by a"
+    },
+    {
+      "kind": "FP_REMAINING",
+      "community": "BybitAPI",
+      "fp_class": "SUPPORT_OR_HOWTO",
+      "tier": "MEDIUM",
+      "score": 60.0,
+      "lead_type": "TRADING_SYSTEM_CONTRACT",
+      "preview": "If you experience an API error message, kindly provide the full request you're sending to the exchange and the full response. For that, you need to enable verbose: True\n\nIf you're "
+    },
+    {
+      "kind": "FP_REMAINING",
+      "community": "DeJob_Global_group",
+      "fp_class": "JOB_VACANCY",
+      "tier": "HIGH",
+      "score": 86.0,
+      "lead_type": "SOLANA_DEX_BOT_PROJECT",
+      "preview": "#Recruitment\n🏡  Trust Wallet    #Wallet\n🐇  Introduction:\nhttps://trustwallet.com/\nA popular cryptocurrency hot wallet that allows users to retain control over their funds. \n\n🛵  #Fu"
+    },
+    {
+      "kind": "FP_REMAINING",
+      "community": "DeJob_Global",
+      "fp_class": "JOB_VACANCY",
+      "tier": "HIGH",
+      "score": 86.0,
+      "lead_type": "SOLANA_DEX_BOT_PROJECT",
+      "preview": "#Recruitment\n🏡  Trust Wallet    #Wallet\n🐇  Introduction:\nhttps://trustwallet.com/\nA popular cryptocurrency hot wallet that allows users to retain control over their funds. \n\n🛵  #Fu"
+    },
+    {
+      "kind": "FP_REMAINING",
+      "community": "rabotaweb3",
+      "fp_class": "JOB_VACANCY",
+      "tier": "HIGH",
+      "score": 76.0,
+      "lead_type": "MARKET_MAKING_PROJECT",
+      "preview": "🖥 Нужен Business Development Manager / Deal Architect (Web3 / AI / VC Studio)\n\n📌 О проекте\n\n✔️ Hybrid Venture Studio на стыке VC и growth-агентства;\n✔️ Работаем по модели leveraged"
+    },
+    {
+      "kind": "FP_REMAINING",
+      "community": "rabotaweb3",
+      "fp_class": "JOB_VACANCY",
+      "tier": "HIGH",
+      "score": 76.0,
+      "lead_type": "MARKET_MAKING_PROJECT",
+      "preview": "🖥 Нужен Business Development Manager / Deal Architect (Web3 / AI / VC)\n\n📌 О проекте\n\n✔️ Венчурная команда с гибридной моделью работы;\n✔️ Фокус на сделках с Web3 / AI / high-tech пр"
+    },
+    {
+      "kind": "FP_REMAINING",
+      "community": "BybitEnglish",
+      "fp_class": "MARKETING_BROADCAST",
+      "tier": "MEDIUM",
+      "score": 66.0,
+      "lead_type": "MARKET_MAKING_PROJECT",
+      "preview": "### Common Statistical Arbitrage Strategies Used by Quantitative Traders\n\nStatistical arbitrage (stat arb) is a trading strategy that seeks to exploit pricing inefficiencies betwee"
+    },
+    {
+      "kind": "FP_REMAINING",
+      "community": "MEXCEnglish",
+      "fp_class": "MARKETING_BROADCAST",
+      "tier": "MEDIUM",
+      "score": 64.0,
+      "lead_type": "STRATEGY_IMPLEMENTATION",
+      "preview": "🫨 MEXC copy trading is fundamentally different from traditional trading because it focuses on automation, accessibility and efficiency. In traditional trading, traders must perform"
+    },
+    {
+      "kind": "FP_REMAINING",
+      "community": "BybitEnglish",
+      "fp_class": "MARKETING_BROADCAST",
+      "tier": "MEDIUM",
+      "score": 64.0,
+      "lead_type": "SOLANA_DEX_BOT_PROJECT",
+      "preview": "Building a perfect crypto portfolio for an AI-powered economy in 2030 would involve selecting assets that are likely to thrive in a technology-driven landscape. Here’s a suggested "
+    },
+    {
+      "kind": "FP_REMAINING",
+      "community": "MEXCEnglish",
+      "fp_class": "MARKETING_BROADCAST",
+      "tier": "MEDIUM",
+      "score": 64.0,
+      "lead_type": "SOLANA_DEX_BOT_PROJECT",
+      "preview": "1️⃣ Grayscale filed S-1 for AAVE ETF – What’s the benefit & future of AAVE?\n\nIf approved, an ETF for Aave would bring institutional exposure without investors needing to hold token"
+    },
+    {
+      "kind": "FP_REMAINING",
+      "community": "MEXCEnglish",
+      "fp_class": "MARKET_COMMENTARY",
+      "tier": "MEDIUM",
+      "score": 64.0,
+      "lead_type": "COPY_TRADING_PROJECT",
+      "preview": "1⃣ Bitcoin’s lack of a money printer creates a rules based monetary system where supply cannot be altered by political or economic pressure. This gives Bitcoin credibility as sound"
+    },
+    {
+      "kind": "FP_REMAINING",
+      "community": "solana_jobs",
+      "fp_class": "JOB_CHANNEL_NO_CLEAR_CONTRACT",
+      "tier": "MEDIUM",
+      "score": 74.0,
+      "lead_type": "SOLANA_DEX_BOT_PROJECT",
+      "preview": "Hi everyone \nI’m a Senior Blockchain Engineer (8+ years) specializing in Solana, Rust, and DeFi infrastructure.\n\nI’m currently open to new projects or long-term collaboration.\n\nCor"
+    },
+    {
+      "kind": "FP_REMAINING",
+      "community": "MEXCEnglish",
+      "fp_class": "MARKETING_BROADCAST",
+      "tier": "MEDIUM",
+      "score": 64.0,
+      "lead_type": "COPY_TRADING_PROJECT",
+      "preview": "👌 MEXC copy trading is different from traditional trading because it allows users to automatically replicate the trades of experienced traders. In traditional trading, you must stu"
+    },
+    {
+      "kind": "FP_REMAINING",
+      "community": "blockchain_job",
+      "fp_class": "JOB_SEEKER",
+      "tier": "MEDIUM",
+      "score": 74.0,
+      "lead_type": "SOLANA_DEX_BOT_PROJECT",
+      "preview": "#web3 #solidity #defi #smartcontracts #rust #безопасность #разработка\nИщу проекты в Web3, где могу усилить безопасность и логику протокола.\n\nЯ работаю как security-minded инженер: "
+    },
+    {
+      "kind": "FP_REMAINING",
+      "community": "solana_jobs",
+      "fp_class": "JOB_CHANNEL_INSUFFICIENT_BUYER_RFQ",
+      "tier": "MEDIUM",
+      "score": 74.0,
+      "lead_type": "SOLANA_DEX_BOT_PROJECT",
+      "preview": "Available for Web3 development work.\n\nI'm a full-stack Web3 developer with experience in:\n\n- Solana applications\n- EVM smart contracts\n- Pump.fun-style token launchpad\n- DApp front"
+    },
+    {
+      "kind": "FP_REMAINING",
+      "community": "solana_jobs",
+      "fp_class": "JOB_CHANNEL_NO_CLEAR_CONTRACT",
+      "tier": "MEDIUM",
+      "score": 74.0,
+      "lead_type": "SOLANA_DEX_BOT_PROJECT",
+      "preview": "Hi everyone \nI’m a Senior Blockchain Engineer (5+ years) specializing in Solana, Rust, and DeFi infrastructure.\n\nI’m currently open to new projects or long-term collaboration.\n\nCor"
+    }
+  ]
+}

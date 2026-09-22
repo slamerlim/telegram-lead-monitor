@@ -1,0 +1,13 @@
+# Code review evidence — Blockers 1–5 local zen review — 2026-09-22
+
+Models: claude-opus-5-thinking-max, gpt-5.6-sol-medium, grok-4.7-high-fast
+(gemini unavailable; substituted grok). Diff: /tmp/review-diff.patch
+
+Post-review fixes applied for consensus P1s before Phase 7:
+- seeker no longer vetoes explicit RFQs that mention CV
+- service_provider pattern no longer matches bare "need … we are"
+- community_profiles keys normalized to lowercase
+- MessageScore duplicate index removed
+- CRM-protected statuses not hard-deleted on LOW; dedup repoints message_id
+- reprocess reports unchanged/demoted/noop correctly
+- /stats no longer substitutes lead_rows when distinct_opportunities is 0

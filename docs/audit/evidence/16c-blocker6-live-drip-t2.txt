@@ -1,0 +1,65 @@
+=== Blocker 6 t2 snapshot ===
+             as_of             
+-------------------------------
+ 2026-09-22 11:39:58.191066+00
+(1 row)
+
+ messages | max_message_id 
+----------+----------------
+  8514075 |        8514079
+(1 row)
+
+ messages_created_24h | messages_created_2h 
+----------------------+---------------------
+                 9911 |                3302
+(1 row)
+
+ lead_rows | leads_created_24h | leads_created_2h 
+-----------+-------------------+------------------
+        57 |                 1 |                1
+(1 row)
+
+ decision  | count 
+-----------+-------
+ NEGATIVE  |  7126
+ POSITIVE  |    32
+ AMBIGUOUS |    23
+(3 rows)
+
+ scores_2h | non_neg_2h 
+-----------+------------
+      7181 |         55
+(1 row)
+
+=== top communities among current leads ===
+=== post-rescore CRM ===
+ lead_rows | highish | distinct_texts | opportunities 
+-----------+---------+----------------+---------------
+        24 |      19 |             21 |            24
+(1 row)
+
+     community      | n | high_n 
+--------------------+---+--------
+ solana_jobs        | 4 |      4
+ BybitAPI           | 3 |      2
+ DeJob_Global       | 2 |      2
+ DeJob_Global_group | 2 |      2
+ LaborXWeb3Jobs     | 2 |      2
+ blockchain_job     | 2 |      2
+ BybitEnglish       | 2 |      0
+ binanceexchange    | 1 |      0
+ chronotech         | 1 |      1
+ laborx             | 1 |      1
+ mevdao             | 1 |      0
+ solana_dev_ru      | 1 |      1
+ LBank_en           | 1 |      1
+ web3jobs           | 1 |      1
+(14 rows)
+
+ decision  | count 
+-----------+-------
+ NEGATIVE  |  7159
+ POSITIVE  |    15
+ AMBIGUOUS |     7
+(3 rows)
+

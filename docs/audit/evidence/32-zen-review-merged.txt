@@ -1,0 +1,38 @@
+## Code Review (local zen-comprehensive)
+
+**Verdict**: REQUEST CHANGES → addressed in follow-up
+
+### Summary
+Multi-model review of commercial veto / buyer classification. Consensus P1s fixed; migration-missing finding dropped (0003–0005 present on disk/DB).
+
+### Findings (merged)
+
+| Priority | Issue | Location | Disposition |
+|----------|-------|----------|-------------|
+| P1 | Bare `прежде чем я куплю` → false commercial intent | config/scoring.yaml | Fixed: require `бот` within 80 chars |
+| P1 | `exchange_rfq` omitted customization | scoring.py | Fixed: include commercial_customization |
+| P1 | Bare `О проекте` forced employment/vacancy | scoring.py | Fixed: require paired employment signals |
+| P1 | strong_seeker overrode buyer RFQs | scoring.py | Fixed: hiring_other exception |
+| P1 | marketing veto omitted commercial_hire | scoring.py | Fixed: hire in strong_buyer_action |
+| P1 | Missing alembic 0003–0005 | models/alembic | Dropped — files present; DB at 0005 |
+| P2 | $/hr word-boundary dead | scoring.yaml | Fixed |
+| P2 | build RFQs labeled BOT_PURCHASE | scoring.py | Kept (acceptable commercial type) |
+| P3 | duplicate community_profiles keys | scoring.yaml | Fixed |
+
+### Reviewers
+- GPT: agent 08921320-62eb-4c85-add3-daaa59321ae9
+- Grok: agent b9a53c6c-9cdf-4d53-b48d-a4f19c6140bc
+- Opus: still running at merge time
+
+### Opus round (3391cbbe) — follow-up
+
+| Priority | Issue | Disposition |
+|----------|-------|-------------|
+| P1 | bare `о проекте` in recruiter yaml | Fixed — paired employment co-signals only |
+| P1 | numbered_roles>=2 kills RFQ requirement lists | Fixed — require hiring language + job_aggregator |
+| P1 | exchange_rfq missing customization | Already fixed prior to Opus |
+| P1 | broad `need…engineer` hire proximity | Fixed — adjacent `need [a] <role>` only |
+| P2 | I'm hiring forced RECRUITER | Fixed — first_person_hiring clears vacancy_ad |
+| P2 | `\b` against `$`/`💰`/`★` | Partially fixed |
+| P2 | smart-contract lookbehind position | Fixed via `(?<!smart[ -])contract` |
+

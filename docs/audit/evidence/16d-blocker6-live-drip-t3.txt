@@ -1,0 +1,46 @@
+# Blocker 6 drip (t3) — 2026-09-22T11:46Z
+
+## vs t0 / t1
+
+| metric | t0 (11:06Z) | t1 (~11:24Z) | t3 (11:46Z) | notes |
+|--------|-------------|--------------|-------------|-------|
+| messages | 8,513,398 | 8,513,703 | 8,514,075 | +677 since t0; ingest holding |
+| messages_created_24h | 9,234 | 9,539 | 9,911 | continuous |
+| messages_created_2h | — | — | 3,302 | live traffic present |
+| lead_rows | 158 | 104 | **5** | Phase 7 demotions, not drip |
+| leads_created_24h | 1 | 1 | 0 | **no new CRM leads from drip** |
+| message_scores NEGATIVE | 6,346+ | 6,651+ | 7,178 | growing |
+| message_scores POSITIVE | — | — | 3 | LaborX + solana_dev_ru RFQs |
+| Redis pending/lag | 0/0 | 0/0 | 0/0 | healthy |
+| services | 6/6 up | 6/6 | 6/6 | holding |
+
+## Live drip finding
+
+Corrected scorer on incremental traffic produces **near-zero new MEDIUM/HIGH leads**.
+Collector still scans (e.g. bitunixglobal published=5 at 11:36Z); analyzer backlog clear.
+Interpretation: precision-tight funnel; do not lower thresholds. Continue 24h window.
+
+## CRM composition after harden (not drip)
+
+| community | n | note |
+|-----------|---|------|
+| LaborXWeb3Jobs | 2 | HIGH freelance bot-repair RFQs |
+| solana_dev_ru | 1 | HIGH copy-trading buyer (TRUE_LEAD) |
+| mevdao | 1 | score 34 REVIEWED (CRM-protected) |
+| BybitEnglish | 1 | score 0 REVIEWED (CRM-protected) |
+
+Bitunix broadcast family: **absent** from CRM.
+
+## Phase 8 (census fulltext, evidence 30)
+
+- unit precision: **1.00** (n=6 binary; Wilson 95% CI [0.61, 1.00])
+- row precision: **1.00** (n=7; CI [0.65, 1.00])
+- FP elimination: **100%** of census FPs no longer score as leads
+- TRUE_LEAD retention: **6/6 (100%)**
+- Gate precision≥70 on remaining scorer-leads: **YES** (small n; still not M1)
+
+## Labels / ML
+
+- human_labels: TRUE_LEAD=6, FALSE_POSITIVE=138, AMBIGUOUS=13 (census import)
+- M1 (≥500 reviewed, ≥150 TRUE_LEAD): **UNMET**
+- ML (LightGBM/Optuna/SHAP): **NO-GO** (no deps; gates incomplete)

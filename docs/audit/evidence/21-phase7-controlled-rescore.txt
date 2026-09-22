@@ -1,0 +1,35 @@
+# Phase 7 — controlled re-score — 2026-09-22
+
+## Scope
+`--leads-only` on all CRM opportunities (not full 8.5M corpus).
+Rule version: 2.4 (post Blocker 1–3 + P1 review fixes).
+
+## Round 1 (158 historical leads)
+
+```
+before: HIGH=100 MEDIUM=58
+after:  HIGH=64  MEDIUM=38 LOW=56
+demoted_to_low=56 deleted_leads=54 remaining_lead_rows=104
+transitions highlight:
+  HIGH->LOW 31, HIGH->MEDIUM 15, HIGH->HIGH 54
+  MEDIUM->LOW 25, MEDIUM->HIGH 10, MEDIUM->MEDIUM 23
+```
+
+## Acceptance vs original audit FP classes
+
+| Question | Result |
+|----------|--------|
+| Bitunix broadcast family still inflating CRM? | No — removed from top communities |
+| Exchange promos largely demoted? | Mostly yes (remaining listed in Phase 8) |
+| Genuine LaborX bot-repair RFQs retained? | Yes (Phase 8 true_lead_retention=100%) |
+| Duplicate opportunity groups | 0 |
+
+## Round 2–3
+
+Additional pattern tightening (vacancy/seeker/marketing) + seeker strong-match fix.
+Second `--leads-only` pass on remaining 104: mostly unchanged (already on v2.4 path).
+
+## Remaining CRM concentration (post re-score)
+
+jobstash, MEXCEnglish, Bybit*, solana_jobs, LaborXWeb3Jobs, rabotaweb3, blockchain_job
+— still elevated; Phase 8 shows residual FP among scorer-positive units.

@@ -1,0 +1,33 @@
+Phase D — Independence / M1 / ML gate (after blind adjudication)
+================================================================
+Timestamp: 2026-09-22T17:05:00Z
+
+## Gate table
+
+| Gate                   | Result        | Evidence |
+| ---------------------- | ------------- | -------- |
+| Sample exclusive       | PASS          | 52 / SQL |
+| Stratification correct | PASS          | 52 / 47 |
+| Reviewer blinded       | PASS          | 50 (post stratum-leak fix) |
+| Prior labels hidden    | PASS          | 50 |
+| One-review persistence | PASS          | 51 |
+| Blind adjudication completed | 128/128 | 55 |
+| Independent TRUE (adjudicator) | 4    | 55 |
+| Independent FALSE | 122 | 55 |
+| Independent AMBIGUOUS | 2 | 55 |
+| Scorer precision (sample HIGH) | 3/3=1.00, n=3 | 56 |
+| Scorer recall (human TRUE in sample) | 3/4=0.75, n=4 | 56 |
+| Independent *human* M1 | FAIL | reviewer=agent under blind API |
+| ML gate                | NO-GO         | independence unmet for ML |
+
+## M1 numeric (human_labels agent provisional)
+Still met: 1524 reviewed / 389 TRUE — not independence.
+
+## M1 independence for ML
+Requires independently reviewed human ground truth.
+blind_adjudicator_phaseD is agent provenance → independence FAIL for ML.
+API ml_gate_independence_ready remains false (needs ≥30 independent TRUE; have 4).
+
+## Observed FN for later Phase E (do not change scorer in this phase)
+message_id=384947 cTrader↔Telegram auto-execution RFQ — human TRUE, scorer absent/LOW.
+Document only; no scorer rewrite without regression test in a later phase.

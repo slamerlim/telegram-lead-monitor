@@ -1,0 +1,132 @@
+{
+  "rule_version": "2.4",
+  "audit_source": "docs/audit/evidence/09-human-audit-labels.tsv",
+  "note": "Labels are the 2026-09-22 audit census (agent business-rule review), not a fully independent human M1 dataset. Used here to measure whether Blocker 1 fixes eliminate known FP classes while retaining TRUE_LEAD units.",
+  "units_total": 157,
+  "unit_weighted": {
+    "true_lead_retained": 3,
+    "false_positive_remaining": 5,
+    "ambiguous": 13,
+    "true_lead_lost_fn": 3,
+    "precision": 0.375,
+    "precision_95ci": [
+      0.1368,
+      0.6943
+    ],
+    "binary_n": 8
+  },
+  "row_weighted": {
+    "true_lead_retained_rows": 3,
+    "false_positive_remaining_rows": 5,
+    "ambiguous_rows": 14,
+    "true_lead_lost_rows": 4,
+    "precision": 0.375,
+    "precision_95ci": [
+      0.1368,
+      0.6943
+    ],
+    "binary_n": 8
+  },
+  "fp_elimination_rate_units": 0.9638,
+  "true_lead_retention_rate_units": 0.5,
+  "fp_taxonomy_remaining_on_scorer_lead": {
+    "JOB_VACANCY": 1,
+    "MARKETING_BROADCAST": 3,
+    "SUPPORT_OR_HOWTO": 1
+  },
+  "fp_taxonomy_in_census": {
+    "MARKETING_BROADCAST": 48,
+    "JOB_SEEKER": 8,
+    "JOB_VACANCY": 43,
+    "OFF_DOMAIN": 18,
+    "SERVICE_AD": 2,
+    "JOB_CHANNEL_NO_CLEAR_CONTRACT": 9,
+    "SUPPORT_OR_HOWTO": 3,
+    "VENDOR_COLD_OUTREACH": 2,
+    "MARKET_COMMENTARY": 3,
+    "JOB_CHANNEL_INSUFFICIENT_BUYER_RFQ": 2
+  },
+  "by_script": {
+    "LATIN_SCRIPT": {
+      "units": 128,
+      "true_retained": 2
+    },
+    "MIXED": {
+      "units": 29,
+      "true_retained": 1
+    }
+  },
+  "gate": {
+    "precision_70_ready_unit": false,
+    "precision_70_ready_row": false,
+    "conditions_40_70_unit": false
+  },
+  "examples": [
+    {
+      "kind": "FN",
+      "community": "laborxWeb3Jobs",
+      "tier": "LOW",
+      "lead_type": "JOB_VACANCY",
+      "preview": "🌟 Freelance Opportunity: Python Developer for Real-Time Crypto Trading Dashboard\n\n💰 Budget: $3000\n\n🤝 With: spinbattles"
+    },
+    {
+      "kind": "FP_REMAINING",
+      "community": "rabotaweb3",
+      "fp_class": "JOB_VACANCY",
+      "tier": "MEDIUM",
+      "score": 74.0,
+      "lead_type": "SOLANA_DEX_BOT_PROJECT",
+      "preview": "⚙️ Нужен разработчик Senior Backend Full-stack developer \n\n📌 О компании и проекте:\n\n🕯 Технологическая компания и liquidity provider в крипто индустрии B2B-сегмента.\n\n➡️ Компания за"
+    },
+    {
+      "kind": "FN",
+      "community": "laborxWeb3Jobs",
+      "tier": "LOW",
+      "lead_type": "JOB_VACANCY",
+      "preview": "🌟 Freelance Opportunity: Python Crypto Trading Bot Developer (GUI + Dashboard)\n\n💰 Budget: $800\n\n🤝 With: Harry Bennett"
+    },
+    {
+      "kind": "FP_REMAINING",
+      "community": "BybitAPI",
+      "fp_class": "MARKETING_BROADCAST",
+      "tier": "HIGH",
+      "score": 78.0,
+      "lead_type": "BOT_CUSTOMIZATION",
+      "preview": "the error message is pretty self-explanatory, you've reached the current risk limit: https://bybit-exchange.github.io/docs/v5/market/risk-limit\n\nCan you elaborate more, what should"
+    },
+    {
+      "kind": "FN",
+      "community": "laborxWeb3Jobs",
+      "tier": "LOW",
+      "lead_type": "JOB_VACANCY",
+      "preview": "🌟 Freelance Opportunity: Crypto Trading Bot Developer\n\n💰 Budget: $200\n\n🤝 With: Yohans Hayla"
+    },
+    {
+      "kind": "FP_REMAINING",
+      "community": "BinanceExchange",
+      "fp_class": "MARKETING_BROADCAST",
+      "tier": "HIGH",
+      "score": 81.0,
+      "lead_type": "BOT_REPAIR",
+      "preview": "@Kerrbox Sir I had answered 11  questions before 12th challenge was posted. 10 are right this was my accuracy before but after new challenge has posted and bot error why my accurac"
+    },
+    {
+      "kind": "FP_REMAINING",
+      "community": "Bybit_Announcements",
+      "fp_class": "MARKETING_BROADCAST",
+      "tier": "HIGH",
+      "score": 81.0,
+      "lead_type": "ML_AI_ENGINEERING_CONTRACT",
+      "preview": "📣 Coming Soon to Bybit Spot: Almanak ($ALMANAK)\n\n✍️ Almanak's AI makes advanced quant trading accessible to all, replacing the need for developers and quants and bringing hedge-fun"
+    },
+    {
+      "kind": "FP_REMAINING",
+      "community": "BybitAPI",
+      "fp_class": "SUPPORT_OR_HOWTO",
+      "tier": "MEDIUM",
+      "score": 60.0,
+      "lead_type": "TRADING_SYSTEM_CONTRACT",
+      "preview": "If you experience an API error message, kindly provide the full request you're sending to the exchange and the full response. For that, you need to enable verbose: True\n\nIf you're "
+    }
+  ]
+}

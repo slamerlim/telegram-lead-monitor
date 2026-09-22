@@ -1,0 +1,55 @@
+Phase D — One-review smoke (phaseD_smoke)
+=========================================
+Timestamp: 2026-09-22T16:33:05Z
+
+## Procedure
+1. Count human_labels / label_reviews before
+2. Blind queue pull (reviewer_id=phaseD_smoke, limit=25)
+3. POST /labels/reviews for first queue item
+4. Re-count + inspect row
+
+## Before
+- human_labels = 1524
+- label_reviews = 1  (prior Phase C smoke_human_2026-09-22 only)
+
+## Blind queue item used
+- message_id = 1192227
+- sample_batch_id = indep_review_2026-09-22
+- stratum in response = blinded
+- scorer_* = null
+- prior_agent_label = null
+
+## POST body
+{
+  "message_id": 1192227,
+  "sample_batch_id": "indep_review_2026-09-22",
+  "reviewer_id": "phaseD_smoke",
+  "label": "HUMAN_REVIEWED_AMBIGUOUS",
+  "scorer_shown": false,
+  "prior_label_shown": false,
+  "notes": "Phase D smoke — not adjudication"
+}
+
+## After
+- human_labels = 1524  (UNCHANGED)
+- label_reviews = 2   (+1)
+- persisted label = HUMAN_REVIEWED_AMBIGUOUS
+- scorer_shown = false
+- prior_label_shown = false
+- queue remaining for phaseD_smoke = 127 (reviewed mid excluded)
+
+## Checks
+| Check | Result |
+| ----- | ------ |
+| label_reviews +1 | PASS |
+| human_labels unchanged | PASS |
+| scorer hidden in blind queue | PASS |
+| prior label hidden | PASS |
+| scorer_shown=false stored | PASS |
+| prior_label_shown=false stored | PASS |
+| batch+message linkage | PASS |
+| same-reviewer queue exclusion | PASS |
+
+SMOKE_PERSISTENCE=PASS
+
+Note: this smoke row is NOT an adjudication label for evaluation metrics.

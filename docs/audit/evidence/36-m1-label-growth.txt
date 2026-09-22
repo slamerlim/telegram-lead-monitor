@@ -1,0 +1,29 @@
+# M1 label growth — 2026-09-22T12:15Z
+
+## Counts (DB)
+
+| label | n |
+|-------|---|
+| TRUE_LEAD | 642 |
+| FALSE_POSITIVE | 870 |
+| AMBIGUOUS | 12 |
+| **total** | **1524** |
+
+| source | n |
+|--------|---|
+| agent provisional (`labeled_by LIKE 'agent%'`) | 1374 |
+| audit census | 150 |
+
+## Gate check
+
+| gate | required | current | status |
+|------|----------|---------|--------|
+| reviewed labels | ≥500 | 1524 rows | **numeric YES** |
+| TRUE_LEAD | ≥150 | 642 | **numeric YES** |
+| independent human review | required for M1 | mostly agent provisional | **NO — pending human confirm** |
+
+## Notes
+
+- Labels seeded via business-truth phrase slices (LaborX freelance RFQs, EN/RU buyer patterns, exchange/job FP slices).
+- These advance the labeling store and queue coverage but are **not** a substitute for independent human M1 review.
+- ML remains NO-GO until human-confirmed M1 + precision gates are accepted.

@@ -1,0 +1,44 @@
+Phase D — Independence / M1 / ML gate
+====================================
+Timestamp: 2026-09-22T16:33:05Z
+
+## Numeric M1 (human_labels volume) — historical/agent provisional
+| Criterion | Value | Met? |
+| --------- | ----: | ---- |
+| reviewed_labels >= 500 | 1524 | YES |
+| TRUE_LEAD >= 150 | 389 | YES |
+
+These are agent_business_review + audit_census — NOT independent.
+
+## Independence M1
+| Criterion | Value | Met? |
+| --------- | ----: | ---- |
+| Independent adjudication reviews on sample | 0/128 | NO |
+| Blind API (post-fix) | PASS | — |
+| Smoke-only reviews | 2 | do not count |
+| ml_gate_independence_ready (API) | false | — |
+| API threshold (informational) | >=100 independent & >=30 TRUE | unmet |
+
+## Gate table
+
+| Gate                   | Result        | Evidence |
+| ---------------------- | ------------- | -------- |
+| Sample exclusive       | PASS          | 52 / SQL 128 distinct |
+| Stratification correct | PASS          | 52 / 47 JSON (high_leads n=3 CRM-limited) |
+| Reviewer blinded       | PASS (post-fix) | 50 (pre-fix FAIL on stratum leak; fixed) |
+| Prior labels hidden    | PASS          | 50 |
+| One-review persistence | PASS          | 51 |
+| Human review completed | 0/128         | 52 (smokes excluded) |
+| Independent TRUE       | 0             | label_reviews |
+| Independent FALSE      | 0             | label_reviews |
+| Independent AMBIGUOUS  | 0 adjudication (+2 smoke AMB) | 51–52 |
+| Scorer precision       | NOT COMPUTED  | await adjudication; see 53 |
+| Scorer recall          | NOT COMPUTED  | await adjudication; see 53 |
+| M1 independence        | FAIL          | 0 adjudication reviews |
+| ML gate                | NO-GO         | independence unmet |
+
+## Conclusion
+Phase D infrastructure and blinding are trustworthy after the stratum-leak fix.
+Independent ground truth does not yet exist at evaluation scale.
+ML remains NO-GO. Do not train. Do not loosen scorer thresholds.
+Next: real human blind review of the 128-message sample.

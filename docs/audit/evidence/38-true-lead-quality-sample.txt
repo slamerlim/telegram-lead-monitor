@@ -1,0 +1,41 @@
+KEEP mid=1884 @solana_dev_ru scorer=LOW/JOB_SEEKER :: Здравствуйте. Кажется, произошло недопонимание. Я ищу работу разработчиком, поэтому платит
+KEEP mid=1890 @solana_dev_ru scorer=LOW/NOISE :: Нет такого языка программирования солана , вам вероятнее всего нужен разработчик с знанием
+KEEP mid=2396 @workingincrypto scorer=LOW/JOB_SEEKER :: 2471 #Вакансия #ProductManager #Crypto #Blockchain #Fulltime #СанктПетербург   Требуется P
+KEEP mid=2398 @workingincrypto scorer=LOW/JOB_VACANCY :: 2470 #Вакансия #Developer #Fullstack #TypeScript #Web3 #SoftwareEngineer #Fintech #Fulltim
+KEEP mid=2413 @workingincrypto scorer=LOW/JOB_VACANCY :: 2457 #Вакансия #Performancemarketer #Performance #Marketer #Traffic #Fintech #Crypto #B2C 
+KEEP mid=2417 @workingincrypto scorer=LOW/JOB_SEEKER :: 2453 #Вакансия #ProductManager #Fintech #Crypto #Fulltime #СанктПетербург  Требуется Produ
+KEEP mid=2436 @cryptoheadhunter scorer=LOW/JOB_SEEKER :: #Вакансия #ProductManager #Crypto #Blockchain #Fulltime #СанктПетербург   Требуется Produc
+KEEP mid=2450 @cryptoheadhunter scorer=LOW/JOB_SEEKER :: #Вакансия #ProductManager #Fintech #Crypto #Fulltime #СанктПетербург  Требуется Product Ma
+KEEP mid=2458 @careers_crypto scorer=LOW/JOB_VACANCY :: #Вакансия #Designer #UX #UI #UXUI #Fulltime #Remote #Удаленно   Требуется UI/UX-дизайнер  
+KEEP mid=2462 @careers_crypto scorer=LOW/JOB_SEEKER :: #Вакансия #ProductManager #Crypto #Blockchain #Fulltime #СанктПетербург   Требуется Produc
+KEEP mid=2473 @careers_crypto scorer=LOW/JOB_SEEKER :: #Вакансия #ProductManager #Fintech #Crypto #Fulltime #СанктПетербург  Требуется Product Ma
+KEEP mid=50279 @BybitAPI scorer=LOW/NOISE :: Можете, пожалуйста, передать команде разработчиков api что в Fast Execution вебсокете очен
+KEEP mid=53666 @BybitAPI scorer=LOW/NOISE :: Многие в чатах пишут, что сейчас возникают проблемы с получением мейкера: БайБит блокирует
+KEEP mid=54655 @solana_dev_ru scorer=LOW/NOISE :: Взгляд со стороны всегда полезен, я не утверждаю обратного, аудит всегда нужен. Просто так
+KEEP mid=55014 @solana_dev_ru scorer=LOW/TECHNICAL_QUESTION :: Привет, ребята! Хочу присоединиться к интересному проекту. Мой стек — Rust native и Solana
+KEEP mid=55164 @solana_dev_ru scorer=LOW/NOISE :: Всем привет, если вы работаете разработчиком смарт контрактов на Солане - можете пожалуйст
+KEEP mid=56222 @solana_dev_ru scorer=LOW/SERVICE_ADVERTISEMENT :: Ищем Frontend-разработчика (React + TypeScript + Web3, Solana) в web3-проект  Требования: 
+KEEP mid=56563 @solana_dev_ru scorer=LOW/NOISE :: Вам нужен разработчик или консультант? Выберите одного.
+KEEP mid=56897 @solana_dev_ru scorer=LOW/TECHNICAL_QUESTION :: Решил поделиться своим копитрейдинг ботом на расте работает оч быстро, 0-1 блок (при комсе
+KEEP mid=57108 @solana_dev_ru scorer=LOW/JOB_VACANCY :: #предлагаю_работу  Smart Contract Engineer (Rust / Solana) — до $10 000 | Remote  Проект: 
+KEEP mid=58480 @solana_jobs scorer=LOW/TECHNICAL_QUESTION :: I’m looking for a developer for a long-term collaboration who is experienced with smart co
+KEEP mid=58705 @solana_jobs scorer=LOW/JOB_SEEKER :: 🐹 Ищу задачи по разработке: Telegram Mini Apps, Web3, бэкенд и автоматизация  Меня зовут Д
+KEEP mid=58814 @solana_jobs scorer=LOW/JOB_VACANCY :: Ищем опытного разработчика мобильных приложений с глубоким пониманием интеграции и взаимод
+KEEP mid=58817 @solana_jobs scorer=LOW/JOB_SEEKER :: 🐹 Ищу задачи по разработке: Telegram Mini Apps, Web3, бэкенд и автоматизация  Меня зовут Д
+KEEP mid=58821 @solana_jobs scorer=LOW/JOB_SEEKER :: 🐹 Ищу задачи по разработке: Telegram Mini Apps, Web3, бэкенд и автоматизация  Меня зовут Д
+KEEP mid=58831 @solana_jobs scorer=LOW/JOB_SEEKER :: #Резюме #Blockchain #Developer #Web3 #Solidity #Fullstack #Crypto #Remote #SmartContracts 
+KEEP mid=58890 @solana_jobs scorer=LOW/JOB_SEEKER :: #Вакансия #solana #backend  #remote По проекту: Делаем конкурента pump.fun - лаунчпад для 
+KEEP mid=58928 @solana_jobs scorer=LOW/JOB_SEEKER :: #Резюме #Fullstack #Developer #Web3 #DeFi #Blockchain #TypeScript #NodeJS #React #Crypto  
+KEEP mid=58944 @solana_jobs scorer=LOW/TECHNICAL_QUESTION :: Ищу опытных solana разработчиков, которые смогту проаудировать проект и провести стресс те
+KEEP mid=58969 @solana_jobs scorer=LOW/SERVICE_ADVERTISEMENT :: Всем привет! Меня зовут Виталий, я занимаюсь инфраструктурой и разработкой в экосистеме So
+KEEP mid=59001 @solana_jobs scorer=LOW/SERVICE_ADVERTISEMENT :: Ищем Frontend-разработчика (React + TypeScript + Web3, Solana) в web3-проект  Требования: 
+KEEP mid=59062 @solana_jobs scorer=LOW/JOB_SEEKER :: #Резюме #Frontend #Web3 #Remote #Удаленно  Senior Frontend dev Опыт работы: более 5 лет Ож
+KEEP mid=59197 @workingincrypto scorer=LOW/JOB_SEEKER :: #Резюме #Developer #SoftwareEngineer #Rust #Blockchain #Crypto #Web3  Ищу работу на позици
+KEEP mid=59239 @workingincrypto scorer=LOW/JOB_VACANCY :: 2380 #Вакансия #BusinessDevelopment #BizDev #BDM #Web3 #Fintech #Fulltime #Remote #Удаленн
+KEEP mid=59323 @workingincrypto scorer=LOW/JOB_VACANCY :: 2313 #Вакансия #HeadOfMarketing #Marketing #TeamLead #Crypto #Fulltime #Remote #Удаленно  
+KEEP mid=59329 @workingincrypto scorer=LOW/JOB_VACANCY :: 2307 #Вакансия #MarketingManager #Marketing #Trading #Fulltime #Remote #Удаленно   Требует
+KEEP mid=59371 @workingincrypto scorer=LOW/JOB_VACANCY :: 2275 #Вакансия #SMMManager #SMM #Marketing #Trading #Fintech #Fulltime #Remote #Удаленно  
+KEEP mid=59372 @workingincrypto scorer=LOW/JOB_SEEKER :: #Резюме #Developer #Backend #Fullstack #Golang #CSharp #Remote #Удаленно   Ищу работу на п
+KEEP mid=59385 @workingincrypto scorer=LOW/JOB_VACANCY :: 2262 #Вакансия #ContentLead #TeamLead #Content #Marketing #Fulltime #Remote #Удаленно   Тр
+KEEP mid=59402 @workingincrypto scorer=LOW/JOB_SEEKER :: 2248 #Вакансия #ProductManager #Crypto #Token #CryptoPayments #IGaming #Fulltime #Relocati
+sample_keep 40 sample_demote_cand 0

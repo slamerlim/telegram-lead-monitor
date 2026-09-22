@@ -1,0 +1,125 @@
+=== top communities by lead rows ===
+ id  |     telegram_ref      |       username       | lead_rows | distinct_texts | text_community_keys | distinct_authors 
+-----+-----------------------+----------------------+-----------+----------------+---------------------+------------------
+ 109 | @bitunixglobal        | bitunixglobal        |        89 |              4 |                   4 |                8
+  22 | @jobstash             | jobstash             |        18 |             16 |                  16 |                1
+  67 | @MEXCEnglish          | MEXCEnglish          |        15 |             15 |                  15 |               11
+   9 | @solana_jobs          | solana_jobs          |        14 |             11 |                  11 |               10
+  57 | @BybitEnglish         | BybitEnglish         |        10 |             10 |                  10 |                5
+   2 | @laborxWeb3Jobs       | LaborXWeb3Jobs       |         8 |              7 |                   7 |                1
+   6 | @BybitAPI             | BybitAPI             |         8 |              7 |                   7 |                5
+  26 | @blockchain_job       | blockchain_job       |         7 |              7 |                   7 |                1
+  61 | @KuCoin_Exchange      | Kucoin_Exchange      |         7 |              7 |                   7 |                6
+  32 | @rabotaweb3           | rabotaweb3           |         7 |              7 |                   7 |                1
+  70 | @CoinExOfficialEN     | CoinExOfficialEN     |         6 |              6 |                   6 |                5
+ 107 | @BloFin_Official      | BloFin_Official      |         5 |              2 |                   2 |                3
+   3 | @laborx               | laborx               |         4 |              3 |                   3 |                1
+  17 | @chronotech           | chronotech           |         4 |              3 |                   3 |                2
+ 106 | @TooBit_announcements | Toobit_announcements |         3 |              3 |                   3 |                1
+  35 | @DeJob_Global         | DeJob_Global         |         3 |              3 |                   3 |                1
+  47 | @cTrader_bots         | cTrader_bots         |         3 |              2 |                   2 |                2
+  49 | @mevdao               | mevdao               |         3 |              3 |                   3 |                2
+  36 | @DeJob_Global_group   | DeJob_Global_group   |         3 |              3 |                   3 |                1
+  42 | @talentatweb3         | talentatweb3         |         3 |              3 |                   3 |                1
+(20 rows)
+
+=== top duplicate texts (broadcast inflation) ===
+ n  | communities | authors | max_score |  tier  |         lead_type          |                                                                                      preview                                                                                      
+----+-------------+---------+-----------+--------+----------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ 75 |           1 |       8 |       100 | HIGH   | TRADING_SYSTEM_CONTRACT    | 🚀 Futures Grid PnL Challenge is LIVE!                                                                                                                                           +
+    |             |         |           |        |                            |                                                                                                                                                                                  +
+    |             |         |           |        |                            | 🔥 Try your hand at Futures Grid and get rewarded for participation and performance!                                                                                             +
+    |             |         |           |        |                            |                                                                                                                                                                                  +
+    |             |         |           |        |                            | 💡 How to Join                                                                                                                                                                   +
+    |             |         |           |        |                            | 1️⃣ Create any Futures Grid bot during the challenge period                                                                                                                        +
+    |             |         |           |        |                            | 2️
+  9 |           1 |       5 |       100 | HIGH   | TRADING_SYSTEM_CONTRACT    | 🚀 Futures Grid PnL Challenge is LIVE!                                                                                                                                           +
+    |             |         |           |        |                            |                                                                                                                                                                                  +
+    |             |         |           |        |                            | 🔥 Try your hand at Futures Grid and get rewarded for participation and performance!                                                                                             +
+    |             |         |           |        |                            |                                                                                                                                                                                  +
+    |             |         |           |        |                            | 💡 How to Join                                                                                                                                                                   +
+    |             |         |           |        |                            | 1️⃣ Create any Futures Grid bot during the challenge period                                                                                                                        +
+    |             |         |           |        |                            | 2️
+  4 |           2 |       1 |        73 | MEDIUM | SOLANA_DEX_BOT_PROJECT     | 🔥 Hot Gigs This Week on LaborX                                                                                                                                                  +
+    |             |         |           |        |                            |                                                                                                                                                                                  +
+    |             |         |           |        |                            | 1. Rust Developer (Solana)                                                                                                                                                       +
+    |             |         |           |        |                            |    💰 $10,000-20,000/mo | 🏢 DeFi Protocol | 📍 Remote                                                                                                                           +
+    |             |         |           |        |                            |                                                                                                                                                                                  +
+    |             |         |           |        |                            | 2. Smart Contract Engineer                                                                                                                                                       +
+    |             |         |           |        |                            |    💰 $9,000-16,000/mo | 🏢 DAO Platform | 📍 Remote                                                                                                                             +
+    |             |         |           |        |                            |                                                                                                                                                                                  +
+    |             |         |           |        |                            | 3. Web3 Pr
+  4 |           1 |       1 |        84 | HIGH   | SOLANA_DEX_BOT_PROJECT     | 🐹 Ищу задачи по разработке: Telegram Mini Apps, Web3, бэкенд и автоматизация                                                                                                    +
+    |             |         |           |        |                            |                                                                                                                                                                                  +
+    |             |         |           |        |                            | Меня зовут Даниил – разработчик с опытом разработки масштабируемых проектов, телеграм-ботов, мини-приложений и блокчейн-ин
+  4 |           1 |       2 |        95 | HIGH   | TRADING_SYSTEM_CONTRACT    | Our latest BloFin Build brings TWAP orders to the spotlight.                                                                                                                     +
+    |             |         |           |        |                            |                                                                                                                                                                                  +
+    |             |         |           |        |                            | TWAP automatically splits large orders into smaller executions over time, helping traders reduce market impact and minimize slippage.                                            +
+    |             |         |           |        |                            |                                                                                                                                                                                  +
+    |             |         |           |        |                            | Let
+  4 |           1 |       3 |        97 | HIGH   | TRADING_SYSTEM_CONTRACT    | Bitunix Explained 👍                                                                                                                                                             +
+    |             |         |           |        |                            |                                                                                                                                                                                  +
+    |             |         |           |        |                            | Another guide we just had to share with the community! ❤️                                                                                                                         +
+    |             |         |           |        |                            |                                                                                                                                                                                  +
+    |             |         |           |        |                            | Want to automate your futures trades and target volatility without manually placing every order? 👀                                                                              +
+    |             |         |           |        |                            |                                                                                                                                                                                  +
+    |             |         |           |        |                            | Futures Grid Bot let
+  3 |           1 |       1 |        79 | HIGH   | TRADING_SYSTEM_CONTRACT    | Ethena is hiring a remote Senior/Staff DeFi Engineer                                                                                                                             +
+    |             |         |           |        |                            |                                                                                                                                                                                  +
+    |             |         |           |        |                            | Ethena Labs is looking for a Senior Staff DeFi Engineer to design, deploy and maintain DeFi infrastructure and integrate security and trading sys
+  3 |           2 |       2 |        95 | HIGH   | SOLANA_DEX_BOT_PROJECT     | 📣New Listing Announcement:  Madlads Strategy (MLSTRAT) is now live on Toobit DEX+!                                                                                              +
+    |             |         |           |        |                            |                                                                                                                                                                                  +
+    |             |         |           |        |                            | 📈 Trading: Opened                                                                                                                                                               +
+    |             |         |           |        |                            | 🔗 Transaction Network: SOL                                                                                                                                                      +
+    |             |         |           |        |                            |                                                                                                                                                                                  +
+    |             |         |           |        |                            | 🔍About Madlads Strategy                                                                                                                                                         +
+    |             |         |           |        |                            | On Solana, MLSTRAT uses Madlads NFT sale proce
+  3 |           3 |       2 |        73 | MEDIUM | SOLANA_DEX_BOT_PROJECT     | 💳 PayAI Network (PAYAI): Powering AI Agent Payments on Solana                                                                                                                   +
+    |             |         |           |        |                            |                                                                                                                                                                                  +
+    |             |         |           |        |                            | PayAI Network (PAYAI) is a Solana-based token enabling a decentralized marketplace where AI agents autonomously hire, collaborate, and pa
+  2 |           2 |       1 |        61 | MEDIUM | SOLANA_DEX_BOT_PROJECT     | #Recruitment                                                                                                                                                                     +
+    |             |         |           |        |                            | 🏡  Codigo    #AI  #Dev·Platform                                                                                                                                                 +
+    |             |         |           |        |                            | 🐇  Introduction:                                                                                                                                                                +
+    |             |         |           |        |                            | https://codigo.ai/                                                                                                                                                               +
+    |             |         |           |        |                            | A development platform that automates the development lifecycle, from code generation, testing, build, deployment, data
+  2 |           2 |       2 |        97 | HIGH   | QUANT_ENGINEERING_CONTRACT | 1972 #Vacancy #Вакансия #Developer #Senior #DeFi #Rust #Fulltime #Remote #Удаленно                                                                                               +
+    |             |         |           |        |                            |                                                                                                                                                                                  +
+    |             |         |           |        |                            | We are looking for:                                                                                                                                                              +
+    |             |         |           |        |                            | ▪️Senior Rust Developer - DeFi Infrastructure                                                                                                                                     +
+    |             |         |           |        |                            | ▪️Senior C++ developer                                                                                                                                                            +
+    |             |         |           |        |                            |                                                                                                                                                                                  +
+    |             |         |           |        |                            | ▪️Senior Rust Developer -
+  2 |           2 |       2 |        61 | MEDIUM | SOLANA_DEX_BOT_PROJECT     | Hello, Do you need developer support for your blockchain projects or any technical issues?                                                                                       +
+    |             |         |           |        |                            |                                                                                                                                                                                  +
+    |             |         |           |        |                            | I’m a full-stack developer and can help with the following:                                                                                                                      +
+    |             |         |           |        |                            |                                                                                                                                                                                  +
+    |             |         |           |        |                            | • Custom Telegram bots                                                                                                                                                           +
+    |             |         |           |        |                            | • Smart contracts                                                                                                                                                                +
+    |             |         |           |        |                            | • Toke
+  2 |           2 |       2 |        87 | HIGH   | TRADING_SYSTEM_CONTRACT    | 🚨 Market Frontline:                                                                                                                                                             +
+    |             |         |           |        |                            |                                                                                                                                                                                  +
+    |             |         |           |        |                            | 1️⃣ Followin 3.0 is now live! The first “intelligent media platform” for crypto just launched with 4 powerful new features — arguably one of the best tools to assist your trading 
+  2 |           2 |       1 |        81 | HIGH   | ML_AI_ENGINEERING_CONTRACT | 💎 Pass App is hiring! 💎                                                                                                                                                        +
+    |             |         |           |        |                            |                                                                                                                                                                                  +
+    |             |         |           |        |                            | Pass App is on a mission to ignite financial freedom and true ownership for people everywhere.                                                                                   +
+    |             |         |           |        |                            |                                                                                                                                                                                  +
+    |             |         |           |        |                            | Position: Senior AI Engineer - Pass App                                                                                                                                          +
+    |             |         |           |        |                            |                                                                                                                                                                                  +
+    |             |         |           |        |                            | 🕒 Freelance - 📍 Remote                                                                                                                                                         +
+    |             |         |           |        |                            |                                                                                                                                                                                  +
+    |             |         |           |        |                            | Fully remote p
+  2 |           2 |       1 |        78 | HIGH   | SOLANA_DEX_BOT_PROJECT     | ⭐ FREELANCER OF THE WEEK                                                                                                                                                        +
+    |             |         |           |        |                            |                                                                                                                                                                                  +
+    |             |         |           |        |                            | Senior Blockchain developer🔷️🔶️[Available for  urgency]                                                                                                                          +
+    |             |         |           |        |                            | ⭐ 5★ (19 reviews)                                                                                                                                                               +
+    |             |         |           |        |                            | 🏆 Reputation: 420                                                                                                                                                               +
+    |             |         |           |        |                            | 💰 $25/hr                                                                                                                                                                        +
+    |             |         |           |        |                            | 🏷 Web, Mobile & Software Dev · Javascript · Blockchain & Crypto · Python 
+(15 rows)
+
+=== (text,community) multiplicity > 1 ===
+ groups_with_multiplicity 
+--------------------------
+                       12
+(1 row)
+

@@ -1,0 +1,25 @@
+# BLOCKER 4 acceptance — persist negatives — 2026-09-22
+
+## Change
+- `message_scores` table (alembic `0004_message_scores`)
+- Analyzer + reprocess persist every score including LOW
+- Decision labels: HIGH→POSITIVE, MEDIUM→AMBIGUOUS, LOW→NEGATIVE
+- `/stats` exposes scored_messages / persisted_negatives / positives / ambiguous
+- `rule_version` from scoring.yaml (`2.4`)
+
+## Bounded reprocess
+`python -m scripts.reprocess_messages --max-messages 6000 --batch-size 500`
+
+```
+DONE processed=6000 high=0 medium=0 low=6000 created=0 ... deleted=0 deduped=0
+```
+
+## Result
+- every processed message has a `message_scores` row
+- LOW decisions retained (not deleted with leads)
+- persisted_negatives ≥ 5,000 (gate M2 met for this bounded run)
+- training frame queryable without reconstructing deleted lead decisions
+
+## Note
+Full-corpus backfill is deferred (Phase 7). Live analyzer now persists going forward.
+Lead table still only holds MEDIUM/HIGH opportunities; negatives live in `message_scores`.

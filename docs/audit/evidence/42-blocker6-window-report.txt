@@ -1,0 +1,48 @@
+# Blocker 6 — live drip window report
+
+Window: **2026-09-22 11:06Z (t0) → 12:16Z (t4)** (~70 minutes of continuous observation after scorer harden).
+Ingest baseline also compared to prior 24h created_at activity in the same DB.
+
+## Metrics
+
+| Metric | t0 11:06Z | t4 12:16Z | Delta / note |
+|--------|-----------|-----------|--------------|
+| messages | 8,513,398 | 8,514,764 | +1,366 |
+| max_message_id | 8,513,402 | 8,514,768 | +1,366 |
+| messages_created_24h | 9,234 | 10,600 | ingest holding |
+| lead_rows | 158 | 5 | Phase 7 demotions, not drip |
+| leads_created_24h | 1 | 0 | **no new CRM leads from live drip** |
+| high_lead_rows | — | 3 | LaborX×2 + solana_dev_ru |
+| distinct opportunities | — | 5 | (= lead_rows; dedup healthy) |
+| message_scores NEGATIVE | 6,346+ | 7,867 | growing |
+| message_scores POSITIVE | — | 3 | matches high RFQs |
+| Redis pending/lag | 0/0 | 0/0 | healthy |
+| services up | 6/6 | 6/6 | holding |
+
+## Lead rate
+
+- Live drip lead rate ≈ **0 new HIGH leads / 1.3k new messages** in-window.
+- Corrected scorer is precision-tight on incremental traffic.
+
+## Confirmed / obvious FP rate (live)
+
+- No Bitunix-style broadcast family re-entering CRM.
+- Remaining CRM: 3 HIGH genuine RFQs + 2 CRM-protected LOW (REVIEWED statuses).
+- Obvious FP rate on new drip leads: **n/a (zero new leads)**.
+
+## Community distribution (CRM now)
+
+| community | n | note |
+|-----------|---|------|
+| LaborXWeb3Jobs | 2 | HIGH freelance bot RFQs |
+| solana_dev_ru | 1 | HIGH copy-trading buyer |
+| mevdao | 1 | score 34 REVIEWED protected |
+| BybitEnglish | 1 | score 0 REVIEWED protected |
+
+## Broadcast-family dominance
+
+**Absent.** Bitunix / exchange promo families no longer dominate lead rows after Phase 7 + veto harden.
+
+## Verdict
+
+Blocker 6 **PASS for evaluation-loop purpose**: live traffic exercises the corrected scorer; ingest healthy; near-zero commercial lead drip; no FP broadcast inflation. Continue monitoring; do not lower thresholds.

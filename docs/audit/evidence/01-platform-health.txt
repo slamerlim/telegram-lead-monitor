@@ -1,0 +1,43 @@
+TS=2026-09-22T10:14:48Z
+== api restart=0 started=2026-09-22T09:04:13.920170538Z
+== collector restart=0 started=2026-09-22T09:04:14.048213337Z
+== analyzer restart=0 started=2026-09-22T09:04:14.161423714Z
+== scheduler restart=0 started=2026-09-22T09:05:01.795676085Z
+--- redis ---
+name
+analyzer-workers
+consumers
+1
+pending
+0
+last-delivered-id
+1790071570173-0
+entries-read
+8639547
+lag
+0
+0
+
+
+
+name
+collector-workers
+consumers
+1
+pending
+0
+last-delivered-id
+1790071504410-0
+entries-read
+1460
+lag
+0
+0
+
+
+
+--- 24h error counts ---
+api errors_approx=0
+collector errors_approx=0
+analyzer errors_approx=0
+scheduler errors_approx=0

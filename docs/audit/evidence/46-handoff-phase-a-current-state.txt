@@ -1,0 +1,49 @@
+# Current-state audit — 2026-09-22T16:21Z (handoff Phase A)
+
+## Confirmed (live runtime)
+
+| Item | Value |
+|------|-------|
+| Compose | 6/6 up (api/analyzer ~4h, collector/scheduler ~7h, postgres/redis healthy) |
+| Disk | root 38% used, 68G free |
+| Redis messages analyzer-workers | pending=0 lag=0 |
+| Redis scan_requests collector-workers | pending=0 lag=0 |
+| messages | 8,521,624 |
+| leads | 5 (3 score≥70); opportunities=5 |
+| message_scores | NEGATIVE 14,727; POSITIVE 3 |
+| scan_runs | completed 4608; completed_with_errors 114; failed 1; none queued/running |
+| communities with last_message_id cursor | 126 / 136 |
+| Tests collectable | 38 (blockers/community/dedup/persist suites) |
+| Scorer duplicate methods | **absent** (single defs for support/vendor/job_agg) |
+| reprocess --max-messages | **present** |
+| ML deps | absent → ML remains NO-GO |
+
+## Labels (confirmed)
+
+| labeled_by | TRUE | FP | AMB | notes |
+|------------|------|----|-----|-------|
+| agent_business_review_2026-09-22 | 383 | 800 | 191 | agent business-rule review |
+| audit_census_2026-09-22 | 6 | 132 | 12 | census |
+| **total** | **389** | **932** | **203** | **1524** |
+
+- Numeric M1 (≥500 / ≥150 TRUE): **met numerically**
+- Independent human review: **0** (no HUMAN_REVIEWED_* provenance)
+- Queue currently exposes `scorer_*` fields → not blind by default
+
+## Historical (prior evidence; do not treat as current precision claim alone)
+
+- Phase 8 targeted census: precision 1.00 on **n=6** (wide CI)
+- Blocker 6 window: near-zero new HIGH on live drip; Bitunix inflation gone
+- Collector incremental cursor: previously verified (do not roll back)
+
+## Unfinished milestone (next)
+
+**Independent human-review workflow + stratified evaluation sample** — not more agent labels, not ML, not scorer rewrite.
+
+Gaps vs success criteria:
+
+1. No distinct `HUMAN_REVIEWED_*` layer (agent review overwrote `labeled_by`)
+2. No blinding option on review queue
+3. No stratified sample artifact with methodology
+4. Near-zero HIGH drip not yet diagnosed with veto/funnel counters
+5. Bounded reprocess 1k smoke not re-verified in this session

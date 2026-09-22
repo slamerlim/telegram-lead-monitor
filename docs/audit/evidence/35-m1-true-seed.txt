@@ -1,0 +1,2 @@
+TRUE {'cand_laborx_freelance_bot': 15, 'score_low': 127, 'exists': 7, 'cand_en_buy_bot': 2, 'cand_en_need_fix': 0, 'cand_ru_nuzhen_bot': 117}
+TOTALS {'FALSE_POSITIVE': 138, 'TRUE_LEAD': 8, 'AMBIGUOUS': 13} n= 159

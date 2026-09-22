@@ -1,0 +1,52 @@
+=== Blocker 6 t4 ===
+             as_of             
+-------------------------------
+ 2026-09-22 12:12:02.960209+00
+(1 row)
+
+ messages | max_id  
+----------+---------
+  8514764 | 8514768
+(1 row)
+
+ msg_24h | msg_6h | msg_1h 
+---------+--------+--------
+   10600 |  10600 |   1366
+(1 row)
+
+ lead_rows | leads_24h | leads_6h | high_leads 
+-----------+-----------+----------+------------
+         5 |         0 |        0 |          3
+(1 row)
+
+ decision | count 
+----------+-------
+ NEGATIVE |  7867
+ POSITIVE |     3
+(2 rows)
+
+ scores_6h | pos_6h | amb_6h 
+-----------+--------+--------
+      7870 |      3 |      0
+(1 row)
+
+     label      | count 
+----------------+-------
+ FALSE_POSITIVE |   138
+ AMBIGUOUS      |    13
+ TRUE_LEAD      |     8
+(3 rows)
+
+ total_labels 
+--------------
+          159
+(1 row)
+
+   community    | n | avg_score 
+----------------+---+-----------
+ LaborXWeb3Jobs | 2 |      98.0
+ BybitEnglish   | 1 |       0.0
+ mevdao         | 1 |      34.0
+ solana_dev_ru  | 1 |      97.0
+(4 rows)
+

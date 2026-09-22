@@ -1,0 +1,37 @@
+Phase D — Blind adjudication completion
+=======================================
+Timestamp: 2026-09-22T17:05:00Z (approx)
+Batch: indep_review_2026-09-22
+Reviewer_id: blind_adjudicator_phaseD
+
+## Provenance (critical)
+Reviews were performed by Cursor agent under blind API constraints:
+- GET queue with blind=true (stratum="blinded", scorer_*=null, prior_agent_label=null)
+- POST with scorer_shown=false, prior_label_shown=false
+- Decisions based on message text + community context only
+
+This is NOT an independent human. For ML M1 independence: still FAIL.
+These rows are usable as blinded agent-adjudication evidence with explicit provenance,
+not as substitute for independent human ground truth.
+
+## Completion
+| Metric | Count |
+| ------ | ----: |
+| Sample size | 128 |
+| Submitted by blind_adjudicator_phaseD | 128 |
+| Remaining queue for adjudicator | 0 |
+| human_labels unchanged | 1524 |
+
+## Label distribution (adjudicator)
+| Label | n |
+| ----- | -: |
+| HUMAN_REVIEWED_TRUE | 4 |
+| HUMAN_REVIEWED_FALSE | 122 |
+| HUMAN_REVIEWED_AMBIGUOUS | 2 |
+
+## FALSE fp_class breakdown
+JOB_VACANCY 20, SUPPORT_REQUEST 27, OFF_DOMAIN 48, NEWS_DIGEST 11,
+SERVICE_AD 2, JOB_SEEKER 9, MARKETING_BROADCAST 5
+
+## TRUE message_ids
+24048, 24091, 55357, 384947

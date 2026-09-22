@@ -1,4 +1,4 @@
-version: 2.3
+version: 2.4
 
 # Commercial objective of the system:
 # 1) buy/commission a trading bot
@@ -193,32 +193,43 @@ terms:
 patterns:
   # Explicit COMMERCIAL actions. These are the gate for a commercial lead.
   commercial_purchase:
-    - '\b(?:i|we)\s+(?:want|would like|am looking|are looking)\s+to\s+(?:buy|purchase)\b.{0,120}\b(?:bot|trading|software|system|automation)\b'
-    - '\b(?:looking to buy|looking to purchase|want to buy|need to buy|need to purchase)\b.{0,100}\b(?:bot|trading|software|system)\b'
+    - '\b(?:i|we)\s+(?:want|would like|am looking|are looking)\s+to\s+(?:buy|purchase)\b.{0,120}\b(?:bot|trading\s+bot|software|system|automation)\b'
+    - '\b(?:looking to buy|looking to purchase|want to buy|need to buy|need to purchase)\b.{0,100}\b(?:bot|trading\s+bot|software|system|automation)\b'
     - '\b(?:commission|commissioning)\b.{0,140}\b(?:developer|programmer|engineer|freelancer|contractor)\b.{0,140}\b(?:build|create|develop|make)\b.{0,140}\b(?:bot|trading|system|strategy)\b'
-    - '\b(?:купить|хочу купить|ищу где купить|нужен)\b.{0,100}\b(?:бот|торгов(?:ый|ая)|система|автоматизац)\w*\b'
+    - '\b(?:looking for|need|want)\b.{0,140}\b(?:someone|developer|programmer|engineer|freelancer)\b.{0,140}\b(?:to\s+)?(?:develop|build|create|make)\b.{0,160}\b(?:(?:telegram|crypto|trading)\s+)?(?:bot|trading\s+system|strategy)\b'
+    - '\b(?:купить|хочу купить|ищу где купить)\b.{0,100}\b(?:бот|торгов(?:ый|ая)|система|автоматизац)\w*\b'
+    - '\b(?:мне\s+)?нужен\b.{0,80}\b(?:копитрейдинг\s+|торговый\s+|crypto\s+|trading\s+)?бот\b'
+    - '\b(?:куплю|закажу|заказать)\b.{0,60}\bбот\b'
+    - '\bпрежде чем я куплю\b.{0,80}\bбот\b'
 
   commercial_repair:
-    - '\b(?:need|looking for|want|hiring|hire)\b.{0,160}\b(?:developer|programmer|engineer|freelancer|someone|help)\b.{0,160}\b(?:fix|repair|debug|troubleshoot)\b.{0,160}\b(?:bot|trading|api|strategy|system|execution)\b'
-    - '\b(?:my|our)\b.{0,120}\b(?:bot|trading\s+bot|trading\s+system)\b.{0,120}\b(?:broken|bug|error|issue|problem|fails|failed|not working|doesn\x27t work|stopped)\b.{0,120}\b(?:developer|programmer|engineer|freelancer|someone|help|fix|repair|debug)\b'
+    - '\b(?:need|looking for|want|hiring|hire)\b.{0,160}\b(?:developer|programmer|engineer|freelancer|someone|help)\b.{0,160}\b(?:fix|repair|debug|troubleshoot|diagnose)\b.{0,160}\b(?:bot|trading|api|strategy|system|execution)\b'
+    - '\b(?:trading\s+)?bot\b.{0,220}\b(?:need|looking for|want)\b.{0,120}\b(?:developer|programmer|engineer|freelancer|someone)\b.{0,120}\b(?:fix|repair|debug|troubleshoot|diagnose)\b'
+    - '\b(?:my|our)\s+(?:trading\s+)?bot\b.{0,100}\b(?:broken|bug|error|issue|problem|fails|failed|not working|doesn\x27t work|stopped)\b.{0,120}\b(?:developer|programmer|engineer|freelancer|someone)\b.{0,80}\b(?:help|fix|repair|debug|diagnose)\b'
+    - '\b(?:my|our)\s+(?:trading\s+)?bot\b.{0,100}\b(?:broken|bug|error|issue|problem|fails|failed|not working|doesn\x27t work|stopped)\b.{0,60}\b(?:please\s+)?(?:fix|repair|debug|diagnose)\b'
     - '\b(?:who\s+can|can\s+someone|is\s+there\s+someone)\b.{0,120}\b(?:fix|repair|debug|troubleshoot)\b.{0,120}\b(?:my|our)?\s*(?:trading\s+)?bot\b'
     - '\b(?:нужен|ищу)\s+(?:разработчик|программист|инженер|фрилансер|человек)\b.{0,120}\b(?:починить|исправить|дебаг|доработать|бот|трейдинг|систем)\w*\b'
     - '\b(?:мой|наш|у\s+меня|у\s+нас)\b.{0,120}\b(?:бот|торгов(?:ый|ого)\s+бот)\b.{0,120}\b(?:слом\w*|ошибк\w*|проблем\w*|не\s+работ\w*)\b.{0,120}\b(?:разработчик|программист|инженер|починить|исправить|помогите|помочь)\b'
 
   commercial_customization:
     - '\b(?:need|looking for|want)\b.{0,100}\b(?:developer|programmer|engineer|freelancer|someone)\b.{0,100}\b(?:customi[sz]e|modify|extend|add)\b.{0,120}\b(?:bot|trading|dca|grid|strategy|system)\b'
-    - '\b(?:my|our)\b.{0,100}\b(?:bot|dca bot|grid bot|trading system)\b.{0,100}\b(?:customi[sz]e|modify|extend|add|change)\b'
+    - '\b(?:need|looking for|want)\b.{0,100}\b(?:to\s+)?(?:customi[sz]e|modify|extend)\b.{0,80}\b(?:my|our)\s+(?:dca\s+|grid\s+|trading\s+)?bot\b'
     - '\b(?:нужен|ищу)\s+(?:разработчик|программист|инженер|фрилансер)\b.{0,100}\b(?:доработать|модифицировать|добавить|изменить)\b.{0,100}\b(?:бот|стратег|трейдинг)\w*\b'
-    - '\b(?:мой|наш)\b.{0,100}\b(?:бот|торгов(?:ый|ая)\s+систем)\w*\b.{0,100}\b(?:доработать|изменить|добавить|кастомиз)\w*\b'
+    - '\b(?:мой|наш)\b.{0,100}\b(?:бот|торгов(?:ый|ая)\s+систем)\w*\b.{0,100}\b(?:доработать|модифицировать|кастомиз)\w*\b.{0,80}\b(?:разработчик|программист|инженер|нужен|ищу)\b'
 
   commercial_hire:
-    - '\b(?:hire|hiring|looking for|seeking|need|want)\b.{0,120}\b(?:developer|engineer|programmer|quant|quantitative|ml engineer|ai engineer|machine learning|freelancer|contractor)\b'
+    - '\b(?:hire|hiring|looking for|seeking)\b.{0,120}\b(?:developers?|engineers?|programmers?|quant|quantitative|ml engineer|ai engineer|machine learning|freelancers?|contractors?)\b'
+    # Require need + role noun adjacently ("need a developer"), not "need … engineer" across a support question.
+    - '\bneed(?:\s+to\s+hire|\s+to\s+find)?\s+(?:a|an|the\s+)?(?:developers?|engineers?|programmers?|quant|quantitative|ml engineer|ai engineer|freelancers?|contractors?)\b'
+    - '\bwant\s+to\s+(?:hire|buy|commission|engage)\b.{0,120}\b(?:developer|engineer|programmer|quant|freelancer|contractor|bot)\b'
     - '\b(?:on|for a)\s+(?:contract|contractor|freelance|project|fixed[- ]term)\b'
-    - '\b(?:contract|contractor|freelance|freelancer|project[- ]based|fixed[- ]term|part[- ]time)\b.{0,100}\b(?:developer|engineer|quant|ml|ai|programmer)\b'
-    - '\b(?:нанять|ищем|нужен|ищу)\b.{0,100}\b(?:разработчик|программист|инженер|квант|ml|ai)\b.{0,100}\b(?:контракт|фриланс|проект|подряд)\w*\b'
+    # Freelance/contract RFQ titles — not "Freelancer of the Week" portfolio ads.
+    - '\b(?:freelance|contract)\s+opportunity\b.{0,160}\b(?:developer|engineer|quant|programmer|ml engineer|ai engineer|bot)\b'
+    - '\b(?:looking for|need|hiring|hire|seeking)\b.{0,100}\b(?:contractor|freelance|freelancer|project[- ]based|fixed[- ]term|(?<!smart[ -])contract)\b.{0,100}\b(?:developer|engineer|quant|programmer|ml engineer|ai engineer)\b'
+    - '\b(?:нанять|ищем|нужен|ищу)\b.{0,100}\b(?:разработчик|программист|инженер|квант|ml|ai)\b.{0,100}\b(?:контракт|фриланс|подряд|на\s+проект)\w*\b'
 
   commercial_implementation:
-    - '\b(?:need|looking for|want|hiring|hire)\b.{0,140}\b(?:developer|programmer|engineer|freelancer|someone)\b.{0,140}\b(?:implement|automate|build)\b.{0,160}\b(?:strategy|algorithm|trading strategy|system|trading bot|futures trading)\b'
+    - '\b(?:need|looking for|want|hiring|hire)\b.{0,140}\b(?:developer|programmer|engineer|freelancer|someone)\b.{0,140}\b(?:implement|automate|build|develop|create)\b.{0,160}\b(?:strategy|algorithm|trading strategy|system|trading bot|futures trading|telegram\s+trading\s+bot)\b'
     - '\b(?:i|we)\s+(?:have|created|developed)\s+(?:a\s+)?(?:trading\s+)?strategy\b.{0,200}\b(?:need|looking for|want|hiring)\b.{0,140}\b(?:implement|automate|developer|programmer|engineer)\b'
     - '\b(?:реализовать|внедрить|автоматизировать)\b.{0,100}\b(?:стратеги|торгов|алгоритм)\w*\b.{0,100}\b(?:разработчик|программист|инженер|подрядчик)\b'
 
@@ -242,7 +253,17 @@ patterns:
 
   service_provider:
     - '\b(?:i|we)\s+(?:can|will)\s+(?:build|develop|fix|create|help|provide|offer)\b'
+    - '\b(?:hire me|dm me|contact me|reach out)\b.{0,80}\b(?:build|develop|fix|create|help)\b'
+    - '\bgig of the day\b'
+    - '\bfreelancer of the week\b'
+    - '\bavailable for\s+(?:urgency|work|hire|projects?)\b'
+    - '\d+\s*★.{0,80}\b(?:review|reputation)\b'
+    - '(?:^|[^\w])\$\d+(?:\.\d+)?\s*/\s*hr\b'
+    - '\bhelping startups\b'
+    - '\b(?:i(?:''m| am)|я)\s+(?:a\s+)?(?:senior|full[- ]?stack|blockchain|web3)\s+(?:developer|engineer)\b.{0,120}\b(?:specializ|experience|available|portfolio)\b'
     - '\b(?:i|we)\s+(?:develop|build|offer|provide)\b.{0,120}\b(?:bot|trading|web3|solana|crypto)\b'
+    - '\b(?:do\s+you\s+need)\s+(?:a\s+)?(?:developer|engineer|programmer)\b.{0,160}\b(?:i(?:''|’)m|i\s+am|we\s+are)\b.{0,80}\b(?:developer|engineer|programmer|full[- ]stack)\b'
+    - '\b(?:i(?:''|’)m|i\s+am)\s+a\s+(?:full[- ]stack\s+)?(?:developer|engineer|programmer)\b.{0,120}\b(?:can\s+help|available|dm\s+me|hire\s+me)\b'
     - '\bfeel\s+free\s+to\s+dm\s+me\b'
     - '\bdm\s+me\s+for\s+(?:your|a)\s+project\b'
     - '\bhire\s+me\b'
@@ -253,24 +274,45 @@ patterns:
     - '\bпишите\s+в\s+(?:личку|лс)\b'
 
   job_seeker:
-    - '#(?:ищу_работу|open_to_work|looking_for_work)'
+    - '#(?:ищу_работу|open_to_work|looking_for_work|резюме|resume|cv)'
     - '\blooking\s+for\s+(?:work|a\s+job|a\s+position)\b'
-    - '\b(?:cv|resume)\b'
+    - '\bmy\s+(?:cv|resume)\b'
     - '\bavailability\s*:\s*(?:remote|full-time|part-time|contract)\b'
     - '\bищу\s+работу\b'
+    - '\bищу\s+задач\w*\s+по\s+разработк\w*\b'
+    - '\bищу\s+проект\b'
+    - '\bищу\s+проект(?:ы|ов)?\b'
+    - '\bменя\s+зовут\b.{0,80}\bразработчик\b'
     - '\bрезюме\b'
     - '\bготов\s+к\s+работе\b'
     - '\bopen\s+to\s+(?:work|opportunities|new\s+roles)\b'
+    - '\bя\s+backend\b.{0,40}\bразработчик\b'
+    - '\bищ[уу]\s+проект\b'
+    - '\bavailable for web3\b'
+    - '\bi(?:''m| am)\s+a\s+(?:senior|full[- ]?stack|blockchain|web3)\s+(?:developer|engineer)\b'
+    - '\bi(?:''m|’m)\s+a\s+senior\s+blockchain\s+engineer\b'
 
   recruiter:
-    - '#(?:vacancy|hiring|job)'
+    - '#(?:vacancy|hiring|job|вакансия|бэкенд|frontend|backend|recruitment|aiengineer)'
+    - '\b#recruitment\b'
     - '\b(?:freelance|contract)\s+opportunity\b'
     - '\b(?:gig|freelance\s+gig)\b.{0,80}\b(?:developer|engineer|programmer|quant|ml|ai)\b'
-    - '\b(?:we\s+are\s+)?hiring\b'
+    - '\bwe\s+are\s+hiring\b'
+    - '\bis\s+hiring\b'
+    - '\bhiring\s+(?:an?\s+)?(?:ml\s+|ai\s+|senior\s+|junior\s+|quantitative\s+)?(?:engineer|developer|programmer|quant)\b'
     - '\b(?:vacancy|position)\b.{0,100}\b(?:developer|engineer|trader|quant|programmer|ml|ai)\b'
     - '\b(?:looking\s+for|seeking)\b.{0,100}\b(?:developer|engineer|trader|quant|programmer|ml|ai)\b'
+    - '\b(?:backend|frontend|fullstack|full[- ]stack)\s+engineer\b'
+    - '\bremote\s*\((?:full[- ]?time|part[- ]?time)'
     - '\bтребуется\b.{0,100}\b(?:разработчик|программист|инженер|квант|ml|ai)\b'
     - '\bищем\b.{0,100}\b(?:разработчика|программиста|инженера|кванта|ml|ai)\b'
+    - '\bнужен\b.{0,40}\b(?:senior|middle|junior)\b.{0,40}\b(?:разработчик|программист|инженер|engineer)\b'
+    # Russian job-ad headers only with employment co-signals (not bare "о проекте" in a buyer brief).
+    - '\bо\s+проекте\b.{0,200}\b(?:о\s+компани|зп\s*:|формат\s*:|full[- ]?time|штатн)\w*'
+    - '\bо\s+компани\w*\b.{0,200}\b(?:о\s+проекте|зп\s*:|формат\s*:|full[- ]?time|штатн)\w*'
+    - '\bзп\s*:'
+    - '\bформат\s*:\s*full'
+    - '\b(?:full[- ]time|fulltime|штатн)\b.{0,80}\b(?:developer|engineer|разработчик|инженер)\b'
 
   platform_support:
     - '\b(?:support|api\s+team|bybit\s+team|binance\s+team|okx\s+team|please\s+clarify|please\s+check|anyone\s+know|does\s+anyone\s+know|is\s+there\s+a\s+guide|documentation)\b'
@@ -298,11 +340,30 @@ patterns:
 
   job_aggregator:
     - '\b(?:top[- ]paying\s+projects|jobs\s+this\s+week|job\s+of\s+the\s+day|daily\s+jobs|weekly\s+jobs)\b'
+    - '\b(?:hot\s+gigs?|gigs?\s+this\s+week|top\s+gigs?|weekly\s+gigs?)\b'
     - '(?is)\b(?:coinbase|trust\s+wallet|stripe|ellipsis\s+labs|allium)\b.{0,600}\b(?:hiring|is\s+hiring)\b.*\b(?:hiring|is\s+hiring)\b'
     - '(?is)\b(?:\w[\w .&+-]{1,40}\s+is\s+hiring\b).*(?:\b\w[\w .&+-]{1,40}\s+is\s+hiring\b){2,}'
     - '(?is)\bis\s+hiring\b.*\bis\s+hiring\b.*\bis\s+hiring\b'
     - '\b(?:apply\s+(?:here|below)|see\s+more\s+(?:jobs|vacancies)|our\s+other\s+communities)\b'
     - '\b(?:\d+\s+—\s+.*\b(?:hiring|developer|designer|manager)\b){2,}\b'
+
+  marketing_broadcast:
+    - '\b(?:challenge\s+is\s+live|pnl\s+challenge|futures\s+(?:grid\s+)?(?:pnl\s+)?challenge)\b'
+    - '\b(?:futures\s+bonus|trading\s+bonus|claim\s+your\s+(?:bonus|reward)|leaderboard\s+rewards)\b'
+    - '\b(?:how\s+to\s+join|join\s+the\s+challenge|try\s+your\s+hand)\b'
+    - '\b(?:our\s+latest\b.{0,40}\bbrings\b|brings\b.{0,40}\bto\s+the\s+spotlight)\b'
+    - '\b(?:new\s+listing\s+announcement|listing\s+announcement|trading:\s*opened|coming\s+soon\s+to\b)\b'
+    - '\b(?:sign\s+up\s+now|limited[- ]time\s+offer|promo(?:tion)?\s+code|airdrop)\b'
+    - '\b(?:trading\s+competition|deposit\s+bonus|referral\s+bonus|welcome\s+bonus)\b'
+    - '\b(?:explained\b.{0,80}\bfutures\s+grid\s+bot|want\s+to\s+automate\s+your\s+futures\s+trades)\b'
+    - '\b(?:real[- ]time\s+risk\s+alerts|would\s+like\s+to\s+see\s+stronger)\b'
+    - '\b(?:кампани[яи]|промоакци\w*|розыгрыш|конкурс\s+трейдер|бонус\s+за\s+торгов)\w*\b'
+
+  news_digest:
+    - '\b(?:market\s+(?:update|digest|wrap|recap|commentary)|weekly\s+digest|daily\s+digest)\b'
+    - '\b(?:strong\s+narratives|differ\s+significantly\s+in\s+use\s+cases)\b'
+    - '\b(?:solana\s+vs\s+ethereum|ethereum\s+vs\s+solana|developer\s+dominance)\b'
+    - '\b(?:обзор\s+рынка|дайджест|итоги\s+недели)\b'
 
   budget_context:
     - '\bbudget\b'
@@ -320,3 +381,84 @@ patterns:
     - '\burgently\b'
     - '\bсрочно\b'
     - '\bкак\s+можно\s+скорее\b'
+
+# Community-specific scoring controls (BLOCKER 3).
+# Classes mirror the audit taxonomy. Weights are applied by LeadScorer._profile().
+community_profiles:
+  default_profile: general
+  profiles:
+    general:
+      class: OTHER
+      job_weight: 0
+      support_weight: 0
+      commercial_boost: 0
+    exchange_official:
+      class: EXCHANGE_OFFICIAL
+      job_weight: 15
+      support_weight: 45
+      commercial_boost: 0
+    job_board:
+      class: JOB_BOARD
+      # Dampen vacancy/digest noise; commercial_boost restores genuine RFQs.
+      job_weight: 25
+      support_weight: 10
+      commercial_boost: 20
+    trader_community:
+      class: TRADER_COMMUNITY
+      job_weight: 5
+      support_weight: 10
+      commercial_boost: 8
+    dev_community:
+      class: DEV_COMMUNITY
+      job_weight: 8
+      support_weight: 5
+      commercial_boost: 10
+  communities:
+    # EXCHANGE_OFFICIAL — high false-positive volume in audit
+    bitunixglobal: exchange_official
+    BloFin_Official: exchange_official
+    blofin_official: exchange_official
+    MEXCEnglish: exchange_official
+    BybitEnglish: exchange_official
+    BybitAPI: exchange_official
+    Kucoin_Exchange: exchange_official
+    KuCoin_Exchange: exchange_official
+    CoinExOfficialEN: exchange_official
+    Toobit_announcements: exchange_official
+    TooBit_announcements: exchange_official
+    BinanceAPI: exchange_official
+    OKXOfficialENG: exchange_official
+    BingXOfficial: exchange_official
+    BingXAnnouncement: exchange_official
+    binanceexchange: exchange_official
+    BinanceExchange: exchange_official
+    BitgetENOfficial: exchange_official
+    Bybit_Announcements: exchange_official
+    web3jobs: job_board
+    web30job: job_board
+    unicastjobs: job_board
+    opento_crypto: job_board
+    careers_crypto: job_board
+    blockchain_job: job_board
+    chronotech: trader_community
+    rabotaweb3: job_board
+    # JOB_BOARD
+    jobstash: job_board
+    solana_jobs: job_board
+    LaborXWeb3Jobs: job_board
+    laborxWeb3Jobs: job_board
+    laborx: job_board
+    DeJob_Global: job_board
+    DeJob_Global_group: job_board
+    talentatweb3: job_board
+    web3hiring: job_board
+    workingincrypto: job_board
+    cryptojobslist: job_board
+    cryptoDevJobs: job_board
+    # DEV / TRADER
+    solanadev: dev_community
+    solana_dev_ru: dev_community
+    algofoxchat: trader_community
+    cTrader_bots: trader_community
+    mevdao: trader_community
+    Community_3Commas: trader_community

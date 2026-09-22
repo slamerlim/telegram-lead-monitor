@@ -1,0 +1,110 @@
+=== EN RFQ-like no-lead last 90d LIMIT 25 ===
+  id   |    username    |                                           left                                            |      message_date      
+-------+----------------+-------------------------------------------------------------------------------------------+------------------------
+   214 | LaborXWeb3Jobs | 🌟 Freelance Opportunity: Trading Platform–Security Fix,Feature Completion&amp;Deployment+| 2026-08-25 07:18:01+00
+       |                |                                                                                          +| 
+       |                | 💰 Budget: $400                                                                          +| 
+       |                |                                                                                          +| 
+       |                | 🤝 With: arlo ski                                                                         | 
+   312 | LaborXWeb3Jobs | 🌟 Freelance Opportunity: Trading Platform–Security Fix,Feature Completion&amp;Deployment+| 2026-08-18 02:49:55+00
+       |                |                                                                                          +| 
+       |                | 💰 Budget: $800                                                                          +| 
+       |                |                                                                                          +| 
+       |                | 🤝 With: arlo ski                                                                         | 
+   350 | LaborXWeb3Jobs | 🌟 Freelance Opportunity: Trading Platform Code Verification - 1 Day Fixed Price         +| 2026-08-15 02:19:47+00
+       |                |                                                                                          +| 
+       |                | 💰 Budget: $140                                                                          +| 
+       |                |                                                                                          +| 
+       |                | 🤝 With: arlo ski                                                                         | 
+ 22581 | LaborXWeb3Jobs | 🌟 Freelance Opportunity: We are hiring Trading bot developers!                          +| 2026-07-24 18:55:26+00
+       |                |                                                                                          +| 
+       |                | 💰 Budget: $8000                                                                         +| 
+       |                |                                                                                          +| 
+       |                | 🤝 With: Charlie Mcfann                                                                   | 
+ 22713 | LaborXWeb3Jobs | 🌟 Freelance Opportunity: Crypto Trading Bot Developer                                   +| 2026-07-13 19:49:13+00
+       |                |                                                                                          +| 
+       |                | 💰 Budget: $200                                                                          +| 
+       |                |                                                                                          +| 
+       |                | 🤝 With: Yohans Hayla                                                                     | 
+ 22763 | LaborXWeb3Jobs | 🌟 Freelance Opportunity: Senior Solana MEV / Flash Loan Arbitrage Bot Developer         +| 2026-07-08 10:22:56+00
+       |                |                                                                                          +| 
+       |                | 💰 Budget: $100                                                                          +| 
+       |                |                                                                                          +| 
+       |                | 🤝 With: Obukohwo David                                                                   | 
+(6 rows)
+
+=== RU RFQ-like no-lead last 90d LIMIT 25 ===
+   id    |     username     |                                                          left                                                          |      message_date      
+---------+------------------+------------------------------------------------------------------------------------------------------------------------+------------------------
+    1016 | BybitAPI         | Да, для доступа к P2P API нужен мейкер                                                                                +| 2026-09-09 22:51:32+00
+         |                  |                                                                                                                       +| 
+         |                  | вот есть гайд по начале работы:                                                                                       +| 
+         |                  | 💵 Ищете, как начать работу с P2P API?                                                                                +| 
+         |                  | 0) Как создать свой API ключ?                                                                                         +| 
+         |                  | 1) Пример кода на пи                                                                                                   | 
+    1890 | solana_dev_ru    | Нет такого языка программирования солана , вам вероятнее всего нужен разработчик с знанием языка программирования Rust | 2026-09-05 12:51:38+00
+    2398 | workingincrypto  | 2470 #Вакансия #Developer #Fullstack #TypeScript #Web3 #SoftwareEngineer #Fintech #Fulltime #Remote #Удаленно         +| 2026-09-03 06:00:04+00
+         |                  |                                                                                                                       +| 
+         |                  | Требуется Senior Full-Stack TypeScript Engineer                                                                        | 
+ 3521930 | BitgetENOfficial | Нужен человек для проверки работы расклейщиков: просто пройтись по адресам и сделать фото, плачу 7-9к рублей           | 2026-09-02 07:59:46+00
+    1954 | solana_dev_ru    | Мне просто нужен толковый человек и на этом заработают все                                                             | 2026-08-29 14:50:36+00
+    2472 | careers_crypto   | #Вакансия #SalesManager #Sales #SaaS #Fintech #Fulltime #СанктПетербург                                               +| 2026-08-22 10:02:54+00
+         |                  |                                                                                                                       +| 
+         |                  | Требуется Sales Manager — SaaS (офис, СПб)                                                                            +| 
+         |                  |                                                                                                                       +| 
+         |                  | Ищем Sales Manager, который поможет систем                                                                             | 
+  269846 | cryptovakansii   | #Вакансия #SalesManager #Sales #SaaS #Fintech #Fulltime #СанктПетербург                                               +| 2026-08-22 10:02:33+00
+         |                  |                                                                                                                       +| 
+         |                  | Требуется Sales Manager — SaaS (офис, СПб)                                                                            +| 
+         |                  |                                                                                                                       +| 
+         |                  | Ищем Sales Manager, который поможет систем                                                                             | 
+  269613 | web30job         | #Вакансия #SalesManager #Sales #SaaS #Fintech #Fulltime #СанктПетербург                                               +| 2026-08-22 10:02:09+00
+         |                  |                                                                                                                       +| 
+         |                  | Требуется Sales Manager — SaaS (офис, СПб)                                                                            +| 
+         |                  |                                                                                                                       +| 
+         |                  | Ищем Sales Manager, который поможет систем                                                                             | 
+  269243 | opento_crypto    | #Вакансия #SalesManager #Sales #SaaS #Fintech #Fulltime #СанктПетербург                                               +| 2026-08-22 10:00:26+00
+         |                  |                                                                                                                       +| 
+         |                  | Требуется Sales Manager — SaaS (офис, СПб)                                                                            +| 
+         |                  |                                                                                                                       +| 
+         |                  | Ищем Sales Manager, который поможет систем                                                                             | 
+    2448 | cryptoheadhunter | #Вакансия #SalesManager #Sales #SaaS #Fintech #Fulltime #СанктПетербург                                               +| 2026-08-22 10:00:01+00
+         |                  |                                                                                                                       +| 
+         |                  | Требуется Sales Manager — SaaS (офис, СПб)                                                                            +| 
+         |                  |                                                                                                                       +| 
+         |                  | Ищем Sales Manager, который поможет систем                                                                             | 
+    2416 | workingincrypto  | 2454 #Вакансия #SalesManager #Sales #SaaS #Fintech #Fulltime #СанктПетербург                                          +| 2026-08-22 10:00:01+00
+         |                  |                                                                                                                       +| 
+         |                  | Требуется Sales Manager — SaaS (офис, СПб)                                                                            +| 
+         |                  |                                                                                                                       +| 
+         |                  | Ищем Sales Manager, который поможет с                                                                                  | 
+  268961 | blockchain_job   | #ищу #разработчик #финтех #FullStack                                                                                  +| 2026-08-15 09:55:24+00
+         |                  |                                                                                                                       +| 
+         |                  | Senior Full-Stack TypeScript Engineer — Web3 / FinTech / Trading                                                      +| 
+         |                  |                                                                                                                       +| 
+         |                  | Ищем сильного Senior Full-Stack разработчика в продукт н                                                               | 
+  270053 | rabotaweb3       | 🖥 Нужен Crypto Trader                                                                                                 +| 2026-07-31 12:26:37+00
+         |                  |                                                                                                                       +| 
+         |                  | 📌 О проекте                                                                                                          +| 
+         |                  |                                                                                                                       +| 
+         |                  | ✔️ Работа в сфере цифровых активов                                                                                     +| 
+         |                  | ✔️ Полностью удалённый формат                                                                                          +| 
+         |                  | ✔️ Работа с крупнейшими криптовалютными биржами                                                                        +| 
+         |                  | ✔️ Поддержк                                                                                                             | 
+  269265 | opento_crypto    | #Вакансия #ScreenWriter #Writer #Video #Youtube #Forex #Trading #Fulltime #Remote #Удаленно                           +| 2026-07-22 16:59:57+00
+         |                  |                                                                                                                       +| 
+         |                  | Требуется Сценарист Shorts в YouTube-проект по Forex и Trading                                                        +| 
+         |                  |                                                                                                                       +| 
+         |                  | Ну                                                                                                                     | 
+   58528 | solana_jobs      | #резюме #resume #cv #rust #solidity #evm #hardhat #foundry #substrate                                                 +| 2026-07-21 11:42:20+00
+         |                  |                                                                                                                       +| 
+         |                  | 🦀💎 Разработчик Rust/Solidity с более чем 4 годами опыта в блокчейн-разработке. Работаю на                            | 
+  270075 | rabotaweb3       | 🖥 Нужен Copywriter (Web3)                                                                                             +| 2026-06-24 13:21:39+00
+         |                  |                                                                                                                       +| 
+         |                  | 📌 О проекте                                                                                                          +| 
+         |                  |                                                                                                                       +| 
+         |                  | ✔️ Работа с Web3 и криптопроектами                                                                                     +| 
+         |                  | ✔️ Создание контента для криптоаудитории                                                                               +| 
+         |                  | ✔️ Подготовка материалов для социальных сете                                                                            | 
+(16 rows)
+

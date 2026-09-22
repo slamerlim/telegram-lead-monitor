@@ -1,0 +1,437 @@
+{
+  "rule_version": "2.4",
+  "audit_source": "/tmp/09.tsv",
+  "text_source": {
+    "full_message_rows": 157,
+    "preview_fallback_rows": 0
+  },
+  "note": "Labels are the 2026-09-22 audit census (agent business-rule review), not a fully independent human M1 dataset. Scored against full DB message text when available.",
+  "units_total": 157,
+  "unit_weighted": {
+    "true_lead_retained": 6,
+    "false_positive_remaining": 66,
+    "ambiguous": 13,
+    "true_lead_lost_fn": 0,
+    "precision": 0.0833,
+    "precision_95ci": [
+      0.0388,
+      0.1701
+    ],
+    "binary_n": 72
+  },
+  "row_weighted": {
+    "true_lead_retained_rows": 7,
+    "false_positive_remaining_rows": 69,
+    "ambiguous_rows": 14,
+    "true_lead_lost_rows": 0,
+    "precision": 0.0921,
+    "precision_95ci": [
+      0.0453,
+      0.1781
+    ],
+    "binary_n": 76
+  },
+  "fp_elimination_rate_units": 0.5217,
+  "true_lead_retention_rate_units": 1.0,
+  "fp_taxonomy_remaining_on_scorer_lead": {
+    "JOB_VACANCY": 32,
+    "MARKETING_BROADCAST": 18,
+    "SERVICE_AD": 1,
+    "JOB_CHANNEL_NO_CLEAR_CONTRACT": 3,
+    "SUPPORT_OR_HOWTO": 3,
+    "OFF_DOMAIN": 4,
+    "JOB_SEEKER": 3,
+    "MARKET_COMMENTARY": 1,
+    "JOB_CHANNEL_INSUFFICIENT_BUYER_RFQ": 1
+  },
+  "fp_taxonomy_in_census": {
+    "MARKETING_BROADCAST": 48,
+    "JOB_SEEKER": 8,
+    "JOB_VACANCY": 43,
+    "OFF_DOMAIN": 18,
+    "SERVICE_AD": 2,
+    "JOB_CHANNEL_NO_CLEAR_CONTRACT": 9,
+    "SUPPORT_OR_HOWTO": 3,
+    "VENDOR_COLD_OUTREACH": 2,
+    "MARKET_COMMENTARY": 3,
+    "JOB_CHANNEL_INSUFFICIENT_BUYER_RFQ": 2
+  },
+  "by_script": {
+    "LATIN_SCRIPT": {
+      "units": 128,
+      "true_retained": 5
+    },
+    "MIXED": {
+      "units": 29,
+      "true_retained": 1
+    }
+  },
+  "gate": {
+    "precision_70_ready_unit": false,
+    "precision_70_ready_row": false,
+    "conditions_40_70_unit": false,
+    "not_ready_under_40_unit": true
+  },
+  "examples": [
+    {
+      "kind": "FP_REMAINING",
+      "community": "jobstash",
+      "fp_class": "JOB_VACANCY",
+      "tier": "MEDIUM",
+      "score": 74.0,
+      "lead_type": "TRADING_SYSTEM_CONTRACT",
+      "preview": "Ethena is hiring a remote Senior/Staff DeFi Engineer \n\nEthena Labs is looking for a Senior Staff DeFi Engineer to design, deploy and maintain DeFi infrastructure and integrate secu"
+    },
+    {
+      "kind": "FP_REMAINING",
+      "community": "BybitAPI",
+      "fp_class": "MARKETING_BROADCAST",
+      "tier": "MEDIUM",
+      "score": 60.0,
+      "lead_type": "TRADING_SYSTEM_CONTRACT",
+      "preview": "Коля здравствуйте подскажите пожалуйста торгую на p2p создал бота по правилам api 10 правок за 5 минут... но чтобы управляться в 5 мин(300 секунд) мой бот спит 32-35 секунд перед т"
+    },
+    {
+      "kind": "FP_REMAINING",
+      "community": "web30job",
+      "fp_class": "JOB_VACANCY",
+      "tier": "HIGH",
+      "score": 100.0,
+      "lead_type": "QUANT_ENGINEERING_CONTRACT",
+      "preview": "2064 #Vacancy #Вакансия #Developer #Senior #DeFi #Rust #Fulltime #Remote #Удаленно \n\nWe are looking for a Senior Rust Developer - DeFi Infrastructure\n\nAbout Us\nFastForward Trading "
+    },
+    {
+      "kind": "FP_REMAINING",
+      "community": "rabotaweb3",
+      "fp_class": "JOB_VACANCY",
+      "tier": "HIGH",
+      "score": 100.0,
+      "lead_type": "STRATEGY_IMPLEMENTATION",
+      "preview": "⚙️ Нужен разработчик Senior Backend Full-stack developer \n\n📌 О компании и проекте:\n\n🕯 Технологическая компания и liquidity provider в крипто индустрии B2B-сегмента.\n\n➡️ Компания за"
+    },
+    {
+      "kind": "FP_REMAINING",
+      "community": "BybitAPI",
+      "fp_class": "SERVICE_AD",
+      "tier": "HIGH",
+      "score": 94.0,
+      "lead_type": "BOT_CUSTOMIZATION",
+      "preview": "Dear Bybit Technical Support Team,\nWe are developing an automated trading system that manages Futures Grid Bots via the Bybit API. Our system currently uses the following official "
+    },
+    {
+      "kind": "FP_REMAINING",
+      "community": "BybitAPI",
+      "fp_class": "MARKETING_BROADCAST",
+      "tier": "HIGH",
+      "score": 86.0,
+      "lead_type": "TRADING_SYSTEM_CONTRACT",
+      "preview": "First of all, thank you for the previous clarification regarding the Singapore apse1-az2/az3 server location. My infrastructure is now optimized and running within apse1-az3.\n\nTo f"
+    },
+    {
+      "kind": "FP_REMAINING",
+      "community": "workingincrypto",
+      "fp_class": "JOB_VACANCY",
+      "tier": "HIGH",
+      "score": 100.0,
+      "lead_type": "QUANT_ENGINEERING_CONTRACT",
+      "preview": "2064 #Vacancy #Вакансия #Developer #Senior #DeFi #Rust #Fulltime #Remote #Удаленно \n\nWe are looking for a Senior Rust Developer - DeFi Infrastructure\n\nAbout Us\nFastForward Trading "
+    },
+    {
+      "kind": "FP_REMAINING",
+      "community": "workingincrypto",
+      "fp_class": "JOB_VACANCY",
+      "tier": "HIGH",
+      "score": 92.0,
+      "lead_type": "QUANT_ENGINEERING_CONTRACT",
+      "preview": "1972 #Vacancy #Вакансия #Developer #Senior #DeFi #Rust #Fulltime #Remote #Удаленно \n\nWe are looking for:\n▪️Senior Rust Developer - DeFi Infrastructure\n▪️Senior C++ developer\n\n▪️Sen"
+    },
+    {
+      "kind": "FP_REMAINING",
+      "community": "jobstash",
+      "fp_class": "JOB_VACANCY",
+      "tier": "HIGH",
+      "score": 92.0,
+      "lead_type": "TRADING_SYSTEM_CONTRACT",
+      "preview": "Arrakis Finance is hiring a hybrid Backend Engineer - Market Making in Zug, Switzerland\n\nArrakis is looking for a Backend Engineer Market Making to develop backend infrastructure f"
+    },
+    {
+      "kind": "FP_REMAINING",
+      "community": "web30job",
+      "fp_class": "JOB_VACANCY",
+      "tier": "HIGH",
+      "score": 97.0,
+      "lead_type": "QUANT_ENGINEERING_CONTRACT",
+      "preview": "1972 #Vacancy #Вакансия #Developer #Senior #DeFi #Rust #Fulltime #Remote #Удаленно \n\nWe are looking for:\n▪️Senior Rust Developer - DeFi Infrastructure\n▪️Senior C++ developer\n\n▪️Sen"
+    },
+    {
+      "kind": "FP_REMAINING",
+      "community": "jobstash",
+      "fp_class": "JOB_VACANCY",
+      "tier": "HIGH",
+      "score": 91.0,
+      "lead_type": "TRADING_SYSTEM_CONTRACT",
+      "preview": "Crossmint is hiring an onsite Full stack Engineer - Wallets/Minting in NYC / Miami (preferred)\n\nCrossmint is looking for a Full stack Engineer to build and scale wallet and minting"
+    },
+    {
+      "kind": "FP_REMAINING",
+      "community": "rabotaweb3",
+      "fp_class": "JOB_VACANCY",
+      "tier": "HIGH",
+      "score": 91.0,
+      "lead_type": "TRADING_SYSTEM_CONTRACT",
+      "preview": "🖥 Нужен Senior AI Software Engineer (C++ / Python / HFT)\n\n📌 О проекте\n\n✔️ Spectral::Technologies — HFT-фонд с опытом работы более 7 лет\n✔️ Разработка инфраструктуры и торговых стра"
+    },
+    {
+      "kind": "FP_REMAINING",
+      "community": "web3jobs",
+      "fp_class": "JOB_CHANNEL_NO_CLEAR_CONTRACT",
+      "tier": "HIGH",
+      "score": 93.0,
+      "lead_type": "ML_AI_ENGINEERING_CONTRACT",
+      "preview": "🚀 Senior Full Stack AI Engineer | 10+ Years\nivan-portfolio-beige.vercel .app\nHelping startups and businesses build AI-powered products, SaaS platforms, and automation systems.\n\n💡 A"
+    },
+    {
+      "kind": "FP_REMAINING",
+      "community": "BybitAPI",
+      "fp_class": "MARKETING_BROADCAST",
+      "tier": "HIGH",
+      "score": 78.0,
+      "lead_type": "BOT_CUSTOMIZATION",
+      "preview": "the error message is pretty self-explanatory, you've reached the current risk limit: https://bybit-exchange.github.io/docs/v5/market/risk-limit\n\nCan you elaborate more, what should"
+    },
+    {
+      "kind": "FP_REMAINING",
+      "community": "BybitAPI",
+      "fp_class": "SUPPORT_OR_HOWTO",
+      "tier": "HIGH",
+      "score": 78.0,
+      "lead_type": "TRADING_SYSTEM_CONTRACT",
+      "preview": "404 error messages indicate the external application is trying to access non-existent API endpoints. If you're not the developer of the bot, you need to contact customer support of"
+    },
+    {
+      "kind": "FP_REMAINING",
+      "community": "BingXAnnouncement",
+      "fp_class": "OFF_DOMAIN",
+      "tier": "HIGH",
+      "score": 87.0,
+      "lead_type": "TRADING_SYSTEM_CONTRACT",
+      "preview": "🚨 Market Frontline:\n\n1️⃣ Followin 3.0 is now live! The first “intelligent media platform” for crypto just launched with 4 powerful new features — arguably one of the best tools to "
+    },
+    {
+      "kind": "FP_REMAINING",
+      "community": "BingXOfficial",
+      "fp_class": "OFF_DOMAIN",
+      "tier": "HIGH",
+      "score": 87.0,
+      "lead_type": "TRADING_SYSTEM_CONTRACT",
+      "preview": "🚨 Market Frontline:\n\n1️⃣ Followin 3.0 is now live! The first “intelligent media platform” for crypto just launched with 4 powerful new features — arguably one of the best tools to "
+    },
+    {
+      "kind": "FP_REMAINING",
+      "community": "jobstash",
+      "fp_class": "JOB_VACANCY",
+      "tier": "HIGH",
+      "score": 81.0,
+      "lead_type": "QUANT_ENGINEERING_CONTRACT",
+      "preview": "Polymarket is hiring a remote Developer Relations Manager \n\nPolymarket is looking for a Developer Relations Manager to cultivate developer relationships, guide technical integratio"
+    },
+    {
+      "kind": "FP_REMAINING",
+      "community": "binanceexchange",
+      "fp_class": "MARKETING_BROADCAST",
+      "tier": "HIGH",
+      "score": 81.0,
+      "lead_type": "BOT_REPAIR",
+      "preview": "@Kerrbox Sir I had answered 11  questions before 12th challenge was posted. 10 are right this was my accuracy before but after new challenge has posted and bot error why my accurac"
+    },
+    {
+      "kind": "FP_REMAINING",
+      "community": "CoinExOfficialEN",
+      "fp_class": "OFF_DOMAIN",
+      "tier": "MEDIUM",
+      "score": 66.0,
+      "lead_type": "TRADING_SYSTEM_CONTRACT",
+      "preview": "Hello. A few days ago I transferred a large amount of Tether from Trust Wallet to the Coinex exchange.\n\nFirst, I transferred 10 Tethers for testing by scanning the QR code address "
+    },
+    {
+      "kind": "FP_REMAINING",
+      "community": "rabotaweb3",
+      "fp_class": "JOB_VACANCY",
+      "tier": "HIGH",
+      "score": 76.0,
+      "lead_type": "ML_AI_ENGINEERING_CONTRACT",
+      "preview": "🖥 Нужен AI Specialist / AI Engineer (Funnels / Chatterfy)\n\n📌 О проекте\n\n✔️ Работа с AI-воронками и автоматизацией продаж;\n✔️ Фокус на повышении эффективности сейлз-отдела;\n✔️ Оптим"
+    },
+    {
+      "kind": "FP_REMAINING",
+      "community": "Bybit_Announcements",
+      "fp_class": "MARKETING_BROADCAST",
+      "tier": "HIGH",
+      "score": 81.0,
+      "lead_type": "ML_AI_ENGINEERING_CONTRACT",
+      "preview": "📣 Coming Soon to Bybit Spot: Almanak ($ALMANAK)\n\n✍️ Almanak's AI makes advanced quant trading accessible to all, replacing the need for developers and quants and bringing hedge-fun"
+    },
+    {
+      "kind": "FP_REMAINING",
+      "community": "BybitEnglish",
+      "fp_class": "MARKETING_BROADCAST",
+      "tier": "MEDIUM",
+      "score": 66.0,
+      "lead_type": "TRADING_SYSTEM_CONTRACT",
+      "preview": "One challenge I’ve always had as a trader is consistency.\nNot strategy — consistency.\nI could plan a trade perfectly and still ruin it by entering too early, moving stops, or react"
+    },
+    {
+      "kind": "FP_REMAINING",
+      "community": "unicastjobs",
+      "fp_class": "JOB_VACANCY",
+      "tier": "HIGH",
+      "score": 81.0,
+      "lead_type": "ML_AI_ENGINEERING_CONTRACT",
+      "preview": "💎 Pass App is hiring! 💎\n\nPass App is on a mission to ignite financial freedom and true ownership for people everywhere.\n\nPosition: Senior AI Engineer - Pass App\n\n🕒 Freelance - 📍 Re"
+    },
+    {
+      "kind": "FP_REMAINING",
+      "community": "unicastaicommunity",
+      "fp_class": "OFF_DOMAIN",
+      "tier": "HIGH",
+      "score": 81.0,
+      "lead_type": "ML_AI_ENGINEERING_CONTRACT",
+      "preview": "💎 Pass App is hiring! 💎\n\nPass App is on a mission to ignite financial freedom and true ownership for people everywhere.\n\nPosition: Senior AI Engineer - Pass App\n\n🕒 Freelance - 📍 Re"
+    },
+    {
+      "kind": "FP_REMAINING",
+      "community": "blockchain_job",
+      "fp_class": "SUPPORT_OR_HOWTO",
+      "tier": "HIGH",
+      "score": 76.0,
+      "lead_type": "ML_AI_ENGINEERING_CONTRACT",
+      "preview": "#AIENGINEER #BACKEND #GO #FINTECH\n\nJunior AI Engineer at UNIGOX (https://www.unigox.com/)\n\nSalary: 1000$\n\nUnigox is a startup founded by the co-founder of Paxful. We're building a "
+    },
+    {
+      "kind": "FP_REMAINING",
+      "community": "BybitEnglish",
+      "fp_class": "MARKETING_BROADCAST",
+      "tier": "MEDIUM",
+      "score": 66.0,
+      "lead_type": "BOT_CUSTOMIZATION",
+      "preview": "Hello Admin please, \n\nI have an issue…I initially registered on Bybit Telegram community using my Old username :(Pegasus_001 ) which I later changed my username to (web3pirateX) \n\n"
+    },
+    {
+      "kind": "FP_REMAINING",
+      "community": "jobstash",
+      "fp_class": "JOB_VACANCY",
+      "tier": "HIGH",
+      "score": 75.0,
+      "lead_type": "TRADING_SYSTEM_CONTRACT",
+      "preview": "EigenLayer is hiring a remote Forward Deployed Engineer EigenCompute \n\nEigen Labs is looking for a Forward Deployed Engineer to embed with partners to containerize applications, ar"
+    },
+    {
+      "kind": "FP_REMAINING",
+      "community": "rabotaweb3",
+      "fp_class": "JOB_VACANCY",
+      "tier": "HIGH",
+      "score": 75.0,
+      "lead_type": "TRADING_SYSTEM_CONTRACT",
+      "preview": "🖥 Нужен Python Middle+ / Senior Developer (AI / LLM)\n\n📌 О проекте\n\n✔️ Банковский проект в сфере AI и управления рисками\n✔️ Разработка цифровых помощников для анализа инвестиционных"
+    },
+    {
+      "kind": "FP_REMAINING",
+      "community": "jobstash",
+      "fp_class": "JOB_VACANCY",
+      "tier": "HIGH",
+      "score": 75.0,
+      "lead_type": "TRADING_SYSTEM_CONTRACT",
+      "preview": "Native is hiring a remote Back End Engineer \n\nNative is looking for a Back End Engineer to design and implement high-performance backend services and APIs, optimize CI/CD pipelines"
+    },
+    {
+      "kind": "FP_REMAINING",
+      "community": "rabotaweb3",
+      "fp_class": "JOB_VACANCY",
+      "tier": "HIGH",
+      "score": 75.0,
+      "lead_type": "TRADING_SYSTEM_CONTRACT",
+      "preview": "🌐 Нужен Senior ML / NLP Engineer (чат-боты, LLM)\n\n➡️ Компания: FIN\n💵 ЗП: от 4000 до 6000 $\n✉️ Формат: full-time, удалённо или в офисе в Лимассоле\n\n📌 Задачи и ожидания\n\n✔️ Разбирать"
+    },
+    {
+      "kind": "FP_REMAINING",
+      "community": "jobstash",
+      "fp_class": "JOB_VACANCY",
+      "tier": "HIGH",
+      "score": 75.0,
+      "lead_type": "TRADING_SYSTEM_CONTRACT",
+      "preview": "Gauntlet is hiring a remote Quant Research Engineer - New Grad \n\nGauntlet is looking for a Quant Research Engineer New Grad to transform mathematical models into production code an"
+    },
+    {
+      "kind": "FP_REMAINING",
+      "community": "chronotech",
+      "fp_class": "JOB_VACANCY",
+      "tier": "HIGH",
+      "score": 99.0,
+      "lead_type": "SOLANA_DEX_BOT_PROJECT",
+      "preview": "⭐ FREELANCER OF THE WEEK\n\nSenior Blockchain developer🔷️🔶️[Available for  urgency]\n⭐ 5★ (19 reviews)\n🏆 Reputation: 420\n💰 $25/hr\n🏷 Web, Mobile & Software Dev · Javascript · Blockchai"
+    },
+    {
+      "kind": "FP_REMAINING",
+      "community": "DeJob_Global",
+      "fp_class": "JOB_VACANCY",
+      "tier": "HIGH",
+      "score": 91.0,
+      "lead_type": "SOLANA_DEX_BOT_PROJECT",
+      "preview": "#Recruitment\n🏡  Cygnus    #DeFi\n🐇  Introduction:\nhttps://www.cygnus.finance/\nThe first modular real yield layer, backed by industry pioneers such as OKX Ventures, Optimism Foundati"
+    },
+    {
+      "kind": "FP_REMAINING",
+      "community": "solana_jobs",
+      "fp_class": "JOB_SEEKER",
+      "tier": "HIGH",
+      "score": 91.0,
+      "lead_type": "SOLANA_DEX_BOT_PROJECT",
+      "preview": "#резюме #eth #solana \n🚀 ИЩУ ПРОЕКТ\nЯ backend / Web3 разработчик с 2016 года.\nЗапускал и проектировал крупные крипто-проекты с оборотом $20+ млн.\nРаботаю быстро, системно и на резул"
+    },
+    {
+      "kind": "FP_REMAINING",
+      "community": "DeJob_Global_group",
+      "fp_class": "JOB_VACANCY",
+      "tier": "HIGH",
+      "score": 91.0,
+      "lead_type": "SOLANA_DEX_BOT_PROJECT",
+      "preview": "#Recruitment\n🏡  Cygnus    #DeFi\n🐇  Introduction:\nhttps://www.cygnus.finance/\nThe first modular real yield layer, backed by industry pioneers such as OKX Ventures, Optimism Foundati"
+    },
+    {
+      "kind": "FP_REMAINING",
+      "community": "laborx",
+      "fp_class": "JOB_VACANCY",
+      "tier": "HIGH",
+      "score": 91.0,
+      "lead_type": "SOLANA_DEX_BOT_PROJECT",
+      "preview": "⭐ FREELANCER OF THE WEEK\n\nSenior Blockchain developer🔷️🔶️[Available for  urgency]\n⭐ 5★ (19 reviews)\n🏆 Reputation: 420\n💰 $25/hr\n🏷 Web, Mobile & Software Dev · Javascript · Blockchai"
+    },
+    {
+      "kind": "FP_REMAINING",
+      "community": "MEXCEnglish",
+      "fp_class": "MARKETING_BROADCAST",
+      "tier": "HIGH",
+      "score": 80.0,
+      "lead_type": "SOLANA_DEX_BOT_PROJECT",
+      "preview": "1⃣. Liquidity Dynamics of $ZAMA\nRecent market analysis indicates that $ZAMA maintains a remarkably healthy liquidity profile. Its 24-hour trading volume often scales significantly "
+    },
+    {
+      "kind": "FP_REMAINING",
+      "community": "BybitAPI",
+      "fp_class": "MARKETING_BROADCAST",
+      "tier": "MEDIUM",
+      "score": 60.0,
+      "lead_type": "TRADING_SYSTEM_CONTRACT",
+      "preview": "It's not an API-sided error message. You should troubleshoot this error message on your side in your code, as it's generated by your code.\n\nIf you come to find out it's caused by a"
+    },
+    {
+      "kind": "FP_REMAINING",
+      "community": "jobstash",
+      "fp_class": "JOB_VACANCY",
+      "tier": "MEDIUM",
+      "score": 70.0,
+      "lead_type": "TRADING_SYSTEM_CONTRACT",
+      "preview": "Consensys is hiring a remote Senior Backend Engineer - MetaMask (OffChain) \n\nConsensys is looking for a Senior Backend Engineer to build and enhance MetaMask backend blockchain rou"
+    }
+  ]
+}

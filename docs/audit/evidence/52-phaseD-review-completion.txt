@@ -1,0 +1,42 @@
+Phase D — Sample integrity + review completion
+==============================================
+Timestamp: 2026-09-22T16:33:05Z
+Batch: indep_review_2026-09-22
+
+## Sample composition (PostgreSQL)
+
+| stratum          | intended n | actual n | unique messages | status |
+| ---------------- | ---------: | -------: | --------------: | ------ |
+| high_leads       |          3 |        3 |               3 | PASS (CRM-limited; documented) |
+| agent_true       |         25 |       25 |              25 | PASS |
+| agent_fp         |         25 |       25 |              25 | PASS |
+| recruiter_job    |         25 |       25 |              25 | PASS |
+| support_like     |         25 |       25 |              25 | PASS |
+| random_negatives |         25 |       25 |              25 | PASS |
+| **batch total**  |        128 |      128 |             128 | PASS |
+
+Additional integrity:
+- duplicate message_id within batch: 0
+- multi-stratum same message: 0
+- orphan sample rows (no messages row): 0
+- UNIQUE (sample_batch_id, message_id): present
+
+Evidence artifact: docs/audit/evidence/47-independent-review-sample.json
+
+## Independent review completion (real humans)
+
+| Metric | Count | Notes |
+| ------ | ----: | ----- |
+| Sample size Y | 128 | exclusive |
+| Smoke reviews | 2 | smoke_human_2026-09-22 + phaseD_smoke — NOT adjudication |
+| Adjudication reviews (human) | 0 | pending Phase D human workflow |
+| Completion | 0/128 | adjudication |
+
+human_labels remain agent-provisional (1524); not counted here.
+
+## Next for completion
+Human reviewer pulls:
+  GET /labels/independent-queue?sample_batch_id=indep_review_2026-09-22&blind=true&reviewer_id=<HUMAN_ID>&limit=25
+Submits HUMAN_REVIEWED_TRUE|FALSE|AMBIGUOUS with scorer_shown=false, prior_label_shown=false.
+Do not pass stratum= during blind review.
+Do not use agent or scorer output.

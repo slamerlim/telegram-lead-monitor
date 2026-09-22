@@ -1,0 +1,66 @@
+=== drip ===
+             as_of             
+-------------------------------
+ 2026-09-22 12:16:09.452182+00
+(1 row)
+
+ messages | max_id  
+----------+---------
+  8514764 | 8514768
+(1 row)
+
+ msg_24h | msg_12h 
+---------+---------
+   10600 |   10600
+(1 row)
+
+ lead_rows | leads_24h | high_rows | distinct_opportunities 
+-----------+-----------+-----------+------------------------
+         5 |         0 |         3 |                      5
+(1 row)
+
+ decision | count 
+----------+-------
+ NEGATIVE |  7867
+ POSITIVE |     3
+(2 rows)
+
+   community    | n 
+----------------+---
+ LaborXWeb3Jobs | 2
+ BybitEnglish   | 1
+ mevdao         | 1
+ solana_dev_ru  | 1
+(4 rows)
+
+=== labels by source ===
+             labeled_by             |     label      | count 
+------------------------------------+----------------+-------
+ agent_m1_business_truth_2026-09-22 | FALSE_POSITIVE |   738
+ agent_m1_true_expand_2026-09-22    | TRUE_LEAD      |   577
+ audit_census_2026-09-22            | FALSE_POSITIVE |   132
+ agent_m1_business_truth_2026-09-22 | TRUE_LEAD      |    57
+ audit_census_2026-09-22            | AMBIGUOUS      |    12
+ audit_census_2026-09-22            | TRUE_LEAD      |     6
+ agent_laborx_rfq_seed_2026-09-22   | TRUE_LEAD      |     2
+(7 rows)
+
+ total | true_n | fp_n | provisional | census 
+-------+--------+------+-------------+--------
+  1524 |    642 |  870 |        1372 |    150
+(1 row)
+
+=== redis ===
+name
+pending
+lag
+=== services ===
+NAME                                STATUS
+telegram-lead-monitor-analyzer-1    Up 11 minutes
+telegram-lead-monitor-api-1         Up 11 minutes
+telegram-lead-monitor-collector-1   Up 3 hours
+telegram-lead-monitor-postgres-1    Up 8 days (healthy)
+telegram-lead-monitor-redis-1       Up 8 days (healthy)
+telegram-lead-monitor-scheduler-1   Up 3 hours
+=== ML deps ===
+absent

@@ -1,0 +1,21 @@
+METHOD=agent_structured_review_strict_business_rules_census_157_units
+LIMITATION=Labels by coding agent applying documented business rules; not external human annotators.
+lead_rows_total=256
+audit_units_text_community=157
+label_counts_units={'FALSE_POSITIVE': 138, 'TRUE_LEAD': 6, 'AMBIGUOUS': 13}
+target_units=6 target_rows=7
+fp_units=138 fp_rows=235
+amb_units=13 amb_rows=14
+row_weighted_target_rate=0.0273
+unit_weighted_target_rate=0.0382
+fp_classes=[('exchange_channel_no_buyer', 42), ('job_board_or_vacancy', 34), ('no_commercial_buyer_evidence', 18), ('job_channel_no_clear_contract', 9), ('job_seeker', 8), ('employment_vacancy', 6), ('exchange_or_product_promo', 5), ('job_aggregator_digest', 3), ('support_or_howto', 3), ('market_commentary', 3), ('vendor_promo', 2), ('vendor_cold_outreach', 2)]
+script_x_label={('LATIN_SCRIPT', 'FALSE_POSITIVE'): 113, ('MIXED', 'FALSE_POSITIVE'): 25, ('LATIN_SCRIPT', 'TRUE_LEAD'): 5, ('LATIN_SCRIPT', 'AMBIGUOUS'): 10, ('MIXED', 'AMBIGUOUS'): 3, ('MIXED', 'TRUE_LEAD'): 1}
+recent_30d_true_units=6
+actionable_leads_per_day_proxy=0.2000
+TRUE_LEADS:
+  @laborxWeb3Jobs TRADING_SYSTEM_CONTRACT mult=2 :: 🌟 Freelance Opportunity: Python Developer for Real-Time Crypto Trading Dashboard |  | 💰 Budget: $3000 |  | 🤝 With: spinbattles
+  @laborxWeb3Jobs BOT_REPAIR mult=1 :: 🌟 Freelance Opportunity: Need Developer to Fix Polymarket Trading Bot (Urgent) |  | 💰 Budget: $1500 |  | 🤝 With: Maxu
+  @laborxWeb3Jobs BOT_REPAIR mult=1 :: 🌟 Freelance Opportunity: Need Developer to Fix Polymarket Trading Bot (Urgent) |  | 💰 Budget: $500 |  | 🤝 With: Thomas Ken
+  @laborxWeb3Jobs TRADING_SYSTEM_CONTRACT mult=1 :: 🌟 Freelance Opportunity: Python Crypto Trading Bot Developer (GUI + Dashboard) |  | 💰 Budget: $800 |  | 🤝 With: Harry Bennett
+  @laborxWeb3Jobs TRADING_SYSTEM_CONTRACT mult=1 :: 🌟 Freelance Opportunity: Crypto Trading Bot Developer |  | 💰 Budget: $200 |  | 🤝 With: Yohans Hayla
+  @solana_dev_ru COPY_TRADING_PROJECT mult=1 :: Если вы разработчик копитрейдинг бота, напишите мне. Мне нужен копитрейдинг бот на solana, который способен попадать в 0-1 block. Вы должны продемонстрировать его скорость, прежде 

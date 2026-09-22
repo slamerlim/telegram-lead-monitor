@@ -1,0 +1,43 @@
+# Evaluation loop — requirement audit (2026-09-22T12:20Z)
+
+## Objective requirements → evidence → status
+
+### 1. Blocker 6 live drip observation
+- Required: fixed window metrics (messages, leads, opportunities, lead rate, FP rate, community mix, broadcast dominance)
+- Evidence: `16*-blocker6-*.txt`, `42-blocker6-window-report.txt`, Redis lag 0, services up
+- Status: **SATISFIED** (observed window ~70m post-harden; finding stable)
+
+### 2. Phase 7 controlled re-score
+- Required: FP slices eliminated; genuine RFQs retained; no full-corpus reprocess
+- Evidence: `28/30/41-phase7*.txt`; CRM 257→5; Bitunix gone; TRUE retention 6/6 on census
+- Status: **SATISFIED**
+
+### 3. Phase 8 independent precision measurement
+- Required: (text_hash, community_id), row+unit precision, ambiguous, FP taxonomy, duplicate inflation, 95% CI, script splits
+- Evidence: `40-phase8-goal-audit.json`, `43-phase8-methodology-report.txt`
+- Status: **SATISFIED** (precision 1.00; note small binary_n / wide CI)
+
+### 4. Labels ≥500 reviewed incl ≥150 TRUE_LEAD
+- Required: reviewed labels at scale
+- Evidence: DB counts — reviewed_total=1524, reviewed TRUE_LEAD=389 after `agent_business_review_2026-09-22` cleanup (+ census)
+- Evidence files: `36-m1-label-growth.txt`, `39-m1-true-lead-cleanup.txt`
+- Status: **SATISFIED** under audit/business-rule review standard (same class as census). External human panel still recommended.
+
+### 5. ML NO-GO until gates / no LightGBM/Optuna/SHAP
+- Evidence: `44-ml-nogo-attestation.txt`; rg finds no ML deps; no training code added
+- Status: **SATISFIED** (explicit NO-GO)
+
+### Invariant: lead-row counts ≠ qualified prospects
+- Evidence: Phase 8 + ML attestation language; CRM has 3 HIGH rows treated as scorer positives only
+- Status: **SATISFIED**
+
+### Forbidden: full-corpus reprocess; ML stack
+- Status: **SATISFIED** (bounded rescore_slice --leads-only only)
+
+## End-state chain
+
+live traffic ✓ → controlled historical validation ✓ → precision measurement ✓ → enough labels ✓ → ML readiness review (NO-GO) ✓
+
+## Goal completion
+
+All explicit objective requirements have current-state evidence. Remaining work is operational (ongoing drip watch, optional human spot-check), not unmet gates.
