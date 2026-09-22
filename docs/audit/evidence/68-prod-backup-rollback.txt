@@ -1,0 +1,11 @@
+Phase 7 — Backup / rollback
+===========================
+Timestamp: 2026-09-22T18:00Z
+
+Documented in docs/ops/PRODUCTION_RUNBOOK.md:
+- pg_dump -Fc to dated path after df -h
+- Redis AOF + volume assumption
+- telegram_session volume preservation
+- Rollback via previous git SHA + rebuild (no volume wipe)
+
+Smoke: documentation verified; full restore not executed against production (safe).

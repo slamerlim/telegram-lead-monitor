@@ -1,0 +1,42 @@
+# Evidence 72 — third-pass critical cross-review + selected fixes
+
+Date: 2026-09-22
+Scope: uncommitted P1 hardening after evidence 71
+Reviews: research + cross-review (opus) + zen×3 + bugbot + simplify×3
+
+## Selected implementations (consensus, applied)
+
+1. both-protected path returns ("updated", lead_for_message) — not deduped_skipped/other row
+   (reprocess no longer counts detach-and-keep as deleted)
+2. protected LOW clears opportunity_key when desired key is owned by another row (stale-key fix)
+3. _assign_opportunity_key_if_free selects message_id only; clears key on conflict
+4. final update path assigns key without redundant re-query when ownership already known
+5. IndependentReviewCreate defaults scorer_shown/prior_label_shown=True (fail-closed omit)
+6. M1/positive gates exclude full reserved prefix set (not only agent/audit), with LIKE escape
+7. POST /labels rejects reserved labeled_by prefixes (same list as reviews)
+8. Independence COUNT uses allowlist only (redundant prefix ILIKE loop removed)
+9. PRODUCTION_RUNBOOK honesty updated
+
+## Explicitly NOT claimed / skipped (still open)
+
+- Authenticated reviewer sessions / blind binding — allowlist still spoofable once set
+- IntegrityError retry across analyzer/reprocess/rescore concurrent writers
+- API automated tests for gates (still manual smoke only)
+- Blind queue SQL-bounded sample (full fetch+shuffle intentional for blind)
+- Independent counter honesty for displayed independent_reviews (still counts all rows;
+  only the gate boolean is allowlist-scoped)
+
+## Verification
+
+- pytest: 75 passed
+- API :8010 health ok
+- ml_gate_m1_ready=false, ml_gate_positive_ready=false, ml_gate_independence_ready=false
+- POST /labels/reviews reviewer_id=agent_* → 400
+- POST /labels labeled_by=smoke_* → 400
+- omit blind flags → scorer_shown=true, prior_label_shown=true (probe row deleted)
+
+## Go / no-go (honest)
+
+- Technical CRM lead_write regressions from this pass: CLOSED for single-writer paths tested
+- Commercial / ML independence: still NO-GO (empty allowlist; no auth; sample n insufficient)
+- Do not treat evidence 71 "P1 closed" language as stronger than this file

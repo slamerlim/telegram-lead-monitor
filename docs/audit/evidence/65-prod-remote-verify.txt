@@ -1,0 +1,246 @@
+== preflight ==
+== git ==
+Already on 'main'
+M	services/api/app/main.py
+M	services/api/app/schemas.py
+M	shared/lead_write.py
+M	shared/models.py
+Your branch is up to date with 'origin/main'.
+From github.com:slamerlim/telegram-lead-monitor
+ * branch            main       -> FETCH_HEAD
+Already up to date.
+22d9f65
+## main...origin/main
+ M services/api/app/main.py
+ M services/api/app/schemas.py
+ M shared/lead_write.py
+ M shared/models.py
+?? .cursor/
+?? docs/audit/evidence/60-prod-phase0-current-state.txt
+?? docs/audit/evidence/63-prod-reprocess-1k.txt
+?? docs/audit/evidence/65-prod-remote-verify.txt
+?? docs/ops/
+?? tests/test_lead_write_protected.py
+== disk ==
+Filesystem                         Size  Used Avail Use% Mounted on
+/dev/mapper/ubuntu--vg-ubuntu--lv  115G   44G   67G  40% /
+TYPE            TOTAL     ACTIVE    SIZE      RECLAIMABLE
+Images          6         6         3.31GB    0B (0%)
+Containers      7         7         69.63kB   0B (0%)
+Local Volumes   4         4         7.028GB   0B (0%)
+Build Cache     172       0         9.66GB    7.441GB
+== stop scheduler for isolated smoke ==
+ Container telegram-lead-monitor-scheduler-1 Stopping 
+ Container telegram-lead-monitor-scheduler-1 Stopped 
+== rebuild images that bake scripts/services ==
+ Image telegram-lead-monitor-api Building 
+ Image telegram-lead-monitor-collector Building 
+ Image telegram-lead-monitor-analyzer Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 1.50kB done
+#1 DONE 0.0s
+
+#2 [analyzer internal] load build definition from Dockerfile
+#2 transferring dockerfile: 549B done
+#2 DONE 0.0s
+
+#3 [api internal] load metadata for docker.io/library/python:3.12-slim
+#3 DONE 0.4s
+
+#4 [analyzer internal] load .dockerignore
+#4 transferring context: 133B done
+#4 DONE 0.0s
+
+#5 [api  1/11] FROM docker.io/library/python:3.12-slim@sha256:2f17fc044b579bab302c2e8054d3a686e2cb9a83de48e70534b94cd8ebbe06a9
+#5 resolve docker.io/library/python:3.12-slim@sha256:2f17fc044b579bab302c2e8054d3a686e2cb9a83de48e70534b94cd8ebbe06a9 done
+#5 DONE 0.0s
+
+#6 [collector internal] load build context
+#6 transferring context: 8.03kB done
+#6 DONE 0.0s
+
+#7 [analyzer  3/11] RUN apt-get update     && apt-get install -y --no-install-recommends build-essential     && rm -rf /var/lib/apt/lists/*
+#7 CACHED
+
+#8 [analyzer  6/11] COPY shared ./shared
+#8 CACHED
+
+#9 [analyzer  4/11] COPY pyproject.toml README.md ./
+#9 CACHED
+
+#10 [analyzer  7/11] COPY config ./config
+#10 CACHED
+
+#11 [analyzer  8/11] COPY alembic.ini ./
+#11 CACHED
+
+#12 [analyzer 10/11] COPY scripts ./scripts
+#12 CACHED
+
+#13 [analyzer  5/11] COPY services ./services
+#13 CACHED
+
+#14 [analyzer  9/11] COPY alembic ./alembic
+#14 CACHED
+
+#15 [analyzer  2/11] WORKDIR /app
+#15 CACHED
+
+#16 [analyzer 11/11] RUN pip install --upgrade pip     && pip install .
+#16 CACHED
+
+#17 [api] exporting to image
+#17 exporting layers done
+#17 exporting manifest sha256:47cac6c4fa916978e41a661aa3ebc1f646eff14900977a020e40c58820ffaacd done
+#17 exporting config sha256:3a52a4de0c8af5725a7d365aadc696768c6391121b4c0619b88f9d1abaf2d695 done
+#17 exporting attestation manifest sha256:810c5adbaa6163fd6c7a430f436dc240a100172ffad7d4253b5d225ec0290d2e done
+#17 exporting manifest list sha256:4b599171037df6a47be8e9912eef046472c0e76f4b9dd0e7839a45e1d847fc95 done
+#17 naming to docker.io/library/telegram-lead-monitor-api:latest done
+#17 unpacking to docker.io/library/telegram-lead-monitor-api:latest done
+#17 DONE 0.1s
+
+#18 [collector] exporting to image
+#18 exporting layers done
+#18 exporting manifest sha256:973ea8823496387f0479e3e85772a329b5982428e6243a42202038e72f311cec done
+#18 exporting config sha256:f95f6643d06f9035dbf8d200031298054619617eb173c220031b0cef8bb483a1 done
+#18 exporting attestation manifest sha256:927ed0ea9c0dc695707316ca96b852fc1384d04dbec89399c2b0d8597e10d805 done
+#18 exporting manifest list sha256:f0ced514b4b1615a7562c3eea7a1b346ec7760d1153b56851caa48ce6263c3d7 done
+#18 naming to docker.io/library/telegram-lead-monitor-collector:latest done
+#18 unpacking to docker.io/library/telegram-lead-monitor-collector:latest done
+#18 DONE 0.1s
+
+#19 [analyzer] exporting to image
+#19 exporting layers done
+#19 exporting manifest sha256:74baf5ea83dcd742c5db233dc95aeff3fdb9ae478b091946ea31ea9bb27cb180 done
+#19 exporting config sha256:28bd041d9c537b024707965343bf88c44b1f2033cc8a92255aeaa0e3dadbb310 done
+#19 exporting attestation manifest sha256:360d08312c42ed19029bc8b77684293bc18cb90062bb4f6b32bdcc70cc412c3b done
+#19 exporting manifest list sha256:00452d692c04e6fab4a7002c8e46a41835c92856288db9885538352969e66a4c done
+#19 naming to docker.io/library/telegram-lead-monitor-analyzer:latest done
+#19 unpacking to docker.io/library/telegram-lead-monitor-analyzer:latest done
+#19 DONE 0.1s
+
+#20 [api] resolving provenance for metadata file
+#20 DONE 0.0s
+
+#21 [collector] resolving provenance for metadata file
+#21 DONE 0.0s
+
+#22 [analyzer] resolving provenance for metadata file
+#22 DONE 0.0s
+ Image telegram-lead-monitor-collector Built 
+ Image telegram-lead-monitor-api Built 
+ Image telegram-lead-monitor-analyzer Built 
+ Container telegram-lead-monitor-postgres-1 Running 
+ Container telegram-lead-monitor-redis-1 Running 
+ Container telegram-lead-monitor-api-1 Running 
+ Container telegram-lead-monitor-analyzer-1 Recreate 
+ Container telegram-lead-monitor-collector-1 Recreate 
+ Container telegram-lead-monitor-analyzer-1 Recreated 
+ Container telegram-lead-monitor-collector-1 Recreated 
+ Container telegram-lead-monitor-postgres-1 Waiting 
+ Container telegram-lead-monitor-redis-1 Waiting 
+ Container telegram-lead-monitor-postgres-1 Waiting 
+ Container telegram-lead-monitor-redis-1 Waiting 
+ Container telegram-lead-monitor-redis-1 Waiting 
+ Container telegram-lead-monitor-postgres-1 Waiting 
+ Container telegram-lead-monitor-postgres-1 Healthy 
+ Container telegram-lead-monitor-postgres-1 Healthy 
+ Container telegram-lead-monitor-redis-1 Healthy 
+ Container telegram-lead-monitor-redis-1 Healthy 
+ Container telegram-lead-monitor-redis-1 Healthy 
+ Container telegram-lead-monitor-collector-1 Starting 
+ Container telegram-lead-monitor-postgres-1 Healthy 
+ Container telegram-lead-monitor-analyzer-1 Starting 
+ Container telegram-lead-monitor-collector-1 Started 
+ Container telegram-lead-monitor-analyzer-1 Started 
+== wait for postgres healthy ==
+== ensure schema (never drops) ==
+messages + alembic_version present — alembic upgrade head
+INFO  [alembic.runtime.migration] Context impl PostgresqlImpl.
+INFO  [alembic.runtime.migration] Will assume transactional DDL.
+== confirm --max-messages in analyzer image ==
+                             [--max-messages MAX_MESSAGES]
+  --max-messages MAX_MESSAGES
+== host / data class ==
+HOSTNAME=1831dan
+APP_ENV=development
+REAL_COMMUNITIES=136
+SMOKE_COMMUNITIES=0
+HOST_CLASS=production_like
+== redis pending (scan + messages) ==
+name
+collector-workers
+consumers
+1
+pending
+0
+last-delivered-id
+1790099416035-0
+entries-read
+5676
+lag
+0
+name
+analyzer-workers
+consumers
+1
+pending
+0
+last-delivered-id
+1790099481131-4
+entries-read
+8653389
+lag
+0
+== DB baseline ==
+ messages 
+----------
+  8525399
+(1 row)
+
+ leads 
+-------
+     5
+(1 row)
+
+ dup 
+-----
+   0
+(1 row)
+
+DUP_CHECK_baseline=0
+== reprocess smoke max=1000 batch=250 ==
+processed=250 high=0 medium=0 low=250 created=0 updated=0 unchanged=0 deleted=0 deduped=0 last_message_id=250/8525403
+processed=500 high=0 medium=0 low=500 created=0 updated=0 unchanged=0 deleted=0 deduped=0 last_message_id=500/8525403
+processed=750 high=0 medium=0 low=750 created=0 updated=0 unchanged=0 deleted=0 deduped=0 last_message_id=750/8525403
+processed=1000 high=0 medium=0 low=1000 created=0 updated=0 unchanged=0 deleted=0 deduped=0 last_message_id=1000/8525403
+DONE processed=1000 high=0 medium=0 low=1000 created=0 updated=0 unchanged=0 deleted=0 deduped=0
+WALL_SEC=3.77
+== DB after smoke ==
+ leads 
+-------
+     5
+(1 row)
+
+ dup 
+-----
+   0
+(1 row)
+
+  status  | count 
+----------+-------
+ NEW      |     2
+ REVIEWED |     3
+(2 rows)
+
+ tier | count 
+------+-------
+ HIGH |     3
+ LOW  |     2
+(2 rows)
+
+DUP_CHECK_smoke_1000=0
+NOTE: scheduler left stopped; start with: docker compose start scheduler
+      or re-run with RESTART_SCHEDULER=1
+REMOTE_SSH_VERIFY_OK
+PRODUCTION_VERIFY_OK

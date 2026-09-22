@@ -1,0 +1,6 @@
+Phase 8 — Commercial ops honesty
+Timestamp: 2026-09-22T18:00:13Z
+- HIGH leads: 3 (scorer positives only; CRM status includes REVIEWED for some)
+- Sales validation loop: NOT implemented as separate outcome tracking beyond lead.status
+- Independent human QA path: /labels/independent-queue blind=true + POST /labels/reviews
+- Commercially sales-ready: FAIL (no conversion outcomes; HIGH ≠ customer)

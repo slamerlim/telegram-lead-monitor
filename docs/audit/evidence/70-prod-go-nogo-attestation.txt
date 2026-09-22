@@ -1,0 +1,31 @@
+Phase 9 — Production go/no-go
+Timestamp: 2026-09-22T18:00:13Z
+Git working tree has uncommitted P1 review fixes (lead_write + API gates/blinding).
+
+| Gate | Result | Evidence |
+| ---- | ------ | -------- |
+| Services healthy | PASS | docker compose ps |
+| Alembic head | PASS | 0006_label_reviews |
+| Redis analyzer lag/pending | PASS | 0/0 |
+| Incremental collector intact | PASS | historical + live incremental scans |
+| pytest | PASS | 73 passed |
+| 1k reprocess | PASS | 63-prod-reprocess-1k.txt |
+| remote-verify REQUIRE_REAL_DATA | PASS | 65 PRODUCTION_VERIFY_OK |
+| Security checklist | PASS with notes | 67 |
+| Backup path documented | PASS | PRODUCTION_RUNBOOK.md |
+| Technical production deployable | PASS | runbook + verify |
+| Commercially sales-ready | FAIL | 69 |
+| ML ready | NO-GO | independence false; m1 human-only false |
+
+## Zen consensus fixes applied this session
+- Reject stratum when blind=true
+- Require sample membership + sample_batch_id on POST /labels/reviews
+- Independence gate ignores agent/smoke reviewers + requires blind flags + sample join
+- M1 gates exclude agent/audit provisional volume
+- lead_write: never delete both protected CRM rows; flush after deletes; always set opportunity_key on survivor
+
+## Skipped (simplify / larger refactors)
+- Reprocess N+1 batch preload restore
+- Regex compile caching in scorer
+- HumanLabel upsert shared helper
+- Migration 0003 rewrite (already applied historically)

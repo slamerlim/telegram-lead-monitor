@@ -1,0 +1,38 @@
+Phase 0 — Production current-state audit
+========================================
+Timestamp: 2026-09-22T17:51:52Z
+Git: 22d9f65
+
+## Confirmed (live)
+- Services: 6/6 Up (postgres/redis healthy)
+- Disk: 115G, ~40% used, ~67G free
+- Docker volumes: ~7GB active; build cache reclaimable ~7GB
+- Alembic: 0006_label_reviews (head)
+- API /health: ok/ok/ok
+- Blind queue: stratum=blinded, scorer/prior null (PASS)
+
+## Counts
+- messages: 8,524,973
+- leads: 5 (HIGH 3, LOW 2) — dup message_id: 0
+- message_scores: 18,079 (NEG 18076, POS 3)
+- human_labels: 1524 (agent provisional)
+- label_reviews: 130 / samples: 128
+- communities: 136; with last_message_id: 126/136
+- opportunities: 5 distinct
+
+## Redis
+- telegram:messages / analyzer-workers: pending=0, lag=0
+- telegram:scan_requests / collector-workers: pending=2, lag=125 (INVESTIGATE)
+- scan_runs queued+running: 120 (queued~119, running~1)
+
+## Labels/stats gates
+- ml_gate_m1_ready: true (numeric only)
+- ml_gate_independence_ready: false
+- ML: NO-GO
+
+## Gaps for productionize
+1. Collector scan_requests lag/pending > 0 — need PEL inspection
+2. 10 communities still missing last_message_id cursor
+3. No PRODUCTION_RUNBOOK.md yet
+4. remote-verify not re-run this session
+5. Commercial sales-ready: still FAIL (5 leads, no sales loop)

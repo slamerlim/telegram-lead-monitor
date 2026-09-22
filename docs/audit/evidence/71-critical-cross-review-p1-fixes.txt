@@ -1,0 +1,34 @@
+Critical cross-review of P1 production fixes
+============================================
+Timestamp: 2026-09-22T18:15Z
+
+## Method
+- Diff: uncommitted P1 fix set (/tmp/review-diff.patch)
+- Zen: Opus + GPT + Grok
+- Cross-review: Opus maximal criticism
+- Bugbot: uncommitted
+- Simplify: quality/perf/reuse (read-only)
+
+## Rejected / weak claims from prior reports
+- "Technical PASS" while IntegrityError regression existed after both-protected detach
+- Independence gate based on denylist alone (spoofable reviewer_id)
+- Blind flags as proof of blinding (client-supplied)
+- pytest green as coverage of API P1 paths (no API tests yet)
+
+## Consensus P1 → selected implementation
+1. LOW-after-detach UNIQUE crash → `_assign_opportunity_key_if_free` (Bugbot + 3/3 zen + cross-review)
+2. Do not paste message B scores onto protected lead A → both-protected applies score only to detached own row; unprotected-only score upgrade+repoint
+3. Independence counting → allowlist via `INDEPENDENT_HUMAN_REVIEWER_IDS` (empty => gate never opens)
+4. Reject automation reviewer prefixes on POST
+5. M1 exclusions use ilike consistently
+6. Regression test for LOW-after-detach + both-protected score isolation
+
+## Intentionally not "fixed" yet (honest residual risk)
+- Full auth / server-bound blind sessions (needs product design)
+- API endpoint automated tests (recommended next)
+- Reprocess N+1 performance (out of P1 correctness scope)
+- Migration 0003 historical rewrite
+
+## Verification
+- pytest: 74 passed
+- ML gates remain false with empty allowlist

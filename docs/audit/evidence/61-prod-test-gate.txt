@@ -1,0 +1,8 @@
+Phase 1 — Test gate
+Timestamp: 2026-09-22T18:00:13Z
+pytest: 73 passed
+py_compile: api main, lead_write, models, schemas OK
+Blind stratum reject: HTTP 400
+reviewer_id required: HTTP 422 when omitted
+ml_gate_m1_ready: false (agent provisional excluded) — Confirmed
+ml_gate_independence_ready: false — Confirmed

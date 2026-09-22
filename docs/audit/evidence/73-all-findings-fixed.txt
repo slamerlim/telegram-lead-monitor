@@ -1,0 +1,33 @@
+# Evidence 73 — all critical-review findings addressed
+
+Date: 2026-09-22
+Scope: Remaining findings from evidence 71–72 multi-review
+
+## Fixes applied
+
+| Finding | Fix |
+|---------|-----|
+| Spoofable allowlist / client blind flags | `INDEPENDENT_HUMAN_REVIEWER_TOKENS` + `X-Reviewer-Token`; HMAC `review_token` binds blind mode on POST |
+| M1 inflated via arbitrary labeled_by | `HUMAN_LABEL_REVIEWER_IDS` fail-closed (empty ⇒ M1/positive gates false); optional `LABEL_WRITE_TOKEN` |
+| Concurrent opportunity_key UNIQUE | Savepoint + IntegrityError clear/reattach in `lead_write` |
+| Both-protected wrong action / stale key | Already fixed in prior pass; retained |
+| Dishonest independent_* display counters | Scoped to allowlist (0 when empty) |
+| Contested TRUE inflation | Blind TRUE excludes messages with any allowlisted blind FALSE |
+| Blind community/url leak | Null community/author/url/date when blind=true |
+| Unbounded queue fetch | SQL `ORDER BY random()/id LIMIT` |
+| ILIKE `_` vs startswith / auditor false positive | Delimiter-safe `prefix` or `prefix_…` match |
+| ORM missing UNIQUE | Declared on LabelReviewSample + LabelReview |
+| No API tests | `tests/test_independent_review_api.py` + integrity tests |
+| Shared fp_class pattern | `_FP_CLASS_PATTERN` in schemas |
+
+## Verification
+
+- pytest: 86 passed
+- API :8010 health ok; all ml_gate_* false with empty auth config
+- PRODUCTION_RUNBOOK updated for tokens/HMAC/M1 allowlist
+
+## Residual honesty
+
+- Tokens/HMAC empty ⇒ independence gate closed by design (current prod default)
+- HUMAN_LABEL_REVIEWER_IDS empty ⇒ M1/positive closed by design
+- Commercial / ML still NO-GO until real humans are configured and complete blind volume

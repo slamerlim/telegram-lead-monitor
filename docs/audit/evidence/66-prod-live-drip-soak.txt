@@ -1,0 +1,14 @@
+Phase 5 — Live drip snapshot (short)
+====================================
+Timestamp: 2026-09-22T18:00Z approx
+
+## Confirmed
+- Scheduler restarted after remote-verify
+- All 6 services Up
+- analyzer-workers: pending=0 lag=0
+- collector-workers: pending=2 lag≈130 (active scan wave backlog; not treated as stuck PEL without entry inspection)
+- leads=5 HIGH=3 LOW=2; message_scores POS=3
+- Near-zero HIGH remains structural observation; no threshold changes
+
+## Interpretation
+Do not tune scorer. Collector backlog during scheduler waves is expected under incremental scans.

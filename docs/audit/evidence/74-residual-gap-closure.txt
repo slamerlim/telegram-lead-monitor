@@ -1,0 +1,29 @@
+# Evidence 74 — residual gap closure after evidence 73 overclaims
+
+Date: 2026-09-22
+
+## Overclaims in evidence 73 corrected
+
+| 73 claim | Correction |
+|----------|------------|
+| Spoofable allowlist fixed | Now: tokens+HMAC+allowlist required or endpoints return 503; IDs-only never enables writes |
+| HMAC binds blind | Now: review_token always required; client shown flags ignored; upsert never lowers shown flags |
+| Blind laundering | blind=false forbidden (403) on independent queue |
+| M1 fail-closed | Now requires HUMAN_LABEL_REVIEWER_IDS **and** LABEL_WRITE_TOKEN |
+| human_labels overwrite | POST /labels → 409 on labeled_by mismatch |
+| Display counters | Tied to same ready gate as ml_gate_independence_ready |
+| API tests | Extended: 503 partial config, 403 blind=false, review_token required on schema |
+
+## Verification
+
+- pytest suite after changes (see command output in commit message / CI)
+- Unconfigured POST /labels/reviews → 503
+- Configured missing X-Reviewer-Token → 401
+- blind=false → 403
+
+## Residual honesty
+
+- Shared LABEL_WRITE_TOKEN is operator trust, not per-human identity
+- IntegrityError savepoints cover opportunity_key inside lead_write only
+- Commercial / ML still NO-GO until real humans complete blind volume with full auth config
+- Evidence 73 left unchanged; this file is the residual record

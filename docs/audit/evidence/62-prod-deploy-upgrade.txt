@@ -1,0 +1,9 @@
+Phase 2 — Deploy/upgrade this session
+Timestamp: 2026-09-22T18:00:13Z
+Git before fixes: 22d9f65
+Actions:
+- Applied zen/simplify P1 fixes to shared/lead_write.py + services/api
+- Rebuilt/restarted api only
+- alembic remains 0006_label_reviews (head)
+- Runbook added: docs/ops/PRODUCTION_RUNBOOK.md
+Scheduler briefly stopped by remote-verify; restarted after.

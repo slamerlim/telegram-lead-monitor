@@ -1,0 +1,7 @@
+Phase 6 — Security checklist
+Timestamp: 2026-09-22T18:00:13Z
+- .env present, mode: 600
+- API bound 127.0.0.1:8010 (compose ports)
+- Postgres/Redis not published to host in compose (internal only) — Confirmed via compose file pattern
+- telegram_session volume used for Telethon
+- No .env in git status tracked files
