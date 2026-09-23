@@ -1,0 +1,26 @@
+AI validation baseline — VERIFIED 2026-09-23 (pre-implementation)
+
+HEAD: 394321be88ee5320748b9d5f1273854c4e844ace
+Services: api/analyzer/collector/scheduler/postgres/redis Up
+/health: ok
+Alembic head: 0006_label_reviews
+
+Counts:
+  messages=8548222
+  leads=5
+  label_reviews=130
+  label_review_samples=128
+  human_labels=1524
+
+Constraints in force:
+  - Cursor models/subagents only (no third-party LLM APIs)
+  - Do not wipe volumes/cursors/Phase D rows
+  - Do not overwrite human_labels
+  - Do not loosen scoring.yaml thresholds
+  - Do not claim ML GO from smoke
+  - Orchestration: cursor-sdk primary + Task subagents ad-hoc
+
+Reuse decision:
+  Extend label_reviews (validator_kind + AI provenance) + ai_validation_attempts
+  + validation_consensus. Human ml_gate_independence_ready excludes AI rows.
+  New ai_validation_gate_ready (fail-closed).

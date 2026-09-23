@@ -1,6 +1,18 @@
 from datetime import datetime
 
-from sqlalchemy import BigInteger, Boolean, DateTime, Float, ForeignKey, Index, Integer, String, Text, UniqueConstraint
+from sqlalchemy import (
+    BigInteger,
+    Boolean,
+    DateTime,
+    Float,
+    ForeignKey,
+    Index,
+    Integer,
+    SmallInteger,
+    String,
+    Text,
+    UniqueConstraint,
+)
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from shared.db import Base
@@ -178,7 +190,10 @@ class LabelReviewSample(Base):
 
 
 class LabelReview(Base):
-    """Independent human review row — append-only; never overwrites human_labels."""
+    """Independent review row (human or AI) — never overwrites human_labels.
+
+    AI rows (validator_kind='ai') are insert-only (DB trigger); use AI_* labels.
+    """
 
     __tablename__ = "label_reviews"
     __table_args__ = (
@@ -191,19 +206,123 @@ class LabelReview(Base):
         Index("ix_label_reviews_reviewer_id", "reviewer_id"),
         Index("ix_label_reviews_label", "label"),
         Index("ix_label_reviews_batch", "sample_batch_id"),
+        Index("ix_lr_kind_batch", "validator_kind", "sample_batch_id"),
+        Index("ix_lr_run", "validation_run_id"),
     )
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     message_id: Mapped[int] = mapped_column(ForeignKey("messages.id", ondelete="CASCADE"), index=True)
     sample_batch_id: Mapped[str | None] = mapped_column(String(64), nullable=True)
     reviewer_id: Mapped[str] = mapped_column(String(64), nullable=False)
-    label: Mapped[str] = mapped_column(String(32), nullable=False)  # TRUE_LEAD|FALSE_POSITIVE|AMBIGUOUS|UNCERTAIN
+    label: Mapped[str] = mapped_column(String(32), nullable=False)
     fp_class: Mapped[str | None] = mapped_column(String(64), nullable=True)
     commercially_actionable: Mapped[bool | None] = mapped_column(Boolean, nullable=True)
     scorer_shown: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
     prior_label_shown: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
     notes: Mapped[str | None] = mapped_column(Text, nullable=True)
     reviewed_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=datetime.utcnow)
+    validator_kind: Mapped[str | None] = mapped_column(String(16), nullable=True)
+    validation_mode: Mapped[str | None] = mapped_column(String(8), nullable=True)
+    provider: Mapped[str | None] = mapped_column(String(32), nullable=True)
+    model: Mapped[str | None] = mapped_column(String(128), nullable=True)
+    model_family: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    prompt_version: Mapped[str | None] = mapped_column(String(32), nullable=True)
+    config_version: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    validation_run_id: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    request_id: Mapped[str | None] = mapped_column(String(128), nullable=True)
+    latency_ms: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    confidence: Mapped[float | None] = mapped_column(Float, nullable=True)
+    lead_type: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    evidence_json: Mapped[str | None] = mapped_column(Text, nullable=True)
+    rationale_short: Mapped[str | None] = mapped_column(Text, nullable=True)
+    structured_result: Mapped[str | None] = mapped_column(Text, nullable=True)
+    input_sha256: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    peer_outputs_shown: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
+    source_attempt_id: Mapped[int | None] = mapped_column(BigInteger, nullable=True)
+    attestation_sig: Mapped[str | None] = mapped_column(String(128), nullable=True)
+
+
+class AIValidationAttempt(Base):
+    """Append-only Cursor validator call log (success and failure)."""
+
+    __tablename__ = "ai_validation_attempts"
+    __table_args__ = (
+        UniqueConstraint(
+            "validation_run_id",
+            "message_id",
+            "reviewer_id",
+            "attempt_no",
+            name="uq_ai_val_attempt",
+        ),
+        Index("ix_ai_val_attempts_status", "status"),
+        Index("ix_ai_val_attempts_message", "message_id"),
+        Index("ix_ai_val_attempts_run", "validation_run_id"),
+    )
+
+    id: Mapped[int] = mapped_column(BigInteger, primary_key=True, autoincrement=True)
+    validation_run_id: Mapped[str] = mapped_column(String(64), nullable=False)
+    sample_batch_id: Mapped[str] = mapped_column(String(64), nullable=False)
+    message_id: Mapped[int] = mapped_column(ForeignKey("messages.id", ondelete="CASCADE"), nullable=False)
+    reviewer_id: Mapped[str] = mapped_column(String(64), nullable=False)
+    validation_mode: Mapped[str] = mapped_column(String(8), nullable=False)
+    provider: Mapped[str] = mapped_column(String(32), nullable=False)
+    model: Mapped[str] = mapped_column(String(128), nullable=False)
+    model_family: Mapped[str] = mapped_column(String(64), nullable=False)
+    prompt_version: Mapped[str] = mapped_column(String(32), nullable=False)
+    config_version: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    attempt_no: Mapped[int] = mapped_column(SmallInteger, nullable=False)
+    status: Mapped[str] = mapped_column(String(32), nullable=False)
+    error_detail: Mapped[str | None] = mapped_column(Text, nullable=True)
+    request_id: Mapped[str | None] = mapped_column(String(128), nullable=True)
+    latency_ms: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    input_sha256: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    response_sha256: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    raw_response: Mapped[str | None] = mapped_column(Text, nullable=True)
+    synthetic: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
+    started_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=datetime.utcnow)
+    finished_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+
+
+class ValidationConsensus(Base):
+    """Append-only consensus snapshot; gate re-derives from signed opinions."""
+
+    __tablename__ = "validation_consensus"
+    __table_args__ = (
+        UniqueConstraint(
+            "sample_batch_id",
+            "message_id",
+            "policy_version",
+            "input_digest",
+            name="uq_validation_consensus_digest",
+        ),
+        Index("ix_validation_consensus_state", "state"),
+        Index("ix_validation_consensus_batch_msg", "sample_batch_id", "message_id"),
+    )
+
+    id: Mapped[int] = mapped_column(BigInteger, primary_key=True, autoincrement=True)
+    sample_batch_id: Mapped[str] = mapped_column(String(64), nullable=False)
+    message_id: Mapped[int] = mapped_column(ForeignKey("messages.id", ondelete="CASCADE"), nullable=False)
+    validation_run_id: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    policy_version: Mapped[str] = mapped_column(String(32), nullable=False)
+    config_version: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    state: Mapped[str] = mapped_column(String(32), nullable=False)
+    rationale_code: Mapped[str] = mapped_column(String(64), nullable=False)
+    n_blind_ok: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
+    n_true: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
+    n_false: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
+    n_uncertain: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
+    n_insufficient: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
+    n_errors: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
+    distinct_providers: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
+    distinct_families: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
+    modes_present: Mapped[str | None] = mapped_column(String(8), nullable=True)
+    adjudicator_label: Mapped[str | None] = mapped_column(String(32), nullable=True)
+    lead_type: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    input_review_ids: Mapped[str | None] = mapped_column(Text, nullable=True)
+    input_digest: Mapped[str] = mapped_column(String(64), nullable=False)
+    gate_eligible: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
+    synthetic: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
+    computed_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=datetime.utcnow)
 
 
 class ScanRun(Base):

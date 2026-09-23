@@ -32,7 +32,10 @@ services:
       context: .
       dockerfile: Dockerfile
     command: ["python", "-m", "uvicorn", "services.api.app.main:app", "--host", "0.0.0.0", "--port", "${API_PORT:-8010}"]
-    env_file: .env
+    env_file:
+      - .env
+      - path: .env.validation
+        required: false
     volumes:
       - ./config:/app/config:ro
     ports:

@@ -73,6 +73,7 @@ _NON_INDEPENDENT_REVIEWER_PREFIXES = (
     "smoke",
     "phaseD_smoke",
     "prod_phase0",
+    "aival",  # Cursor AI validators — counted only by AI gate
 )
 _PROVISIONAL_LABEL_PREFIXES = ("agent", "audit")
 
@@ -134,7 +135,11 @@ def _require_independent_reviewer(
 
 settings = get_settings()
 configure_logging(settings.log_level)
-app = FastAPI(title="Telegram Lead Monitor API", version="0.2.0")
+app = FastAPI(title="Telegram Lead Monitor API", version="0.3.0")
+
+from services.api.app.ai_validation_routes import router as ai_validation_router
+
+app.include_router(ai_validation_router)
 
 _REVIEW_STATIC = Path(__file__).resolve().parents[1] / "static" / "review"
 if _REVIEW_STATIC.is_dir():
@@ -146,7 +151,11 @@ else:
 def _review_lockdown_allowed(path: str) -> bool:
     if path == "/health" or path.startswith("/health/"):
         return True
+    if path == "/metrics":
+        return True
     if path == "/review" or path.startswith("/review/"):
+        return True
+    if path.startswith("/validation/"):
         return True
     return path.rstrip("/") in ("/labels/independent-queue", "/labels/reviews")
 
@@ -188,6 +197,36 @@ async def health() -> HealthOut:
         await bus.close()
     status = "ok" if postgres == redis_status == "ok" else "degraded"
     return HealthOut(status=status, postgres=postgres, redis=redis_status)
+
+
+@app.get("/metrics")
+async def prometheus_metrics(session: AsyncSession = Depends(get_session)) -> StreamingResponse:
+    """Minimal Prometheus text for AI validation + gate closed reasons."""
+    from services.api.app.ai_validation_routes import compute_gates_payload
+
+    gates = await compute_gates_payload(session)
+    lines = [
+        "# HELP tlm_ai_validation_gate_ready 1 if AI validation gate open",
+        "# TYPE tlm_ai_validation_gate_ready gauge",
+        f"tlm_ai_validation_gate_ready {1 if gates.ai_validation_gate_ready else 0}",
+        "# HELP tlm_ai_validated_true count of VALIDATED_TRUE messages",
+        "# TYPE tlm_ai_validated_true gauge",
+        f"tlm_ai_validated_true {gates.ai_validated_true}",
+        "# HELP tlm_ai_validated_false count of VALIDATED_FALSE messages",
+        "# TYPE tlm_ai_validated_false gauge",
+        f"tlm_ai_validated_false {gates.ai_validated_false}",
+        "# HELP tlm_ai_contested gauge",
+        f"tlm_ai_contested {gates.ai_contested}",
+        "# HELP tlm_ai_unattested_rows gauge",
+        f"tlm_ai_unattested_rows {gates.ai_unattested_rows}",
+        "# HELP tlm_ml_training_enabled always 0 until explicit policy",
+        f"tlm_ml_training_enabled {0}",
+    ]
+    for reason in gates.ai_validation_gate_closed_reasons:
+        safe = reason.replace('"', "").replace("\n", "")[:80]
+        lines.append(f'tlm_ai_gate_closed_reason{{reason="{safe}"}} 1')
+    body = "\n".join(lines) + "\n"
+    return StreamingResponse(iter([body]), media_type="text/plain; version=0.0.4")
 
 
 @app.post("/communities", response_model=CommunityOut, status_code=201)
@@ -672,6 +711,7 @@ async def label_stats(session: AsyncSession = Depends(get_session)) -> LabelStat
     else:
         indep_base = select(func.count(LabelReview.id)).where(
             LabelReview.reviewer_id.in_(sorted(independent_allowlist)),
+            LabelReview.validator_kind.is_distinct_from("ai"),
         )
         independent_reviews = int((await session.scalar(indep_base)) or 0)
         independent_true = int(
@@ -723,6 +763,7 @@ async def label_stats(session: AsyncSession = Depends(get_session)) -> LabelStat
             LabelReview.prior_label_shown.is_(False),
             LabelReview.sample_batch_id.is_not(None),
             LabelReview.reviewer_id.in_(sorted(independent_allowlist)),
+            LabelReview.validator_kind.is_distinct_from("ai"),
         )
         base = (
             select(func.count(func.distinct(LabelReview.message_id)))

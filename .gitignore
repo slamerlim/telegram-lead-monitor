@@ -17,3 +17,6 @@ exports/
 
 # secrets
 docker-secrets/
+.env.validation
+.env.ai-worker-*
+.env.ai-validator

@@ -111,7 +111,26 @@ INDEPENDENT_REVIEW_HMAC_SECRET=replace-with-long-random
 - **Reviewer GUI:** open `http://127.0.0.1:8010/review/` — enter reviewer ID + token from the handout; default batch `indep_review_2026-09-22`. Blind-only; does not modify `human_labels`.
 - Set `REVIEW_UI_LOCKDOWN=true` during human sessions so `/search`, `/leads`, `/docs`, etc. return 403 (same-origin blinding). Disable only for operators who need the full API. **Restart the API** after changing this flag (`get_settings` is process-cached).
 
-Automation prefixes (`agent`, `audit`, `smoke`, …) match as exact id or `prefix_…` only (so `auditor` is allowed).
+Automation prefixes (`agent`, `audit`, `smoke`, `aival`, …) match as exact id or `prefix_…` only (so `auditor` is allowed). AI validators use `aival_*` and are **excluded** from human independence counts.
+
+## Cursor AI validation (no third-party LLMs)
+
+Roster: `config/ai_validators.yaml` (Cursor model ids + distinct `model_family` for A/B/C).
+
+Secrets (prefer gitignored `.env.validation` mounted on API only):
+
+```bash
+AI_VALIDATOR_IDS=aival_a_claude_opus,aival_b_gpt56,aival_c_grok47,aival_d_composer
+AI_VALIDATOR_TOKENS=aival_a_claude_opus:…,…
+AI_VALIDATION_QUEUE_HMAC_SECRET=…
+AI_VALIDATION_ROW_SECRET=…
+```
+
+- Endpoints: `/validation/queue`, `/validation/results`, `/validation/consensus/recompute`, `/validation/gates`, `/metrics` (allowed under `REVIEW_UI_LOCKDOWN`).
+- Orchestrator: `python -m services.validator.app.orchestrator --backend fake|sdk --sample-batch-id indep_review_2026-09-22`
+- `--backend sdk` needs `CURSOR_API_KEY`; never commit it. Fake/synthetic consensus does **not** open `ai_validation_gate_ready`.
+- Ad-hoc Task subagents: see `docs/ops/AI_VALIDATION_TASK_ADHOC.md` (same API plane).
+- `ml_training_enabled` stays false; do not claim ML GO from AI smoke.
 
 ## Human labels / M1 gate
 

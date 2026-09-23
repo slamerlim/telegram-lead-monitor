@@ -50,6 +50,17 @@ class Settings(BaseSettings):
     # Enable during human blind-review sessions to reduce same-origin scorer/search leaks.
     review_ui_lockdown: bool = False
 
+    # --- Cursor-only AI validation (no third-party LLM APIs) ---
+    ai_validators_config: str = "/app/config/ai_validators.yaml"
+    ai_validator_ids: str = ""
+    ai_validator_tokens: str = ""
+    ai_validation_queue_hmac_secret: str = ""
+    ai_validation_row_secret: str = ""
+    ai_validation_require_distinct_families: bool = True
+    ai_validation_gate_min_messages: int = 100
+    ai_validation_gate_min_true: int = 30
+    cursor_api_key: str = ""  # orchestrator only; never required for API
+
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8", extra="ignore")
 
     @property
