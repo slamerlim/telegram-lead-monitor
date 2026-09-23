@@ -787,7 +787,8 @@ async def independent_review_queue(
         items.append(
             IndependentReviewQueueItem(
                 message_id=message.id,
-                community_id=message.community_id,
+                # Blind: never expose community identity (numeric id can identify source).
+                community_id=0,
                 sample_batch_id=sample.sample_batch_id,
                 stratum="blinded",
                 text=message.text,

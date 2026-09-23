@@ -1,0 +1,66 @@
+# Evidence 75 — Phase E: independent human-review readiness verification
+
+UTC: 2026-09-23T04:21:54Z (verification start); fix redeploy after community_id blind strip
+Repo: /home/slamer-lim/telegram-lead-monitor
+Git SHA (pre-fix verify): acf7dce; post community_id blind fix: (commit with this evidence)
+
+## A. Deployed implementation
+- `git status`: main == origin/main (clean aside from .cursor/)
+- `docker compose ps`: api/analyzer/collector/scheduler/postgres/redis up; api :8010
+- `alembic current`: 0006_label_reviews (head)
+- `/health`: ok / postgres ok / redis ok
+- `/labels/stats`: ml_gate_independence_ready=false; ml_gate_m1_ready=false; ml_gate_positive_ready=false
+- independent_reviews/true/false/uncertain all 0 (allowlisted humans have no rows; display tied to ready gate)
+- agent_provisional_labels=1524; reviewed_labels=1524 (provisional corpus — not independence evidence)
+
+## B. Independent reviewer auth
+- human1 / human2 without X-Reviewer-Token → 401
+- wrong token → 401
+- blind=false → 403
+- blind=true with valid token → 200; review_token present; stratum=blinded
+- Blind payload leak check: scorer_*, prior_agent_label, community_username/name, author_username, message_url, message_date all null
+- Regression found then fixed: blind queue previously returned real community_id → now forced to 0
+- POST without review_token → 422 (field required)
+- reserved smoke_operator → 400
+- Incomplete-config 503: covered by pytest when tokens/HMAC unset (live env is fully configured → ready=True)
+
+## C. Reviewer separation
+```
+SELECT reviewer_id, count(*) FROM label_reviews
+WHERE reviewer_id IN ('human1','human2') GROUP BY 1;
+→ 0 rows
+```
+human_labels for human1/human2 → 0
+
+## D. Sample integrity (indep_review_2026-09-22)
+| stratum | n |
+|---------|---|
+| high_leads | 3 (all tier HIGH: msg 24048, 24091, 55357) |
+| agent_fp | 25 |
+| agent_true | 25 |
+| random_negatives | 25 |
+| recruiter_job | 25 |
+| support_like | 25 |
+| **total** | **128** distinct messages; 0 multi-stratum duplicates |
+Blind stratum exposed only as "blinded" (no sampling-key leak).
+
+## E. Controlled smoke POST
+SKIPPED — no dedicated allowlisted smoke operator path; `smoke_*` is reserved.
+Writing as human1/human2 would pollute the empty preflight before real humans start.
+POST path invariants verified negatively (422 without review_token; 400 reserved id).
+
+## F. Contested / attestation (no new synthetic production labels)
+- Gate SQL excludes messages with any allowlisted blind FALSE from independent_blind_true (main.py blind_filters + not_in(false_msgs))
+- Upsert never lowers scorer_shown / prior_label_shown (existing flags preserved)
+- blind=false forbidden → cannot launder non-blind queue into blind attestation
+- pytest tests/test_independent_review_api.py: 12 passed
+
+## G. Application changes
+- Only change: blind queue community_id=0 (leak fix). No scorer, thresholds, ML, or human_labels mutation.
+
+## H. Operator handoff (IDs only — tokens in docker-secrets/independent-reviewers.txt)
+See final response.
+
+## Gate / ML
+ml_gate_independence_ready remains FALSE until ≥100 allowlisted blind reviews AND ≥30 uncontested TRUE.
+No ML readiness claim is justified.
