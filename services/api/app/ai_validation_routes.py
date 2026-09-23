@@ -369,8 +369,13 @@ async def post_ai_validation_result(
         lead_type = lead_or_fp if label == "AI_TRUE" else body.lead_type
         fp_class = None if label == "AI_TRUE" else (body.fp_class or lead_or_fp)
     elif slot.mode == "B":
-        label, fp_class = mode_b_to_label(payload)
-        lead_type = payload.get("lead_type") if label == "AI_TRUE" else None
+        label, lead_or_fp = mode_b_to_label(payload)
+        if label == "AI_TRUE":
+            lead_type = lead_or_fp or payload.get("lead_type")
+            fp_class = None
+        else:
+            lead_type = None
+            fp_class = body.fp_class or lead_or_fp
     elif slot.mode == "C":
         label, lead_or_fp = mode_c_to_label(payload)
         lead_type = lead_or_fp if label == "AI_TRUE" else None
@@ -388,6 +393,7 @@ async def post_ai_validation_result(
     if label == "AI_TRUE" and lead_type not in COMMERCIAL_LEAD_TYPES:
         label = "AI_INSUFFICIENT_EVIDENCE"
         lead_type = None
+        fp_class = None
 
     confidence = body.confidence if body.confidence is not None else payload.get("confidence")
     evidence = body.evidence if body.evidence is not None else payload.get("evidence") or []

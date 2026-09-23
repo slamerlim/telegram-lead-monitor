@@ -20,7 +20,7 @@ from shared.validation.consensus import (
     mode_c_to_label,
 )
 from shared.validation.prompts import PROMPT_VERSION, build_mode_prompt
-from shared.validation.registry import parse_slots, load_validator_config
+from shared.validation.registry import parse_slots
 
 
 def _schema_keys(mode: str) -> set[str]:
