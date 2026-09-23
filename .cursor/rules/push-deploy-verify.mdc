@@ -1,0 +1,30 @@
+---
+description: Auto commit-push when asked to ship; always deploy and runtime-verify on this host
+alwaysApply: true
+---
+
+# Push, deploy, verify (production host)
+
+This repo runs on the **Ubuntu production host** via Docker Compose. Do not use a Cloud Agent VM as a substitute for live Docker/Postgres data.
+
+## When the user asks to implement / ship / finish / "commit and push"
+
+Unless they explicitly say not to:
+
+1. **Commit** meaningful changes (never `.env`, `.env.validation`, `docker-secrets/*`, API keys).
+2. **Push** to `origin` on the current branch (`git push -u origin HEAD`).
+3. **Deploy** affected services: `docker compose build <svc>` then `docker compose up -d <svc>` (usually `api`; migrate with `docker compose run --rm --no-deps api alembic upgrade head` when schema changed).
+4. **Verify runtime** before declaring done:
+   - `curl -sS http://127.0.0.1:8010/health` → ok
+   - If AI validation touched: `curl -sS http://127.0.0.1:8010/validation/gates` and `/metrics`
+   - Non-destructive SQL counts for touched tables (never `down -v`, truncate, or wipe cursors)
+   - Relevant `pytest` for changed areas
+5. Record results in the Turn Report and, for substantive ops, `docs/audit/evidence/`.
+
+## Hard constraints (never violate)
+
+- No `docker compose down -v`, volume deletes, message/cursor wipes
+- No loosening `config/scoring.yaml` thresholds to inflate leads
+- No claiming ML GO / enabling supervised ML until AI independence gates honestly pass
+- No overwriting `human_labels` from validation paths
+- Cursor-only validators (no third-party LLM API integrations) unless the user reverses that decision

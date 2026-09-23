@@ -1,0 +1,25 @@
+---
+description: Require a detailed end-of-turn status report after every agent turn
+alwaysApply: true
+---
+
+# End-of-turn report (mandatory)
+
+After every substantive turn (implementation, ops, review, or investigation), end the user-visible reply with a **Turn Report** using this exact structure. Do not skip it when work was done. For trivial Q&A with no repo/runtime changes, a one-line "No repo/runtime changes" note is enough.
+
+## Turn Report template
+
+```markdown
+## Turn Report
+- **Goal / request:** …
+- **Commit(s):** SHA + subject (or "none")
+- **Pushed:** yes/no + remote/branch
+- **Deployed:** what was rebuilt/restarted (or "n/a")
+- **Runtime verify:** commands + key results (health, gates, counts)
+- **Tests:** command + pass/fail counts
+- **Files touched:** short list of paths
+- **Business / constraints check:** thresholds, secrets, data safety, ML GO claim
+- **Blockers / next:** …
+```
+
+Be explicit and evidence-based (paste command outcomes, counts, HTTP codes). Prefer linking evidence under `docs/audit/evidence/` when created.
