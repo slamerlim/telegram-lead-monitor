@@ -13,7 +13,7 @@ import uuid
 from pathlib import Path
 
 import yaml
-from sqlalchemy import select
+from sqlalchemy import func, select
 
 from services.validator.app.providers.cursor_backend import FakeCursorBackend, SdkCursorBackend
 from shared.commercial_ai.policy import decide_commercial, opinion_from_payload
@@ -57,8 +57,50 @@ def _backend():
     settings = get_settings()
     kind = (settings.commercial_ai_backend or "fake").lower()
     if kind == "sdk":
-        return SdkCursorBackend()
+        key = (settings.cursor_api_key or "").strip()
+        if not key:
+            raise RuntimeError("CURSOR_API_KEY required when COMMERCIAL_AI_BACKEND=sdk")
+        cwd = str(Path("/app") if Path("/app").exists() else Path.cwd())
+        return SdkCursorBackend(api_key=key, cwd=cwd)
     return FakeCursorBackend()
+
+
+async def _reviews_last_hour(session) -> int:
+    from datetime import datetime, timedelta, timezone
+
+    from shared.models import CommercialAIReview
+
+    since = datetime.now(timezone.utc) - timedelta(hours=1)
+    return int(
+        (
+            await session.scalar(
+                select(func.count(CommercialAIReview.id)).where(
+                    CommercialAIReview.row_kind == "DECISION",
+                    CommercialAIReview.created_at >= since,
+                )
+            )
+        )
+        or 0
+    )
+
+
+async def _autopromotes_last_hour(session) -> int:
+    from datetime import datetime, timedelta, timezone
+
+    from shared.models import LeadEvent
+
+    since = datetime.now(timezone.utc) - timedelta(hours=1)
+    return int(
+        (
+            await session.scalar(
+                select(func.count(LeadEvent.id)).where(
+                    LeadEvent.event_type == "AI_PROMOTE",
+                    LeadEvent.created_at >= since,
+                )
+            )
+        )
+        or 0
+    )
 
 
 async def process_payload(payload: dict, backend) -> None:
@@ -92,6 +134,11 @@ async def process_payload(payload: dict, backend) -> None:
             return
         prior = await already_decided(session, lead_id=lead.id, text_hash=text_hash)
         if prior:
+            return
+
+        max_rev = int(settings.commercial_ai_max_reviews_per_hour or 0)
+        if max_rev > 0 and await _reviews_last_hour(session) >= max_rev:
+            logger.warning("commercial_ai rate-limit reviews/hour lead_id=%s", lead_id)
             return
 
         cfg_path = Path(settings.commercial_ai_reviewers_config)
@@ -145,10 +192,17 @@ async def process_payload(payload: dict, backend) -> None:
                 )
             )
 
+        auto_promote = bool(settings.commercial_ai_auto_promote)
+        if auto_promote:
+            max_ap = int(settings.commercial_ai_max_autopromotions_per_hour or 0)
+            if max_ap > 0 and await _autopromotes_last_hour(session) >= max_ap:
+                logger.warning("commercial_ai rate-limit autopromote/hour → shadow lead_id=%s", lead_id)
+                auto_promote = False
+
         decision = decide_commercial(
             opinions,
             scorer_score=float(lead.score or 0),
-            auto_promote=bool(settings.commercial_ai_auto_promote),
+            auto_promote=auto_promote,
         )
         await apply_decision(
             session,

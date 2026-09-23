@@ -19,6 +19,6 @@ COPY alembic ./alembic
 COPY scripts ./scripts
 
 RUN pip install --upgrade pip \
-    && pip install .
+    && pip install ".[cursor]"
 
 CMD ["python", "-m", "services.api.app.main"]

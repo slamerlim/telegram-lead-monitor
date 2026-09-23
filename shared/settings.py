@@ -60,6 +60,7 @@ class Settings(BaseSettings):
     commercial_ai_auto_promote: bool = False
     commercial_ai_backend: str = "fake"  # fake | sdk
     commercial_ai_max_reviews_per_hour: int = 60
+    commercial_ai_max_autopromotions_per_hour: int = 10
     commercial_ai_reviewers_config: str = "/app/config/commercial_ai_reviewers.yaml"
     commercial_ai_confidence_floor: float = 0.75
 

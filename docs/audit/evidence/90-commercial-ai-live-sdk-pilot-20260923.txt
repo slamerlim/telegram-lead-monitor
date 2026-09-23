@@ -1,0 +1,50 @@
+Commercial AI live SDK pilot — 2026-09-23 UTC
+
+SHA (pre-followup commit): 6d024e4 → next commit includes SDK worker fix + rate bounds
+Migration: 0009_commercial_ai_reviews
+
+## Candidate supply diagnosis
+- messages≈8.57M scores_before≈59562 unscored_total≈8.5M
+- msg_24h=43154 unscored_24h=0 hm_24h=0
+- msg_7d=62292 unscored_7d_start=8887 hm_7d=0
+- H/M scores total before pilot: 3 — ALL in label_review_samples (blind)
+- Classification:
+  * SCORER COVERAGE: recent 7d had ~8.9k unscored (historical millions remain unscored; capped)
+  * SCORER YIELD: live scored traffic + 8887 backfill → 0 H/M (precision/yield at current thresholds)
+  * BLIND-SAMPLE EXCLUSION: only prior H/M were blind-locked (correct)
+  * NO LIVE H/M COMMERCIAL TRAFFIC at threshold (traffic exists; yield=0)
+
+## Bounded backfill
+- scoring.yaml SHA256: 5f3b4ef59963f61916715d57e0df143415b915423dea7e5ab88467becc4bb363
+- rule_version: 2.4
+- 1k --only-unscored --since-days 7: processed=1000 high=0 medium=0 low=1000 created=0
+- continue to exhaust 7d unscored: +7887 → total ~8887, still 0 H/M, Redis lag=0
+- scores_after_backfill=68449 leads still 5 until provisional path
+
+## Eligible cohort (no threshold loosen)
+- Bounded rescore of 335 non-blind agent_provisional TRUE_LEAD:
+  processed=335 hm=6(created leads=5 after dedupe) low=329
+- Pilot cohort size: 5 non-blind HIGH NEW (LaborXWeb3Jobs trading-bot gigs)
+- Excluded blind H/M: 3
+
+## Real Cursor SDK
+- COMMERCIAL_AI_BACKEND=sdk (AUTO_PROMOTE=false during shadow)
+- Roster: A claude-opus-5-5 / B gpt-5.6-sol / C grok-4.7 (Cursor SDK only)
+- Dockerfile: pip install ".[cursor]" (cursor_sdk was missing before)
+- Worker SdkCursorBackend(api_key, cwd) fix (was broken no-arg ctor)
+- Attempts: 5 leads × 3 models = 15 OPINION rows, status=ok, synthetic=0
+- Decisions: SHADOW_CONFIRMED=4 AI_UNCERTAIN=1 AI_REJECTED=0 ERROR=0
+- Drafts valid=4 (no auto-DM)
+- AI_PROMOTE after enabling AUTO_PROMOTE (one-shot shadow→promote)=4
+- Rate bounds: MAX_REVIEWS_PER_HOUR=60 MAX_AUTOPROMOTIONS_PER_HOUR=10
+
+## Isolation AFTER
+- ai_validated_messages=94 ai_validated_true=0 ai_validated_false=94
+- ai_validation_gate_ready=false ml_training_enabled=false
+- human_labels=1524 unchanged
+- Redis commercial stream lag=0
+
+## Business outcomes
+- contacted=0 responded=0 qualified=0 proposal=0 won=0
+- FIRST_REAL_CUSTOMER_OUTCOME: NOT YET OBTAINED
+- first_25_ai_confirmed: false (4/25 AI-confirmed after promote)
