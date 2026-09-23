@@ -2,7 +2,7 @@
 
 UTC: 2026-09-23T04:21:54Z (verification start); fix redeploy after community_id blind strip
 Repo: /home/slamer-lim/telegram-lead-monitor
-Git SHA (pre-fix verify): acf7dce; post community_id blind fix: (commit with this evidence)
+Git SHA (pre-fix verify): acf7dce; post community_id blind fix: ed4792f
 
 ## A. Deployed implementation
 - `git status`: main == origin/main (clean aside from .cursor/)
