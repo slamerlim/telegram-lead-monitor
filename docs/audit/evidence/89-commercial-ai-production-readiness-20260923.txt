@@ -29,3 +29,22 @@ target migration: 0009_commercial_ai_reviews
 - ml_training_enabled=false
 - COMMERCIAL_AI_AUTO_PROMOTE=false initially (shadow)
 - FIRST_REAL_CUSTOMER_OUTCOME: NOT YET OBTAINED
+
+## Post-deploy verification (UTC ~2026-09-23T16:20Z)
+git HEAD: dc48d9715d72caddaf63913025bc4f78e169b766 (+ funnel AI metrics follow-up)
+alembic: 0009_commercial_ai_reviews (head)
+health: ok / postgres ok / redis ok
+gates AFTER: ai_validated_messages=94 ai_validated_true=0 ai_validated_false=94
+ai_validation_gate_ready=false
+ml_training_enabled=false
+human_labels AFTER: 1524 (unchanged)
+commercial_ai_reviews: 0
+commercial-ai-worker: Up (backend=fake, auto_promote=false, Redis lag=0)
+human_lead_review_required: false
+first_25_ai_confirmed: false (ai_confirmed=0)
+outreach_ready: 0
+responded: 0
+won: 0
+note: existing HIGH NEW leads (2) are label_review_samples — worker correctly skips
+      (isolation from independent-review blind set). scored_hm_not_blind_not_lead=0.
+FIRST_REAL_CUSTOMER_OUTCOME: NOT YET OBTAINED

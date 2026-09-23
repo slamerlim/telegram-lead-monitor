@@ -198,6 +198,7 @@ async def ops_health(operator_id: str = Depends(_require_operator)):
         "commercial_ops_enabled": True,
         "commercial_ai_enabled": bool(cfg.commercial_ai_enabled),
         "commercial_ai_auto_promote": bool(cfg.commercial_ai_auto_promote),
+        "commercial_ai_backend": (cfg.commercial_ai_backend or "fake"),
         "commercial_ai_autonomous": bool(cfg.commercial_ai_enabled),
         "independent_validation_gate_untouched": True,
         "operator_id": operator_id,
@@ -672,6 +673,74 @@ async def funnel_metrics(
     )
     drift = int((await session.scalar(drift_sql)) or 0)
 
+    async def _ai_dec(dec: str) -> int:
+        return int(
+            (
+                await session.scalar(
+                    select(func.count(CommercialAIReview.id)).where(
+                        CommercialAIReview.row_kind == "DECISION",
+                        CommercialAIReview.decision == dec,
+                        CommercialAIReview.created_at >= since,
+                    )
+                )
+            )
+            or 0
+        )
+
+    ai_confirmed = await _ai_dec("AI_CONFIRMED") + await _ai_dec("SHADOW_CONFIRMED")
+    ai_candidate = await _ai_dec("AI_CANDIDATE")
+    ai_uncertain = await _ai_dec("AI_UNCERTAIN")
+    ai_rejected = await _ai_dec("AI_REJECTED")
+    ai_reviewed = int(
+        (
+            await session.scalar(
+                select(func.count(CommercialAIReview.id)).where(
+                    CommercialAIReview.row_kind == "DECISION",
+                    CommercialAIReview.created_at >= since,
+                )
+            )
+        )
+        or 0
+    )
+    ai_candidates = int(
+        (
+            await session.scalar(
+                select(func.count(Lead.id)).where(
+                    Lead.updated_at >= since,
+                    Lead.tier.in_(("HIGH", "MEDIUM")),
+                    Lead.status.in_(("NEW", "REVIEWED", "AI_CONFIRMED", "QUALIFIED")),
+                )
+            )
+        )
+        or 0
+    )
+    outreach_ready = int(
+        (
+            await session.scalar(
+                select(func.count(CommercialAIReview.id)).where(
+                    CommercialAIReview.row_kind == "DRAFT",
+                    CommercialAIReview.draft_valid.is_(True),
+                    CommercialAIReview.created_at >= since,
+                )
+            )
+        )
+        or 0
+    )
+    responded = by_status.get("RESPONDED", 0)
+    qualified = by_status.get("QUALIFIED", 0)
+    proposal_sent = int(
+        (
+            await session.scalar(
+                select(func.count(func.distinct(LeadEvent.lead_id))).where(
+                    LeadEvent.event_type == "PROPOSAL",
+                    LeadEvent.created_at >= since,
+                )
+            )
+        )
+        or 0
+    )
+    nurture = by_status.get("NURTURE", 0)
+
     return OpsFunnelOut(
         since_days=since_days,
         by_status=by_status,
@@ -686,10 +755,27 @@ async def funnel_metrics(
             "contacted_over_confirmed": rate(contacted, confirmed),
             "replied_over_contacted": rate(replied, contacted),
             "won_over_contacted": rate(won, contacted),
+            "candidate_to_ai_confirmed": rate(ai_confirmed, ai_candidates),
+            "ai_confirmed_to_contacted": rate(contacted, ai_confirmed),
+            "contacted_to_responded": rate(responded, contacted),
+            "responded_to_qualified": rate(qualified, responded),
+            "qualified_to_proposal": rate(proposal_sent, qualified),
+            "proposal_to_won": rate(won, proposal_sent),
         },
         by_community=list(by_community_map.values()),
         overdue_followups=overdue,
         status_event_drift=drift,
+        ai_candidates=ai_candidates,
+        ai_reviewed=ai_reviewed,
+        ai_confirmed=ai_confirmed,
+        ai_candidate=ai_candidate,
+        ai_uncertain=ai_uncertain,
+        ai_rejected=ai_rejected,
+        outreach_ready=outreach_ready,
+        responded=responded,
+        qualified=qualified,
+        proposal_sent=proposal_sent,
+        nurture=nurture,
     )
 
 
@@ -745,27 +831,6 @@ async def milestone_metrics(
     )
     won = int((await session.scalar(select(func.count(Lead.id)).where(Lead.status == "WON"))) or 0)
 
-    ai_confirmed = int(
-        (
-            await session.scalar(
-                select(func.count(func.distinct(LeadEvent.lead_id))).where(
-                    LeadEvent.event_type == "AI_PROMOTE"
-                )
-            )
-        )
-        or 0
-    )
-    ai_reviewed = int(
-        (
-            await session.scalar(
-                select(func.count(CommercialAIReview.id)).where(
-                    CommercialAIReview.row_kind == "DECISION"
-                )
-            )
-        )
-        or 0
-    )
-
     async def _dec_count(dec: str) -> int:
         return int(
             (
@@ -778,6 +843,18 @@ async def milestone_metrics(
             )
             or 0
         )
+
+    ai_confirmed = await _dec_count("AI_CONFIRMED") + await _dec_count("SHADOW_CONFIRMED")
+    ai_reviewed = int(
+        (
+            await session.scalar(
+                select(func.count(CommercialAIReview.id)).where(
+                    CommercialAIReview.row_kind == "DECISION"
+                )
+            )
+        )
+        or 0
+    )
 
     outreach_ready = int(
         (

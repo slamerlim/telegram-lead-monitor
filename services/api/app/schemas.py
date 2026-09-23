@@ -318,6 +318,18 @@ class OpsFunnelOut(BaseModel):
     by_community: list[dict]
     overdue_followups: int
     status_event_drift: int
+    # AI-agentic commercial funnel (separate from independent validation)
+    ai_candidates: int = 0
+    ai_reviewed: int = 0
+    ai_confirmed: int = 0
+    ai_candidate: int = 0
+    ai_uncertain: int = 0
+    ai_rejected: int = 0
+    outreach_ready: int = 0
+    responded: int = 0
+    qualified: int = 0
+    proposal_sent: int = 0
+    nurture: int = 0
 
 
 class OpsMilestoneOut(BaseModel):
