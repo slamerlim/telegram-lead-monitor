@@ -25,6 +25,11 @@ from shared.validation.consensus import (
     mode_c_to_label,
 )
 from shared.validation.definition import COMMERCIAL_LEAD_TYPES
+from shared.validation.diagnostic import (
+    DIAGNOSTIC_BATCH_PREFIXES,
+    is_diagnostic_batch,
+    snapshot_gate_eligible,
+)
 from shared.validation.gate import AiGateInput, evaluate_ai_gate
 from shared.validation.registry import (
     AI_PREFIX,
@@ -42,6 +47,23 @@ from shared.independent_review_auth import parse_id_csv, verify_reviewer_token
 router = APIRouter(prefix="/validation", tags=["ai-validation"])
 
 _AI_LABELS = frozenset({"AI_TRUE", "AI_FALSE", "AI_UNCERTAIN", "AI_INSUFFICIENT_EVIDENCE"})
+
+
+def gate_latest_consensus_subquery():
+    """Latest non-synthetic, non-diagnostic consensus id per message_id.
+
+    Exclusion of diagnostic batches MUST happen inside this subquery (before max(id)),
+    otherwise a newer diagnostic row for a reused message_id would displace production
+    consensus in gate numerators.
+    """
+    q = select(
+        ValidationConsensus.message_id,
+        func.max(ValidationConsensus.id).label("max_id"),
+    ).where(ValidationConsensus.synthetic.is_(False))
+    for prefix in DIAGNOSTIC_BATCH_PREFIXES:
+        # Literal prefix match (avoid LIKE '_' wildcards).
+        q = q.where(func.left(ValidationConsensus.sample_batch_id, len(prefix)) != prefix)
+    return q.group_by(ValidationConsensus.message_id).subquery()
 
 
 class AIValidationQueueItem(BaseModel):
@@ -466,6 +488,7 @@ async def recompute_consensus(
         attempt_q = attempt_q.where(AIValidationAttempt.validation_run_id == validation_run_id)
     attempt_flags = (await session.execute(attempt_q)).scalars().all()
     synthetic = any(bool(x) for x in attempt_flags) if attempt_flags else False
+    diagnostic = is_diagnostic_batch(sample_batch_id)
 
     opinions: list[Opinion] = []
     unattested = 0
@@ -538,10 +561,11 @@ async def recompute_consensus(
         lead_type=result.lead_type,
         input_review_ids=json.dumps([r.id for r in rows]),
         input_digest=digest,
-        gate_eligible=bool(
-            result.gate_eligible
-            and not synthetic
-            and result.state in ("VALIDATED_TRUE", "VALIDATED_FALSE")
+        gate_eligible=snapshot_gate_eligible(
+            consensus_gate_eligible=bool(result.gate_eligible),
+            synthetic=synthetic,
+            diagnostic=diagnostic,
+            state=result.state,
         ),
         synthetic=synthetic,
     )
@@ -563,6 +587,7 @@ async def recompute_consensus(
             "state": result.state,
             "rationale_code": result.rationale_code,
             "synthetic": synthetic,
+            "diagnostic": diagnostic,
             "deduped": True,
         }
     return {
@@ -571,6 +596,7 @@ async def recompute_consensus(
         "rationale_code": result.rationale_code,
         "gate_eligible": snap.gate_eligible,
         "synthetic": synthetic,
+        "diagnostic": diagnostic,
         "unattested": unattested,
     }
 
@@ -602,16 +628,8 @@ async def compute_gates_payload(session: AsyncSession) -> ValidationGatesOut:
         ],
         0,
     )
-    # Use latest id per (batch, message)
-    latest = (
-        select(
-            ValidationConsensus.message_id,
-            func.max(ValidationConsensus.id).label("max_id"),
-        )
-        .where(ValidationConsensus.synthetic.is_(False))
-        .group_by(ValidationConsensus.message_id)
-        .subquery()
-    )
+    # Latest id per message among non-synthetic, non-diagnostic batches only.
+    latest = gate_latest_consensus_subquery()
     rows = (
         await session.execute(
             select(ValidationConsensus.state, func.count())
