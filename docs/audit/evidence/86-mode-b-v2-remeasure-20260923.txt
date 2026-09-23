@@ -84,6 +84,13 @@ Diagnostic VALIDATED_TRUE rows do not enter ai_validated_true.
 v1 “Mode B conservatism” claim in evidence 84 is superseded by forensics 85 + this
 re-measure: the TRUE path was previously unreachable for schema-compliant outputs.
 
+Terminology (plan Phase 14):
+The earlier conclusion that Mode B exhibited family-specific conservatism was
+provisional and required contract forensics. This diagnostic tested whether the
+observed behavior was structurally constrained by the previous Mode B schema.
+With cursor_ai_val_v2, Mode B could express TRUE and did so on commercial anchors
+(4 AI_TRUE opinions; 2 persisted VALIDATED_TRUE under aival_diag_ isolation).
+
 ================================================================================
 7. POLICY
 ================================================================================

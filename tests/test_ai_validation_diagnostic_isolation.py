@@ -72,11 +72,14 @@ def test_snapshot_gate_eligible_diagnostic_blocks():
 
 
 def test_gate_latest_subquery_excludes_diagnostic_prefix():
+    # Compile the real helper used by compute_gates_payload (not a reconstructed copy).
+    helper = gate_latest_consensus_subquery()
     text = str(
-        select(gate_latest_consensus_subquery().c.message_id, gate_latest_consensus_subquery().c.max_id)
-        .compile(dialect=postgresql.dialect(), compile_kwargs={"literal_binds": True})
+        select(helper.c.message_id, helper.c.max_id).compile(
+            dialect=postgresql.dialect(), compile_kwargs={"literal_binds": True}
+        )
     )
-    # Prefer compiling the underlying select used by the helper.
+    # Also compile the equivalent select that builds the helper for literal binds on LEFT.
     q = select(
         ValidationConsensus.message_id,
         func.max(ValidationConsensus.id).label("max_id"),
@@ -89,12 +92,12 @@ def test_gate_latest_subquery_excludes_diagnostic_prefix():
     assert "left(" in text.lower()
     assert "max(" in text.lower()
     assert "synthetic" in text.lower()
-    # Diagnostic filter must appear before GROUP BY (inside aggregation scope).
     low = text.lower()
     assert low.index("aival_diag_") < low.index("group by")
 
 
-def test_snapshot_blocks_diagnostic_validated_true():
+def test_client_synthetic_false_cannot_clear_diagnostic_exclusion():
+    # Server diagnostic marker blocks eligibility even when client claims non-synthetic.
     assert (
         snapshot_gate_eligible(
             consensus_gate_eligible=True,
