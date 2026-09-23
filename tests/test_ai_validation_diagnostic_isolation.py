@@ -2,11 +2,9 @@
 
 from __future__ import annotations
 
-from sqlalchemy import func, select
 from sqlalchemy.dialects import postgresql
 
 from services.api.app.ai_validation_routes import gate_latest_consensus_subquery
-from shared.models import ValidationConsensus
 from shared.validation.diagnostic import (
     DIAGNOSTIC_BATCH_PREFIXES,
     is_diagnostic_batch,
@@ -72,29 +70,23 @@ def test_snapshot_gate_eligible_diagnostic_blocks():
 
 
 def test_gate_latest_subquery_excludes_diagnostic_prefix():
-    # Assert on the real helper's compiled SQL (literal binds via reconstructed equivalent
-    # that mirrors gate_latest_consensus_subquery construction exactly).
-    q = select(
-        ValidationConsensus.message_id,
-        func.max(ValidationConsensus.id).label("max_id"),
-    ).where(ValidationConsensus.synthetic.is_(False))
-    for prefix in DIAGNOSTIC_BATCH_PREFIXES:
-        q = q.where(func.left(ValidationConsensus.sample_batch_id, len(prefix)) != prefix)
-    q = q.group_by(ValidationConsensus.message_id)
-    text = str(q.compile(dialect=postgresql.dialect(), compile_kwargs={"literal_binds": True}))
+    helper = gate_latest_consensus_subquery()
+    assert hasattr(helper.c, "message_id") and hasattr(helper.c, "max_id")
+    text = str(
+        helper.element.compile(
+            dialect=postgresql.dialect(),
+            compile_kwargs={"literal_binds": True},
+        )
+    )
     assert "aival_diag_" in text
     assert "left(" in text.lower()
     assert "max(" in text.lower()
     assert "synthetic" in text.lower()
     low = text.lower()
     assert low.index("aival_diag_") < low.index("group by")
-    # Sanity: helper is importable and returns a subquery with expected columns.
-    helper = gate_latest_consensus_subquery()
-    assert hasattr(helper.c, "message_id") and hasattr(helper.c, "max_id")
 
 
 def test_client_synthetic_false_cannot_clear_diagnostic_exclusion():
-    # Server diagnostic marker blocks eligibility even when client claims non-synthetic.
     assert (
         snapshot_gate_eligible(
             consensus_gate_eligible=True,

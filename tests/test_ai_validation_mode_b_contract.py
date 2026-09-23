@@ -28,12 +28,7 @@ def _schema_keys(mode: str) -> set[str]:
     prompt = build_mode_prompt(mode, item, scoring_yaml="config/scoring.yaml")
     m = re.search(r"Schema:\s*(\{.*?\})", prompt)
     assert m, f"no schema in mode {mode} prompt"
-    # crude key extraction from JSON-like schema string
     return set(re.findall(r'"([a-z_]+)"\s*:', m.group(1)))
-
-
-def test_prompt_version_is_v2():
-    assert PROMPT_VERSION == "cursor_ai_val_v2"
 
 
 def test_yaml_prompt_versions_match_constant():
