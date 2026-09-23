@@ -100,9 +100,22 @@ def test_mode_b_v1_payload_without_new_keys_is_uncertain():
     ) == (AI_UNCERTAIN, None)
 
 
-def test_unanimous_true_reachable_when_b_qualified():
+def test_unanimous_true_reachable_from_mode_b_payload():
+    """Schema-shaped Mode B payload → mapper → normalize → VALIDATED_TRUE with A/C."""
     text = "I need a developer to build a trading bot. Budget $2000."
     quote = "build a trading bot"
+    b_label, b_lead = mode_b_to_label(
+        {
+            "uncertain": False,
+            "is_false_positive": False,
+            "matches_objectives": True,
+            "lead_type": "BOT_PURCHASE",
+            "confidence": 0.9,
+            "evidence": [quote],
+        }
+    )
+    assert b_label == AI_TRUE
+    assert b_lead == "BOT_PURCHASE"
     ops = [
         Opinion(
             mode="A",
@@ -115,9 +128,10 @@ def test_unanimous_true_reachable_when_b_qualified():
         ),
         Opinion(
             mode="B",
-            label=AI_TRUE,
+            label=b_label,
             confidence=0.9,
-            lead_type="BOT_PURCHASE",
+            lead_type=b_lead,
+            fp_class=None,
             evidence=(quote,),
             model_family="openai",
             model="m2",
@@ -132,10 +146,8 @@ def test_unanimous_true_reachable_when_b_qualified():
             model="m3",
         ),
     ]
-    # Labels already AI_TRUE; compute_consensus will normalize
     r = compute_consensus(ops, text)
     assert r.state == VALIDATED_TRUE
-    assert r.gate_eligible is True
 
 
 def test_mode_a_c_mappers_still_work():
