@@ -1,0 +1,96 @@
+Mode B v2 contract re-measure (gate-isolated) — 2026-09-23 (UTC)
+
+UTC end: ~2026-09-23T12:04:11Z
+git SHA (fix): 121667f
+migration: 0007_ai_validation
+batch_id: aival_diag_modeb_v2_20260923
+prompt_version: cursor_ai_val_v2 (all 90 AI reviews)
+paired sample: same 30 message_ids as aival_diag_commercial_candidates_20260923
+diagnostic_only: true (aival_diag_ prefix)
+
+Prior forensics: docs/audit/evidence/85-mode-b-payload-forensics-20260923.txt
+  (v1: has_mo=0; anchors is_false_positive=false without matches_objectives → structural UNCERTAIN)
+
+================================================================================
+1. CONTRACT FIX (already landed in 121667f)
+================================================================================
+- Mode B schema now includes matches_objectives + lead_type
+- mode_b_to_label requires matches_objectives is True (strict bool)
+- Skeptic framing retained; consensus POLICY_VERSION=v1 (unanimous 3×TRUE) unchanged
+- Gate thresholds unchanged; ML off
+
+================================================================================
+2. INTEGRITY / ISOLATION
+================================================================================
+unique messages: 30
+attempts: 90 ok / 0 fail
+gate_eligible: all false
+Gates BEFORE/AFTER all stages: 94 / 0 / 94 (unchanged)
+human_labels: 1524 unchanged
+ml_training_enabled: false
+
+================================================================================
+3. PER-MODE (v2)
+================================================================================
+| Mode | Family    | TRUE | FALSE | UNCERTAIN |
+| ---- | --------- | ---: | ----: | --------: |
+| A    | anthropic |    3 |    22 |         5 |
+| B    | openai    |    4 |    26 |         0 |
+| C    | xai       |    3 |    26 |         1 |
+
+Mode B key presence: has_matches_objectives=30/30, has_lead_type=30/30, matches_objectives=true on 4
+
+================================================================================
+4. CONSENSUS MATRIX
+================================================================================
+| Combination              |  n |
+| ------------------------ | -: |
+| F/F/F                    | 22 |
+| U/F/F                    |  4 |
+| T/T/T                    |  3 |
+| U/T/U                    |  1 |
+
+Consensus states: VALIDATED_FALSE=26, VALIDATED_TRUE=2, UNCERTAIN=1, INSUFFICIENT_EVIDENCE=1
+(all gate_eligible=false)
+
+================================================================================
+5. MODE-B DIAGNOSTIC (vs v1)
+================================================================================
+A∧C both TRUE: 3
+  of those B=TRUE: 3  (was 0 under v1 — all were B=UNCERTAIN)
+  of those B=UNCERTAIN: 0
+  of those B=FALSE: 0
+B independent TRUE: 4
+raw label T/T/T: 3
+persisted VALIDATED_TRUE: 2
+
+CRM anchors:
+| message_id | v1 (diag)     | v2              | note |
+| ---------: | ------------- | --------------- | ---- |
+| 24048      | T/U/T → UNC   | T/T/T → VALIDATED_TRUE | B now matches_objectives=true, BOT_REPAIR |
+| 24091      | T/U/T → UNC   | T/T/T → VALIDATED_TRUE | same |
+| 55357      | T/U/T → UNC   | labels T/T/T → UNCERTAIN | B TRUE but evidence quotes wrapped in «» failed normalize substring check → n_insufficient=1 |
+
+================================================================================
+6. INTERPRETATION
+================================================================================
+A. Mode B CAN produce TRUE on clear commercial candidates once the schema/mapper
+   contract is aligned (observed: 4 AI_TRUE; 2 gate-isolated VALIDATED_TRUE on CRM
+   repair anchors).
+
+This does NOT authorize loosening production gate thresholds or enabling ML.
+Diagnostic VALIDATED_TRUE rows do not enter ai_validated_true.
+
+v1 “Mode B conservatism” claim in evidence 84 is superseded by forensics 85 + this
+re-measure: the TRUE path was previously unreachable for schema-compliant outputs.
+
+================================================================================
+7. POLICY
+================================================================================
+scorer unchanged; consensus unanimity unchanged; gate thresholds unchanged;
+ML disabled; no scheduler.
+
+================================================================================
+8. TESTS
+================================================================================
+pytest: 125 passed (includes Mode B contract + hardened isolation tests)
