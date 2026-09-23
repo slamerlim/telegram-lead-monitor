@@ -1,0 +1,70 @@
+Controlled non-synthetic Cursor SDK batch — 2026-09-23 (UTC)
+
+UTC end: ~2026-09-23T10:44:18Z
+git SHA (pre-commit for this evidence): 5156816 (code fixes committed after)
+migration: 0007_ai_validation
+
+## Security
+.env.validation gitignored; no tracked crsr_ hits.
+CURSOR_API_KEY present in gitignored env; authenticates via SDK probe.
+User-asserted key ROTATED (chat-exposed prior key). Value not recorded here.
+
+## Sample
+batch_id: aival_batch_20260923
+method: stratified build_independent_review_sample.py --exclude-ai-validated --per-stratum 17
+  + SQL top-up random_negatives_topup to reach 100
+unique_messages: 100
+excluded_already_ai_validated: 16
+expected attempts: 300 (100×A/B/C)
+
+## Staged execution (backend=sdk, synthetic=false)
+s1 aival_sdk_batch_20260923_s1: 10 msgs / 30 ok / 0 fail
+s2 aival_sdk_batch_20260923_s2: 17 msgs / 51 ok / 0 fail  (random queue intersection shortfall)
+s3 aival_sdk_batch_20260923_s3: 73 msgs / 219 ok / 0 fail (after deterministic queue fix)
+TOTAL: 100 unique msgs / 300 ok / 0 fail / 0 duplicate (message,mode) pairs
+
+Families: anthropic + openai + xai (provider=cursor) on every ABC attempt
+
+## Consensus (latest non-synth for batch messages)
+VALIDATED_FALSE: 93
+UNCERTAIN: 7
+VALIDATED_TRUE: 0
+CONTESTED: 0
+insufficient-family: 0
+synthetic: 0
+
+Per-opinion labels in batch runs: AI_TRUE=8, AI_FALSE=278, AI_UNCERTAIN=14
+(no message reached unanimous TRUE consensus)
+
+## Gate (after batch)
+ai_validation_gate_ready: false
+ai_validated_messages: 94  (global non-synth TRUE+FALSE; includes prior smoke FALSE)
+ai_validated_true: 0
+closed reasons: ai_validated_messages<100, ai_validated_true<30
+ml_training_enabled: false
+Thresholds NOT changed.
+
+## Isolation
+human_labels before/after: 1524 / 1524
+phase_d: 128 / 128
+
+## Blindness
+Queue schema keys only message_id,sample_batch_id,text,task_token (verified empty after full batch).
+Adversarial pytest coverage passed in full suite.
+
+## Commercial alignment
+VALIDATED_TRUE by lead_type: none
+Interpretation: mostly FALSE is a valid outcome for this stratified sample
+(heavy FP/support/negative strata). Not sales validation. Not human GT.
+
+## Tests
+pytest full: 109 passed
+
+## Scheduler
+No production AI validation scheduler/cron hook in compose or services/scheduler.
+Continuous autonomy = separate follow-up (bounded batch only).
+
+## Code fixes during batch
+- sample builder --exclude-ai-validated
+- AI queue: deterministic ORDER BY message_id; limit le=200
+- orchestrator queue fetch cap aligned

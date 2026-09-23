@@ -2,7 +2,7 @@
 
 ## Goal
 
-Autonomous multi-AI validation using **Cursor models only** (SDK orchestrator + in-chat Task subagents), deciding commercial-lead status under `config/scoring.yaml` objectives — fail-closed, blind, non-circular.
+**Cursor SDK-mediated multi-model validation** (SDK orchestrator + in-chat Task subagents): orchestration runs through the Cursor SDK; distinct model families (e.g. Anthropic / OpenAI / xAI) execute via Cursor; this application does **not** call Anthropic/OpenAI/xAI HTTP APIs directly. Decides commercial-lead status under `config/scoring.yaml` objectives — fail-closed, blind, non-circular.
 
 ## Reuse
 
@@ -16,13 +16,15 @@ Autonomous multi-AI validation using **Cursor models only** (SDK orchestrator + 
 
 ## Companion tables
 
-- `ai_validation_attempts` — append-only provider (Cursor) call log
+- `ai_validation_attempts` — append-only Cursor-SDK call log (provider field=`cursor`, plus model/family)
 - `validation_consensus` — append-only consensus snapshots (gate re-derives)
 
 ## Independence
 
-Distinct Cursor `model` + `model_family` across modes A/B/C. Three prompts on one model = fail closed.
+Distinct `model` + `model_family` across modes A/B/C (recorded on each attempt). Three prompts on one model = fail closed. `provider` is always `cursor` (SDK mediation).
 
 ## Commercial definition
 
 Exactly the six objectives in `scoring.yaml` header. Positive `lead_type` ∈ commercial types matching `LeadScorer._COMMERCIAL_TYPES`.
+
+AI consensus is multi-model evidence — **not** human ground truth, sales qualification, or ML GO.

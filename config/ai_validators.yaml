@@ -1,5 +1,6 @@
-# Cursor-only AI validators — no third-party LLM providers.
+# Cursor SDK-mediated multi-model validators (no direct Anthropic/OpenAI/xAI HTTP APIs).
 # Model ids must match Cursor SDK allowlist (Agent.prompt Available models).
+# provider is always "cursor"; model_family records the underlying family for diversity.
 policy_version: v1
 require_distinct_families: true
 

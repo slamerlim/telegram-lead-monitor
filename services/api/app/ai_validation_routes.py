@@ -180,7 +180,7 @@ def _row_fields_for_sig(
 async def ai_validation_queue(
     sample_batch_id: str = Query(..., min_length=1, max_length=64),
     reviewer_id: str = Query(..., min_length=1, max_length=64),
-    limit: int = Query(default=10, ge=1, le=50),
+    limit: int = Query(default=10, ge=1, le=200),
     session: AsyncSession = Depends(get_session),
     x_validator_token: str | None = Header(default=None),
 ) -> list[AIValidationQueueItem]:
@@ -202,7 +202,7 @@ async def ai_validation_queue(
             LabelReviewSample.sample_batch_id == sample_batch_id,
             LabelReviewSample.message_id.not_in(already),
         )
-        .order_by(func.random())
+        .order_by(LabelReviewSample.message_id.asc())
         .limit(limit)
     )
     rows = (await session.execute(q)).all()
@@ -232,7 +232,7 @@ async def ai_validation_queue(
 async def ai_adjudication_queue(
     sample_batch_id: str = Query(..., min_length=1, max_length=64),
     reviewer_id: str = Query(..., min_length=1, max_length=64),
-    limit: int = Query(default=10, ge=1, le=50),
+    limit: int = Query(default=10, ge=1, le=200),
     session: AsyncSession = Depends(get_session),
     x_validator_token: str | None = Header(default=None),
 ) -> list[AIValidationQueueItem]:
@@ -258,7 +258,7 @@ async def ai_adjudication_queue(
             LabelReviewSample.sample_batch_id == sample_batch_id,
             LabelReviewSample.message_id.not_in(already_d),
         )
-        .order_by(func.random())
+        .order_by(LabelReviewSample.message_id.asc())
         .limit(limit)
     )
     rows = (await session.execute(q)).all()

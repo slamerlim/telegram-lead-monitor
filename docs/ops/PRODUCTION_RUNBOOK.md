@@ -113,9 +113,10 @@ INDEPENDENT_REVIEW_HMAC_SECRET=replace-with-long-random
 
 Automation prefixes (`agent`, `audit`, `smoke`, `aival`, …) match as exact id or `prefix_…` only (so `auditor` is allowed). AI validators use `aival_*` and are **excluded** from human independence counts.
 
-## Cursor AI validation (no third-party LLMs)
+## Cursor SDK-mediated multi-model validation
 
-Roster: `config/ai_validators.yaml` (Cursor model ids + distinct `model_family` for A/B/C).
+Roster: `config/ai_validators.yaml` (Cursor SDK model ids + distinct `model_family` for A/B/C).
+Orchestration uses the Cursor SDK; this app does not call Anthropic/OpenAI/xAI HTTP APIs directly.
 
 Secrets (prefer gitignored `.env.validation` mounted on API only):
 

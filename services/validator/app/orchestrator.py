@@ -69,7 +69,11 @@ def run_batch(
             raise SystemExit(f"missing token for {slot.id}")
         resp = client.get(
             "/validation/queue",
-            params={"sample_batch_id": sample_batch_id, "reviewer_id": slot.id, "limit": max(limit * 10, 50)},
+            params={
+                "sample_batch_id": sample_batch_id,
+                "reviewer_id": slot.id,
+                "limit": min(max(limit * 5, limit), 200),
+            },
             headers={"X-Validator-Token": tok},
         )
         if resp.status_code != 200:

@@ -118,7 +118,7 @@ STRATA_SQL: list[tuple[str, str, str]] = [
 ]
 
 
-async def main(batch_id: str, per_stratum: int, out: Path, replace: bool) -> None:
+async def main(batch_id: str, per_stratum: int, out: Path, replace: bool, exclude_ai_validated: bool) -> None:
     async with SessionLocal() as db:
         if replace:
             await db.execute(
@@ -147,6 +147,26 @@ async def main(batch_id: str, per_stratum: int, out: Path, replace: bool) -> Non
                 )
             ).all()
         )
+        excluded_ai = 0
+        if exclude_ai_validated:
+            already = {
+                int(r[0])
+                for r in (
+                    await db.execute(
+                        text(
+                            """
+                            SELECT message_id FROM ai_validation_attempts
+                            UNION
+                            SELECT message_id FROM label_reviews WHERE validator_kind='ai'
+                            UNION
+                            SELECT message_id FROM validation_consensus WHERE synthetic IS FALSE
+                            """
+                        )
+                    )
+                ).all()
+            }
+            excluded_ai = len(already)
+            seen.update(already)
 
         strata: dict[str, list[int]] = {}
         for stratum, excl_col, sql in STRATA_SQL:
@@ -206,17 +226,15 @@ async def main(batch_id: str, per_stratum: int, out: Path, replace: bool) -> Non
             "per_stratum_requested": per_stratum,
             "unique_messages": total,
             "rows_inserted_this_run": inserted,
+            "excluded_already_ai_validated": excluded_ai if exclude_ai_validated else 0,
             "stratum_candidate_counts": {k: len(v) for k, v in strata.items()},
             "stratum_final_counts": final_counts,
             "methodology": METHODOLOGY.strip(),
-            "review_api": {
-                "queue": f"/labels/independent-queue?sample_batch_id={batch_id}&blind=true",
-                "submit": "POST /labels/reviews",
-            },
+            "exclude_ai_validated": exclude_ai_validated,
             "caveats": [
                 "Agent TRUE/FP strata exist for agreement measurement, not as ground truth.",
-                "Blind review recommended (blind=true).",
-                "Do not treat this sample as production precision until human adjudication finishes.",
+                "Blind AI validation recommended (AI queue shows text only).",
+                "Do not treat AI consensus as sales validation or human ground truth.",
                 "high_leads stratum is limited by current CRM lead count (may be << per_stratum).",
             ],
         }
@@ -235,5 +253,12 @@ if __name__ == "__main__":
         action="store_true",
         help="Delete unreviewed sample rows for this batch before rebuilding (keeps reviewed).",
     )
+    p.add_argument(
+        "--exclude-ai-validated",
+        action="store_true",
+        help="Exclude message_ids already present in AI attempts/reviews/non-synthetic consensus.",
+    )
     args = p.parse_args()
-    asyncio.run(main(args.batch_id, args.per_stratum, Path(args.out), args.replace))
+    asyncio.run(
+        main(args.batch_id, args.per_stratum, Path(args.out), args.replace, args.exclude_ai_validated)
+    )

@@ -14,7 +14,7 @@
 - Claim ML GO until independent AI validation gates honestly pass
 - Overwrite `human_labels` from AI/validation paths
 - Count Phase D / `agent_*` / `audit_*` as independent validation
-- Integrate third-party LLM APIs for validators (Cursor models/subagents only)
+- Integrate third-party LLM HTTP APIs for validators (use Cursor SDK-mediated multi-model validation instead)
 
 ## AI validation pointers
 

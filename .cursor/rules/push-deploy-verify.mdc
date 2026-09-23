@@ -27,4 +27,4 @@ Unless they explicitly say not to:
 - No loosening `config/scoring.yaml` thresholds to inflate leads
 - No claiming ML GO / enabling supervised ML until AI independence gates honestly pass
 - No overwriting `human_labels` from validation paths
-- Cursor-only validators (no third-party LLM API integrations) unless the user reverses that decision
+- No direct third-party LLM HTTP APIs in the validation plane (use Cursor SDK-mediated multi-model validation) unless the user reverses that decision
