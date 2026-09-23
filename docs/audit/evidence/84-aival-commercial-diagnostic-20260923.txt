@@ -1,0 +1,154 @@
+Commercial-candidate diagnostic (gate-isolated) — 2026-09-23 (UTC)
+
+UTC end: 2026-09-23T11:37:06Z
+git SHA (isolation code): fb48d9d
+migration: 0007_ai_validation
+batch_id: aival_diag_commercial_candidates_20260923
+run_ids: aival_diag_run_20260923_s1 / s2 / s3
+diagnostic_only: true
+isolation: server-side aival_diag_ prefix excluded inside gate latest-consensus subquery
+  (shared/validation/diagnostic.py + gate_latest_consensus_subquery)
+prompts/consensus/scorer/thresholds: UNCHANGED
+models: A claude-opus-5-5 / B gpt-5.6-sol / C grok-4.7 (provider=cursor)
+
+================================================================================
+1. SAMPLE
+================================================================================
+N=30 unique production messages
+method: scripts/build_aival_diag_commercial_sample.py
+  crm_commercial_anchor: 3 (all CRM HIGH commercial lead_types; re-included)
+  provisional_true_holdout: 27 (agent/audit TRUE_LEAD; exclude prior non-diag AI; exclude jobs/support)
+seed: aival_diag_commercial_20260923
+CRM lead_type metadata: TRADING_SYSTEM_CONTRACT×2, COPY_TRADING_PROJECT×1, unknown×27
+
+Candidate objective coverage (CRM metadata only; unknown = provisional without CRM type):
+| Candidate objective     | Sampled |
+| ----------------------- | ------: |
+| Bot purchase            |       0 |
+| Bot repair              |       0 |
+| Trading-system contract |       2 |
+| Quant engineering       |       0 |
+| ML/AI engineering       |       0 |
+| Strategy implementation |       1 (COPY_TRADING_PROJECT as related CRM type) |
+| unknown / provisional   |      27 |
+
+================================================================================
+2. INTEGRITY
+================================================================================
+unique messages: 30
+attempts: 90 (ok=90, fail=0)
+duplicate (message,mode): 0
+families: anthropic+openai+xai on every message
+attempt.synthetic: all false (real SDK)
+consensus.gate_eligible: all false (diagnostic)
+consensus.synthetic: all false
+
+Staged:
+  s1 limit=5  → 15 ok
+  s2 limit=10 → 30 ok
+  s3 limit=15 → 45 ok
+
+================================================================================
+3. GATE ISOLATION PROOF (mandatory)
+================================================================================
+BEFORE (pre-code deploy): messages=94 true=0 false=94 ready=false ml=false
+AFTER isolation deploy (no diag rows yet): 94 / 0 / 94
+AFTER stage 1: 94 / 0 / 94
+AFTER stage 2: 94 / 0 / 94
+AFTER stage 3: 94 / 0 / 94
+
+PostgreSQL gate-equivalent (exclude left(batch,11)='aival_diag_'):
+  VALIDATED_FALSE=94, UNCERTAIN=8 (production only; diag excluded)
+diag rows with gate_eligible=true: 0
+human_labels: 1524 → 1524
+
+Diagnostic results ARE stored in ai_validation_attempts / validation_consensus /
+label_reviews under sample_batch_id aival_diag_commercial_candidates_20260923.
+
+Client cannot clear isolation: numerators ignore aival_diag_* by server SQL,
+not by client synthetic flag.
+
+================================================================================
+4. PER-MODE OPINIONS
+================================================================================
+| Mode | Family    | TRUE | FALSE | UNCERTAIN | Failures |
+| ---- | --------- | ---: | ----: | --------: | -------: |
+| A    | anthropic |    3 |    20 |         7 |        0 |
+| B    | openai    |    0 |    26 |         4 |        0 |
+| C    | xai       |    3 |    26 |         1 |        0 |
+
+================================================================================
+5. CONSENSUS MATRIX (A/B/C)
+================================================================================
+| Combination                         |  n |
+| ----------------------------------- | -: |
+| FALSE / FALSE / FALSE               | 20 |
+| UNCERTAIN / FALSE / FALSE           |  6 |
+| TRUE / UNCERTAIN / TRUE             |  3 |
+| UNCERTAIN / UNCERTAIN / UNCERTAIN   |  1 |
+| T/T/T                               |  0 |
+| any TRUE vs FALSE conflict          |  0 |
+
+Consensus states: VALIDATED_FALSE=26, UNCERTAIN=4, VALIDATED_TRUE=0, CONTESTED=0
+
+================================================================================
+6. MODE-B DIAGNOSTIC
+================================================================================
+A∧C both TRUE: 3
+  of those B=TRUE: 0
+  of those B=UNCERTAIN: 3
+  of those B=FALSE: 0
+B independent TRUE (any message): 0
+unanimous T/T/T: 0
+majority TRUE rejected by unanimous policy (T/U/T): 3
+
+The 3 A∧C TRUE messages are exactly the CRM HIGH commercial anchors
+(24048, 24091, 55357) — identical T/U/T pattern as controlled batch
+aival_batch_20260923 (stable re-measure).
+
+================================================================================
+7. CONSENSUS BY STRATUM (sampling metadata only)
+================================================================================
+| Stratum                   | FALSE | UNCERTAIN | TRUE |
+| ------------------------- | ----: | --------: | ---: |
+| crm_commercial_anchor     |     0 |         3 |    0 |
+| provisional_true_holdout  |    26 |         1 |    0 |
+
+================================================================================
+8. PROVISIONAL / CRM COMPARISON (NOT ground truth)
+================================================================================
+All 3 CRM HIGH commercial anchors → diag UNCERTAIN (T/U/T), same as controlled batch.
+26/27 provisional TRUE_LEAD holdouts → VALIDATED_FALSE (unanimous or majority FALSE).
+1 provisional → UNCERTAIN (U/U/U).
+
+================================================================================
+9. SUPPORTED INTERPRETATION
+================================================================================
+C. Mode B remains zero-TRUE despite commercially strong candidates
+   (all 3 CRM HIGH commercial leads again A=TRUE / B=UNCERTAIN / C=TRUE).
+
+Also: commercially focused holdout of provisional TRUE_LEAD did not produce
+any Mode B TRUE, and mostly produced VALIDATED_FALSE under current policy.
+
+This is observed model-family behavior in this sample — not proof of a defect,
+and not a mandate to change unanimous 3×TRUE consensus policy.
+
+================================================================================
+10. POLICY / NON-CHANGES
+================================================================================
+scorer unchanged; prompts unchanged (cursor_ai_val_v1); consensus POLICY_VERSION=v1
+unchanged; gate thresholds unchanged (100/30); ML remains disabled; no scheduler.
+
+================================================================================
+11. TESTS
+================================================================================
+pytest full: 113 passed (includes new test_ai_validation_diagnostic_isolation.py)
+
+================================================================================
+12. UNRESOLVED
+================================================================================
+- Would Mode B ever affirm TRUE on clearer RFQs outside this CRM/provisional pool?
+- Is Mode B's skeptic path structurally unable to emit AI_TRUE under current prompt
+  mapping (mode_b_to_label), vs genuinely conservative judgment?
+- Separately: should unanimous TRUE remain the long-term gate rule? (future policy
+  experiment only — not performed here)

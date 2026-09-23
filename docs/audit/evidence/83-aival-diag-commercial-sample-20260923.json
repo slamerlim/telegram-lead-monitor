@@ -1,0 +1,56 @@
+{
+  "sample_batch_id": "aival_diag_commercial_candidates_20260923",
+  "created_at": "2026-09-23T11:23:54.859172+00:00",
+  "diagnostic_only": true,
+  "gate_isolation": "aival_diag_ prefix excluded from gate numerators",
+  "n_requested": 30,
+  "unique_messages": 30,
+  "seed": "aival_diag_commercial_20260923",
+  "stratum_final_counts": {
+    "crm_commercial_anchor": 3,
+    "provisional_true_holdout": 27
+  },
+  "message_ids": [
+    24048,
+    24091,
+    55357,
+    22313,
+    22448,
+    24761,
+    22952,
+    23849,
+    8505374,
+    26423,
+    22285,
+    25883,
+    27462,
+    26225,
+    24816,
+    25919,
+    22699,
+    25438,
+    24661,
+    8505387,
+    22709,
+    22861,
+    25940,
+    23530,
+    22326,
+    189,
+    26829,
+    25543,
+    22281,
+    27398
+  ],
+  "crm_lead_type_counts": {
+    "unknown": 27,
+    "TRADING_SYSTEM_CONTRACT": 2,
+    "COPY_TRADING_PROJECT": 1
+  },
+  "methodology": "Diagnostic commercial-candidate sample for Mode-B measurement.\nGate-isolated via aival_diag_ batch prefix (excluded from ai_validated_* numerators).\nCRM/provisional labels are sampling metadata only — not ground truth, not sales truth.\nValidators remain blind (text + task_token only); prompts unchanged.",
+  "caveats": [
+    "CRM/provisional labels are sampling metadata only.",
+    "Not ground truth; not sales qualification.",
+    "Diagnostic results must not enter ai_validated_* numerators."
+  ]
+}
