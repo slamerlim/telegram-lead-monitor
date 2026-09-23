@@ -3,32 +3,53 @@
 from __future__ import annotations
 
 ALLOWED_STATUSES = frozenset(
-    {"NEW", "REVIEWED", "CONTACTED", "RESPONDED", "QUALIFIED", "REJECTED", "WON", "LOST"}
+    {
+        "NEW",
+        "REVIEWED",
+        "AI_CONFIRMED",
+        "CONTACTED",
+        "RESPONDED",
+        "QUALIFIED",
+        "REJECTED",
+        "WON",
+        "LOST",
+    }
 )
 
 # Terminal for this commercial milestone (no reopen).
 TERMINAL_STATUSES = frozenset({"REJECTED", "WON", "LOST"})
 
-# event_type → required destination status (when status changes)
 EVENT_STATUS_HINTS = {
     "CONTACT_ATTEMPT": "CONTACTED",
     "RESPONSE": "RESPONDED",
 }
 
-# Allowed next statuses keyed by current status.
 _TRANSITIONS: dict[str, frozenset[str]] = {
-    "NEW": frozenset({"REVIEWED", "QUALIFIED", "REJECTED"}),
-    "REVIEWED": frozenset({"QUALIFIED", "REJECTED"}),
+    "NEW": frozenset({"REVIEWED", "QUALIFIED", "REJECTED", "AI_CONFIRMED"}),
+    "REVIEWED": frozenset({"QUALIFIED", "REJECTED", "AI_CONFIRMED"}),
+    "AI_CONFIRMED": frozenset({"CONTACTED", "REJECTED", "QUALIFIED"}),
     "QUALIFIED": frozenset({"CONTACTED", "REJECTED"}),
     "CONTACTED": frozenset({"RESPONDED", "LOST"}),
-    "RESPONDED": frozenset({"WON", "LOST"}),
+    "RESPONDED": frozenset({"WON", "LOST", "QUALIFIED"}),
     "REJECTED": frozenset(),
     "WON": frozenset(),
     "LOST": frozenset(),
 }
 
-# Events that do not require a status change.
-NON_STATUS_EVENTS = frozenset({"FOLLOW_UP", "NOTE", "ASSIGN", "BACKFILL", "PROMOTE"})
+NON_STATUS_EVENTS = frozenset(
+    {
+        "FOLLOW_UP",
+        "NOTE",
+        "ASSIGN",
+        "BACKFILL",
+        "PROMOTE",
+        "AI_REVIEW_STARTED",
+        "AI_REVIEW_COMPLETED",
+        "AI_CANDIDATE",
+        "AI_UNCERTAIN",
+        "AI_REJECTED",
+    }
+)
 
 
 class TransitionError(ValueError):
@@ -65,15 +86,25 @@ def resolve_event_transition(
     current_status: str,
     event_type: str,
     to_status: str | None,
+    actor_kind: str = "operator",
 ) -> tuple[str, str | None]:
     """Return (from_status, new_status_or_None).
 
-    None new_status means keep current (FOLLOW_UP/NOTE/etc.).
+    actor_kind: "operator" (HTTP) | "system" (commercial AI worker).
+    AI_PROMOTE is system-only.
     """
     fr = normalize_status(current_status)
     et = (event_type or "").strip().upper()
+    kind = (actor_kind or "operator").strip().lower()
     if not et:
         raise TransitionError("event_type required")
+
+    if et == "AI_PROMOTE":
+        if kind != "system":
+            raise TransitionError("AI_PROMOTE is system-only")
+        if fr not in {"NEW", "REVIEWED"}:
+            raise TransitionError(f"AI_PROMOTE illegal from {fr}")
+        return fr, "AI_CONFIRMED"
 
     if et in NON_STATUS_EVENTS and et not in ("PROMOTE",):
         if to_status:
@@ -81,7 +112,6 @@ def resolve_event_transition(
         return fr, None
 
     if et == "PROMOTE":
-        # Promote lands at REVIEWED (protected); optional QUALIFIED if already reviewed path.
         target = normalize_status(to_status or "REVIEWED")
         if target not in {"REVIEWED", "QUALIFIED"}:
             raise TransitionError("PROMOTE may only land on REVIEWED or QUALIFIED")

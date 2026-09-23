@@ -168,52 +168,25 @@ See also: `docs/business/COMMERCIAL_PILOT.md`
 
 ### Policy
 
-- Do **not** wait for `ai_validation_gate_ready` or ML readiness to run CRM.
-- AI validation is advisory; human review is commercial truth; customer response is ground truth.
-- Never auto-DM. Never fabricate WON. Never loosen 100/30 or scorer thresholds for volume.
+- Commercial CRM is **AI-agentic**: AI qualifies candidates; humans handle external outreach and real outcomes.
+- Do **not** wait for `ai_validation_gate_ready` or ML readiness.
+- Never auto-DM. Never fabricate WON. Never loosen 100/30 or scorer thresholds.
 
-### Enable (fail-closed)
+### Enable commercial AI worker
 
 ```bash
-# In .env (do not commit secrets):
+# .env (do not commit secrets)
+COMMERCIAL_AI_ENABLED=true
+COMMERCIAL_AI_AUTO_PROMOTE=false   # shadow first
+COMMERCIAL_AI_BACKEND=fake         # use sdk in production with CURSOR_API_KEY
 COMMERCIAL_OPS_ENABLED=true
-LABEL_WRITE_TOKEN=<shared-token>
-# Prefer a dedicated commercial operator id (not used for blind independent review):
 COMMERCIAL_OPERATOR_IDS=<commercial_ops_pilot>
-# Fallback if COMMERCIAL_OPERATOR_IDS empty: HUMAN_LABEL_REVIEWER_IDS
-# (must not overlap INDEPENDENT_HUMAN_REVIEWER_IDS — else 409)
-HUMAN_LABEL_REVIEWER_IDS=<optional-fallback>
+LABEL_WRITE_TOKEN=<token>
 ```
-
-Redeploy API after env change. Confirm:
 
 ```bash
-curl -sS -H "X-Operator-Id: <id>" -H "X-Label-Token: <token>" \
-  http://127.0.0.1:8010/ops/health
+docker compose up -d commercial-ai-worker api analyzer
+docker compose exec -T api alembic upgrade head   # expect 0009_commercial_ai_reviews
 ```
 
-With lockdown on, `/ops/*` remains reachable only when `COMMERCIAL_OPS_ENABLED=true`.
-
-### Daily operator loop
-
-1. `/ops/health` + `/health` + Redis lag
-2. `GET /ops/candidates`
-3. Human qualify → promote / QUALIFIED or REJECTED events
-4. Manual outreach using message/author URLs
-5. Record CONTACT_ATTEMPT → RESPONSE → WON/LOST
-6. `GET /ops/metrics/funnel` and `/ops/metrics/milestone`
-7. Do not retrain ML from small samples
-
-### First-25 + 7-day pilot
-
-Documented in `docs/business/COMMERCIAL_PILOT.md`. Classification A–F is evidence, not marketing.
-
-### Score coverage backfill (optional, same rules)
-
-```bash
-docker compose exec -T analyzer \
-  python scripts/reprocess_messages.py \
-  --since-days 7 --only-unscored --max-messages 1000 --batch-size 250
-```
-
-Measure created/updated/deleted between stages. Abort on lead explosion or Redis lag.
+Operator queue: `GET /ops/queue` (AI_CONFIRMED first). Milestone: `first_25_ai_confirmed`.

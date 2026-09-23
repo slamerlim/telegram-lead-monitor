@@ -14,8 +14,9 @@ from shared.logging import configure_logging
 from shared.models import Author, Community, Message
 from shared.lead_write import upsert_opportunity_lead
 from shared.score_persist import persist_message_score
-from shared.redis_bus import MESSAGES_STREAM, RedisBus
+from shared.redis_bus import COMMERCIAL_AI_REVIEW_STREAM, MESSAGES_STREAM, RedisBus
 from shared.settings import get_settings
+import hashlib
 
 settings = get_settings()
 configure_logging(settings.log_level)
@@ -170,7 +171,7 @@ class Analyzer:
                         result.tier = "LOW"
                     result.reasons.append(f"semantic relevance {semantic_score:.2f}")
 
-            action, _lead = await upsert_opportunity_lead(db, message, result)
+            action, lead = await upsert_opportunity_lead(db, message, result)
             await persist_message_score(
                 db,
                 message,
@@ -178,6 +179,28 @@ class Analyzer:
                 rule_version=self.scorer.rule_version,
             )
             await db.commit()
+            if (
+                settings.commercial_ai_enabled
+                and lead is not None
+                and action in {"created", "updated", "deduped_updated"}
+                and result.tier != "LOW"
+                and (lead.status or "NEW").upper() == "NEW"
+            ):
+                try:
+                    await self.bus.publish(
+                        COMMERCIAL_AI_REVIEW_STREAM,
+                        {
+                            "lead_id": lead.id,
+                            "message_id": message.id,
+                            "text_sha256": hashlib.sha256(
+                                (message.text or "").encode("utf-8")
+                            ).hexdigest(),
+                            "trigger": "analyzer_upsert",
+                        },
+                        maxlen=10_000,
+                    )
+                except Exception as exc:
+                    log.warning("commercial_ai_publish_failed", error=str(exc), lead_id=lead.id)
             if action in {"deduped_skipped", "deduped_updated"}:
                 log.info(
                     "opportunity_deduped",

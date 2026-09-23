@@ -329,5 +329,14 @@ class OpsMilestoneOut(BaseModel):
     qualified_conversations: int
     won: int
     target_first_25: int = 25
-    first_25_ready: bool
+    first_25_ready: bool = False
+    # AI-agentic commercial cohort (replaces human disposition gate)
+    ai_reviewed: int = 0
+    ai_confirmed: int = 0
+    ai_candidate: int = 0
+    ai_uncertain: int = 0
+    ai_rejected: int = 0
+    first_25_ai_confirmed: bool = False
+    outreach_ready: int = 0
+    human_lead_review_required: bool = False
 

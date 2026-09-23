@@ -1,0 +1,28 @@
+# Commercial AI reviewers (SEPARATE from independent AI validation / aival_*).
+# Do not reuse these ids for /validation gates or human independence.
+policy_version: commercial_v1
+prompt_version: commercial_ai_v1
+require_distinct_families: true
+
+validators:
+  - id: cai_a_claude_opus
+    mode: A
+    provider: cursor
+    model: claude-opus-5-5
+    model_family: anthropic
+    prompt_version: commercial_ai_v1
+    enabled: true
+  - id: cai_b_gpt56
+    mode: B
+    provider: cursor
+    model: gpt-5.6-sol
+    model_family: openai
+    prompt_version: commercial_ai_v1
+    enabled: true
+  - id: cai_c_grok47
+    mode: C
+    provider: cursor
+    model: grok-4.7
+    model_family: xai
+    prompt_version: commercial_ai_v1
+    enabled: true

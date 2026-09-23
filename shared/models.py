@@ -148,6 +148,59 @@ class LeadEvent(Base):
     lead: Mapped[Lead] = relationship(back_populates="events")
 
 
+class CommercialAIReview(Base):
+    """Append-only commercial AI adjudication (NOT independent validation / ML gate)."""
+
+    __tablename__ = "commercial_ai_reviews"
+    __table_args__ = (
+        Index("ix_cai_message_id", "message_id"),
+        Index("ix_cai_lead_created", "lead_id", "created_at"),
+        Index("ix_cai_run_id", "run_id"),
+    )
+
+    id: Mapped[int] = mapped_column(BigInteger, primary_key=True, autoincrement=True)
+    run_id: Mapped[str] = mapped_column(String(64), nullable=False)
+    row_kind: Mapped[str] = mapped_column(String(16), nullable=False)  # OPINION|DECISION|DRAFT
+    lead_id: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    message_id: Mapped[int] = mapped_column(ForeignKey("messages.id", ondelete="NO ACTION"), nullable=False)
+    opportunity_key: Mapped[str | None] = mapped_column(String(96), nullable=True)
+    text_sha256: Mapped[str] = mapped_column(String(64), nullable=False)
+    slot_id: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    mode: Mapped[str | None] = mapped_column(String(8), nullable=True)
+    provider: Mapped[str | None] = mapped_column(String(32), nullable=True)
+    model: Mapped[str | None] = mapped_column(String(128), nullable=True)
+    model_family: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    prompt_version: Mapped[str] = mapped_column(String(32), nullable=False)
+    policy_version: Mapped[str | None] = mapped_column(String(32), nullable=True)
+    synthetic: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
+    request_id: Mapped[str | None] = mapped_column(String(128), nullable=True)
+    latency_ms: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    status: Mapped[str] = mapped_column(String(32), default="ok", nullable=False)
+    label: Mapped[str | None] = mapped_column(String(32), nullable=True)
+    confidence: Mapped[float | None] = mapped_column(Float, nullable=True)
+    lead_type: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    matches_objectives: Mapped[bool | None] = mapped_column(Boolean, nullable=True)
+    hard_veto: Mapped[bool | None] = mapped_column(Boolean, nullable=True)
+    uncertain: Mapped[bool | None] = mapped_column(Boolean, nullable=True)
+    buyer_action: Mapped[str | None] = mapped_column(String(32), nullable=True)
+    buyer_role: Mapped[str | None] = mapped_column(String(32), nullable=True)
+    contactability: Mapped[str | None] = mapped_column(String(16), nullable=True)
+    evidence_json: Mapped[str | None] = mapped_column(Text, nullable=True)
+    rationale_short: Mapped[str | None] = mapped_column(Text, nullable=True)
+    raw_response: Mapped[str | None] = mapped_column(Text, nullable=True)
+    decision: Mapped[str | None] = mapped_column(String(32), nullable=True)
+    reason_code: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    n_confirm: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    n_reject: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    n_uncertain: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    rank_score: Mapped[float | None] = mapped_column(Float, nullable=True)
+    draft_text: Mapped[str | None] = mapped_column(Text, nullable=True)
+    draft_valid: Mapped[bool | None] = mapped_column(Boolean, nullable=True)
+    draft_reject_reason: Mapped[str | None] = mapped_column(String(128), nullable=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=datetime.utcnow)
+    idempotency_key: Mapped[str | None] = mapped_column(String(160), unique=True, nullable=True)
+
+
 class MessageScore(Base):
     """Persisted scoring decision for every processed message (incl. LOW/negatives)."""
 

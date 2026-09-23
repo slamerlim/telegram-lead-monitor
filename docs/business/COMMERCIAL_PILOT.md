@@ -1,73 +1,45 @@
-# Commercial Production Pilot
+# Commercial Production Pilot — AI-Agentic
 
 ## Why this system exists
 
 Identify genuine commercial buyers of trading-bot / trading-system / quant / ML
-engineering services from Telegram communities, qualify them with a human
-operator, contact them manually, and track real business outcomes.
+engineering services from Telegram, **qualify them with commercial AI**, rank them,
+prepare outreach, and track real business outcomes.
 
-AI validation is **advisory**. The AI gate being closed does **not** block this pilot.
+## Architecture separation
 
-## Who counts as a target customer
+| Plane | Role |
+|-------|------|
+| Independent AI validation (0007) | Research / ML readiness / unanimous 3×TRUE / 100/30 gate |
+| Commercial ops audit (0008) | `lead_events` FSM |
+| Commercial AI adjudication (0009) | Autonomous AI_CONFIRMED decisions |
 
-Someone who shows buyer / project / hiring intent for:
+Commercial AI **does not** require `ai_validation_gate_ready`.
 
-1. Buying or commissioning a trading bot
-2. Repairing an existing trading bot
-3. Custom trading-system development
-4. Contract quantitative engineering
-5. Contract ML/AI engineering
-6. Implementing or automating a trading strategy
+## Who decides
 
-## What is NOT a lead
+**AI (autonomous):** commercial candidate evaluation, lead-type classification,
+AI_CONFIRMED / AI_CANDIDATE / AI_UNCERTAIN / AI_REJECTED, ranking, outreach draft.
 
-Exchange support, API docs questions, account issues, generic crypto chat,
-job seekers looking for work, unrelated recruiters, vendor self-promotion,
-purely educational discussion, generic Python/ML mentions without buyer intent.
+**Human operator:** send/approve external outreach, record CONTACT/RESPONSE/WON/LOST,
+optional override/reject. **NOT** a mandatory first-line lead reviewer.
 
-## What counts as a real customer outcome
+## Pipeline
 
-Only an operator-recorded event with evidence:
+```
+Telegram → scorer → Redis commercial_ai_review → A/B/C Cursor SDK
+→ commercial_v1 policy → AI_CONFIRMED (+ draft)
+→ operator sends → CONTACT_ATTEMPT → RESPONSE → WON/LOST
+```
 
-| Outcome | Meaning |
-|---------|---------|
-| CONTACTED | Operator actually messaged the prospect |
-| RESPONDED | Prospect replied (evidence_ref required) |
-| QUALIFIED | Real project discussion underway |
-| WON | Signed agreement, deposit, paid project, or equivalent commitment |
-| LOST | Closed without win (include reason_code; use `nurture` when appropriate) |
+## First-25 milestone
 
-Do **not** claim WON or revenue without a real-world event.
-
-## Operator path
-
-1. Enable `COMMERCIAL_OPS_ENABLED=true` with `LABEL_WRITE_TOKEN` + `HUMAN_LABEL_REVIEWER_IDS`
-2. `GET /ops/candidates` — triage queue
-3. Human disposition: promote + QUALIFIED / REJECTED via events
-4. Open contact URLs manually — **no auto-DM**
-5. `POST /ops/leads/{id}/events` with CONTACT_ATTEMPT
-6. On reply: RESPONSE (+ evidence_ref)
-7. Advance to WON/LOST with evidence when appropriate
-8. Track funnel: `GET /ops/metrics/funnel` and `/ops/metrics/milestone`
-
-## First-25 procedure
-
-Target **25 human dispositions** (CONFIRMED/REJECTED/UNCERTAIN), not 25 wins.
-
-Sources (in order): scorer HIGH/MEDIUM NEW → agent_provisional TRUE_LEAD → operator search.  
-AI hints may reorder priority only.
-
-## Seven-day pilot classification
-
-A no useful leads · B leads but no replies · C real conversations · D proposals ·  
-E first commercial outcome · F first paid/won outcome
-
-Honest labeling only.
+`first_25_ai_confirmed` — first 25 **AI_CONFIRMED** opportunities.
+Not 25 human dispositions.
 
 ## Absolute rules
 
-- No ML enablement
-- No AI gate / threshold loosening
-- No fabricated outcomes
-- No automated outreach
-- Diagnostic AI batches never inflate production gates
+- No ML enablement; no 100/30 loosening; no auto-DM
+- AI cannot fabricate RESPONSE/WON
+- Commercial AI never writes independent validation / human_labels gate numerators
+- Kill switches: `COMMERCIAL_AI_ENABLED`, `COMMERCIAL_AI_AUTO_PROMOTE`, `COMMERCIAL_OPS_ENABLED`

@@ -14,7 +14,16 @@ from shared.models import Lead, Message
 
 # Do not hard-delete CRM pipeline progress on rescore/dedup.
 _PROTECTED_STATUSES = frozenset(
-    {"REVIEWED", "CONTACTED", "RESPONDED", "QUALIFIED", "WON", "LOST", "REJECTED"}
+    {
+        "REVIEWED",
+        "AI_CONFIRMED",
+        "CONTACTED",
+        "RESPONDED",
+        "QUALIFIED",
+        "WON",
+        "LOST",
+        "REJECTED",
+    }
 )
 
 LEAD_SOURCES = frozenset({"scorer", "agent_provisional", "operator_search", "promote"})

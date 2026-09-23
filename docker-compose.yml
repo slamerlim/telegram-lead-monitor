@@ -94,6 +94,24 @@ services:
       redis:
         condition: service_healthy
 
+  commercial-ai-worker:
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: ["python", "-m", "services.commercial_ai.app.main"]
+    env_file:
+      - .env
+      - path: .env.validation
+        required: false
+    volumes:
+      - ./config:/app/config:ro
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
 volumes:
   postgres_data:
   redis_data:

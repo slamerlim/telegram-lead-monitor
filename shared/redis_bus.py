@@ -7,6 +7,9 @@ from redis.asyncio import Redis
 MESSAGES_STREAM = "telegram:messages"
 SCAN_STREAM = "telegram:scan_requests"
 
+# Re-export commercial AI stream for analyzer publish hook.
+from shared.commercial_ai.streams import COMMERCIAL_AI_REVIEW_STREAM  # noqa: E402
+
 
 class RedisBus:
     def __init__(self, url: str) -> None:

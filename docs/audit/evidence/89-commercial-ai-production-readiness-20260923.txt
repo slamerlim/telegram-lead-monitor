@@ -1,0 +1,31 @@
+Commercial AI production readiness — 2026-09-23 (UTC)
+
+UTC: ~2026-09-23T16:10:00Z
+git SHA (pre-push): pending a1883fe → this commit
+baseline migration before: 0008_commercial_ops
+target migration: 0009_commercial_ai_reviews
+
+## Architecture
+- 0007 independent AI validation: UNCHANGED (100/30, unanimous 3×TRUE)
+- 0008 lead_events / FSM: REUSED (+ AI_CONFIRMED, AI_PROMOTE system-only)
+- 0009 commercial_ai_reviews: NEW append-only OPINION/DECISION/DRAFT
+- Worker: services/commercial_ai (Redis telegram:commercial_ai_review)
+- Analyzer publish hook after non-LOW NEW lead upsert
+- Human lead review NOT required (human_lead_review_required=false)
+
+## Tests
+- focused commercial AI + AI validation + ops: 57 passed
+- full suite: 148 passed
+
+## Policy
+- commercial_v1: ≥2/3 confirm, hard_veto → REJECTED, type conflict → CANDIDATE
+- matches_objectives requires JSON boolean true
+- AI cannot invent RESPONSE/WON
+- Isolation: commercial package must not import LabelReview/HumanLabel/ValidationConsensus/AIValidationAttempt
+
+## Runtime expectations after deploy
+- alembic current = 0009_commercial_ai_reviews
+- validation gates remain 94/0/94 unless separate independent validation runs
+- ml_training_enabled=false
+- COMMERCIAL_AI_AUTO_PROMOTE=false initially (shadow)
+- FIRST_REAL_CUSTOMER_OUTCOME: NOT YET OBTAINED

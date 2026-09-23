@@ -22,6 +22,7 @@ from shared.lead_write import promote_candidate_lead
 from shared.models import (
     Author,
     Community,
+    CommercialAIReview,
     HumanLabel,
     LabelReview,
     LabelReviewSample,
@@ -56,6 +57,8 @@ _OPS_RESERVED_PREFIXES = (
     "aival",
     "migration",
     "system",
+    "commercial_ai",
+    "cai",
 )
 
 
@@ -189,12 +192,17 @@ async def _ai_hint_for_message(session: AsyncSession, message_id: int) -> str | 
 
 @router.get("/health")
 async def ops_health(operator_id: str = Depends(_require_operator)):
+    cfg = get_settings()
     return {
         "status": "ok",
         "commercial_ops_enabled": True,
+        "commercial_ai_enabled": bool(cfg.commercial_ai_enabled),
+        "commercial_ai_auto_promote": bool(cfg.commercial_ai_auto_promote),
+        "commercial_ai_autonomous": bool(cfg.commercial_ai_enabled),
+        "independent_validation_gate_untouched": True,
         "operator_id": operator_id,
-        "ai_advisory_only": True,
         "ml_training_enabled": False,
+        "human_lead_review_required": False,
     }
 
 
@@ -492,6 +500,8 @@ async def post_lead_event(
             raise HTTPException(status_code=400, detail="occurred_at before message_date")
 
     et = body.event_type.upper()
+    if et == "AI_PROMOTE":
+        raise HTTPException(status_code=422, detail="AI_PROMOTE is system-only")
     if et in ("RESPONSE", "STATUS_CHANGE") and body.to_status == "WON":
         if not (body.evidence_ref or "").strip():
             raise HTTPException(status_code=400, detail="evidence_ref required for WON")
@@ -516,6 +526,7 @@ async def post_lead_event(
             current_status=lead.status,
             event_type=et,
             to_status=body.to_status,
+            actor_kind="operator",
         )
     except TransitionError as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
@@ -698,11 +709,14 @@ async def milestone_metrics(
         )
         or 0
     )
+    # Human-path confirmed excludes AI_CONFIRMED / AI_PROMOTE path.
+    ai_promoted_leads = select(LeadEvent.lead_id).where(LeadEvent.event_type == "AI_PROMOTE")
     confirmed = int(
         (
             await session.scalar(
                 select(func.count(Lead.id)).where(
-                    Lead.status.in_(("QUALIFIED", "CONTACTED", "RESPONDED", "WON"))
+                    Lead.status.in_(("QUALIFIED", "CONTACTED", "RESPONDED", "WON")),
+                    ~Lead.id.in_(ai_promoted_leads),
                 )
             )
         )
@@ -730,7 +744,52 @@ async def milestone_metrics(
         or 0
     )
     won = int((await session.scalar(select(func.count(Lead.id)).where(Lead.status == "WON"))) or 0)
-    dispositions = confirmed + rejected
+
+    ai_confirmed = int(
+        (
+            await session.scalar(
+                select(func.count(func.distinct(LeadEvent.lead_id))).where(
+                    LeadEvent.event_type == "AI_PROMOTE"
+                )
+            )
+        )
+        or 0
+    )
+    ai_reviewed = int(
+        (
+            await session.scalar(
+                select(func.count(CommercialAIReview.id)).where(
+                    CommercialAIReview.row_kind == "DECISION"
+                )
+            )
+        )
+        or 0
+    )
+
+    async def _dec_count(dec: str) -> int:
+        return int(
+            (
+                await session.scalar(
+                    select(func.count(CommercialAIReview.id)).where(
+                        CommercialAIReview.row_kind == "DECISION",
+                        CommercialAIReview.decision == dec,
+                    )
+                )
+            )
+            or 0
+        )
+
+    outreach_ready = int(
+        (
+            await session.scalar(
+                select(func.count(CommercialAIReview.id)).where(
+                    CommercialAIReview.row_kind == "DRAFT",
+                    CommercialAIReview.draft_valid.is_(True),
+                )
+            )
+        )
+        or 0
+    )
     return OpsMilestoneOut(
         candidates_promoted=promoted,
         human_confirmed=confirmed,
@@ -739,5 +798,43 @@ async def milestone_metrics(
         replied=replied,
         qualified_conversations=replied,
         won=won,
-        first_25_ready=dispositions >= 25,
+        first_25_ready=False,
+        ai_reviewed=ai_reviewed,
+        ai_confirmed=ai_confirmed,
+        ai_candidate=await _dec_count("AI_CANDIDATE"),
+        ai_uncertain=await _dec_count("AI_UNCERTAIN"),
+        ai_rejected=await _dec_count("AI_REJECTED"),
+        first_25_ai_confirmed=ai_confirmed >= 25,
+        outreach_ready=outreach_ready,
+        human_lead_review_required=False,
     )
+
+
+@router.get("/queue", response_model=list[OpsLeadOut])
+async def ai_ranked_queue(
+    limit: int = Query(default=50, ge=1, le=200),
+    session: AsyncSession = Depends(get_session),
+    operator_id: str = Depends(_require_operator),
+):
+    """AI-ranked commercial action queue — no human qualification prerequisite."""
+    del operator_id
+    q = (
+        select(Lead, Message, Community, Author)
+        .join(Message, Message.id == Lead.message_id)
+        .join(Community, Community.id == Message.community_id)
+        .outerjoin(Author, Author.id == Message.author_id)
+        .where(Lead.status.in_(("AI_CONFIRMED", "QUALIFIED", "CONTACTED", "RESPONDED")))
+        .order_by(
+            (Lead.status == "AI_CONFIRMED").desc(),
+            Lead.score.desc(),
+            Message.message_date.desc(),
+        )
+        .limit(limit)
+    )
+    rows = (await session.execute(q)).all()
+    out = []
+    for lead, msg, community, author in rows:
+        hint = await _ai_hint_for_message(session, msg.id)
+        item = _lead_to_ops(lead, msg, community, author, ai_hint=hint)
+        out.append(item)
+    return out

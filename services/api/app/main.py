@@ -74,6 +74,8 @@ _NON_INDEPENDENT_REVIEWER_PREFIXES = (
     "phaseD_smoke",
     "prod_phase0",
     "aival",  # Cursor AI validators — counted only by AI gate
+    "commercial_ai",
+    "cai",
 )
 _PROVISIONAL_LABEL_PREFIXES = ("agent", "audit")
 
@@ -412,7 +414,11 @@ def _lead_out(lead: Lead, message: Message, community: Community, author: Author
 @app.patch("/leads/{lead_id}/status")
 async def update_lead_status(
     lead_id: int,
-    status: str = Query(pattern="^(NEW|REVIEWED|CONTACTED|RESPONDED|QUALIFIED|REJECTED|WON|LOST)$"),
+    status: str = Query(
+        pattern=(
+            "^(NEW|REVIEWED|AI_CONFIRMED|CONTACTED|RESPONDED|QUALIFIED|REJECTED|WON|LOST)$"
+        )
+    ),
     session: AsyncSession = Depends(get_session),
     x_operator_id: str | None = Header(default=None, alias="X-Operator-Id"),
     x_label_token: str | None = Header(default=None, alias="X-Label-Token"),
