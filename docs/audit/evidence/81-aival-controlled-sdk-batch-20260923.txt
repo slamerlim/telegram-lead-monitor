@@ -1,7 +1,8 @@
 Controlled non-synthetic Cursor SDK batch — 2026-09-23 (UTC)
 
 UTC end: ~2026-09-23T10:44:18Z
-git SHA (pre-commit for this evidence): 5156816 (code fixes committed after)
+git SHA (pre-commit for this evidence): 5156816
+git SHA (shipped): 1efee1e
 migration: 0007_ai_validation
 
 ## Security
