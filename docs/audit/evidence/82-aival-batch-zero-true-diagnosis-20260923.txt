@@ -1,0 +1,256 @@
+AI validation batch zero-TRUE diagnosis — 2026-09-23 (UTC)
+
+UTC: 2026-09-23T10:57:13Z
+git SHA: 82137b2
+batch_id: aival_batch_20260923
+migration: 0007_ai_validation (unchanged; read-only analysis)
+analysis_only: true (no scoring/prompt/consensus/gate/DB writes; no new SDK batch)
+
+================================================================================
+1. BATCH INTEGRITY (PostgreSQL verified)
+================================================================================
+unique messages:           100
+attempts:                  300 (status=ok: 300; fail: 0)
+attempts per message:      3 for all 100
+duplicate (message,mode):  0
+label_review_samples rows: 100
+families on every attempt: anthropic / openai / xai (provider=cursor)
+
+consensus (batch, synthetic=false):
+  VALIDATED_FALSE: 93
+  UNCERTAIN:        7
+  VALIDATED_TRUE:   0
+  CONTESTED:         0
+  93 + 7 = 100  (reconciles)
+
+global consensus (synthetic=false):
+  VALIDATED_FALSE: 94  = 93 (batch) + 1 (indep_review_2026-09-22)
+  UNCERTAIN:        8  = 7 (batch) + 1 (indep_review_2026-09-22)
+  VALIDATED_TRUE:   0
+
+gate numerators:
+  ai_validated_messages=94  (= eligible TRUE+FALSE only; UNCERTAIN excluded)
+  → batch is NOT reduced incorrectly; prior non-synth FALSE contributes +1
+  ai_validated_true=0
+  ai_validated_false=94
+  ai_validation_gate_ready=false
+  ml_training_enabled=false
+
+human_labels: 1524 (unchanged)
+Phase D / independence boundary: not modified by this analysis
+
+================================================================================
+2. MODEL-BY-MODE OPINION DISTRIBUTION
+================================================================================
+| Mode | Family    | TRUE | FALSE | UNCERTAIN | Total | %TRUE | %FALSE | %UNC |
+| ---- | --------- | ---: | ----: | --------: | ----: | ----: | -----: | ---: |
+| A    | anthropic |    4 |    92 |         4 |   100 |  4.00 |  92.00 | 4.00 |
+| B    | openai    |    0 |    93 |         7 |   100 |  0.00 |  93.00 | 7.00 |
+| C    | xai       |    4 |    93 |         3 |   100 |  4.00 |  93.00 | 3.00 |
+
+Totals: AI_TRUE=8, AI_FALSE=278, AI_UNCERTAIN=14, errors=0
+
+Note: Mode B (openai) produced ZERO AI_TRUE in this batch (and historically
+zero AI_TRUE across prior indep_review smoke opinions as well).
+
+================================================================================
+3. MESSAGE-LEVEL DISAGREEMENT MATRIX (A / B / C)
+================================================================================
+| Combination                         |   n |
+| ----------------------------------- | --: |
+| FALSE / FALSE / FALSE               |  89 |
+| TRUE / UNCERTAIN / TRUE             |   4 |
+| FALSE / FALSE / UNCERTAIN           |   3 |
+| UNCERTAIN / UNCERTAIN / FALSE       |   3 |
+| UNCERTAIN / FALSE / FALSE           |   1 |
+| all other combos                    |   0 |
+
+Derived categories:
+  unanimous TRUE:                 0
+  2 TRUE + 1 FALSE:               0
+  2 TRUE + 1 UNCERTAIN:           4
+  1 TRUE + 2 FALSE:               0
+  any TRUE + UNCERTAIN:           4 (same 4 messages)
+  unanimous FALSE:               89
+  FALSE/FALSE/UNCERTAIN:          4  (3 + the UNCERTAIN/FALSE/FALSE=1 → n_false=2,n_unc=1)
+  FALSE/UNCERTAIN/UNCERTAIN:      3
+
+Why zero VALIDATED_TRUE (policy, not a bug):
+  shared/validation/consensus.py POLICY_VERSION=v1 requires n_true == 3
+  (UNANIMOUS_QUALIFIED_TRUE) for VALIDATED_TRUE.
+  Majority FALSE is allowed (n_false>=2 with n_true==0 and n_unc+n_ins<=1).
+  The only messages with any AI_TRUE were 2 TRUE + 1 UNCERTAIN →
+  rationale_code=NO_CLEAR_MAJORITY → state=UNCERTAIN, gate_eligible=false.
+  No CONTESTED (never TRUE vs FALSE on same message).
+
+================================================================================
+4. WHERE THE 8 AI_TRUE OPINIONS OCCURRED
+================================================================================
+All 8 opinions sit on exactly 4 messages; each is A=TRUE + C=TRUE + B=UNCERTAIN.
+
+| message_id | stratum     | modes TRUE | families TRUE     | consensus | rationale         | AI lead_type (A/C)         |
+| ---------: | ----------- | ---------- | ----------------- | --------- | ----------------- | -------------------------- |
+|      24048 | high_leads  | A,C        | anthropic, xai    | UNCERTAIN | NO_CLEAR_MAJORITY | BOT_REPAIR                 |
+|      24091 | high_leads  | A,C        | anthropic, xai    | UNCERTAIN | NO_CLEAR_MAJORITY | BOT_REPAIR                 |
+|      55357 | high_leads  | A,C        | anthropic, xai    | UNCERTAIN | NO_CLEAR_MAJORITY | COPY_TRADING_PROJECT       |
+|     384947 | agent_true  | A,C        | anthropic, xai    | UNCERTAIN | NO_CLEAR_MAJORITY | TRADING_SYSTEM_CONTRACT    |
+
+Distribution findings:
+  - NOT from one family only: anthropic 4 + xai 4; openai 0
+  - Same 4 messages each produced TWO TRUE opinions (A and C always paired)
+  - TRUE opinions were NOT isolated single-family disagreements vs FALSE
+    (no TRUE vs FALSE conflict → no CONTESTED)
+  - ALL 8 TRUE opinions landed on messages that became UNCERTAIN consensus
+  - Sampling metadata for these 4: provisional human_labels TRUE_LEAD
+    (audit_census for high_leads trio; agent_business_review for 384947)
+  - CRM for high_leads trio: HIGH tier, POSITIVE scorer, commercial lead_types
+    (TRADING_SYSTEM_CONTRACT×2, COPY_TRADING_PROJECT×1) — metadata only
+
+Zero AI_TRUE on any of the 80 non-candidate strata messages.
+
+================================================================================
+5. SAMPLE COMPOSITION (exact strata)
+================================================================================
+Method: build_independent_review_sample.py --exclude-ai-validated --per-stratum 17
+        + random_negatives_topup (+12) to reach 100
+excluded_already_ai_validated: 16 (from sample builder evidence 80)
+
+| Stratum                 | Messages | Consensus FALSE | UNCERTAIN | TRUE |
+| ----------------------- | -------: | --------------: | --------: | ---: |
+| high_leads              |        3 |               0 |         3 |    0 |
+| agent_true              |       17 |              13 |         4 |    0 |
+| agent_fp                |       17 |              17 |         0 |    0 |
+| recruiter_job           |       17 |              17 |         0 |    0 |
+| support_like            |       17 |              17 |         0 |    0 |
+| random_negatives        |       17 |              17 |         0 |    0 |
+| random_negatives_topup  |       12 |              12 |         0 |    0 |
+| TOTAL                   |      100 |              93 |         7 |    0 |
+
+Negative/FP/support/job/negative-topup strata = 80/100 (80%).
+Commercial-candidate sampling strata (high_leads + agent_true) = 20/100 (20%).
+
+================================================================================
+6. COMMERCIAL-CANDIDATE COVERAGE (sampling metadata only — NOT ground truth)
+================================================================================
+Commercial-candidate sampling stratum messages: 20
+  high_leads: 3 (also CRM HIGH commercial lead_types + scorer POSITIVE)
+  agent_true: 17 (provisional agent/audit TRUE_LEAD labels only)
+
+CRM commercial lead_type present in sample: 3 messages (all high_leads).
+Scorer POSITIVE in sample: 3 messages (same three).
+Scorer NEGATIVE: 59; no score row: 38.
+
+Six commercial objectives (scoring.yaml header) — coverage as strata/CRM metadata:
+  1) bot purchase — not represented as CRM high_leads in this sample
+  2) bot repair — AI opinion lead_type BOT_REPAIR on 2 of 4 TRUE-opinion msgs
+     (CRM type differed: TRADING_SYSTEM_CONTRACT); still only candidate metadata
+  3) trading-system contract — CRM ×2 high_leads; AI lead_type on msg 384947
+  4) quant-engineering contract — not observed as CRM type in this sample
+  5) ML/AI-engineering contract — not observed as CRM type in this sample
+  6) strategy implementation/automation — COPY_TRADING_PROJECT on 1 high_lead
+
+Interpretation constraint:
+  With only 3 CRM HIGH commercial leads and 20 candidate-stratum messages
+  (of which 13/17 agent_true were unanimous ABC FALSE), zero consensus TRUE
+  CANNOT be read as proof that validators cannot recognize commercial leads.
+  Conversely, candidate strata WERE present (20%), including all 3 CRM HIGH
+  commercial leads — and those 3 received 2/3 TRUE opinions (blocked by Mode B
+  UNCERTAIN under unanimous-TRUE policy).
+
+================================================================================
+7. PROVISIONAL-LABEL AGREEMENT (diagnostic only — NOT ground truth)
+================================================================================
+Provisional human_labels × AI consensus (batch):
+  (no human_label) × VALIDATED_FALSE: 46
+  FALSE_POSITIVE  × VALIDATED_FALSE: 34
+  TRUE_LEAD       × UNCERTAIN:        7
+  TRUE_LEAD       × VALIDATED_FALSE: 13
+  TRUE_LEAD       × VALIDATED_TRUE:   0
+
+Scorer decision × AI consensus:
+  NEGATIVE × VALIDATED_FALSE: 56
+  NEGATIVE × UNCERTAIN:        3
+  POSITIVE × UNCERTAIN:        3   (all three CRM HIGH commercial)
+  (none)   × VALIDATED_FALSE: 37
+  (none)   × UNCERTAIN:        1
+
+agent_true stratum (provisional TRUE_LEAD): 13 VALIDATED_FALSE (all 3 models FALSE),
+  4 UNCERTAIN (1 with 2×TRUE; 3 with 0 TRUE / majority UNCERTAIN).
+
+Do NOT feed this into independence gates. Agent/audit/scorer are sampling metadata.
+
+================================================================================
+8. SUPPORTED INTERPRETATIONS
+================================================================================
+A. Sample composition — SUPPORTED
+   80/100 messages from explicitly negative/FP/support/job strata; 0 AI_TRUE there.
+   Dominant FALSE consensus is expected under that composition.
+
+B. Conservative consensus policy — SUPPORTED
+   VALIDATED_TRUE requires unanimous 3× AI_TRUE.
+   The only near-positives were 2 TRUE + 1 UNCERTAIN → UNCERTAIN (NO_CLEAR_MAJORITY).
+   This alone explains zero VALIDATED_TRUE even if A+C are positive.
+
+C. Model-family disagreement — SUPPORTED (Mode B)
+   openai Mode B: 0 TRUE / 7 UNCERTAIN / 93 FALSE.
+   On all 4 near-positive messages, B alone was UNCERTAIN while A and C were TRUE.
+   A and C agreed whenever either said TRUE.
+
+D. Validator uncertainty — SUPPORTED
+   14 opinion-level UNCERTAIN; 7 message consensus UNCERTAIN.
+
+E. Potential validator over-conservatism — HYPOTHESIS ONLY (partial support)
+   13/17 agent_true provisional TRUE_LEAD → unanimous ABC FALSE.
+   But provisional agent labels are NOT ground truth; this may reflect noisy
+   provisional labels OR validator conservatism. Not resolved by this batch.
+   Separately: Mode B never affirmed TRUE on the 3 CRM HIGH commercial leads
+   that A+C affirmed — family-specific conservatism hypothesis for Mode B.
+
+No code defect found in integrity/accounting. Consensus behavior matches
+POLICY_VERSION=v1 as implemented. Do NOT tune prompts/thresholds/consensus
+in response to this analysis.
+
+================================================================================
+9. UNRESOLVED QUESTIONS
+================================================================================
+- Can Mode B (openai / skeptic path) ever produce AI_TRUE on clear commercial RFQs?
+- Would a commercial-candidate-enriched diagnostic sample produce any unanimous
+  3×TRUE under current policy?
+- Are agent_true provisional labels systematically over-positive relative to
+  commercial objectives (vs validators being over-negative)?
+- Is unanimous-TRUE the intended long-term gate policy, or should majority TRUE
+  with no FALSE be separately evaluated? (design question — not changed here)
+
+================================================================================
+10. PROPOSED NEXT EXPERIMENT (NOT EXECUTED)
+================================================================================
+Name (proposed): aival_diag_commercial_candidates_<date>
+
+Question: On a small set of commercial-candidate messages (CRM HIGH/MEDIUM with
+commercial lead_types + optional agent_true holdouts), how often do A/B/C reach
+unanimous TRUE vs 2TRUE+1UNCERTAIN vs unanimous FALSE?
+
+Design constraints:
+  - Size: ~15–30 unique messages (bounded; not gate-farming)
+  - Blind inputs; same A/B/C roster; no prompt/threshold changes
+  - MUST be isolated from gate numerators until policy reviewed:
+      either mark synthetic=true for diagnostic-only accounting, OR add an
+      explicit gate_eligible=false / diagnostic_batch exclusion so these rows
+      cannot inflate ai_validated_true toward the 30 threshold
+  - Report Mode B TRUE rate separately
+  - Do NOT use results to loosen gate thresholds
+
+Do NOT run this experiment in the diagnosis turn.
+Do NOT deploy a continuous scheduler until positive-class behavior is characterized.
+
+================================================================================
+11. GATES / ML (unchanged)
+================================================================================
+ai_validated_messages: 94
+ai_validated_true: 0
+ai_validated_false: 94
+ai_validation_gate_ready: false
+closed reasons: ai_validated_messages<100, ai_validated_true<30
+ml_training_enabled: false
+
+Secrets: none recorded.
