@@ -1,0 +1,43 @@
+Real Cursor SDK validation smoke — 2026-09-23
+
+SECURITY: CURSOR_API_KEY was provided in chat; store only in gitignored .env.validation.
+Recommend rotating the key after this session. Value NOT recorded here.
+
+## Config fix
+SDK allowlist required model id remaps in config/ai_validators.yaml:
+  A: claude-opus-5-5 (anthropic)
+  B: gpt-5.6-sol (openai)
+  C: grok-4.7 (xai)
+  D: composer-2.5 (cursor)
+SdkCursorBackend: valid disallowed_tools names (SDK lowercase tool ids).
+
+## Smoke run
+run_id: aival_sdk_smoke_20260923b
+batch: indep_review_2026-09-22
+limit: 1 message × modes A/B/C
+backend: sdk (cursor-sdk local Agent.prompt)
+
+Attempts (all ok):
+  A claude-opus-5-5 anthropic ~8.6s
+  B gpt-5.6-sol     openai    ~4.7s
+  C grok-4.7        xai       ~9.9s
+
+Opinions: all AI_FALSE (high confidence)
+Consensus: VALIDATED_FALSE / UNANIMOUS_OR_MAJORITY_FALSE
+  gate_eligible=true on row, synthetic=false, distinct_families=3
+
+## Safety / honesty
+phase_d blind_adjudicator_phaseD = 128 unchanged
+human_labels = 1524 unchanged
+ai_validation_gate_ready = false
+  closed: ai_validated_messages<100, ai_validated_true<30
+ai_validated_false = 1 (non-synthetic now counted)
+ml_training_enabled = false
+
+## Business alignment
+Sample message judged non-commercial by all three independent Cursor families → VALIDATED_FALSE.
+No threshold loosening; no ML GO claim.
+
+## Next
+Optional larger sdk batch; keep gate fail-closed until volume policy met.
+Rotate exposed CURSOR_API_KEY.

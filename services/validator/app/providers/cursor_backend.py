@@ -112,26 +112,54 @@ class SdkCursorBackend:
                     api_key=self.api_key,
                     model=model,
                     local=LocalAgentOptions(cwd=self.cwd),
+                    # Validation is JSON-only; block mutating/exec tools (SDK tool names).
+                    disallowed_tools=[
+                        "shell",
+                        "piBash",
+                        "piWrite",
+                        "piEdit",
+                        "edit",
+                        "delete",
+                        "applyAgentDiff",
+                        "task",
+                        "mcp",
+                        "computerUse",
+                        "writeCanvas",
+                        "createAgent",
+                        "sendToAgent",
+                    ],
                 ),
             )
-            text = getattr(result, "result", None) or str(result)
-            structured = _extract_json(text)
+            status = getattr(result, "status", None)
+            request_id = str(getattr(result, "id", "") or getattr(result, "run_id", "") or "")
+            text = _coerce_result_text(result)
+            if status == "error":
+                return CursorValidationResult(
+                    status="error",
+                    structured=None,
+                    request_id=request_id,
+                    latency_ms=int((time.time() - t0) * 1000),
+                    raw=(text or "")[:16000] or None,
+                    error_detail=f"agent run status=error id={request_id}",
+                    model=model,
+                )
+            structured = _extract_json(text or "")
             if structured is None:
                 return CursorValidationResult(
                     status="malformed_json",
                     structured=None,
-                    request_id=str(getattr(result, "id", "")),
+                    request_id=request_id or uuid.uuid4().hex,
                     latency_ms=int((time.time() - t0) * 1000),
-                    raw=text[:16000] if isinstance(text, str) else None,
+                    raw=(text or "")[:16000] or None,
                     error_detail="no JSON object in agent result",
                     model=model,
                 )
             return CursorValidationResult(
                 status="ok",
                 structured=structured,
-                request_id=str(getattr(result, "id", uuid.uuid4().hex)),
+                request_id=request_id or uuid.uuid4().hex,
                 latency_ms=int((time.time() - t0) * 1000),
-                raw=text[:16000] if isinstance(text, str) else None,
+                raw=(text or "")[:16000] or None,
                 model=model,
             )
         except Exception as exc:  # noqa: BLE001 — surface as attempt error
@@ -143,6 +171,17 @@ class SdkCursorBackend:
                 error_detail=str(exc)[:2000],
                 model=model,
             )
+
+
+def _coerce_result_text(result: Any) -> str:
+    text = getattr(result, "result", None)
+    if isinstance(text, str):
+        return text
+    if text is not None:
+        return str(text)
+    # Some SDK versions expose messages; fall back to repr.
+    return str(result)
+
 
 
 def _extract_json(text: str) -> dict[str, Any] | None:
