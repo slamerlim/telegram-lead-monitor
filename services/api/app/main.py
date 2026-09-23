@@ -1,12 +1,15 @@
 import csv
 import io
 import json
+import logging
 import secrets
+from pathlib import Path
 
 from datetime import datetime, timedelta, timezone
 
 from fastapi import Depends, FastAPI, Header, HTTPException, Query
-from fastapi.responses import StreamingResponse
+from fastapi.responses import JSONResponse, StreamingResponse
+from fastapi.staticfiles import StaticFiles
 from sqlalchemy import func, or_, select, text
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -132,6 +135,34 @@ def _require_independent_reviewer(
 settings = get_settings()
 configure_logging(settings.log_level)
 app = FastAPI(title="Telegram Lead Monitor API", version="0.2.0")
+
+_REVIEW_STATIC = Path(__file__).resolve().parents[1] / "static" / "review"
+if _REVIEW_STATIC.is_dir():
+    app.mount("/review", StaticFiles(directory=str(_REVIEW_STATIC), html=True), name="review_ui")
+else:
+    logging.getLogger("api").warning("review UI static dir missing: %s", _REVIEW_STATIC)
+
+
+def _review_lockdown_allowed(path: str) -> bool:
+    if path == "/health" or path.startswith("/health/"):
+        return True
+    if path == "/review" or path.startswith("/review/"):
+        return True
+    return path.rstrip("/") in ("/labels/independent-queue", "/labels/reviews")
+
+
+@app.middleware("http")
+async def review_ui_lockdown_middleware(request, call_next):
+    if not get_settings().review_ui_lockdown:
+        return await call_next(request)
+    if _review_lockdown_allowed(request.url.path):
+        return await call_next(request)
+    return JSONResponse(
+        status_code=403,
+        content={
+            "detail": "endpoint disabled while REVIEW_UI_LOCKDOWN=true (blind-review isolation)",
+        },
+    )
 
 
 @app.on_event("shutdown")
@@ -771,10 +802,8 @@ async def independent_review_queue(
         LabelReview.sample_batch_id == sample_batch_id,
     )
     stmt = (
-        select(LabelReviewSample, Message, Community, Author)
+        select(LabelReviewSample, Message)
         .join(Message, LabelReviewSample.message_id == Message.id)
-        .join(Community, Message.community_id == Community.id)
-        .outerjoin(Author, Message.author_id == Author.id)
         .where(LabelReviewSample.sample_batch_id == sample_batch_id)
         .where(LabelReviewSample.message_id.not_in(already))
         .order_by(func.random())
@@ -783,7 +812,7 @@ async def independent_review_queue(
 
     rows = list((await session.execute(stmt)).all())
     items: list[IndependentReviewQueueItem] = []
-    for sample, message, _community, _author in rows:
+    for sample, message in rows:
         items.append(
             IndependentReviewQueueItem(
                 message_id=message.id,

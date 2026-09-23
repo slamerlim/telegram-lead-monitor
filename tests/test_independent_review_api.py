@@ -67,6 +67,7 @@ def api_client(monkeypatch):
     monkeypatch.setenv("INDEPENDENT_REVIEW_HMAC_SECRET", "hmac-secret-for-tests")
     monkeypatch.setenv("HUMAN_LABEL_REVIEWER_IDS", "")
     monkeypatch.setenv("LABEL_WRITE_TOKEN", "")
+    monkeypatch.setenv("REVIEW_UI_LOCKDOWN", "false")
     get_settings.cache_clear()
     from services.api.app import main as api_main
 
@@ -85,6 +86,7 @@ def unconfigured_client(monkeypatch):
     monkeypatch.setenv("INDEPENDENT_REVIEW_HMAC_SECRET", "")
     monkeypatch.setenv("HUMAN_LABEL_REVIEWER_IDS", "")
     monkeypatch.setenv("LABEL_WRITE_TOKEN", "")
+    monkeypatch.setenv("REVIEW_UI_LOCKDOWN", "false")
     get_settings.cache_clear()
     from services.api.app import main as api_main
 
@@ -224,3 +226,42 @@ def test_attestation_blind_means_shown_false():
     attest = parse_queue_token(secret, tok)
     assert attest is not None and attest.blind is True
     assert (not attest.blind) is False  # shown flags must be False when blind
+
+
+def test_review_ui_lockdown_blocks_non_review_routes(monkeypatch):
+    get_settings.cache_clear()
+    monkeypatch.setenv("INDEPENDENT_HUMAN_REVIEWER_TOKENS", "alice:tok-alice")
+    monkeypatch.setenv("INDEPENDENT_HUMAN_REVIEWER_IDS", "alice")
+    monkeypatch.setenv("INDEPENDENT_REVIEW_HMAC_SECRET", "hmac-secret-for-tests")
+    monkeypatch.setenv("HUMAN_LABEL_REVIEWER_IDS", "")
+    monkeypatch.setenv("LABEL_WRITE_TOKEN", "")
+    monkeypatch.setenv("REVIEW_UI_LOCKDOWN", "true")
+    get_settings.cache_clear()
+    from services.api.app import main as api_main
+
+    api_main.settings = get_settings()
+    with TestClient(api_main.app) as client:
+        assert client.get("/search", params={"q": "x"}).status_code == 403
+        assert client.get("/leads").status_code == 403
+        assert client.get("/docs").status_code == 403
+        assert client.get("/health").status_code == 200
+        # No token => auth 401 proves the queue route is past lockdown (not middleware 403).
+        r = client.get(
+            "/labels/independent-queue",
+            params={"sample_batch_id": "b", "reviewer_id": "alice", "blind": True},
+        )
+        assert r.status_code == 401
+        assert "REVIEW_UI_LOCKDOWN" not in str(r.json().get("detail", ""))
+        posted = client.post(
+            "/labels/reviews",
+            json={
+                "message_id": 1,
+                "sample_batch_id": "b",
+                "reviewer_id": "alice",
+                "label": "HUMAN_REVIEWED_TRUE",
+                "review_token": "x",
+            },
+        )
+        assert posted.status_code == 401
+        assert "REVIEW_UI_LOCKDOWN" not in str(posted.json().get("detail", ""))
+    get_settings.cache_clear()

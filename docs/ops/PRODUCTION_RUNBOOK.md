@@ -108,6 +108,8 @@ INDEPENDENT_REVIEW_HMAC_SECRET=replace-with-long-random
 - Preflight before enabling IDs: `SELECT reviewer_id, count(*) FROM label_reviews WHERE reviewer_id IN (...) GROUP BY 1` must be empty for those humans.
 - Deploy API only from a **pushed** git SHA (`git pull --ff-only` then rebuild).
 - Operator credentials (generated locally): `docker-secrets/independent-reviewers.txt` (gitignored). Never commit tokens.
+- **Reviewer GUI:** open `http://127.0.0.1:8010/review/` — enter reviewer ID + token from the handout; default batch `indep_review_2026-09-22`. Blind-only; does not modify `human_labels`.
+- Set `REVIEW_UI_LOCKDOWN=true` during human sessions so `/search`, `/leads`, `/docs`, etc. return 403 (same-origin blinding). Disable only for operators who need the full API. **Restart the API** after changing this flag (`get_settings` is process-cached).
 
 Automation prefixes (`agent`, `audit`, `smoke`, …) match as exact id or `prefix_…` only (so `auditor` is allowed).
 

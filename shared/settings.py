@@ -46,6 +46,9 @@ class Settings(BaseSettings):
     human_label_reviewer_ids: str = ""
     # Optional shared secret for POST /labels. Empty => writes allowed without header.
     label_write_token: str = ""
+    # When true, only review UI + independent-review endpoints + health are reachable.
+    # Enable during human blind-review sessions to reduce same-origin scorer/search leaks.
+    review_ui_lockdown: bool = False
 
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8", extra="ignore")
 

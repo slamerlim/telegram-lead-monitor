@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Blind Review — Telegram Lead Monitor</title>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; base-uri 'self'; form-action 'self'" />
+  <style>
+    :root {
+      --ink: #141a17;
+      --muted: #5a6b63;
+      --paper: #f3f6f4;
+      --panel: #ffffff;
+      --line: #c9d4ce;
+      --accent: #0b6e63;
+      --accent-hover: #08574f;
+      --danger: #9b2c2c;
+      --warn: #8a5a12;
+      --ok: #1f6b3a;
+      --shadow: 0 12px 40px rgba(20, 26, 23, 0.08);
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      min-height: 100%;
+      background:
+        radial-gradient(1200px 600px at 10% -10%, #d7ebe6 0%, transparent 55%),
+        radial-gradient(900px 500px at 100% 0%, #e4e8d8 0%, transparent 45%),
+        var(--paper);
+      color: var(--ink);
+      font-family: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+    }
+    body { display: flex; flex-direction: column; min-height: 100vh; }
+    header {
+      padding: 1.75rem 1.5rem 0.5rem;
+      max-width: 52rem;
+      margin: 0 auto;
+      width: 100%;
+    }
+    header h1 {
+      font-weight: 700;
+      font-size: clamp(1.8rem, 4vw, 2.4rem);
+      letter-spacing: -0.02em;
+      margin: 0 0 0.35rem;
+    }
+    header p {
+      margin: 0;
+      color: var(--muted);
+      max-width: 36rem;
+      line-height: 1.5;
+      font-size: 0.95rem;
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    }
+    main {
+      flex: 1;
+      width: 100%;
+      max-width: 52rem;
+      margin: 0 auto;
+      padding: 1.25rem 1.5rem 3rem;
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    }
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      box-shadow: var(--shadow);
+      padding: 1.25rem 1.35rem;
+    }
+    label {
+      display: block;
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: var(--muted);
+      margin-bottom: 0.35rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    input, select, textarea, button { font: inherit; }
+    input, select, textarea {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 0.65rem 0.75rem;
+      background: #fbfcfb;
+      color: var(--ink);
+    }
+    input:focus, select:focus, textarea:focus {
+      outline: 2px solid color-mix(in srgb, var(--accent) 45%, white);
+      border-color: var(--accent);
+    }
+    .grid { display: grid; gap: 0.9rem; }
+    @media (min-width: 640px) {
+      .grid.two { grid-template-columns: 1fr 1fr; }
+    }
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-top: 1rem;
+    }
+    button {
+      border: none;
+      border-radius: 4px;
+      padding: 0.7rem 1rem;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    button:disabled { opacity: 0.5; cursor: not-allowed; }
+    .btn-primary { background: var(--accent); color: #fff; }
+    .btn-primary:hover:not(:disabled) { background: var(--accent-hover); }
+    .btn-ghost {
+      background: transparent;
+      border: 1px solid var(--line);
+      color: var(--ink);
+    }
+    .btn-true { background: var(--ok); color: #fff; }
+    .btn-false { background: var(--danger); color: #fff; }
+    .btn-uncertain { background: var(--warn); color: #fff; }
+    .status {
+      margin-top: 0.85rem;
+      font-size: 0.88rem;
+      color: var(--muted);
+      min-height: 1.25rem;
+    }
+    .status.error { color: var(--danger); }
+    .status.ok { color: var(--ok); }
+    .hidden { display: none !important; }
+    .toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 1rem;
+      margin-bottom: 0.85rem;
+      flex-wrap: wrap;
+    }
+    .toolbar .meta { color: var(--muted); font-size: 0.85rem; }
+    .message {
+      font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+      font-size: clamp(1.05rem, 2.2vw, 1.22rem);
+      line-height: 1.65;
+      white-space: pre-wrap;
+      word-break: break-word;
+      min-height: 8rem;
+      padding: 0.25rem 0 0.5rem;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      margin: 0.5rem 0 1rem;
+    }
+    .fp-box {
+      margin: 0.75rem 0 0.25rem;
+      padding: 0.85rem;
+      border: 1px dashed var(--line);
+      border-radius: 4px;
+      background: #f7faf8;
+    }
+    .hint { font-size: 0.8rem; color: var(--muted); margin: 0.35rem 0 0; }
+    footer {
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.75rem;
+      padding: 0 1rem 1.5rem;
+      font-family: ui-sans-serif, system-ui, sans-serif;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Blind Review</h1>
+    <p>Classify messages from the text alone. Scorer output, community, author, and prior labels stay hidden.</p>
+  </header>
+
+  <main>
+    <section id="login" class="panel">
+      <div class="grid two">
+        <div>
+          <label for="reviewer_id">Reviewer ID</label>
+          <input id="reviewer_id" autocomplete="off" placeholder="human1" />
+        </div>
+        <div>
+          <label for="token">X-Reviewer-Token</label>
+          <input id="token" type="password" autocomplete="off" placeholder="from operator handout" />
+        </div>
+      </div>
+      <div class="grid two" style="margin-top:0.9rem">
+        <div>
+          <label for="batch">Sample batch ID</label>
+          <input id="batch" autocomplete="off" />
+        </div>
+        <div>
+          <label for="limit">Page size</label>
+          <input id="limit" type="number" min="1" max="200" value="25" />
+        </div>
+      </div>
+      <div class="actions">
+        <button type="button" class="btn-primary" id="btn-start">Start reviewing</button>
+      </div>
+      <p class="status" id="login-status"></p>
+    </section>
+
+    <section id="workspace" class="panel hidden">
+      <div class="toolbar">
+        <div class="meta" id="progress">—</div>
+        <div class="actions" style="margin:0">
+          <button type="button" class="btn-ghost" id="btn-reload">Reload queue</button>
+          <button type="button" class="btn-ghost" id="btn-skip">Skip item</button>
+          <button type="button" class="btn-ghost" id="btn-logout">Sign out</button>
+        </div>
+      </div>
+      <div id="empty" class="hidden">
+        <p>No remaining items in this batch for you. Thank you.</p>
+      </div>
+      <div id="card">
+        <div class="message" id="message-text"></div>
+        <div class="actions">
+          <button type="button" class="btn-true" data-label="HUMAN_REVIEWED_TRUE">True lead</button>
+          <button type="button" class="btn-false" data-label="HUMAN_REVIEWED_FALSE">False positive</button>
+          <button type="button" class="btn-uncertain" data-label="HUMAN_REVIEWED_AMBIGUOUS">Uncertain</button>
+        </div>
+        <div id="fp-box" class="fp-box hidden">
+          <label for="fp_class">False-positive class (required)</label>
+          <select id="fp_class">
+            <option value="">Select…</option>
+            <option value="MARKETING_BROADCAST">Marketing broadcast</option>
+            <option value="JOB_VACANCY">Job vacancy</option>
+            <option value="SUPPORT_REQUEST">Support request</option>
+            <option value="SERVICE_AD">Service ad</option>
+            <option value="JOB_SEEKER">Job seeker</option>
+            <option value="NEWS_DIGEST">News digest</option>
+            <option value="OFF_DOMAIN">Off domain</option>
+            <option value="DUPLICATE">Duplicate</option>
+          </select>
+          <div class="actions">
+            <button type="button" class="btn-primary" id="btn-submit-false">Submit false positive</button>
+            <button type="button" class="btn-ghost" id="btn-cancel-false">Cancel</button>
+          </div>
+        </div>
+        <label for="notes" style="margin-top:0.9rem">Notes (optional)</label>
+        <textarea id="notes" rows="2" placeholder="Short rationale if helpful"></textarea>
+        <p class="hint">Uses the server-issued review token. Do not open /search, /leads, or /docs while reviewing — that breaks blindness.</p>
+      </div>
+      <p class="status" id="work-status"></p>
+    </section>
+  </main>
+
+  <footer>Independent review layer only — does not modify human_labels. Prefer REVIEW_UI_LOCKDOWN=true during human sessions.</footer>
+
+  <script>
+    const DEFAULT_BATCH = "indep_review_2026-09-22";
+    const FP_LABEL = "HUMAN_REVIEWED_FALSE";
+    const el = (id) => document.getElementById(id);
+
+    let session = null; // { reviewerId, token, batch, limit } — token in memory only
+    let queue = [];
+    let index = 0;
+    let submittedThisSession = 0;
+    let submitting = false;
+
+    function setStatus(node, msg, kind) {
+      node.textContent = msg || "";
+      node.classList.remove("error", "ok");
+      if (kind) node.classList.add(kind);
+    }
+
+    function errDetail(data) {
+      if (typeof data?.detail === "string") return data.detail;
+      return JSON.stringify(data?.detail || data);
+    }
+
+    function clampLimit(raw) {
+      const n = Math.round(Number(raw));
+      if (!Number.isFinite(n)) return 25;
+      return Math.min(200, Math.max(1, n));
+    }
+
+    async function api(path, { method = "GET", headers = {}, body } = {}) {
+      const res = await fetch(path, {
+        method,
+        headers: {
+          ...(body ? { "Content-Type": "application/json" } : {}),
+          ...headers,
+        },
+        body: body ? JSON.stringify(body) : undefined,
+      });
+      const text = await res.text();
+      let data = null;
+      try { data = text ? JSON.parse(text) : null; } catch { data = { detail: text }; }
+      return { res, data };
+    }
+
+    function authHeaders() {
+      return { "X-Reviewer-Token": session.token };
+    }
+
+    async function fetchQueue() {
+      const params = new URLSearchParams({
+        sample_batch_id: session.batch,
+        reviewer_id: session.reviewerId,
+        blind: "true",
+        limit: String(session.limit),
+      });
+      const { res, data } = await api(`/labels/independent-queue?${params}`, {
+        headers: authHeaders(),
+      });
+      if (res.status === 401) {
+        forceLogout("Session rejected (401). Sign in again.");
+        const err = new Error("401 unauthorized");
+        err.loggedOut = true;
+        throw err;
+      }
+      if (!res.ok) throw new Error(`${res.status}: ${errDetail(data)}`);
+      return Array.isArray(data) ? data : [];
+    }
+
+    function forceLogout(msg) {
+      session = null;
+      queue = [];
+      index = 0;
+      el("token").value = "";
+      el("reviewer_id").value = "";
+      el("message-text").textContent = "";
+      el("notes").value = "";
+      el("workspace").classList.add("hidden");
+      el("login").classList.remove("hidden");
+      setStatus(el("login-status"), msg || "Signed out.", msg ? "error" : "ok");
+    }
+
+    async function ensureItem() {
+      if (index < queue.length) return true;
+      const next = await fetchQueue();
+      if (!next.length) {
+        queue = [];
+        index = 0;
+        return false;
+      }
+      queue = next;
+      index = 0;
+      return true;
+    }
+
+    async function render() {
+      const empty = el("empty");
+      const card = el("card");
+      try {
+        const has = await ensureItem();
+        if (!has) {
+          empty.classList.remove("hidden");
+          card.classList.add("hidden");
+          el("progress").textContent = `Queue empty · submitted ${submittedThisSession} this session`;
+          return;
+        }
+      } catch (err) {
+        setStatus(el("work-status"), err.message || String(err), "error");
+        return;
+      }
+      empty.classList.add("hidden");
+      card.classList.remove("hidden");
+      const item = queue[index];
+      el("message-text").textContent = item.text || "";
+      el("progress").textContent =
+        `Page item ${index + 1}/${queue.length} · submitted ${submittedThisSession} · batch ${session.batch}`;
+      el("fp-box").classList.add("hidden");
+      el("fp_class").value = "";
+      el("notes").value = "";
+    }
+
+    async function startSession() {
+      const reviewerId = el("reviewer_id").value.trim();
+      const token = el("token").value.trim();
+      const batch = el("batch").value.trim() || DEFAULT_BATCH;
+      const limit = clampLimit(el("limit").value);
+      el("limit").value = String(limit);
+      if (!reviewerId || !token || !batch) {
+        setStatus(el("login-status"), "Reviewer ID, token, and batch are required.", "error");
+        return;
+      }
+      setStatus(el("login-status"), "Checking credentials…");
+      session = { reviewerId, token, batch, limit };
+      submittedThisSession = 0;
+      try {
+        const probe = await api("/search?q=lockdown-probe");
+        if (probe.res.status !== 403) {
+          setStatus(
+            el("login-status"),
+            "REVIEW_UI_LOCKDOWN is off — /search is reachable. Ask the operator to enable it and restart the API before blind review.",
+            "error",
+          );
+          session = null;
+          return;
+        }
+        queue = await fetchQueue();
+        index = 0;
+        el("token").value = "";
+        el("login").classList.add("hidden");
+        el("workspace").classList.remove("hidden");
+        setStatus(el("work-status"), queue.length ? `Loaded ${queue.length} items.` : "Queue empty.", "ok");
+        await render();
+      } catch (err) {
+        if (!err.loggedOut) {
+          session = null;
+          setStatus(el("login-status"), err.message || String(err), "error");
+        }
+      }
+    }
+
+    async function submit(label, fpClass) {
+      if (submitting || !session) return;
+      submitting = true;
+      try {
+        if (!(await ensureItem())) return;
+        const item = queue[index];
+        if (label === FP_LABEL && !fpClass) {
+          el("fp-box").classList.remove("hidden");
+          setStatus(el("work-status"), "Choose a false-positive class.", "error");
+          return;
+        }
+        setStatus(el("work-status"), "Submitting…");
+        const body = {
+          message_id: item.message_id,
+          sample_batch_id: item.sample_batch_id,
+          reviewer_id: session.reviewerId,
+          label,
+          fp_class: label === FP_LABEL ? fpClass : null,
+          review_token: item.review_token,
+          notes: el("notes").value.trim() || null,
+        };
+        const { res, data } = await api("/labels/reviews", {
+          method: "POST",
+          headers: authHeaders(),
+          body,
+        });
+        if (res.status === 401) {
+          forceLogout("Token rejected. Sign in again.");
+          return;
+        }
+        if (!res.ok) {
+          const detail = errDetail(data);
+          if (String(detail).includes("review_token")) {
+            setStatus(el("work-status"), `${res.status}: ${detail} — reloading queue…`, "error");
+            queue = await fetchQueue();
+            index = 0;
+            await render();
+            return;
+          }
+          throw new Error(`${res.status}: ${detail}`);
+        }
+        submittedThisSession += 1;
+        index += 1;
+        setStatus(el("work-status"), `Saved as ${data.label}.`, "ok");
+        await render();
+      } catch (err) {
+        setStatus(el("work-status"), err.message || String(err), "error");
+      } finally {
+        submitting = false;
+      }
+    }
+
+    el("btn-start").addEventListener("click", startSession);
+    el("btn-logout").addEventListener("click", () => forceLogout("Signed out."));
+    el("btn-reload").addEventListener("click", async () => {
+      if (submitting) return;
+      setStatus(el("work-status"), "Reloading…");
+      try {
+        queue = await fetchQueue();
+        index = 0;
+        setStatus(el("work-status"), `Loaded ${queue.length} items.`, "ok");
+        await render();
+      } catch (err) {
+        setStatus(el("work-status"), err.message || String(err), "error");
+      }
+    });
+    el("btn-skip").addEventListener("click", async () => {
+      if (submitting || !queue.length || index >= queue.length) return;
+      index += 1;
+      setStatus(el("work-status"), "Skipped.", "");
+      await render();
+    });
+    document.querySelectorAll("[data-label]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const label = btn.getAttribute("data-label");
+        if (label === FP_LABEL) {
+          el("fp-box").classList.remove("hidden");
+          setStatus(el("work-status"), "Select FP class, then submit.", "");
+          return;
+        }
+        submit(label, null);
+      });
+    });
+    el("btn-submit-false").addEventListener("click", () => {
+      submit(FP_LABEL, el("fp_class").value || null);
+    });
+    el("btn-cancel-false").addEventListener("click", () => {
+      el("fp-box").classList.add("hidden");
+      el("fp_class").value = "";
+    });
+
+    el("batch").value = DEFAULT_BATCH;
+  </script>
+</body>
+</html>
