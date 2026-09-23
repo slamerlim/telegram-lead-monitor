@@ -220,7 +220,8 @@ def mode_b_to_label(payload: dict[str, Any]) -> tuple[str, str | None]:
         return AI_UNCERTAIN, None
     if payload.get("is_false_positive"):
         return AI_FALSE, payload.get("fp_class")
-    if payload.get("is_false_positive") is False and payload.get("matches_objectives"):
+    # Require exact JSON boolean true (not truthy strings).
+    if payload.get("is_false_positive") is False and payload.get("matches_objectives") is True:
         return AI_TRUE, payload.get("lead_type")
     # Skeptic says not FP but unclear commercial match → uncertain
     if payload.get("is_false_positive") is False:

@@ -72,6 +72,11 @@ def test_snapshot_gate_eligible_diagnostic_blocks():
 
 
 def test_gate_latest_subquery_excludes_diagnostic_prefix():
+    text = str(
+        select(gate_latest_consensus_subquery().c.message_id, gate_latest_consensus_subquery().c.max_id)
+        .compile(dialect=postgresql.dialect(), compile_kwargs={"literal_binds": True})
+    )
+    # Prefer compiling the underlying select used by the helper.
     q = select(
         ValidationConsensus.message_id,
         func.max(ValidationConsensus.id).label("max_id"),
@@ -83,9 +88,19 @@ def test_gate_latest_subquery_excludes_diagnostic_prefix():
     assert "aival_diag_" in text
     assert "left(" in text.lower()
     assert "max(" in text.lower()
-    helper_sql = str(
-        select(gate_latest_consensus_subquery().c.message_id).compile(
-            dialect=postgresql.dialect(), compile_kwargs={"literal_binds": True}
+    assert "synthetic" in text.lower()
+    # Diagnostic filter must appear before GROUP BY (inside aggregation scope).
+    low = text.lower()
+    assert low.index("aival_diag_") < low.index("group by")
+
+
+def test_snapshot_blocks_diagnostic_validated_true():
+    assert (
+        snapshot_gate_eligible(
+            consensus_gate_eligible=True,
+            synthetic=False,
+            diagnostic=True,
+            state="VALIDATED_TRUE",
         )
+        is False
     )
-    assert "anon" in helper_sql.lower() or "aival_diag_" in helper_sql

@@ -8,7 +8,7 @@ from typing import Any
 from shared.validation.blind_input import BlindItem
 from shared.validation.definition import COMMERCIAL_LEAD_TYPES, objectives_text
 
-PROMPT_VERSION = "cursor_ai_val_v1"
+PROMPT_VERSION = "cursor_ai_val_v2"
 
 MODE_A = "A"
 MODE_B = "B"
@@ -57,10 +57,14 @@ def build_mode_prompt(
         return common + (
             "You are a skeptical false-positive reviewer. Aggressively argue against lead status.\n"
             "Schema: "
-            '{"is_false_positive":bool,"fp_class":string|null,"confidence":0-1,'
-            '"evidence":[string],"uncertain":bool,"rationale_short":string}\n'
+            '{"is_false_positive":bool,"fp_class":string|null,"matches_objectives":bool,'
+            '"lead_type":string|null,"confidence":0-1,"evidence":[string],"uncertain":bool,'
+            '"rationale_short":string}\n'
             "fp_class when false-positive: MARKETING_BROADCAST|JOB_VACANCY|SUPPORT_REQUEST|"
             "SERVICE_AD|JOB_SEEKER|NEWS_DIGEST|OFF_DOMAIN|DUPLICATE\n"
+            "Set matches_objectives=true only if is_false_positive=false AND the message meets "
+            "one of the commercial objectives; then lead_type MUST be from the allowed list. "
+            "Otherwise matches_objectives=false and lead_type=null.\n"
         )
     if mode == MODE_C:
         return common + (
