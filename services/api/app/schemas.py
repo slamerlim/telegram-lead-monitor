@@ -218,3 +218,116 @@ class IndependentReviewOut(BaseModel):
     notes: str | None
     reviewed_at: datetime
 
+
+# --- Commercial operator API ---
+
+class OpsLeadOut(LeadOut):
+    source: str = "scorer"
+    owner: str | None = None
+    next_action_at: datetime | None = None
+    opportunity_key: str | None = None
+    ai_hint: str | None = None
+    candidate_source: str | None = None
+
+
+class OpsCandidateOut(BaseModel):
+    message_id: int
+    text: str
+    message_url: str | None = None
+    message_date: datetime | None = None
+    community_name: str | None = None
+    community_username: str | None = None
+    author_username: str | None = None
+    author_url: str | None = None
+    score: float | None = None
+    tier: str | None = None
+    lead_type: str | None = None
+    buyer_type: str | None = None
+    candidate_source: str
+    ai_hint: str | None = None
+    existing_lead_id: int | None = None
+    existing_lead_status: str | None = None
+
+
+class OpsPromoteIn(BaseModel):
+    message_id: int
+    candidate_source: str = Field(
+        pattern="^(scorer|agent_provisional|operator_search|promote)$"
+    )
+    reason_code: str | None = Field(default=None, max_length=64)
+    note: str | None = None
+    to_status: str = Field(default="REVIEWED", pattern="^(REVIEWED|QUALIFIED)$")
+
+
+class OpsEventIn(BaseModel):
+    event_type: str = Field(
+        pattern=(
+            "^(STATUS_CHANGE|CONTACT_ATTEMPT|FOLLOW_UP|RESPONSE|NOTE|"
+            "PROMOTE|ASSIGN|BACKFILL)$"
+        )
+    )
+    to_status: str | None = Field(
+        default=None,
+        pattern="^(NEW|REVIEWED|CONTACTED|RESPONDED|QUALIFIED|REJECTED|WON|LOST)$",
+    )
+    channel: str | None = Field(
+        default=None,
+        pattern="^(telegram_dm|telegram_reply|email|phone|other)$",
+    )
+    occurred_at: datetime
+    reason_code: str | None = Field(default=None, max_length=64)
+    note: str | None = None
+    evidence_ref: str | None = None
+    next_action_at: datetime | None = None
+    outcome_amount: float | None = None
+    outcome_currency: str | None = Field(default=None, max_length=16)
+    idempotency_key: str | None = Field(default=None, max_length=128)
+
+
+class OpsEventOut(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+    id: int
+    lead_id: int
+    message_id: int
+    opportunity_key: str | None
+    event_type: str
+    from_status: str | None
+    to_status: str | None
+    channel: str | None
+    actor_id: str
+    reason_code: str | None
+    note: str | None
+    evidence_ref: str | None
+    outcome_amount: float | None
+    outcome_currency: str | None
+    occurred_at: datetime
+    created_at: datetime
+    idempotency_key: str | None
+
+
+class OpsFunnelOut(BaseModel):
+    since_days: int
+    by_status: dict[str, int]
+    human_confirmed: int
+    human_rejected: int
+    contacted: int
+    replied: int
+    won: int
+    lost: int
+    rates: dict[str, float | None]
+    by_community: list[dict]
+    overdue_followups: int
+    status_event_drift: int
+
+
+class OpsMilestoneOut(BaseModel):
+    candidates_promoted: int
+    human_confirmed: int
+    human_rejected: int
+    contacted: int
+    replied: int
+    qualified_conversations: int
+    won: int
+    target_first_25: int = 25
+    first_25_ready: bool
+

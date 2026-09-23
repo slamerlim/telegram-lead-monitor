@@ -106,10 +106,46 @@ class Lead(Base):
     budget_currency: Mapped[str | None] = mapped_column(String(16), nullable=True)
     semantic_score: Mapped[float | None] = mapped_column(Float, nullable=True)
     opportunity_key: Mapped[str | None] = mapped_column(String(96), unique=True, nullable=True, index=True)
+    # Commercial ops provenance (0008): how the lead entered the operator queue.
+    source: Mapped[str] = mapped_column(String(24), default="scorer", nullable=False)
+    owner: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    next_action_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=datetime.utcnow)
     updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=datetime.utcnow, onupdate=datetime.utcnow)
 
     message: Mapped[Message] = relationship(back_populates="lead")
+    events: Mapped[list["LeadEvent"]] = relationship(back_populates="lead")
+
+
+class LeadEvent(Base):
+    """Append-only commercial workflow audit (contact / outcome / notes)."""
+
+    __tablename__ = "lead_events"
+    __table_args__ = (
+        Index("ix_lead_events_lead_id", "lead_id"),
+        Index("ix_lead_events_occurred_at", "occurred_at"),
+        Index("ix_lead_events_event_type", "event_type"),
+    )
+
+    id: Mapped[int] = mapped_column(BigInteger, primary_key=True, autoincrement=True)
+    lead_id: Mapped[int] = mapped_column(ForeignKey("leads.id", ondelete="NO ACTION"), nullable=False)
+    message_id: Mapped[int] = mapped_column(ForeignKey("messages.id", ondelete="NO ACTION"), nullable=False)
+    opportunity_key: Mapped[str | None] = mapped_column(String(96), nullable=True)
+    event_type: Mapped[str] = mapped_column(String(32), nullable=False)
+    from_status: Mapped[str | None] = mapped_column(String(32), nullable=True)
+    to_status: Mapped[str | None] = mapped_column(String(32), nullable=True)
+    channel: Mapped[str | None] = mapped_column(String(32), nullable=True)
+    actor_id: Mapped[str] = mapped_column(String(64), nullable=False)
+    reason_code: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    note: Mapped[str | None] = mapped_column(Text, nullable=True)
+    evidence_ref: Mapped[str | None] = mapped_column(Text, nullable=True)
+    outcome_amount: Mapped[float | None] = mapped_column(Float, nullable=True)
+    outcome_currency: Mapped[str | None] = mapped_column(String(16), nullable=True)
+    occurred_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=datetime.utcnow)
+    idempotency_key: Mapped[str | None] = mapped_column(String(128), unique=True, nullable=True)
+
+    lead: Mapped[Lead] = relationship(back_populates="events")
 
 
 class MessageScore(Base):

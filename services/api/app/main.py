@@ -138,8 +138,10 @@ configure_logging(settings.log_level)
 app = FastAPI(title="Telegram Lead Monitor API", version="0.3.0")
 
 from services.api.app.ai_validation_routes import router as ai_validation_router
+from services.api.app.ops_routes import router as ops_router
 
 app.include_router(ai_validation_router)
+app.include_router(ops_router)
 
 _REVIEW_STATIC = Path(__file__).resolve().parents[1] / "static" / "review"
 if _REVIEW_STATIC.is_dir():
@@ -156,6 +158,9 @@ def _review_lockdown_allowed(path: str) -> bool:
     if path == "/review" or path.startswith("/review/"):
         return True
     if path.startswith("/validation/"):
+        return True
+    # Commercial ops is authenticated + kill-switched; allow through lockdown when enabled.
+    if path.startswith("/ops/") and get_settings().commercial_ops_enabled:
         return True
     return path.rstrip("/") in ("/labels/independent-queue", "/labels/reviews")
 
@@ -409,11 +414,51 @@ async def update_lead_status(
     lead_id: int,
     status: str = Query(pattern="^(NEW|REVIEWED|CONTACTED|RESPONDED|QUALIFIED|REJECTED|WON|LOST)$"),
     session: AsyncSession = Depends(get_session),
+    x_operator_id: str | None = Header(default=None, alias="X-Operator-Id"),
+    x_label_token: str | None = Header(default=None, alias="X-Label-Token"),
 ):
+    """CRM status update — requires operator auth when commercial ops is enabled.
+
+    When commercial_ops_enabled=false, keeps legacy behavior for compatibility but
+    still records no lead_events (ops surface is the required path for pilot).
+    """
+    from shared.lead_fsm import TransitionError, assert_transition
+    from shared.models import LeadEvent
+
     lead = await session.get(Lead, lead_id)
     if not lead:
         raise HTTPException(status_code=404, detail="Lead not found")
-    lead.status = status.upper()
+
+    cfg = get_settings()
+    actor = "legacy_unauthenticated"
+    if cfg.commercial_ops_enabled:
+        from services.api.app.ops_routes import _require_operator
+
+        actor = _require_operator(x_operator_id, x_label_token)
+
+    new_status = status.upper()
+    try:
+        fr, to = assert_transition(lead.status, new_status)
+    except TransitionError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+
+    lead.status = to
+    if cfg.commercial_ops_enabled:
+        now = datetime.now(timezone.utc)
+        session.add(
+            LeadEvent(
+                lead_id=lead.id,
+                message_id=lead.message_id,
+                opportunity_key=lead.opportunity_key,
+                event_type="STATUS_CHANGE",
+                from_status=fr,
+                to_status=to,
+                actor_id=actor,
+                reason_code="patch_status",
+                occurred_at=now,
+                created_at=now,
+            )
+        )
     await session.commit()
     return {"id": lead.id, "status": lead.status}
 
@@ -630,6 +675,24 @@ async def create_label(
 
     if lead and lead.status == "NEW":
         lead.status = "REVIEWED"
+        if get_settings().commercial_ops_enabled:
+            from shared.models import LeadEvent
+
+            now = datetime.now(timezone.utc)
+            session.add(
+                LeadEvent(
+                    lead_id=lead.id,
+                    message_id=message.id,
+                    opportunity_key=lead.opportunity_key,
+                    event_type="STATUS_CHANGE",
+                    from_status="NEW",
+                    to_status="REVIEWED",
+                    actor_id=payload.labeled_by,
+                    reason_code="label_write",
+                    occurred_at=now,
+                    created_at=now,
+                )
+            )
 
     score_row = await session.scalar(select(MessageScore).where(MessageScore.message_id == message.id))
     community = await session.get(Community, message.community_id)

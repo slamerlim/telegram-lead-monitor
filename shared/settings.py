@@ -49,6 +49,10 @@ class Settings(BaseSettings):
     # When true, only review UI + independent-review endpoints + health are reachable.
     # Enable during human blind-review sessions to reduce same-origin scorer/search leaks.
     review_ui_lockdown: bool = False
+    # Kill switch for commercial operator API (/ops/*). Default off until configured.
+    commercial_ops_enabled: bool = False
+    # Candidate queue max age (days) for production pilot triage.
+    ops_candidate_max_age_days: int = 90
 
     # --- Cursor-only AI validation (no third-party LLM APIs) ---
     ai_validators_config: str = "/app/config/ai_validators.yaml"

@@ -17,6 +17,8 @@ _PROTECTED_STATUSES = frozenset(
     {"REVIEWED", "CONTACTED", "RESPONDED", "QUALIFIED", "WON", "LOST", "REJECTED"}
 )
 
+LEAD_SOURCES = frozenset({"scorer", "agent_provisional", "operator_search", "promote"})
+
 
 def _is_protected(lead: Lead) -> bool:
     return (lead.status or "NEW").upper() in _PROTECTED_STATUSES
@@ -188,3 +190,69 @@ async def upsert_opportunity_lead(
     if _lead_snapshot(lead_for_message) == before:
         return "unchanged", lead_for_message
     return "updated", lead_for_message
+
+
+async def promote_candidate_lead(
+    db: AsyncSession,
+    message: Message,
+    *,
+    source: str,
+    actor_id: str,
+    score_snapshot: dict[str, Any] | None = None,
+    status: str = "REVIEWED",
+) -> tuple[str, Lead]:
+    """Create or protect a lead for commercial operator review without threshold changes.
+
+    Does not invent commercial scores: copies provided snapshot or leaves defaults.
+    Lands at REVIEWED (protected) so rescore cannot delete the row.
+    """
+    src = (source or "promote").strip().lower()
+    if src not in LEAD_SOURCES:
+        raise ValueError(f"invalid lead source: {source!r}")
+    st = (status or "REVIEWED").upper()
+    if st not in {"REVIEWED", "QUALIFIED"}:
+        raise ValueError("promote status must be REVIEWED or QUALIFIED")
+
+    key = make_opportunity_key(message.community_id, message.text)
+    existing_key_owner = await db.scalar(select(Lead).where(Lead.opportunity_key == key))
+    lead = await db.scalar(select(Lead).where(Lead.message_id == message.id))
+
+    if existing_key_owner and (not lead or existing_key_owner.message_id != message.id):
+        raise ValueError(f"opportunity_key owned by lead_id={existing_key_owner.id}")
+
+    if not lead:
+        lead = Lead(message_id=message.id, opportunity_key=None, status=st, source=src)
+        db.add(lead)
+        action = "created"
+    else:
+        action = "updated"
+        if not _is_protected(lead) or (lead.status or "").upper() == "NEW":
+            lead.status = st
+        lead.source = src
+
+    if score_snapshot:
+        for field in (
+            "score",
+            "tier",
+            "lead_type",
+            "buyer_type",
+            "intent_score",
+            "technical_score",
+            "commercial_score",
+            "promotion_score",
+            "matched_keywords",
+            "matched_categories",
+            "reasons",
+            "contact_usernames",
+            "contact_urls",
+            "budget_amount",
+            "budget_currency",
+            "semantic_score",
+        ):
+            if field in score_snapshot and score_snapshot[field] is not None:
+                setattr(lead, field, score_snapshot[field])
+
+    lead.owner = actor_id
+    await _assign_opportunity_key_if_free(db, lead, key)
+    await db.flush()
+    return action, lead

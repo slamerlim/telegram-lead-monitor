@@ -12,7 +12,7 @@ from sqlalchemy import select
 from services.analyzer.app.scoring import LeadScorer
 from shared.db import SessionLocal
 from shared.lead_write import upsert_opportunity_lead
-from shared.models import Author, Community, Lead, Message
+from shared.models import Author, Community, Lead, Message, MessageScore
 from shared.score_persist import persist_message_score
 from shared.settings import get_settings
 
@@ -21,6 +21,9 @@ async def reprocess(
     since_days: int | None,
     batch_size: int,
     max_messages: int | None,
+    *,
+    only_unscored: bool = False,
+    start_after_id: int = 0,
 ) -> None:
     settings = get_settings()
 
@@ -62,7 +65,7 @@ async def reprocess(
 
         processed = high = medium = low = 0
         created = updated = unchanged = deleted = deduped = 0
-        last_message_id = 0
+        last_message_id = max(0, int(start_after_id or 0))
 
         while True:
             remaining = None if max_messages is None else max_messages - processed
@@ -80,6 +83,10 @@ async def reprocess(
             )
             if since is not None:
                 stmt = stmt.where(Message.message_date >= since)
+            if only_unscored:
+                stmt = stmt.outerjoin(
+                    MessageScore, MessageScore.message_id == Message.id
+                ).where(MessageScore.id.is_(None))
 
             rows = (await db.execute(stmt)).all()
             if not rows:
@@ -191,6 +198,17 @@ if __name__ == "__main__":
         default=None,
         help="Process at most this many messages for controlled smoke tests.",
     )
+    parser.add_argument(
+        "--only-unscored",
+        action="store_true",
+        help="Skip messages that already have a message_scores row.",
+    )
+    parser.add_argument(
+        "--start-after-id",
+        type=int,
+        default=0,
+        help="Resume after this messages.id (exclusive).",
+    )
     args = parser.parse_args()
     if args.since_days is not None and args.since_days <= 0:
         parser.error("--since-days must be > 0")
@@ -198,4 +216,14 @@ if __name__ == "__main__":
         parser.error("--batch-size must be > 0")
     if args.max_messages is not None and args.max_messages <= 0:
         parser.error("--max-messages must be > 0")
-    asyncio.run(reprocess(args.since_days, args.batch_size, args.max_messages))
+    if args.start_after_id < 0:
+        parser.error("--start-after-id must be >= 0")
+    asyncio.run(
+        reprocess(
+            args.since_days,
+            args.batch_size,
+            args.max_messages,
+            only_unscored=args.only_unscored,
+            start_after_id=args.start_after_id,
+        )
+    )

@@ -161,3 +161,56 @@ docker compose exec -T postgres \
 ```
 
 Redis AOF + Docker volumes are the Redis/session recovery path; do not delete volumes to “clean up”.
+
+## Commercial Production Pilot
+
+See also: `docs/business/COMMERCIAL_PILOT.md`
+
+### Policy
+
+- Do **not** wait for `ai_validation_gate_ready` or ML readiness to run CRM.
+- AI validation is advisory; human review is commercial truth; customer response is ground truth.
+- Never auto-DM. Never fabricate WON. Never loosen 100/30 or scorer thresholds for volume.
+
+### Enable (fail-closed)
+
+```bash
+# In .env (do not commit secrets):
+COMMERCIAL_OPS_ENABLED=true
+LABEL_WRITE_TOKEN=<shared-token>
+HUMAN_LABEL_REVIEWER_IDS=<operator_id>
+# Operator id must NOT appear in INDEPENDENT_HUMAN_REVIEWER_IDS
+```
+
+Redeploy API after env change. Confirm:
+
+```bash
+curl -sS -H "X-Operator-Id: <id>" -H "X-Label-Token: <token>" \
+  http://127.0.0.1:8010/ops/health
+```
+
+With lockdown on, `/ops/*` remains reachable only when `COMMERCIAL_OPS_ENABLED=true`.
+
+### Daily operator loop
+
+1. `/ops/health` + `/health` + Redis lag
+2. `GET /ops/candidates`
+3. Human qualify → promote / QUALIFIED or REJECTED events
+4. Manual outreach using message/author URLs
+5. Record CONTACT_ATTEMPT → RESPONSE → WON/LOST
+6. `GET /ops/metrics/funnel` and `/ops/metrics/milestone`
+7. Do not retrain ML from small samples
+
+### First-25 + 7-day pilot
+
+Documented in `docs/business/COMMERCIAL_PILOT.md`. Classification A–F is evidence, not marketing.
+
+### Score coverage backfill (optional, same rules)
+
+```bash
+docker compose exec -T analyzer \
+  python scripts/reprocess_messages.py \
+  --since-days 7 --only-unscored --max-messages 1000 --batch-size 250
+```
+
+Measure created/updated/deleted between stages. Abort on lead explosion or Redis lag.

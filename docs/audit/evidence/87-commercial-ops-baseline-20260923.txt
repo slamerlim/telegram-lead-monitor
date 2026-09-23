@@ -1,0 +1,48 @@
+Commercial production readiness baseline — 2026-09-23 (UTC)
+
+UTC: 2026-09-23T15:38:14Z
+git SHA: 95bed9f6bb0ece0a6cdca82b9009750c2f1e39a4
+migration: 0007_ai_validation (head)
+analysis_only: true (pre commercial-ops implementation)
+
+## Health
+- /health: ok (postgres ok, redis ok)
+- compose: api, collector, analyzer, scheduler, postgres, redis — all Up
+- Redis telegram:messages: lag=0, pending=0
+
+## AI / ML (unchanged policy)
+- ai_validation_gate_ready: false
+- ai_validated_messages: 94
+- ai_validated_true: 0
+- ai_validated_false: 94
+- ml_training_enabled: false
+- Mode B contract: cursor_ai_val_v2 (evidence 85/86)
+- Diagnostic batches remain gate-ineligible
+
+## CRM / funnel gap (launch-critical)
+- messages: ~8,562,915 (bulk ingest 2026-09-14/15; live drip 2026-09-22+)
+- collector gap: 2026-09-16 → 2026-09-21 (near-zero daily volume)
+- leads: 5 total (HIGH=3, LOW protected=2); status NEW=2, REVIEWED=3
+- leads created last 7d: 0
+- message_scores: NEGATIVE≈56018, POSITIVE=3
+- human_labels: 1524 (TRUE_LEAD=389, FALSE_POSITIVE=932, AMBIGUOUS=203)
+  provenance: agent/audit batches — NOT configured independent humans
+- commercially_actionable=true: 6
+- TRUE_LEAD with author username: ~8
+- distinct opportunity_key: 5
+
+## Lockdown
+- REVIEW_UI_LOCKDOWN=true → /leads, /stats, /labels/stats return 403
+- Blind /review UI remains available
+- Commercial operator path does not exist yet
+
+## Interpretation
+Platform health PASS for ingest/score infra.
+Commercial operating loop NOT ready: no FSM, no lead_events, no authenticated
+ops API, nearly empty live lead cohort.
+AI gate closed does NOT block CRM pilot once ops surface ships.
+Do NOT wait for ai_validation_gate_ready or ML.
+
+## Backup
+Partial pg_dump (leads, human_labels, validation_consensus, ai_validation_attempts)
+taken under /home/slamer-lim/backups/telegram-lead-monitor/ before 0008.
