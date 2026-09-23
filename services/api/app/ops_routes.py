@@ -90,11 +90,13 @@ def _require_operator(
     if reserved_id_match(op_id, _OPS_RESERVED_PREFIXES):
         raise HTTPException(status_code=403, detail="reserved operator id")
 
-    allow = _filter_ops_ids(parse_id_csv(cfg.human_label_reviewer_ids))
+    allow = _filter_ops_ids(parse_id_csv(cfg.commercial_operator_ids))
+    if not allow:
+        allow = _filter_ops_ids(parse_id_csv(cfg.human_label_reviewer_ids))
     if not allow:
         raise HTTPException(
             status_code=503,
-            detail="HUMAN_LABEL_REVIEWER_IDS empty; commercial ops refuse writes",
+            detail="COMMERCIAL_OPERATOR_IDS / HUMAN_LABEL_REVIEWER_IDS empty; commercial ops refuse writes",
         )
     if op_id not in allow:
         raise HTTPException(status_code=403, detail="operator not allowlisted")

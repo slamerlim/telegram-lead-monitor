@@ -51,6 +51,10 @@ class Settings(BaseSettings):
     review_ui_lockdown: bool = False
     # Kill switch for commercial operator API (/ops/*). Default off until configured.
     commercial_ops_enabled: bool = False
+    # Optional dedicated commercial operator ids (comma-separated).
+    # When non-empty, /ops auth uses this list instead of HUMAN_LABEL_REVIEWER_IDS.
+    # Keeps blind independent reviewers out of scorer-visible CRM without forcing id reuse.
+    commercial_operator_ids: str = ""
     # Candidate queue max age (days) for production pilot triage.
     ops_candidate_max_age_days: int = 90
 

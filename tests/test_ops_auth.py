@@ -57,6 +57,7 @@ def test_ops_rejects_non_allowlisted(monkeypatch):
     monkeypatch.setenv("COMMERCIAL_OPS_ENABLED", "true")
     monkeypatch.setenv("LABEL_WRITE_TOKEN", "good")
     monkeypatch.setenv("HUMAN_LABEL_REVIEWER_IDS", "op1")
+    monkeypatch.setenv("COMMERCIAL_OPERATOR_IDS", "")
     _clear_settings_cache()
     with pytest.raises(HTTPException) as ei:
         _require_operator("stranger", "good")
@@ -67,16 +68,33 @@ def test_ops_accepts_allowlisted(monkeypatch):
     monkeypatch.setenv("COMMERCIAL_OPS_ENABLED", "true")
     monkeypatch.setenv("LABEL_WRITE_TOKEN", "good")
     monkeypatch.setenv("HUMAN_LABEL_REVIEWER_IDS", "op1")
+    monkeypatch.setenv("COMMERCIAL_OPERATOR_IDS", "")
     monkeypatch.setenv("INDEPENDENT_HUMAN_REVIEWER_TOKENS", "")
     monkeypatch.setenv("INDEPENDENT_HUMAN_REVIEWER_IDS", "")
     _clear_settings_cache()
     assert _require_operator("op1", "good") == "op1"
 
 
+def test_ops_prefers_commercial_operator_ids(monkeypatch):
+    monkeypatch.setenv("COMMERCIAL_OPS_ENABLED", "true")
+    monkeypatch.setenv("LABEL_WRITE_TOKEN", "good")
+    monkeypatch.setenv("HUMAN_LABEL_REVIEWER_IDS", "alice")
+    monkeypatch.setenv("COMMERCIAL_OPERATOR_IDS", "ops_pilot")
+    monkeypatch.setenv("INDEPENDENT_HUMAN_REVIEWER_IDS", "alice")
+    monkeypatch.setenv("INDEPENDENT_HUMAN_REVIEWER_TOKENS", "alice:secret")
+    monkeypatch.setenv("INDEPENDENT_REVIEW_HMAC_SECRET", "hmac")
+    _clear_settings_cache()
+    assert _require_operator("ops_pilot", "good") == "ops_pilot"
+    with pytest.raises(HTTPException) as ei:
+        _require_operator("alice", "good")
+    assert ei.value.status_code == 403
+
+
 def test_ops_rejects_blind_reviewer_overlap(monkeypatch):
     monkeypatch.setenv("COMMERCIAL_OPS_ENABLED", "true")
     monkeypatch.setenv("LABEL_WRITE_TOKEN", "good")
     monkeypatch.setenv("HUMAN_LABEL_REVIEWER_IDS", "alice")
+    monkeypatch.setenv("COMMERCIAL_OPERATOR_IDS", "")
     monkeypatch.setenv("INDEPENDENT_HUMAN_REVIEWER_IDS", "alice")
     monkeypatch.setenv("INDEPENDENT_HUMAN_REVIEWER_TOKENS", "alice:secret")
     monkeypatch.setenv("INDEPENDENT_REVIEW_HMAC_SECRET", "hmac")

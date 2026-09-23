@@ -178,8 +178,11 @@ See also: `docs/business/COMMERCIAL_PILOT.md`
 # In .env (do not commit secrets):
 COMMERCIAL_OPS_ENABLED=true
 LABEL_WRITE_TOKEN=<shared-token>
-HUMAN_LABEL_REVIEWER_IDS=<operator_id>
-# Operator id must NOT appear in INDEPENDENT_HUMAN_REVIEWER_IDS
+# Prefer a dedicated commercial operator id (not used for blind independent review):
+COMMERCIAL_OPERATOR_IDS=<commercial_ops_pilot>
+# Fallback if COMMERCIAL_OPERATOR_IDS empty: HUMAN_LABEL_REVIEWER_IDS
+# (must not overlap INDEPENDENT_HUMAN_REVIEWER_IDS — else 409)
+HUMAN_LABEL_REVIEWER_IDS=<optional-fallback>
 ```
 
 Redeploy API after env change. Confirm:
