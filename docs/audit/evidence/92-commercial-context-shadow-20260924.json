@@ -1,0 +1,70 @@
+{
+  "experiment_id": "aival_episode_ab_disc_v2_20260924",
+  "discovery_version": "disc_v2",
+  "frozen_commit": "5ad61ca",
+  "shipped_plane_commit": "716c4bb",
+  "backend": "sdk",
+  "n_paired": 30,
+  "arm_a": {
+    "AI_CONFIRMED": 1,
+    "AI_CANDIDATE": 1,
+    "AI_UNCERTAIN": 0,
+    "AI_REJECTED": 28
+  },
+  "arm_b": {
+    "AI_CONFIRMED": 1,
+    "AI_CANDIDATE": 1,
+    "AI_UNCERTAIN": 0,
+    "AI_REJECTED": 28
+  },
+  "incremental_confirmations": 0,
+  "lost_confirmations": 0,
+  "paired_discordance": 0,
+  "evidence_valid_b": 30,
+  "evidence_invalid_b": 0,
+  "by_context_size": {
+    "1": {
+      "n": 12,
+      "discordance": 0,
+      "incremental": 0
+    },
+    "2-3": {
+      "n": 9,
+      "discordance": 0,
+      "incremental": 0
+    },
+    "4+": {
+      "n": 9,
+      "discordance": 0,
+      "incremental": 0
+    }
+  },
+  "unique_authors": 15,
+  "unique_communities": 11,
+  "opinion_rows": 180,
+  "model_calls_est": 180,
+  "pool_pre_ai": {
+    "n": 143,
+    "pct_context_gt1": 26.6,
+    "pct_no_related_history": 6.3,
+    "pct_history_exists_not_selected": 67.1
+  },
+  "confirmed_seed": {
+    "id": 22581,
+    "text": "Freelance Opportunity: We are hiring Trading bot developers! Budget $8000",
+    "both_arms": "AI_CONFIRMED"
+  },
+  "candidate_seed": {
+    "id": 196,
+    "text": "Freelance Opportunity: Create a trading bot for 2,500 PEPE. Budget $15",
+    "both_arms": "AI_CANDIDATE"
+  },
+  "isolation": {
+    "ai_validated": "94/0/94",
+    "human_labels": 1524,
+    "AI_CONFIRMED_leads": 4
+  },
+  "recommendation": "REFINE CONTEXT",
+  "note": "Early SDK results (disc_v1 mixed) are provisional and not pooled.",
+  "generated_at": "2026-09-24T15:41:04.426869+00:00"
+}

@@ -1,0 +1,74 @@
+# 92 — Commercial context shadow (clean disc_v2 paired experiment)
+Date: 2026-09-24
+Plane_SHA: 716c4bb
+Discovery_freeze_SHA: 5ad61ca
+Experiment_id: aival_episode_ab_disc_v2_20260924
+Backend: Cursor SDK only (no fake)
+
+## Methodological integrity
+Early SDK results are provisional because discovery policy changed during the run.
+disc_v1 populations (fake 5 + noisy SDK 5 + mid-run 15/20) are NOT pooled here.
+Final A/B uses ONLY discovery_version=disc_v2 after freeze commit 5ad61ca.
+
+## Recovery
+- Host tooling recovered; services Up; alembic 0010; indexes valid
+- Redis discovery PEL=0; episode_shadow unread XLEN leftovers not blindly ACKed
+- Rate-limit pause after 20 seeds (40 DECISION/hour); resumed with CLI
+  COMMERCIAL_EPISODE_MAX_REVIEWS_PER_HOUR=500 for remaining 10
+
+## Pre-AI pool diagnostics (disc_v2, 7d LOW)
+- pool n=143; authors=35; communities=26
+- context_size=1: 105 (73.4%); gt1: 26.6%; median=1
+- NO RELATED HISTORY: 6.3%
+- RELATED HISTORY EXISTS BUT FILTERED OUT: 67.1%
+  (same-author 30d history present but context builder kept seed-only)
+
+## Clean sample (n=30 paired, stratified)
+- authors=15; communities=11
+- episode sizes: sz1=12, sz2-3=9, sz4+=9
+- hist_filtered among sample signals: 11; no_hist: 1
+
+## Arm A (message-only)
+CONFIRMED=1 CANDIDATE=1 UNCERTAIN=0 REJECTED=28
+
+## Arm B (context)
+CONFIRMED=1 CANDIDATE=1 UNCERTAIN=0 REJECTED=28
+
+## Paired
+B_incremental_confirmed=0
+A_lost_confirmed=0
+paired_discordance=0
+
+## Context effect by size
+size1 n=12 disc=0 inc=0
+size2-3 n=9 disc=0 inc=0
+size4+ n=9 disc=0 inc=0
+
+## Evidence quality
+valid B evidence=30; invalid=0
+(Confirmed/candidate both size=1; seed itself cited)
+
+## Notable positives (both arms agree)
+- 22581 AI_CONFIRMED: freelance "hiring Trading bot developers" $8000
+- 196 AI_CANDIDATE: freelance "Create a trading bot for PEPE" $15
+Many other seeds were corporate "X is hiring …" job posts / seekers — correctly REJECTED.
+
+## Cost
+~180 opinion calls (30 seeds × 2 arms × 3 models) + 60 DECISION rows
+Chunk5 ~359s; chunk15 ~1230s; resume10 ~657s
+
+## Isolation (after)
+ai_validated 94/0/94; gate false; ml false; human_labels=1524; AI_CONFIRMED leads=4
+No CONTACT_ATTEMPT/RESPONSE; no CRM promote from episode plane
+
+## Tests
+focused commercial+ai_validation: 60 passed
+full suite: 166 passed
+
+## Recommendation
+REFINE CONTEXT
+Reason: zero A/B discordance (context did not change decisions on this cohort),
+AND the dominant product issue is retrieval — 67% of eligible seeds have
+same-author history that the context builder filtered out. Do not adopt
+context for CRM promotion; do not loosen scorer; do not change 0007/ML;
+NO OUTREACH IN THIS PHASE.
