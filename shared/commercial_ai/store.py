@@ -232,3 +232,156 @@ def validate_draft(draft_text: str, source_text: str) -> tuple[bool, str | None]
     if tokens and not any(tok in low for tok in tokens[:20]):
         return False, "no_source_anchor"
     return True, None
+
+
+async def already_episode_arm_decided(
+    session: AsyncSession,
+    *,
+    seed_message_id: int,
+    context_hash: str,
+    experiment_arm: str,
+    prompt_version: str,
+) -> CommercialAIReview | None:
+    return await session.scalar(
+        select(CommercialAIReview)
+        .where(
+            CommercialAIReview.message_id == seed_message_id,
+            CommercialAIReview.row_kind == "DECISION",
+            CommercialAIReview.context_hash == context_hash,
+            CommercialAIReview.experiment_arm == experiment_arm,
+            CommercialAIReview.prompt_version == prompt_version,
+        )
+        .order_by(CommercialAIReview.id.desc())
+        .limit(1)
+    )
+
+
+async def record_episode_shadow_decision(
+    session: AsyncSession,
+    *,
+    run_id: str,
+    message: Message,
+    text_hash: str,
+    episode_id: int | None,
+    context_version: str,
+    context_hash: str,
+    experiment_arm: str,
+    prompt_version: str,
+    decision: CommercialDecision,
+    evidence_message_ids: list[int],
+    evidence_valid: bool,
+    evidence_reject_reason: str | None,
+) -> CommercialAIReview:
+    """Persist shadow DECISION only — NEVER promote CRM / write outreach events."""
+    key = (
+        f"cai_ep:{experiment_arm}:{message.id}:{context_hash[:16]}:"
+        f"{prompt_version}:{POLICY_VERSION}"
+    )
+    existing = await session.scalar(
+        select(CommercialAIReview).where(CommercialAIReview.idempotency_key == key)
+    )
+    if existing:
+        return existing
+    row = CommercialAIReview(
+        run_id=run_id,
+        row_kind="DECISION",
+        lead_id=None,
+        message_id=message.id,
+        opportunity_key=None,
+        text_sha256=text_hash,
+        prompt_version=prompt_version,
+        policy_version=POLICY_VERSION,
+        synthetic=False,
+        status="ok" if evidence_valid else "evidence_invalid",
+        decision=decision.decision if evidence_valid else "ERROR",
+        reason_code=decision.reason_code if evidence_valid else (evidence_reject_reason or "evidence_invalid"),
+        n_confirm=decision.n_confirm,
+        n_reject=decision.n_reject,
+        n_uncertain=decision.n_uncertain,
+        lead_type=decision.lead_type,
+        rank_score=decision.rank_score,
+        episode_id=episode_id,
+        context_version=context_version,
+        context_hash=context_hash,
+        experiment_arm=experiment_arm,
+        evidence_message_ids_json=json.dumps(evidence_message_ids),
+        evidence_valid=evidence_valid,
+        evidence_reject_reason=evidence_reject_reason,
+        idempotency_key=key,
+    )
+    session.add(row)
+    return row
+
+
+async def record_episode_opinion(
+    session: AsyncSession,
+    *,
+    run_id: str,
+    message: Message,
+    text_hash: str,
+    slot_id: str,
+    mode: str,
+    model: str,
+    model_family: str,
+    status: str,
+    payload: dict[str, Any] | None,
+    synthetic: bool,
+    request_id: str | None,
+    latency_ms: int | None,
+    raw: str | None,
+    episode_id: int | None,
+    context_version: str,
+    context_hash: str,
+    experiment_arm: str,
+    prompt_version: str,
+) -> CommercialAIReview:
+    p = payload or {}
+    key = f"cai_ep_op:{run_id}:{mode}:{slot_id}:{experiment_arm}"
+    row = CommercialAIReview(
+        run_id=run_id,
+        row_kind="OPINION",
+        lead_id=None,
+        message_id=message.id,
+        text_sha256=text_hash,
+        slot_id=slot_id,
+        mode=mode,
+        provider="cursor",
+        model=model,
+        model_family=model_family,
+        prompt_version=prompt_version,
+        policy_version=POLICY_VERSION,
+        synthetic=synthetic,
+        request_id=request_id,
+        latency_ms=latency_ms,
+        status=status,
+        label="AI_TRUE" if p.get("episode_commercial") is True or p.get("is_commercial_opportunity") is True else (
+            "AI_FALSE"
+            if p.get("episode_commercial") is False or p.get("is_commercial_opportunity") is False
+            else "AI_UNCERTAIN"
+        ),
+        confidence=p.get("confidence"),
+        lead_type=p.get("lead_type"),
+        matches_objectives=p.get("matches_objectives") if isinstance(p.get("matches_objectives"), bool) else None,
+        hard_veto=p.get("hard_veto") if isinstance(p.get("hard_veto"), bool) else None,
+        uncertain=bool(p.get("uncertain")) if "uncertain" in p else None,
+        buyer_action=p.get("buyer_action") or p.get("commercial_intent_type"),
+        buyer_role=p.get("buyer_role"),
+        contactability=p.get("contactability"),
+        evidence_json=json.dumps(
+            {
+                "primary": p.get("primary_evidence_message_ids") or [],
+                "supporting": p.get("supporting_evidence_message_ids") or [],
+                "rationale": p.get("rationale_short"),
+            },
+            ensure_ascii=False,
+        )[:8000],
+        rationale_short=(p.get("rationale_short") or "")[:2000] or None,
+        raw_response=(raw or "")[:16000] or None,
+        episode_id=episode_id,
+        context_version=context_version,
+        context_hash=context_hash,
+        experiment_arm=experiment_arm,
+        idempotency_key=key,
+    )
+    session.add(row)
+    return row

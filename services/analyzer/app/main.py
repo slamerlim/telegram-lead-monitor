@@ -1,22 +1,25 @@
 import asyncio
+import hashlib
 import json
 import os
 import time
+from datetime import datetime, timedelta, timezone
 
 import structlog
-from sqlalchemy import select
+from sqlalchemy import func, select
 
 from services.analyzer.app.scoring import LeadScorer
 from services.analyzer.app.semantic import SemanticMatcher
+from shared.commercial_ai.discovery import DISCOVERY_VERSION, signals_json
+from shared.commercial_ai.streams import COMMERCIAL_DISCOVERY_STREAM
 from shared.db import SessionLocal
 from shared.events import MessageEvent
-from shared.logging import configure_logging
-from shared.models import Author, Community, Message
 from shared.lead_write import upsert_opportunity_lead
-from shared.score_persist import persist_message_score
+from shared.logging import configure_logging
+from shared.models import Author, CommercialDiscoveryCandidate, Community, Message
 from shared.redis_bus import COMMERCIAL_AI_REVIEW_STREAM, MESSAGES_STREAM, RedisBus
+from shared.score_persist import persist_message_score
 from shared.settings import get_settings
-import hashlib
 
 settings = get_settings()
 configure_logging(settings.log_level)
@@ -135,6 +138,9 @@ class Analyzer:
                     message_date=event.message_date,
                     text=event.message_text,
                     is_reply=event.is_reply,
+                    reply_to_telegram_message_id=getattr(
+                        event, "reply_to_telegram_message_id", None
+                    ),
                 )
                 db.add(message)
                 await db.flush()
@@ -144,6 +150,9 @@ class Analyzer:
                 message.message_date = event.message_date
                 message.text = event.message_text
                 message.is_reply = event.is_reply
+                # Only set when present — do not null out historical unknowns.
+                if getattr(event, "reply_to_telegram_message_id", None) is not None:
+                    message.reply_to_telegram_message_id = event.reply_to_telegram_message_id
 
             result = self.scorer.score(
                 event.message_text,
@@ -178,7 +187,78 @@ class Analyzer:
                 result,
                 rule_version=self.scorer.rule_version,
             )
+
+            discovery_payload = None
+            if (
+                settings.commercial_discovery_enabled
+                and result.tier == "LOW"
+            ):
+                feats = self.scorer.discovery_features(event.message_text)
+                if feats.eligible:
+                    # Rate limit candidates/hour (best-effort).
+                    max_c = int(settings.commercial_discovery_max_candidates_per_hour or 0)
+                    over_rate = False
+                    if max_c > 0:
+                        since = datetime.now(timezone.utc) - timedelta(hours=1)
+                        n_hour = int(
+                            (
+                                await db.scalar(
+                                    select(func.count(CommercialDiscoveryCandidate.id)).where(
+                                        CommercialDiscoveryCandidate.created_at >= since
+                                    )
+                                )
+                            )
+                            or 0
+                        )
+                        over_rate = n_hour >= max_c
+                    existing = await db.scalar(
+                        select(CommercialDiscoveryCandidate.id).where(
+                            CommercialDiscoveryCandidate.seed_message_id == message.id,
+                            CommercialDiscoveryCandidate.discovery_version
+                            == (settings.commercial_discovery_version or DISCOVERY_VERSION),
+                        )
+                    )
+                    if existing is None and not over_rate:
+                        cand = CommercialDiscoveryCandidate(
+                            seed_message_id=message.id,
+                            community_id=message.community_id,
+                            author_id=message.author_id,
+                            discovery_version=settings.commercial_discovery_version or DISCOVERY_VERSION,
+                            source="analyzer",
+                            trigger_type=feats.trigger_type or "unknown",
+                            trigger_score=feats.trigger_score,
+                            scorer_tier=result.tier,
+                            signals_json=signals_json(feats),
+                            topic_fingerprint=feats.topic_fingerprint or "none",
+                            recall_rank=feats.trigger_score,
+                            status="PENDING",
+                            context_version=settings.commercial_context_version,
+                        )
+                        db.add(cand)
+                        discovery_payload = {
+                            "seed_message_id": message.id,
+                            "community_id": message.community_id,
+                            "author_id": message.author_id,
+                            "trigger_type": feats.trigger_type,
+                            "context_version": settings.commercial_context_version,
+                            "discovery_version": settings.commercial_discovery_version or DISCOVERY_VERSION,
+                            "topic_fingerprint": feats.topic_fingerprint,
+                        }
+
             await db.commit()
+            if discovery_payload is not None:
+                try:
+                    await self.bus.publish(
+                        COMMERCIAL_DISCOVERY_STREAM,
+                        discovery_payload,
+                        maxlen=10_000,
+                    )
+                except Exception as exc:
+                    log.warning(
+                        "commercial_discovery_publish_failed",
+                        error=str(exc),
+                        seed_message_id=discovery_payload.get("seed_message_id"),
+                    )
             if (
                 settings.commercial_ai_enabled
                 and lead is not None

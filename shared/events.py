@@ -22,6 +22,7 @@ class MessageEvent(BaseModel):
     author_is_bot: bool | None = None
     message_text: str = Field(min_length=1)
     is_reply: bool = False
+    reply_to_telegram_message_id: int | None = None
     raw: dict[str, Any] | None = None
 
 

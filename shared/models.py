@@ -69,6 +69,7 @@ class Message(Base):
     message_date: Mapped[datetime] = mapped_column(DateTime(timezone=True), index=True)
     text: Mapped[str] = mapped_column(Text)
     is_reply: Mapped[bool] = mapped_column(Boolean, default=False)
+    reply_to_telegram_message_id: Mapped[int | None] = mapped_column(Integer, nullable=True)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=datetime.utcnow)
 
     community: Mapped[Community] = relationship(back_populates="messages")
@@ -197,8 +198,74 @@ class CommercialAIReview(Base):
     draft_text: Mapped[str | None] = mapped_column(Text, nullable=True)
     draft_valid: Mapped[bool | None] = mapped_column(Boolean, nullable=True)
     draft_reject_reason: Mapped[str | None] = mapped_column(String(128), nullable=True)
+    episode_id: Mapped[int | None] = mapped_column(BigInteger, nullable=True)
+    context_version: Mapped[str | None] = mapped_column(String(16), nullable=True)
+    context_hash: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    experiment_arm: Mapped[str | None] = mapped_column(String(16), nullable=True)
+    evidence_message_ids_json: Mapped[str | None] = mapped_column(Text, nullable=True)
+    evidence_valid: Mapped[bool | None] = mapped_column(Boolean, nullable=True)
+    evidence_reject_reason: Mapped[str | None] = mapped_column(String(64), nullable=True)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=datetime.utcnow)
     idempotency_key: Mapped[str | None] = mapped_column(String(160), unique=True, nullable=True)
+
+
+class CommercialDiscoveryCandidate(Base):
+    """HIGH-recall discovery row for LOW messages (not a CRM lead)."""
+
+    __tablename__ = "commercial_discovery_candidates"
+    __table_args__ = (
+        UniqueConstraint("seed_message_id", "discovery_version", name="uq_cdc_msg_ver"),
+        Index("ix_cdc_status_created", "status", "created_at"),
+        Index("ix_cdc_seed", "seed_message_id"),
+    )
+
+    id: Mapped[int] = mapped_column(BigInteger, primary_key=True, autoincrement=True)
+    seed_message_id: Mapped[int] = mapped_column(ForeignKey("messages.id", ondelete="NO ACTION"), nullable=False)
+    community_id: Mapped[int] = mapped_column(Integer, nullable=False)
+    author_id: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    discovery_version: Mapped[str] = mapped_column(String(32), nullable=False)
+    source: Mapped[str] = mapped_column(String(24), nullable=False)
+    trigger_type: Mapped[str] = mapped_column(String(64), nullable=False)
+    trigger_score: Mapped[float] = mapped_column(Float, default=0.0)
+    scorer_tier: Mapped[str] = mapped_column(String(16), nullable=False)
+    signals_json: Mapped[str] = mapped_column(Text, nullable=False)
+    topic_fingerprint: Mapped[str] = mapped_column(String(64), nullable=False)
+    recall_rank: Mapped[float] = mapped_column(Float, default=0.0)
+    status: Mapped[str] = mapped_column(String(24), default="PENDING", nullable=False)
+    skip_reason: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    episode_id: Mapped[int | None] = mapped_column(BigInteger, nullable=True)
+    context_version: Mapped[str | None] = mapped_column(String(16), nullable=True)
+    context_hash: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    discovered_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=datetime.utcnow)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=datetime.utcnow)
+
+
+class CommercialEpisode(Base):
+    """Bounded multi-message commercial episode (shadow experiment plane)."""
+
+    __tablename__ = "commercial_episodes"
+    __table_args__ = (
+        UniqueConstraint("episode_key", "context_hash", name="uq_ce_key_hash"),
+        Index("ix_ce_seed", "seed_message_id"),
+        Index("ix_ce_author_fp", "author_id", "topic_fingerprint", "created_at"),
+    )
+
+    id: Mapped[int] = mapped_column(BigInteger, primary_key=True, autoincrement=True)
+    episode_key: Mapped[str] = mapped_column(String(96), nullable=False)
+    seed_message_id: Mapped[int] = mapped_column(ForeignKey("messages.id", ondelete="NO ACTION"), nullable=False)
+    author_id: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    community_id: Mapped[int] = mapped_column(Integer, nullable=False)
+    topic_fingerprint: Mapped[str] = mapped_column(String(64), nullable=False)
+    episode_status: Mapped[str] = mapped_column(String(24), default="BUILT", nullable=False)
+    context_version: Mapped[str] = mapped_column(String(16), nullable=False)
+    context_hash: Mapped[str] = mapped_column(String(64), nullable=False)
+    members_json: Mapped[str] = mapped_column(Text, nullable=False)
+    n_messages: Mapped[int] = mapped_column(SmallInteger, nullable=False)
+    n_excluded_blind: Mapped[int] = mapped_column(SmallInteger, default=0, nullable=False)
+    window_start: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+    window_end: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=datetime.utcnow)
+    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=datetime.utcnow, onupdate=datetime.utcnow)
 
 
 class MessageScore(Base):

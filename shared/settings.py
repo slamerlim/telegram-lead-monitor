@@ -64,6 +64,16 @@ class Settings(BaseSettings):
     commercial_ai_reviewers_config: str = "/app/config/commercial_ai_reviewers.yaml"
     commercial_ai_confidence_floor: float = 0.75
 
+    # --- Commercial discovery / episode shadow (isolated from CRM + 0007) ---
+    commercial_discovery_enabled: bool = False
+    commercial_episode_shadow_enabled: bool = False
+    commercial_discovery_max_candidates_per_hour: int = 120
+    commercial_episode_max_reviews_per_hour: int = 40
+    commercial_episode_max_context_messages: int = 20
+    commercial_episode_max_context_chars: int = 12000
+    commercial_discovery_version: str = "disc_v1"
+    commercial_context_version: str = "ctx_v1"
+
     # --- Cursor-only AI validation (no third-party LLM APIs) ---
     ai_validators_config: str = "/app/config/ai_validators.yaml"
     ai_validator_ids: str = ""

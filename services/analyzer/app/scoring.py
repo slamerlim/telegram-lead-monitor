@@ -718,3 +718,9 @@ class LeadScorer:
             budget_amount=budget_amount,
             budget_currency=budget_currency,
         )
+
+    def discovery_features(self, text: str):
+        """Read-only HIGH-recall signals for LOW messages. Does not alter score()."""
+        from shared.commercial_ai.discovery import evaluate_discovery
+
+        return evaluate_discovery(self, text)

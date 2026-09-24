@@ -186,7 +186,30 @@ LABEL_WRITE_TOKEN=<token>
 
 ```bash
 docker compose up -d commercial-ai-worker api analyzer
-docker compose exec -T api alembic upgrade head   # expect 0009_commercial_ai_reviews
+docker compose exec -T api alembic upgrade head   # expect 0010_commercial_episodes (or 0009 if not yet migrated)
 ```
 
 Operator queue: `GET /ops/queue` (AI_CONFIRMED first). Milestone: `first_25_ai_confirmed`.
+
+### Commercial episode shadow experiment (NO OUTREACH)
+
+Separate Redis streams: `telegram:commercial_discovery`, `telegram:commercial_episode_shadow`.
+
+```bash
+# .env — do not commit; defaults are false
+COMMERCIAL_DISCOVERY_ENABLED=true
+COMMERCIAL_EPISODE_SHADOW_ENABLED=true
+COMMERCIAL_DISCOVERY_MAX_CANDIDATES_PER_HOUR=120
+COMMERCIAL_EPISODE_MAX_REVIEWS_PER_HOUR=40
+```
+
+```bash
+docker compose up -d commercial-discovery-worker commercial-episode-shadow-worker
+docker compose exec -T api alembic upgrade head   # 0010_commercial_episodes
+# Bounded paired A/B (fake first):
+docker compose exec -T api python -m scripts.run_commercial_episode_shadow --limit 5 --backend fake
+```
+
+**NO OUTREACH IN THIS PHASE.** Do not enable CONTACT_ATTEMPT / RESPONSE / auto-DM for
+episode confirmations. Do not promote episode reviews into production CRM leads.
+Verify 0007 gates and `human_labels` unchanged after every stage.

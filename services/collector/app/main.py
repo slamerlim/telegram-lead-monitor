@@ -280,6 +280,13 @@ class Collector:
             author_id = message.sender_id
             if sender:
                 author_username, author_name, author_bio, author_is_bot = sender
+            reply_to_id = None
+            try:
+                raw_reply = getattr(message, "reply_to_msg_id", None)
+                if raw_reply is not None:
+                    reply_to_id = int(raw_reply)
+            except (TypeError, ValueError):
+                reply_to_id = None
             event = MessageEvent(
                 community_id=community_id,
                 telegram_chat_id=chat_id,
@@ -296,6 +303,7 @@ class Collector:
                 author_is_bot=author_is_bot,
                 message_text=text.strip(),
                 is_reply=bool(message.is_reply),
+                reply_to_telegram_message_id=reply_to_id,
             )
             await self.bus.publish(MESSAGES_STREAM, event.model_dump(mode="json"))
             published += 1

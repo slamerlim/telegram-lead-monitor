@@ -1,0 +1,39 @@
+# 91 — Commercial context discovery design baseline
+Date: 2026-09-24
+HEAD_at_start: e68c005
+Migration_at_start: 0009_commercial_ai_reviews
+
+## Baseline gates (pre-change)
+ai_validated_messages=94
+ai_validated_true=0
+ai_validated_false=94
+ai_validation_gate_ready=false
+ml_training_enabled=false
+human_labels=1524
+AI_CONFIRMED_leads=4 (MUST remain untouched)
+NO OUTREACH IN THIS PHASE
+
+## Schema forensics (messages)
+- author_id exists (FK authors.id)
+- is_reply exists
+- reply_to_telegram_message_id: ADDED in 0010
+- No prior index on (author_id, message_date) — added CONCURRENTLY in 0010
+
+## Design locks
+1. CREATE INDEX CONCURRENTLY via Alembic autocommit_block (not inside txn)
+2. episode_key = author+topic_fp+ISO_week is CANDIDATE key only;
+   merge requires compatible fingerprint + temporal compatibility
+3. Discovery from YAML pattern hits; score() unchanged
+4. Separate Redis: telegram:commercial_discovery, telegram:commercial_episode_shadow
+5. No CRM promotion from episode shadow decisions
+6. Kill switches default false
+
+## Components
+- alembic/versions/0010_commercial_episodes.py
+- shared/commercial_ai/discovery.py, context.py, evidence.py
+- services/commercial_discovery, services/commercial_episode_shadow
+- scripts/run_commercial_episode_shadow.py
+- Prompt commercial_ai_v2_ep (does not modify cursor_ai_val_v2)
+
+## Backup
+Schema-only pg_dump before migrate: /home/slamer-lim/backups/telegram-lead-monitor/pre-0010-schema-*.sql

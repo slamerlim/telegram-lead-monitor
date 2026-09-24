@@ -43,3 +43,17 @@ Not 25 human dispositions.
 - AI cannot fabricate RESPONSE/WON
 - Commercial AI never writes independent validation / human_labels gate numerators
 - Kill switches: `COMMERCIAL_AI_ENABLED`, `COMMERCIAL_AI_AUTO_PROMOTE`, `COMMERCIAL_OPS_ENABLED`
+
+## Commercial episode discovery (0010) — experiment plane
+
+High-recall retrieval from LOW messages → commercial episodes (bounded multi-message
+context) → paired A/B shadow reviews (`commercial_ai_v1` message-only vs
+`commercial_ai_v2_ep` contextual).
+
+**NO OUTREACH IN THIS PHASE.** Episode `AI_CONFIRMED` does **not** create CRM leads,
+AI_PROMOTE, CONTACT_ATTEMPT, RESPONSE, or auto-DM. Existing production AI_CONFIRMED
+leads remain untouched. Discovery/episode tables are isolated from 0007 validation
+and `human_labels`.
+
+Kill switches (default false): `COMMERCIAL_DISCOVERY_ENABLED`,
+`COMMERCIAL_EPISODE_SHADOW_ENABLED`.

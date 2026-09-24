@@ -36,8 +36,99 @@ class FakeCursorBackend:
         t0 = time.time()
         script = self.scripts.get(model) or self.scripts.get("default")
         if script is None:
-            # Infer mode from prompt
-            if "mode A" in prompt:
+            low = prompt.lower()
+            # Episode / commercial AI prompts (case-insensitive Mode A/B/C).
+            if "commercial_ai_v2_ep" in low or "episode_messages" in low:
+                # Extract seed id for evidence citation when present.
+                seed_id = 1
+                for token in prompt.split():
+                    if token.startswith("message_id="):
+                        try:
+                            seed_id = int(token.split("=", 1)[1])
+                            break
+                        except ValueError:
+                            pass
+                if "mode a" in low or "you are mode a" in low:
+                    structured = {
+                        "episode_commercial": False,
+                        "context_supported": True,
+                        "context_confidence": 0.7,
+                        "is_commercial_opportunity": False,
+                        "lead_type": None,
+                        "matches_objectives": False,
+                        "confidence": 0.85,
+                        "hard_veto": False,
+                        "uncertain": False,
+                        "primary_evidence_message_ids": [seed_id],
+                        "supporting_evidence_message_ids": [],
+                        "timeline_signal": False,
+                        "budget_signal": False,
+                        "repeat_intent_signal": False,
+                        "problem_persistence_signal": False,
+                        "followup_signal": False,
+                        "rationale_short": "stub episode: not commercial",
+                    }
+                elif "mode b" in low:
+                    structured = {
+                        "episode_commercial": False,
+                        "is_commercial_opportunity": False,
+                        "is_false_positive": True,
+                        "fp_class": "SUPPORT_REQUEST",
+                        "matches_objectives": False,
+                        "confidence": 0.85,
+                        "hard_veto": True,
+                        "uncertain": False,
+                        "primary_evidence_message_ids": [seed_id],
+                        "supporting_evidence_message_ids": [],
+                        "rationale_short": "stub episode: FP",
+                    }
+                else:
+                    structured = {
+                        "episode_commercial": False,
+                        "is_commercial_opportunity": False,
+                        "matches_objectives": False,
+                        "confidence": 0.8,
+                        "hard_veto": False,
+                        "uncertain": False,
+                        "primary_evidence_message_ids": [seed_id],
+                        "supporting_evidence_message_ids": [],
+                        "rationale_short": "stub episode: no intent",
+                    }
+            elif "commercial_ai_review" in low or "commercial ai reviewer" in low:
+                if "mode a" in low:
+                    structured = {
+                        "is_commercial_opportunity": False,
+                        "lead_type": None,
+                        "matches_objectives": False,
+                        "confidence": 0.9,
+                        "hard_veto": False,
+                        "uncertain": False,
+                        "evidence": [],
+                        "rationale_short": "stub commercial: no",
+                    }
+                elif "mode b" in low:
+                    structured = {
+                        "is_false_positive": True,
+                        "fp_class": "SUPPORT_REQUEST",
+                        "is_commercial_opportunity": False,
+                        "matches_objectives": False,
+                        "confidence": 0.85,
+                        "hard_veto": True,
+                        "uncertain": False,
+                        "evidence": [],
+                        "rationale_short": "stub commercial: FP",
+                    }
+                else:
+                    structured = {
+                        "is_commercial_opportunity": False,
+                        "matches_objectives": False,
+                        "confidence": 0.88,
+                        "hard_veto": False,
+                        "uncertain": False,
+                        "evidence": [],
+                        "rationale_short": "stub commercial: no intent",
+                    }
+            elif "mode a" in low:
                 structured = {
                     "is_target_lead": False,
                     "lead_type": None,
@@ -46,7 +137,7 @@ class FakeCursorBackend:
                     "uncertain": False,
                     "rationale_short": "stub: not a commercial lead",
                 }
-            elif "mode B" in prompt:
+            elif "mode b" in low:
                 structured = {
                     "is_false_positive": True,
                     "fp_class": "SUPPORT_REQUEST",
@@ -55,7 +146,7 @@ class FakeCursorBackend:
                     "uncertain": False,
                     "rationale_short": "stub: support-like",
                 }
-            elif "mode C" in prompt:
+            elif "mode c" in low:
                 structured = {
                     "has_commercial_intent": False,
                     "lead_type": None,
