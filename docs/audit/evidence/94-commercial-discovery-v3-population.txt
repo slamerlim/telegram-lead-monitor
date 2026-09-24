@@ -1,0 +1,67 @@
+=== 94 commercial discovery v3 population (deterministic) ===
+generated_at=2026-09-24T22:22:19.193649+00:00
+msgs_7d=101530 low_tier_7d=107998 examined=2278
+runtime_sec=21.66
+
+--- V2 ---
+candidates=209 density/1000=91.747
+contamination%=72.7
+buckets={'Direct buyer/RFQ candidate': 58, 'Corporate/job-board hiring': 54, 'Recruiter': 42, 'Job seeker/resume': 33, 'Support/question': 6, 'Provider/self-promotion': 10, 'News/editorial': 2, 'Marketing/promo': 4}
+directions={'BUYER': 68, 'EMPLOYER': 54, 'RECRUITER': 44, 'SEEKER': 33, 'PROVIDER': 10}
+
+--- V3 ---
+candidates=12 density/1000=5.268
+contamination%=8.3
+buckets={'Direct buyer/RFQ candidate': 12}
+directions={'BUYER': 10, 'RECRUITER': 2}
+triggers={'buyer_project_scope': 2, 'buyer_commercial_domain': 1, 'buyer_implementation': 1, 'buyer_budget_domain': 7, 'buyer_weak': 1}
+top_vetoes={'corporate_employment': 487, 'support_question': 237, 'generic_recruiter': 162, 'job_aggregator': 100, 'job_seeker': 69, 'marketing_broadcast': 34, 'service_provider': 21, 'news_digest': 4}
+
+Population table (V3 eligible buckets):
+  Direct buyer/RFQ candidate: 12 (100.0%)
+  Corporate/job-board hiring: 0 (0.0%)
+  Job seeker/resume: 0 (0.0%)
+  Recruiter: 0 (0.0%)
+  Provider/self-promotion: 0 (0.0%)
+  Support/question: 0 (0.0%)
+  News/editorial: 0 (0.0%)
+  Marketing/promo: 0 (0.0%)
+  Other: 0 (0.0%)
+
+--- EXPLAIN (prefilter) ---
+Limit  (cost=14466.80..38048.33 rows=100 width=20) (actual time=24.789..34.919 rows=100 loops=1)
+  Buffers: shared hit=3712 read=15, temp read=263 written=317
+  ->  Incremental Sort  (cost=14466.80..517224.93 rows=2132 width=20) (actual time=24.788..34.912 rows=100 loops=1)
+        Sort Key: ((s.commercial_score + s.technical_score)) DESC, m.message_date DESC
+        Presorted Key: ((s.commercial_score + s.technical_score))
+        Full-sort Groups: 3  Sort Method: quicksort  Average Memory: 27kB  Peak Memory: 27kB
+        Buffers: shared hit=3712 read=15, temp read=263 written=317
+        ->  Nested Loop  (cost=10017.87..517150.96 rows=2132 width=20) (actual time=24.542..34.833 rows=104 loops=1)
+              Buffers: shared hit=3706 read=15, temp read=263 written=317
+              ->  Gather Merge  (cost=10017.43..22427.58 rows=108889 width=20) (actual time=24.510..29.083 rows=179 loops=1)
+                    Workers Planned: 1
+                    Workers Launched: 1
+                    Buffers: shared hit=2979, temp read=263 written=317
+                    ->  Sort  (cost=9017.42..9177.55 rows=64052 width=20) (actual time=21.149..21.202 rows=666 loops=2)
+                          Sort Key: ((s.commercial_score + s.technical_score)) DESC
+                          Sort Method: external merge  Disk: 2528kB
+                          Buffers: shared hit=2979, temp read=263 written=317
+                          Worker 0:  Sort Method: quicksort  Memory: 3559kB
+
+DECISION=C — Much cleaner than v2 (contam 72.7%→8.3%) but tiny (n=12). Broaden buyer-signal recall / communities — do not loosen scorer.
+NO SDK in this artifact. ctx_v1 default. NO OUTREACH.
+Sample strongest previews:
+  id=401 dir=RECRUITER score=3.65 🆕 NEW PROJECT ON LABORX 📜 Blockchain Developer Needed — Game Economic System 💰 Budget: $3,
+  id=270199 dir=RECRUITER score=3.55 ⚙️ Нужен разработчик Senior Backend Full-stack developer 📌 О компании и проекте: 🕯 Техноло
+  id=39331 dir=BUYER score=3.25 Dear Bybit Technical Support Team, We are developing an automated trading system that mana
+  id=1113753 dir=BUYER score=2.8 ### Common Statistical Arbitrage Strategies Used by Quantitative Traders Statistical arbit
+  id=8487486 dir=BUYER score=2.5 What do you think? https://preview.redd.it/j2pffl0e5nph1.png?width=1543&format=png&auto=we
+  id=8599720 dir=BUYER score=2.5 🔥 “This system is really changing my trading experience!” The mechanical trading system ha
+  id=8560893 dir=BUYER score=2.5 I like following Margin Survivor because the performance really caught my attention. The +
+  id=5766135 dir=BUYER score=2.5 💳 PayAI Network (PAYAI): Powering AI Agent Payments on Solana PayAI Network (PAYAI) is a S
+
+--- ISOLATION ---
+gates 94/0/94
+human_labels=1524 AI_CONFIRMED=4
+ctx_v1 default; ctx_v3 dormant
+NO OUTREACH; NO SDK (decision C)

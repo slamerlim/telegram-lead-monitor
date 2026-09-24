@@ -1,0 +1,394 @@
+{
+  "generated_at": "2026-09-24T22:22:19.193649+00:00",
+  "discovery_versions": {
+    "v2": "disc_v2",
+    "v3": "disc_v3"
+  },
+  "baseline": {
+    "messages_7d": 101530,
+    "low_tier_scores_7d": 107998,
+    "prefilter_examined": 2278,
+    "prefilter_cap": 2500
+  },
+  "v2": {
+    "candidates": 209,
+    "unique_authors": 48,
+    "unique_communities": 32,
+    "density_per_1000_examined": 91.747,
+    "non_buyer_contamination_pct": 72.7,
+    "population_buckets": {
+      "Direct buyer/RFQ candidate": 58,
+      "Corporate/job-board hiring": 54,
+      "Recruiter": 42,
+      "Job seeker/resume": 33,
+      "Support/question": 6,
+      "Provider/self-promotion": 10,
+      "News/editorial": 2,
+      "Marketing/promo": 4
+    },
+    "buyer_direction": {
+      "BUYER": 68,
+      "EMPLOYER": 54,
+      "RECRUITER": 44,
+      "SEEKER": 33,
+      "PROVIDER": 10
+    }
+  },
+  "v3": {
+    "candidates": 12,
+    "unique_authors": 11,
+    "unique_communities": 11,
+    "density_per_1000_examined": 5.268,
+    "non_buyer_contamination_pct": 8.3,
+    "population_buckets": {
+      "Direct buyer/RFQ candidate": 12
+    },
+    "buyer_direction": {
+      "BUYER": 10,
+      "RECRUITER": 2
+    },
+    "triggers": {
+      "buyer_project_scope": 2,
+      "buyer_commercial_domain": 1,
+      "buyer_implementation": 1,
+      "buyer_budget_domain": 7,
+      "buyer_weak": 1
+    },
+    "veto_counts_on_examined": {
+      "corporate_employment": 487,
+      "support_question": 237,
+      "generic_recruiter": 162,
+      "job_aggregator": 100,
+      "job_seeker": 69,
+      "marketing_broadcast": 34,
+      "service_provider": 21,
+      "news_digest": 4
+    }
+  },
+  "sdk_ab_run": false,
+  "decision_pending": true,
+  "runtime_sec": 21.66,
+  "explain_prefilter": [
+    "Limit  (cost=14466.80..38048.33 rows=100 width=20) (actual time=24.789..34.919 rows=100 loops=1)",
+    "  Buffers: shared hit=3712 read=15, temp read=263 written=317",
+    "  ->  Incremental Sort  (cost=14466.80..517224.93 rows=2132 width=20) (actual time=24.788..34.912 rows=100 loops=1)",
+    "        Sort Key: ((s.commercial_score + s.technical_score)) DESC, m.message_date DESC",
+    "        Presorted Key: ((s.commercial_score + s.technical_score))",
+    "        Full-sort Groups: 3  Sort Method: quicksort  Average Memory: 27kB  Peak Memory: 27kB",
+    "        Buffers: shared hit=3712 read=15, temp read=263 written=317",
+    "        ->  Nested Loop  (cost=10017.87..517150.96 rows=2132 width=20) (actual time=24.542..34.833 rows=104 loops=1)",
+    "              Buffers: shared hit=3706 read=15, temp read=263 written=317",
+    "              ->  Gather Merge  (cost=10017.43..22427.58 rows=108889 width=20) (actual time=24.510..29.083 rows=179 loops=1)",
+    "                    Workers Planned: 1",
+    "                    Workers Launched: 1",
+    "                    Buffers: shared hit=2979, temp read=263 written=317",
+    "                    ->  Sort  (cost=9017.42..9177.55 rows=64052 width=20) (actual time=21.149..21.202 rows=666 loops=2)",
+    "                          Sort Key: ((s.commercial_score + s.technical_score)) DESC",
+    "                          Sort Method: external merge  Disk: 2528kB",
+    "                          Buffers: shared hit=2979, temp read=263 written=317",
+    "                          Worker 0:  Sort Method: quicksort  Memory: 3559kB",
+    "                          ->  Parallel Seq Scan on message_scores s  (cost=0.00..3903.85 rows=64052 width=20) (actual time=0.012..11.725 rows=53999 loops=2)",
+    "                                Filter: ((scored_at >= '2026-09-17 22:21:57.531858+00'::timestamp with time zone) AND ((tier)::text = 'LOW'::text))",
+    "                                Rows Removed by Filter: 5",
+    "                                Buffers: shared hit=2943",
+    "              ->  Index Scan using messages_pkey on messages m  (cost=0.43..4.53 rows=1 width=100) (actual time=0.032..0.032 rows=1 loops=179)",
+    "                    Index Cond: (id = s.message_id)",
+    "                    Filter: (((s.commercial_score > '0'::double precision) AND (s.technical_score > '0'::double precision)) OR (text ~* 'trading bot|\u0442\u043e\u0440\u0433\u043e\u0432\u044b\u0439 \u0431\u043e\u0442|bybit|binance api|pybit'::text) OR (text ~* '(hire|looking to (pay|hire)|need).{0,40}(bot|trading|quant)'::text))",
+    "                    Rows Removed by Filter: 0",
+    "                    Buffers: shared hit=727 read=15",
+    "Planning:",
+    "  Buffers: shared hit=209",
+    "Planning Time: 16.788 ms",
+    "Execution Time: 35.693 ms"
+  ],
+  "sample_report": {
+    "strongest": [
+      {
+        "message_id": 401,
+        "discovery_score": 3.65,
+        "buyer_direction": "RECRUITER",
+        "trigger": "buyer_implementation",
+        "bucket": "Direct buyer/RFQ candidate",
+        "preview": "\ud83c\udd95 NEW PROJECT ON LABORX \ud83d\udcdc Blockchain Developer Needed \u2014 Game Economic System \ud83d\udcb0 Budget: $3,000 \ud83c\udff7 Blockchain & C"
+      },
+      {
+        "message_id": 270199,
+        "discovery_score": 3.55,
+        "buyer_direction": "RECRUITER",
+        "trigger": "buyer_project_scope",
+        "bucket": "Direct buyer/RFQ candidate",
+        "preview": "\u2699\ufe0f \u041d\u0443\u0436\u0435\u043d \u0440\u0430\u0437\u0440\u0430\u0431\u043e\u0442\u0447\u0438\u043a Senior Backend Full-stack developer \ud83d\udccc \u041e \u043a\u043e\u043c\u043f\u0430\u043d\u0438\u0438 \u0438 \u043f\u0440\u043e\u0435\u043a\u0442\u0435: \ud83d\udd6f \u0422\u0435\u0445\u043d\u043e\u043b\u043e\u0433\u0438\u0447\u0435\u0441\u043a\u0430\u044f \u043a\u043e\u043c\u043f\u0430\u043d\u0438\u044f \u0438 "
+      },
+      {
+        "message_id": 39331,
+        "discovery_score": 3.25,
+        "buyer_direction": "BUYER",
+        "trigger": "buyer_project_scope",
+        "bucket": "Direct buyer/RFQ candidate",
+        "preview": "Dear Bybit Technical Support Team, We are developing an automated trading system that manages Futures Grid Bot"
+      },
+      {
+        "message_id": 1113753,
+        "discovery_score": 2.8,
+        "buyer_direction": "BUYER",
+        "trigger": "buyer_commercial_domain",
+        "bucket": "Direct buyer/RFQ candidate",
+        "preview": "### Common Statistical Arbitrage Strategies Used by Quantitative Traders Statistical arbitrage (stat arb) is a"
+      },
+      {
+        "message_id": 8487486,
+        "discovery_score": 2.5,
+        "buyer_direction": "BUYER",
+        "trigger": "buyer_budget_domain",
+        "bucket": "Direct buyer/RFQ candidate",
+        "preview": "What do you think? https://preview.redd.it/j2pffl0e5nph1.png?width=1543&format=png&auto=webp&s=5db5ccbbed8d2d6"
+      },
+      {
+        "message_id": 8599720,
+        "discovery_score": 2.5,
+        "buyer_direction": "BUYER",
+        "trigger": "buyer_budget_domain",
+        "bucket": "Direct buyer/RFQ candidate",
+        "preview": "\ud83d\udd25 \u201cThis system is really changing my trading experience!\u201d The mechanical trading system has been giving me sol"
+      },
+      {
+        "message_id": 8560893,
+        "discovery_score": 2.5,
+        "buyer_direction": "BUYER",
+        "trigger": "buyer_budget_domain",
+        "bucket": "Direct buyer/RFQ candidate",
+        "preview": "I like following Margin Survivor because the performance really caught my attention. The +43.15% ROI over 7 da"
+      },
+      {
+        "message_id": 5766135,
+        "discovery_score": 2.5,
+        "buyer_direction": "BUYER",
+        "trigger": "buyer_budget_domain",
+        "bucket": "Direct buyer/RFQ candidate",
+        "preview": "\ud83d\udcb3 PayAI Network (PAYAI): Powering AI Agent Payments on Solana PayAI Network (PAYAI) is a Solana-based token en"
+      },
+      {
+        "message_id": 5739296,
+        "discovery_score": 2.5,
+        "buyer_direction": "BUYER",
+        "trigger": "buyer_budget_domain",
+        "bucket": "Direct buyer/RFQ candidate",
+        "preview": "\ud83d\udcb3 PayAI Network (PAYAI): Powering AI Agent Payments on Solana PayAI Network (PAYAI) is a Solana-based token en"
+      },
+      {
+        "message_id": 5769264,
+        "discovery_score": 2.5,
+        "buyer_direction": "BUYER",
+        "trigger": "buyer_budget_domain",
+        "bucket": "Direct buyer/RFQ candidate",
+        "preview": "\ud83d\udcb3 PayAI Network (PAYAI): Powering AI Agent Payments on Solana PayAI Network (PAYAI) is a Solana-based token en"
+      },
+      {
+        "message_id": 3004746,
+        "discovery_score": 2.5,
+        "buyer_direction": "BUYER",
+        "trigger": "buyer_budget_domain",
+        "bucket": "Direct buyer/RFQ candidate",
+        "preview": "The crypto market in 2025 is experiencing significant developments across various sectors, including tokenizat"
+      },
+      {
+        "message_id": 8308889,
+        "discovery_score": 1.5,
+        "buyer_direction": "BUYER",
+        "trigger": "buyer_weak",
+        "bucket": "Direct buyer/RFQ candidate",
+        "preview": "\ud83d\ude0a Strategy buys 1,550 Bitcoin after selling 32 Strategy disclosed a purchase of 1,550 BTC for $101 million at "
+      }
+    ],
+    "medium": [
+      {
+        "message_id": 8487486,
+        "discovery_score": 2.5,
+        "buyer_direction": "BUYER",
+        "trigger": "buyer_budget_domain",
+        "bucket": "Direct buyer/RFQ candidate",
+        "preview": "What do you think? https://preview.redd.it/j2pffl0e5nph1.png?width=1543&format=png&auto=webp&s=5db5ccbbed8d2d6"
+      },
+      {
+        "message_id": 8599720,
+        "discovery_score": 2.5,
+        "buyer_direction": "BUYER",
+        "trigger": "buyer_budget_domain",
+        "bucket": "Direct buyer/RFQ candidate",
+        "preview": "\ud83d\udd25 \u201cThis system is really changing my trading experience!\u201d The mechanical trading system has been giving me sol"
+      },
+      {
+        "message_id": 8560893,
+        "discovery_score": 2.5,
+        "buyer_direction": "BUYER",
+        "trigger": "buyer_budget_domain",
+        "bucket": "Direct buyer/RFQ candidate",
+        "preview": "I like following Margin Survivor because the performance really caught my attention. The +43.15% ROI over 7 da"
+      },
+      {
+        "message_id": 5766135,
+        "discovery_score": 2.5,
+        "buyer_direction": "BUYER",
+        "trigger": "buyer_budget_domain",
+        "bucket": "Direct buyer/RFQ candidate",
+        "preview": "\ud83d\udcb3 PayAI Network (PAYAI): Powering AI Agent Payments on Solana PayAI Network (PAYAI) is a Solana-based token en"
+      },
+      {
+        "message_id": 5739296,
+        "discovery_score": 2.5,
+        "buyer_direction": "BUYER",
+        "trigger": "buyer_budget_domain",
+        "bucket": "Direct buyer/RFQ candidate",
+        "preview": "\ud83d\udcb3 PayAI Network (PAYAI): Powering AI Agent Payments on Solana PayAI Network (PAYAI) is a Solana-based token en"
+      },
+      {
+        "message_id": 5769264,
+        "discovery_score": 2.5,
+        "buyer_direction": "BUYER",
+        "trigger": "buyer_budget_domain",
+        "bucket": "Direct buyer/RFQ candidate",
+        "preview": "\ud83d\udcb3 PayAI Network (PAYAI): Powering AI Agent Payments on Solana PayAI Network (PAYAI) is a Solana-based token en"
+      },
+      {
+        "message_id": 3004746,
+        "discovery_score": 2.5,
+        "buyer_direction": "BUYER",
+        "trigger": "buyer_budget_domain",
+        "bucket": "Direct buyer/RFQ candidate",
+        "preview": "The crypto market in 2025 is experiencing significant developments across various sectors, including tokenizat"
+      },
+      {
+        "message_id": 8308889,
+        "discovery_score": 1.5,
+        "buyer_direction": "BUYER",
+        "trigger": "buyer_weak",
+        "bucket": "Direct buyer/RFQ candidate",
+        "preview": "\ud83d\ude0a Strategy buys 1,550 Bitcoin after selling 32 Strategy disclosed a purchase of 1,550 BTC for $101 million at "
+      }
+    ],
+    "ambiguous": [
+      {
+        "message_id": 8308889,
+        "discovery_score": 1.5,
+        "buyer_direction": "BUYER",
+        "trigger": "buyer_weak",
+        "bucket": "Direct buyer/RFQ candidate",
+        "preview": "\ud83d\ude0a Strategy buys 1,550 Bitcoin after selling 32 Strategy disclosed a purchase of 1,550 BTC for $101 million at "
+      }
+    ],
+    "random": [
+      {
+        "message_id": 401,
+        "discovery_score": 3.65,
+        "buyer_direction": "RECRUITER",
+        "trigger": "buyer_implementation",
+        "bucket": "Direct buyer/RFQ candidate",
+        "preview": "\ud83c\udd95 NEW PROJECT ON LABORX \ud83d\udcdc Blockchain Developer Needed \u2014 Game Economic System \ud83d\udcb0 Budget: $3,000 \ud83c\udff7 Blockchain & C"
+      },
+      {
+        "message_id": 270199,
+        "discovery_score": 3.55,
+        "buyer_direction": "RECRUITER",
+        "trigger": "buyer_project_scope",
+        "bucket": "Direct buyer/RFQ candidate",
+        "preview": "\u2699\ufe0f \u041d\u0443\u0436\u0435\u043d \u0440\u0430\u0437\u0440\u0430\u0431\u043e\u0442\u0447\u0438\u043a Senior Backend Full-stack developer \ud83d\udccc \u041e \u043a\u043e\u043c\u043f\u0430\u043d\u0438\u0438 \u0438 \u043f\u0440\u043e\u0435\u043a\u0442\u0435: \ud83d\udd6f \u0422\u0435\u0445\u043d\u043e\u043b\u043e\u0433\u0438\u0447\u0435\u0441\u043a\u0430\u044f \u043a\u043e\u043c\u043f\u0430\u043d\u0438\u044f \u0438 "
+      },
+      {
+        "message_id": 39331,
+        "discovery_score": 3.25,
+        "buyer_direction": "BUYER",
+        "trigger": "buyer_project_scope",
+        "bucket": "Direct buyer/RFQ candidate",
+        "preview": "Dear Bybit Technical Support Team, We are developing an automated trading system that manages Futures Grid Bot"
+      },
+      {
+        "message_id": 1113753,
+        "discovery_score": 2.8,
+        "buyer_direction": "BUYER",
+        "trigger": "buyer_commercial_domain",
+        "bucket": "Direct buyer/RFQ candidate",
+        "preview": "### Common Statistical Arbitrage Strategies Used by Quantitative Traders Statistical arbitrage (stat arb) is a"
+      },
+      {
+        "message_id": 8487486,
+        "discovery_score": 2.5,
+        "buyer_direction": "BUYER",
+        "trigger": "buyer_budget_domain",
+        "bucket": "Direct buyer/RFQ candidate",
+        "preview": "What do you think? https://preview.redd.it/j2pffl0e5nph1.png?width=1543&format=png&auto=webp&s=5db5ccbbed8d2d6"
+      },
+      {
+        "message_id": 8599720,
+        "discovery_score": 2.5,
+        "buyer_direction": "BUYER",
+        "trigger": "buyer_budget_domain",
+        "bucket": "Direct buyer/RFQ candidate",
+        "preview": "\ud83d\udd25 \u201cThis system is really changing my trading experience!\u201d The mechanical trading system has been giving me sol"
+      },
+      {
+        "message_id": 8560893,
+        "discovery_score": 2.5,
+        "buyer_direction": "BUYER",
+        "trigger": "buyer_budget_domain",
+        "bucket": "Direct buyer/RFQ candidate",
+        "preview": "I like following Margin Survivor because the performance really caught my attention. The +43.15% ROI over 7 da"
+      },
+      {
+        "message_id": 5766135,
+        "discovery_score": 2.5,
+        "buyer_direction": "BUYER",
+        "trigger": "buyer_budget_domain",
+        "bucket": "Direct buyer/RFQ candidate",
+        "preview": "\ud83d\udcb3 PayAI Network (PAYAI): Powering AI Agent Payments on Solana PayAI Network (PAYAI) is a Solana-based token en"
+      },
+      {
+        "message_id": 5739296,
+        "discovery_score": 2.5,
+        "buyer_direction": "BUYER",
+        "trigger": "buyer_budget_domain",
+        "bucket": "Direct buyer/RFQ candidate",
+        "preview": "\ud83d\udcb3 PayAI Network (PAYAI): Powering AI Agent Payments on Solana PayAI Network (PAYAI) is a Solana-based token en"
+      },
+      {
+        "message_id": 5769264,
+        "discovery_score": 2.5,
+        "buyer_direction": "BUYER",
+        "trigger": "buyer_budget_domain",
+        "bucket": "Direct buyer/RFQ candidate",
+        "preview": "\ud83d\udcb3 PayAI Network (PAYAI): Powering AI Agent Payments on Solana PayAI Network (PAYAI) is a Solana-based token en"
+      },
+      {
+        "message_id": 3004746,
+        "discovery_score": 2.5,
+        "buyer_direction": "BUYER",
+        "trigger": "buyer_budget_domain",
+        "bucket": "Direct buyer/RFQ candidate",
+        "preview": "The crypto market in 2025 is experiencing significant developments across various sectors, including tokenizat"
+      },
+      {
+        "message_id": 8308889,
+        "discovery_score": 1.5,
+        "buyer_direction": "BUYER",
+        "trigger": "buyer_weak",
+        "bucket": "Direct buyer/RFQ candidate",
+        "preview": "\ud83d\ude0a Strategy buys 1,550 Bitcoin after selling 32 Strategy disclosed a purchase of 1,550 BTC for $101 million at "
+      }
+    ]
+  },
+  "isolation_note": "no SDK; no CRM; ctx_v1 remains default",
+  "decision": "C",
+  "decision_rationale": "Much cleaner than v2 (contam 72.7%\u21928.3%) but tiny (n=12). Broaden buyer-signal recall / communities \u2014 do not loosen scorer.",
+  "isolation": {
+    "ai_validated_messages": 94,
+    "ai_validated_true": 0,
+    "ai_validated_false": 94,
+    "human_labels": 1524,
+    "ml_training_enabled": false,
+    "ai_confirmed": 4,
+    "contact_attempt": 0,
+    "response": 0,
+    "won": 0
+  },
+  "context_default": "ctx_v1",
+  "context_v3": "dormant"
+}
