@@ -37,6 +37,8 @@ class ContextMember:
     selection_reason: str
     text_sha256: str
     is_seed_author: bool
+    relevance: dict[str, Any] = field(default_factory=dict)
+    selection_rank: int | None = None
 
 
 @dataclass
@@ -51,6 +53,8 @@ class CommercialContext:
     n_excluded_blind: int = 0
     include_related: bool = False
     topic_fingerprint: str = ""
+    n_stage1_candidates: int = 0
+    exclusion_counts: dict[str, int] = field(default_factory=dict)
 
     def allowed_message_ids(self) -> set[int]:
         return {m.message_id for m in self.members}
@@ -59,8 +63,9 @@ class CommercialContext:
         return {m.message_id for m in self.members if m.is_seed_author}
 
     def to_members_json(self) -> list[dict[str, Any]]:
-        return [
-            {
+        out: list[dict[str, Any]] = []
+        for m in self.members:
+            row = {
                 "message_id": m.message_id,
                 "telegram_message_id": m.telegram_message_id,
                 "author_id": m.author_id,
@@ -70,14 +75,52 @@ class CommercialContext:
                 "is_seed_author": m.is_seed_author,
                 "message_date": m.message_date.isoformat(),
             }
-            for m in self.members
-        ]
+            if m.relevance:
+                row["relevance"] = m.relevance
+            if m.selection_rank is not None:
+                row["selection_rank"] = m.selection_rank
+            out.append(row)
+        return out
 
 
 def _aware(dt: datetime) -> datetime:
     if dt.tzinfo is None:
         return dt.replace(tzinfo=timezone.utc)
     return dt
+
+
+def _context_from_v3(v3: Any) -> CommercialContext:
+    """Adapt retrieval_v3.CommercialContextV3 → CommercialContext."""
+    members = [
+        ContextMember(
+            message_id=m.message_id,
+            telegram_message_id=m.telegram_message_id,
+            author_id=m.author_id,
+            text=m.text,
+            message_date=m.message_date,
+            relation=m.relation,
+            selection_reason=m.selection_reason,
+            text_sha256=m.text_sha256,
+            is_seed_author=m.is_seed_author,
+            relevance=getattr(m, "relevance", {}) or {},
+            selection_rank=getattr(m, "selection_rank", None),
+        )
+        for m in v3.members
+    ]
+    return CommercialContext(
+        seed_message_id=v3.seed_message_id,
+        seed_author_id=v3.seed_author_id,
+        community_id=v3.community_id,
+        context_version=v3.context_version,
+        context_hash=v3.context_hash,
+        members=members,
+        n_excluded=v3.n_excluded,
+        n_excluded_blind=v3.n_excluded_blind,
+        include_related=v3.include_related,
+        topic_fingerprint=v3.topic_fingerprint,
+        n_stage1_candidates=getattr(v3, "n_stage1_candidates", 0),
+        exclusion_counts=getattr(v3, "exclusion_counts", {}) or {},
+    )
 
 
 async def build_commercial_context(
@@ -90,6 +133,23 @@ async def build_commercial_context(
     max_chars: int = 12000,
     context_version: str = CONTEXT_VERSION,
 ) -> CommercialContext:
+    if context_version in ("ctx_v3", "commercial_context_v3"):
+        from shared.commercial_ai.retrieval_v3 import (
+            CONTEXT_VERSION_V3,
+            build_commercial_context_v3,
+        )
+
+        v3 = await build_commercial_context_v3(
+            session,
+            seed_message_id,
+            include_related=include_related,
+            scorer=scorer,
+            max_messages=max_messages,
+            max_chars=max_chars,
+            context_version=CONTEXT_VERSION_V3,
+        )
+        return _context_from_v3(v3)
+
     seed = await session.get(Message, seed_message_id)
     if not seed:
         raise ValueError(f"seed message {seed_message_id} not found")

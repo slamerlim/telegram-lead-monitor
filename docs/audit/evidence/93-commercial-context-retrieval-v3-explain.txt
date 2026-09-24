@@ -1,0 +1,31 @@
+                                                                                       QUERY PLAN                                                                                       
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Limit  (cost=34.25..54.32 rows=1 width=12) (actual time=0.093..0.147 rows=100 loops=1)
+   Buffers: shared hit=32
+   InitPlan 1
+     ->  Index Scan using messages_pkey on messages messages_1  (cost=0.43..8.45 rows=1 width=4) (actual time=0.024..0.024 rows=1 loops=1)
+           Index Cond: (id = 264164)
+           Buffers: shared hit=4
+   InitPlan 2
+     ->  Index Scan using messages_pkey on messages messages_2  (cost=0.43..8.45 rows=1 width=4) (actual time=0.010..0.010 rows=1 loops=1)
+           Index Cond: (id = 264164)
+           Buffers: shared hit=4
+   InitPlan 3
+     ->  Index Scan using messages_pkey on messages messages_3  (cost=0.43..8.45 rows=1 width=8) (actual time=0.009..0.009 rows=1 loops=1)
+           Index Cond: (id = 264164)
+           Buffers: shared hit=4
+   InitPlan 4
+     ->  Index Scan using messages_pkey on messages messages_4  (cost=0.43..8.45 rows=1 width=8) (actual time=0.011..0.011 rows=1 loops=1)
+           Index Cond: (id = 264164)
+           Buffers: shared hit=4
+   ->  Index Scan Backward using ix_messages_author_date on messages  (cost=0.44..20.51 rows=1 width=12) (actual time=0.092..0.139 rows=100 loops=1)
+         Index Cond: ((author_id = (InitPlan 1).col1) AND (message_date >= ((InitPlan 3).col1 - '30 days'::interval)) AND (message_date <= ((InitPlan 4).col1 + '01:00:00'::interval)))
+         Filter: ((id <> 264164) AND (community_id = (InitPlan 2).col1))
+         Rows Removed by Filter: 1
+         Buffers: shared hit=32
+ Planning:
+   Buffers: shared hit=190 read=31
+ Planning Time: 1.854 ms
+ Execution Time: 0.244 ms
+(27 rows)
+

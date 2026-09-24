@@ -1,0 +1,1019 @@
+{
+  "generated_at": "2026-09-24T16:17:53.194227+00:00",
+  "n_seeds": 30,
+  "cases": {
+    "C": 28,
+    "A": 1,
+    "B": 1
+  },
+  "v2_exclusion_taxonomy_totals": {
+    "COMMERCIAL_IRRELEVANCE": 765,
+    "TOPIC_MISMATCH": 930
+  },
+  "history_exists_pct": 96.7,
+  "case_B_history_exists_plausibly_relevant_filtered": 1,
+  "case_C_history_exists_unrelated": 28,
+  "case_A_no_history": 1,
+  "plausibly_relevant_excluded_sum": 19,
+  "v2_context_sizes": {
+    "mean": 2.73,
+    "median": 2.0,
+    "pct_size_1": 40.0,
+    "pct_size_2_3": 30.0,
+    "pct_size_ge4": 30.0
+  },
+  "v3_context_sizes": {
+    "mean": 1.77,
+    "median": 1.0,
+    "pct_size_1": 83.3,
+    "pct_size_2_3": 13.3,
+    "pct_size_ge4": 3.3
+  },
+  "v3_recovery_pct_seeds": 3.3,
+  "avg_stage1_pool": 58.6,
+  "retrieval_rows": [
+    {
+      "seed": 5094046,
+      "available_history": 3,
+      "v2_selected": 1,
+      "v3_stage1_pool": 3,
+      "v3_selected": 1,
+      "recovered_vs_v2": 0,
+      "case": "C",
+      "plausibly_relevant_excluded_v2": 0,
+      "v3_exclusion_counts": {
+        "DOMAIN_INCOMPATIBLE": 3
+      },
+      "topic_fp": "copy_trading"
+    },
+    {
+      "seed": 264164,
+      "available_history": 100,
+      "v2_selected": 3,
+      "v3_stage1_pool": 100,
+      "v3_selected": 1,
+      "recovered_vs_v2": 0,
+      "case": "C",
+      "plausibly_relevant_excluded_v2": 0,
+      "v3_exclusion_counts": {
+        "DOMAIN_INCOMPATIBLE": 100
+      },
+      "topic_fp": "market_making"
+    },
+    {
+      "seed": 8583467,
+      "available_history": 100,
+      "v2_selected": 7,
+      "v3_stage1_pool": 100,
+      "v3_selected": 1,
+      "recovered_vs_v2": 0,
+      "case": "C",
+      "plausibly_relevant_excluded_v2": 0,
+      "v3_exclusion_counts": {
+        "DOMAIN_INCOMPATIBLE": 99,
+        "COMMERCIAL_IRRELEVANCE": 1
+      },
+      "topic_fp": "exchange_api"
+    },
+    {
+      "seed": 5094057,
+      "available_history": 16,
+      "v2_selected": 1,
+      "v3_stage1_pool": 16,
+      "v3_selected": 1,
+      "recovered_vs_v2": 0,
+      "case": "C",
+      "plausibly_relevant_excluded_v2": 0,
+      "v3_exclusion_counts": {
+        "DOMAIN_INCOMPATIBLE": 15,
+        "COMMERCIAL_IRRELEVANCE": 1
+      },
+      "topic_fp": "copy_trading"
+    },
+    {
+      "seed": 5103205,
+      "available_history": 13,
+      "v2_selected": 1,
+      "v3_stage1_pool": 13,
+      "v3_selected": 1,
+      "recovered_vs_v2": 0,
+      "case": "C",
+      "plausibly_relevant_excluded_v2": 0,
+      "v3_exclusion_counts": {
+        "DOMAIN_INCOMPATIBLE": 12,
+        "COMMERCIAL_IRRELEVANCE": 1
+      },
+      "topic_fp": "solana_dex"
+    },
+    {
+      "seed": 5153559,
+      "available_history": 32,
+      "v2_selected": 1,
+      "v3_stage1_pool": 32,
+      "v3_selected": 1,
+      "recovered_vs_v2": 0,
+      "case": "C",
+      "plausibly_relevant_excluded_v2": 0,
+      "v3_exclusion_counts": {
+        "COMMERCIAL_IRRELEVANCE": 4,
+        "DOMAIN_INCOMPATIBLE": 28
+      },
+      "topic_fp": "copy_trading"
+    },
+    {
+      "seed": 5153646,
+      "available_history": 75,
+      "v2_selected": 1,
+      "v3_stage1_pool": 75,
+      "v3_selected": 1,
+      "recovered_vs_v2": 0,
+      "case": "C",
+      "plausibly_relevant_excluded_v2": 0,
+      "v3_exclusion_counts": {
+        "COMMERCIAL_IRRELEVANCE": 7,
+        "DOMAIN_INCOMPATIBLE": 68
+      },
+      "topic_fp": "copy_trading"
+    },
+    {
+      "seed": 269825,
+      "available_history": 5,
+      "v2_selected": 1,
+      "v3_stage1_pool": 5,
+      "v3_selected": 1,
+      "recovered_vs_v2": 0,
+      "case": "C",
+      "plausibly_relevant_excluded_v2": 0,
+      "v3_exclusion_counts": {
+        "DOMAIN_INCOMPATIBLE": 4,
+        "COMMERCIAL_IRRELEVANCE": 1
+      },
+      "topic_fp": "none"
+    },
+    {
+      "seed": 59787,
+      "available_history": 15,
+      "v2_selected": 1,
+      "v3_stage1_pool": 15,
+      "v3_selected": 1,
+      "recovered_vs_v2": 0,
+      "case": "C",
+      "plausibly_relevant_excluded_v2": 0,
+      "v3_exclusion_counts": {
+        "DOMAIN_INCOMPATIBLE": 13,
+        "COMMERCIAL_IRRELEVANCE": 2
+      },
+      "topic_fp": "none"
+    },
+    {
+      "seed": 58794,
+      "available_history": 0,
+      "v2_selected": 1,
+      "v3_stage1_pool": 0,
+      "v3_selected": 1,
+      "recovered_vs_v2": 0,
+      "case": "A",
+      "plausibly_relevant_excluded_v2": 0,
+      "v3_exclusion_counts": {},
+      "topic_fp": "solana_dex"
+    },
+    {
+      "seed": 270199,
+      "available_history": 25,
+      "v2_selected": 2,
+      "v3_stage1_pool": 25,
+      "v3_selected": 1,
+      "recovered_vs_v2": 0,
+      "case": "C",
+      "plausibly_relevant_excluded_v2": 0,
+      "v3_exclusion_counts": {
+        "COMMERCIAL_IRRELEVANCE": 2,
+        "DOMAIN_INCOMPATIBLE": 23
+      },
+      "topic_fp": "exchange_api|market_making|solana_dex"
+    },
+    {
+      "seed": 8509479,
+      "available_history": 100,
+      "v2_selected": 3,
+      "v3_stage1_pool": 100,
+      "v3_selected": 1,
+      "recovered_vs_v2": 0,
+      "case": "C",
+      "plausibly_relevant_excluded_v2": 0,
+      "v3_exclusion_counts": {
+        "DOMAIN_INCOMPATIBLE": 100
+      },
+      "topic_fp": "exchange_api"
+    },
+    {
+      "seed": 1898,
+      "available_history": 1,
+      "v2_selected": 2,
+      "v3_stage1_pool": 1,
+      "v3_selected": 1,
+      "recovered_vs_v2": 0,
+      "case": "C",
+      "plausibly_relevant_excluded_v2": 0,
+      "v3_exclusion_counts": {
+        "DUPLICATE": 1
+      },
+      "topic_fp": "solana_dex"
+    },
+    {
+      "seed": 58136,
+      "available_history": 5,
+      "v2_selected": 2,
+      "v3_stage1_pool": 5,
+      "v3_selected": 2,
+      "recovered_vs_v2": 0,
+      "case": "C",
+      "plausibly_relevant_excluded_v2": 0,
+      "v3_exclusion_counts": {
+        "DOMAIN_INCOMPATIBLE": 4
+      },
+      "topic_fp": "solana_dex"
+    },
+    {
+      "seed": 8509507,
+      "available_history": 100,
+      "v2_selected": 2,
+      "v3_stage1_pool": 100,
+      "v3_selected": 1,
+      "recovered_vs_v2": 0,
+      "case": "C",
+      "plausibly_relevant_excluded_v2": 0,
+      "v3_exclusion_counts": {
+        "DOMAIN_INCOMPATIBLE": 100
+      },
+      "topic_fp": "exchange_api"
+    },
+    {
+      "seed": 8509492,
+      "available_history": 100,
+      "v2_selected": 4,
+      "v3_stage1_pool": 100,
+      "v3_selected": 1,
+      "recovered_vs_v2": 0,
+      "case": "C",
+      "plausibly_relevant_excluded_v2": 0,
+      "v3_exclusion_counts": {
+        "DOMAIN_INCOMPATIBLE": 100
+      },
+      "topic_fp": "exchange_api"
+    },
+    {
+      "seed": 8533266,
+      "available_history": 100,
+      "v2_selected": 4,
+      "v3_stage1_pool": 100,
+      "v3_selected": 1,
+      "recovered_vs_v2": 0,
+      "case": "C",
+      "plausibly_relevant_excluded_v2": 0,
+      "v3_exclusion_counts": {
+        "DOMAIN_INCOMPATIBLE": 98,
+        "COMMERCIAL_IRRELEVANCE": 2
+      },
+      "topic_fp": "market_making"
+    },
+    {
+      "seed": 8546593,
+      "available_history": 100,
+      "v2_selected": 4,
+      "v3_stage1_pool": 100,
+      "v3_selected": 1,
+      "recovered_vs_v2": 0,
+      "case": "C",
+      "plausibly_relevant_excluded_v2": 0,
+      "v3_exclusion_counts": {
+        "DOMAIN_INCOMPATIBLE": 98,
+        "COMMERCIAL_IRRELEVANCE": 2
+      },
+      "topic_fp": "exchange_api"
+    },
+    {
+      "seed": 268975,
+      "available_history": 8,
+      "v2_selected": 4,
+      "v3_stage1_pool": 8,
+      "v3_selected": 2,
+      "recovered_vs_v2": 0,
+      "case": "C",
+      "plausibly_relevant_excluded_v2": 0,
+      "v3_exclusion_counts": {
+        "DOMAIN_INCOMPATIBLE": 7
+      },
+      "topic_fp": "solana_dex"
+    },
+    {
+      "seed": 265801,
+      "available_history": 100,
+      "v2_selected": 7,
+      "v3_stage1_pool": 100,
+      "v3_selected": 1,
+      "recovered_vs_v2": 0,
+      "case": "C",
+      "plausibly_relevant_excluded_v2": 0,
+      "v3_exclusion_counts": {
+        "DOMAIN_INCOMPATIBLE": 100
+      },
+      "topic_fp": "solana_dex"
+    },
+    {
+      "seed": 263708,
+      "available_history": 100,
+      "v2_selected": 1,
+      "v3_stage1_pool": 100,
+      "v3_selected": 1,
+      "recovered_vs_v2": 0,
+      "case": "C",
+      "plausibly_relevant_excluded_v2": 0,
+      "v3_exclusion_counts": {
+        "DOMAIN_INCOMPATIBLE": 100
+      },
+      "topic_fp": "solana_dex"
+    },
+    {
+      "seed": 196,
+      "available_history": 100,
+      "v2_selected": 1,
+      "v3_stage1_pool": 100,
+      "v3_selected": 20,
+      "recovered_vs_v2": 19,
+      "case": "B",
+      "plausibly_relevant_excluded_v2": 19,
+      "v3_exclusion_counts": {
+        "COMMERCIAL_IRRELEVANCE": 53,
+        "BLIND_SAMPLE": 2,
+        "DOMAIN_INCOMPATIBLE": 26
+      },
+      "topic_fp": "trading_bot"
+    },
+    {
+      "seed": 22581,
+      "available_history": 100,
+      "v2_selected": 1,
+      "v3_stage1_pool": 100,
+      "v3_selected": 1,
+      "recovered_vs_v2": 0,
+      "case": "C",
+      "plausibly_relevant_excluded_v2": 0,
+      "v3_exclusion_counts": {
+        "DOMAIN_INCOMPATIBLE": 100
+      },
+      "topic_fp": "trading_bot"
+    },
+    {
+      "seed": 8509509,
+      "available_history": 100,
+      "v2_selected": 2,
+      "v3_stage1_pool": 100,
+      "v3_selected": 1,
+      "recovered_vs_v2": 0,
+      "case": "C",
+      "plausibly_relevant_excluded_v2": 0,
+      "v3_exclusion_counts": {
+        "DOMAIN_INCOMPATIBLE": 100
+      },
+      "topic_fp": "exchange_api"
+    },
+    {
+      "seed": 269002,
+      "available_history": 8,
+      "v2_selected": 2,
+      "v3_stage1_pool": 8,
+      "v3_selected": 2,
+      "recovered_vs_v2": 0,
+      "case": "C",
+      "plausibly_relevant_excluded_v2": 0,
+      "v3_exclusion_counts": {
+        "DOMAIN_INCOMPATIBLE": 7
+      },
+      "topic_fp": "trading_bot"
+    },
+    {
+      "seed": 269010,
+      "available_history": 9,
+      "v2_selected": 2,
+      "v3_stage1_pool": 9,
+      "v3_selected": 2,
+      "recovered_vs_v2": 0,
+      "case": "C",
+      "plausibly_relevant_excluded_v2": 0,
+      "v3_exclusion_counts": {
+        "COMMERCIAL_IRRELEVANCE": 3,
+        "DOMAIN_INCOMPATIBLE": 5
+      },
+      "topic_fp": "trading_bot"
+    },
+    {
+      "seed": 8583460,
+      "available_history": 100,
+      "v2_selected": 7,
+      "v3_stage1_pool": 100,
+      "v3_selected": 1,
+      "recovered_vs_v2": 0,
+      "case": "C",
+      "plausibly_relevant_excluded_v2": 0,
+      "v3_exclusion_counts": {
+        "DOMAIN_INCOMPATIBLE": 99,
+        "COMMERCIAL_IRRELEVANCE": 1
+      },
+      "topic_fp": "exchange_api"
+    },
+    {
+      "seed": 8533281,
+      "available_history": 100,
+      "v2_selected": 8,
+      "v3_stage1_pool": 100,
+      "v3_selected": 1,
+      "recovered_vs_v2": 0,
+      "case": "C",
+      "plausibly_relevant_excluded_v2": 0,
+      "v3_exclusion_counts": {
+        "DOMAIN_INCOMPATIBLE": 98,
+        "COMMERCIAL_IRRELEVANCE": 2
+      },
+      "topic_fp": "exchange_api"
+    },
+    {
+      "seed": 8509489,
+      "available_history": 100,
+      "v2_selected": 5,
+      "v3_stage1_pool": 100,
+      "v3_selected": 1,
+      "recovered_vs_v2": 0,
+      "case": "C",
+      "plausibly_relevant_excluded_v2": 0,
+      "v3_exclusion_counts": {
+        "DOMAIN_INCOMPATIBLE": 100
+      },
+      "topic_fp": "market_making"
+    },
+    {
+      "seed": 74373,
+      "available_history": 43,
+      "v2_selected": 1,
+      "v3_stage1_pool": 43,
+      "v3_selected": 1,
+      "recovered_vs_v2": 0,
+      "case": "C",
+      "plausibly_relevant_excluded_v2": 0,
+      "v3_exclusion_counts": {
+        "DOMAIN_INCOMPATIBLE": 36,
+        "COMMERCIAL_IRRELEVANCE": 7
+      },
+      "topic_fp": "none"
+    }
+  ],
+  "forensic_rows": [
+    {
+      "seed_message_id": 5094046,
+      "case": "C",
+      "available_history": 3,
+      "v2_would_select_support": 0,
+      "exclusion_counts": {
+        "COMMERCIAL_IRRELEVANCE": 3
+      },
+      "plausibly_relevant_excluded": 0,
+      "excluded_samples": [],
+      "seed_fp": "copy_trading"
+    },
+    {
+      "seed_message_id": 264164,
+      "case": "C",
+      "available_history": 100,
+      "v2_would_select_support": 2,
+      "exclusion_counts": {
+        "TOPIC_MISMATCH": 37,
+        "COMMERCIAL_IRRELEVANCE": 61
+      },
+      "plausibly_relevant_excluded": 0,
+      "excluded_samples": [],
+      "seed_fp": "market_making"
+    },
+    {
+      "seed_message_id": 8583467,
+      "case": "C",
+      "available_history": 100,
+      "v2_would_select_support": 6,
+      "exclusion_counts": {
+        "TOPIC_MISMATCH": 76,
+        "COMMERCIAL_IRRELEVANCE": 18
+      },
+      "plausibly_relevant_excluded": 0,
+      "excluded_samples": [],
+      "seed_fp": "exchange_api"
+    },
+    {
+      "seed_message_id": 5094057,
+      "case": "C",
+      "available_history": 16,
+      "v2_would_select_support": 0,
+      "exclusion_counts": {
+        "COMMERCIAL_IRRELEVANCE": 16
+      },
+      "plausibly_relevant_excluded": 0,
+      "excluded_samples": [],
+      "seed_fp": "copy_trading"
+    },
+    {
+      "seed_message_id": 5103205,
+      "case": "C",
+      "available_history": 13,
+      "v2_would_select_support": 0,
+      "exclusion_counts": {
+        "TOPIC_MISMATCH": 13
+      },
+      "plausibly_relevant_excluded": 0,
+      "excluded_samples": [],
+      "seed_fp": "solana_dex"
+    },
+    {
+      "seed_message_id": 5153559,
+      "case": "C",
+      "available_history": 32,
+      "v2_would_select_support": 0,
+      "exclusion_counts": {
+        "TOPIC_MISMATCH": 1,
+        "COMMERCIAL_IRRELEVANCE": 31
+      },
+      "plausibly_relevant_excluded": 0,
+      "excluded_samples": [],
+      "seed_fp": "copy_trading"
+    },
+    {
+      "seed_message_id": 5153646,
+      "case": "C",
+      "available_history": 75,
+      "v2_would_select_support": 0,
+      "exclusion_counts": {
+        "TOPIC_MISMATCH": 1,
+        "COMMERCIAL_IRRELEVANCE": 74
+      },
+      "plausibly_relevant_excluded": 0,
+      "excluded_samples": [],
+      "seed_fp": "copy_trading"
+    },
+    {
+      "seed_message_id": 269825,
+      "case": "C",
+      "available_history": 5,
+      "v2_would_select_support": 0,
+      "exclusion_counts": {
+        "COMMERCIAL_IRRELEVANCE": 5
+      },
+      "plausibly_relevant_excluded": 0,
+      "excluded_samples": [],
+      "seed_fp": "none"
+    },
+    {
+      "seed_message_id": 59787,
+      "case": "C",
+      "available_history": 15,
+      "v2_would_select_support": 0,
+      "exclusion_counts": {
+        "TOPIC_MISMATCH": 6,
+        "COMMERCIAL_IRRELEVANCE": 9
+      },
+      "plausibly_relevant_excluded": 0,
+      "excluded_samples": [],
+      "seed_fp": "none"
+    },
+    {
+      "seed_message_id": 58794,
+      "case": "A",
+      "available_history": 0,
+      "exclusion_counts": {},
+      "plausibly_relevant_excluded": 0
+    },
+    {
+      "seed_message_id": 270199,
+      "case": "C",
+      "available_history": 25,
+      "v2_would_select_support": 1,
+      "exclusion_counts": {
+        "COMMERCIAL_IRRELEVANCE": 24
+      },
+      "plausibly_relevant_excluded": 0,
+      "excluded_samples": [],
+      "seed_fp": "exchange_api|market_making|solana_dex"
+    },
+    {
+      "seed_message_id": 8509479,
+      "case": "C",
+      "available_history": 100,
+      "v2_would_select_support": 4,
+      "exclusion_counts": {
+        "TOPIC_MISMATCH": 76,
+        "COMMERCIAL_IRRELEVANCE": 20
+      },
+      "plausibly_relevant_excluded": 0,
+      "excluded_samples": [],
+      "seed_fp": "exchange_api"
+    },
+    {
+      "seed_message_id": 1898,
+      "case": "C",
+      "available_history": 1,
+      "v2_would_select_support": 1,
+      "exclusion_counts": {},
+      "plausibly_relevant_excluded": 0,
+      "excluded_samples": [],
+      "seed_fp": "solana_dex"
+    },
+    {
+      "seed_message_id": 58136,
+      "case": "C",
+      "available_history": 5,
+      "v2_would_select_support": 1,
+      "exclusion_counts": {
+        "COMMERCIAL_IRRELEVANCE": 4
+      },
+      "plausibly_relevant_excluded": 0,
+      "excluded_samples": [],
+      "seed_fp": "solana_dex"
+    },
+    {
+      "seed_message_id": 8509507,
+      "case": "C",
+      "available_history": 100,
+      "v2_would_select_support": 2,
+      "exclusion_counts": {
+        "TOPIC_MISMATCH": 46,
+        "COMMERCIAL_IRRELEVANCE": 52
+      },
+      "plausibly_relevant_excluded": 0,
+      "excluded_samples": [],
+      "seed_fp": "exchange_api"
+    },
+    {
+      "seed_message_id": 8509492,
+      "case": "C",
+      "available_history": 100,
+      "v2_would_select_support": 4,
+      "exclusion_counts": {
+        "TOPIC_MISMATCH": 62,
+        "COMMERCIAL_IRRELEVANCE": 34
+      },
+      "plausibly_relevant_excluded": 0,
+      "excluded_samples": [],
+      "seed_fp": "exchange_api"
+    },
+    {
+      "seed_message_id": 8533266,
+      "case": "C",
+      "available_history": 100,
+      "v2_would_select_support": 3,
+      "exclusion_counts": {
+        "TOPIC_MISMATCH": 62,
+        "COMMERCIAL_IRRELEVANCE": 35
+      },
+      "plausibly_relevant_excluded": 0,
+      "excluded_samples": [],
+      "seed_fp": "market_making"
+    },
+    {
+      "seed_message_id": 8546593,
+      "case": "C",
+      "available_history": 100,
+      "v2_would_select_support": 5,
+      "exclusion_counts": {
+        "TOPIC_MISMATCH": 62,
+        "COMMERCIAL_IRRELEVANCE": 33
+      },
+      "plausibly_relevant_excluded": 0,
+      "excluded_samples": [],
+      "seed_fp": "exchange_api"
+    },
+    {
+      "seed_message_id": 268975,
+      "case": "C",
+      "available_history": 8,
+      "v2_would_select_support": 3,
+      "exclusion_counts": {
+        "COMMERCIAL_IRRELEVANCE": 2,
+        "TOPIC_MISMATCH": 3
+      },
+      "plausibly_relevant_excluded": 0,
+      "excluded_samples": [],
+      "seed_fp": "solana_dex"
+    },
+    {
+      "seed_message_id": 265801,
+      "case": "C",
+      "available_history": 100,
+      "v2_would_select_support": 8,
+      "exclusion_counts": {
+        "TOPIC_MISMATCH": 56,
+        "COMMERCIAL_IRRELEVANCE": 36
+      },
+      "plausibly_relevant_excluded": 0,
+      "excluded_samples": [],
+      "seed_fp": "solana_dex"
+    },
+    {
+      "seed_message_id": 263708,
+      "case": "C",
+      "available_history": 100,
+      "v2_would_select_support": 3,
+      "exclusion_counts": {
+        "TOPIC_MISMATCH": 97
+      },
+      "plausibly_relevant_excluded": 0,
+      "excluded_samples": [],
+      "seed_fp": "solana_dex"
+    },
+    {
+      "seed_message_id": 196,
+      "case": "B",
+      "available_history": 100,
+      "v2_would_select_support": 0,
+      "exclusion_counts": {
+        "TOPIC_MISMATCH": 31,
+        "COMMERCIAL_IRRELEVANCE": 69
+      },
+      "plausibly_relevant_excluded": 19,
+      "excluded_samples": [
+        {
+          "message_id": 194,
+          "reason": "TOPIC_MISMATCH",
+          "relevance_score": 0.6,
+          "preview": "\ud83c\udf1f Freelance Opportunity: Web3 Business Development (High 15% Commission)  \ud83d\udcb0 Budget: $900  \ud83e\udd1d With: Gab Tigs"
+        },
+        {
+          "message_id": 195,
+          "reason": "TOPIC_MISMATCH",
+          "relevance_score": 0.6,
+          "preview": "\ud83c\udf1f Freelance Opportunity: Web3 Landing Page &amp; UI/UX Designer (Flat $650 per Project)  \ud83d\udcb0 Budget: $650  \ud83e\udd1d With: Gab Tig"
+        },
+        {
+          "message_id": 197,
+          "reason": "TOPIC_MISMATCH",
+          "relevance_score": 0.42000000000000004,
+          "preview": "\ud83c\udf1f Freelance Opportunity: 5 TASKS - 5000 PEPE  \ud83d\udcb0 Budget: $50  \ud83e\udd1d With: Quetta Audy"
+        },
+        {
+          "message_id": 206,
+          "reason": "TOPIC_MISMATCH",
+          "relevance_score": 0.6,
+          "preview": "\ud83c\udf1f Freelance Opportunity: Full-Stack MERN Developer \u2013 Trading Platform  \ud83d\udcb0 Budget: $70  \ud83e\udd1d With: Links Arnold"
+        },
+        {
+          "message_id": 214,
+          "reason": "TOPIC_MISMATCH",
+          "relevance_score": 0.5399999999999999,
+          "preview": "\ud83c\udf1f Freelance Opportunity: Trading Platform\u2013Security Fix,Feature Completion&amp;Deployment  \ud83d\udcb0 Budget: $400  \ud83e\udd1d With: arlo s"
+        }
+      ],
+      "seed_fp": "trading_bot"
+    },
+    {
+      "seed_message_id": 22581,
+      "case": "C",
+      "available_history": 100,
+      "v2_would_select_support": 0,
+      "exclusion_counts": {
+        "TOPIC_MISMATCH": 38,
+        "COMMERCIAL_IRRELEVANCE": 62
+      },
+      "plausibly_relevant_excluded": 0,
+      "excluded_samples": [],
+      "seed_fp": "trading_bot"
+    },
+    {
+      "seed_message_id": 8509509,
+      "case": "C",
+      "available_history": 100,
+      "v2_would_select_support": 2,
+      "exclusion_counts": {
+        "TOPIC_MISMATCH": 46,
+        "COMMERCIAL_IRRELEVANCE": 52
+      },
+      "plausibly_relevant_excluded": 0,
+      "excluded_samples": [],
+      "seed_fp": "exchange_api"
+    },
+    {
+      "seed_message_id": 269002,
+      "case": "C",
+      "available_history": 8,
+      "v2_would_select_support": 1,
+      "exclusion_counts": {
+        "TOPIC_MISMATCH": 3,
+        "COMMERCIAL_IRRELEVANCE": 4
+      },
+      "plausibly_relevant_excluded": 0,
+      "excluded_samples": [],
+      "seed_fp": "trading_bot"
+    },
+    {
+      "seed_message_id": 269010,
+      "case": "C",
+      "available_history": 9,
+      "v2_would_select_support": 1,
+      "exclusion_counts": {
+        "TOPIC_MISMATCH": 2,
+        "COMMERCIAL_IRRELEVANCE": 6
+      },
+      "plausibly_relevant_excluded": 0,
+      "excluded_samples": [],
+      "seed_fp": "trading_bot"
+    },
+    {
+      "seed_message_id": 8583460,
+      "case": "C",
+      "available_history": 100,
+      "v2_would_select_support": 6,
+      "exclusion_counts": {
+        "TOPIC_MISMATCH": 72,
+        "COMMERCIAL_IRRELEVANCE": 22
+      },
+      "plausibly_relevant_excluded": 0,
+      "excluded_samples": [],
+      "seed_fp": "exchange_api"
+    },
+    {
+      "seed_message_id": 8533281,
+      "case": "C",
+      "available_history": 100,
+      "v2_would_select_support": 6,
+      "exclusion_counts": {
+        "TOPIC_MISMATCH": 75,
+        "COMMERCIAL_IRRELEVANCE": 19
+      },
+      "plausibly_relevant_excluded": 0,
+      "excluded_samples": [],
+      "seed_fp": "exchange_api"
+    },
+    {
+      "seed_message_id": 8509489,
+      "case": "C",
+      "available_history": 100,
+      "v2_would_select_support": 4,
+      "exclusion_counts": {
+        "TOPIC_MISMATCH": 62,
+        "COMMERCIAL_IRRELEVANCE": 34
+      },
+      "plausibly_relevant_excluded": 0,
+      "excluded_samples": [],
+      "seed_fp": "market_making"
+    },
+    {
+      "seed_message_id": 74373,
+      "case": "C",
+      "available_history": 43,
+      "v2_would_select_support": 0,
+      "exclusion_counts": {
+        "TOPIC_MISMATCH": 3,
+        "COMMERCIAL_IRRELEVANCE": 40
+      },
+      "plausibly_relevant_excluded": 0,
+      "excluded_samples": [],
+      "seed_fp": "none"
+    }
+  ],
+  "quality_samples": [
+    {
+      "seed": 58136,
+      "seed_preview": "I recently helped my client develop an all-in-one Solana trading and bundling system for Solana trad",
+      "supports": [
+        {
+          "message_id": 58181,
+          "date": "2025-11-19T06:11:04+00:00",
+          "relation": "SAME_AUTHOR_7D",
+          "relevance_score": 0.78,
+          "reason": "domain+technical+fingerprint+buyer_action+same_author_7d",
+          "preview": "I recently helped my client develop an all-in-one Solana trading and bundling system for Solana trad"
+        }
+      ]
+    },
+    {
+      "seed": 268975,
+      "seed_preview": "#\u0440\u0435\u0437\u044e\u043c\u0435 #CV #opentowork #recruiter #talentsourcer #hr #talentacquisition #blockchain #crypto #web3 \ud83d\udc4b",
+      "supports": [
+        {
+          "message_id": 268983,
+          "date": "2026-05-06T20:51:32+00:00",
+          "relation": "SAME_AUTHOR_30D",
+          "relevance_score": 1.0,
+          "reason": "commercial+domain+technical+fingerprint+buyer_action+same_author_30d",
+          "preview": "#\u0440\u0435\u0437\u044e\u043c\u0435 #CV #opentowork #recruiter #talentsourcer #hr #talentacquisition #blockchain #crypto #web3 \ud83d\udc4b"
+        }
+      ]
+    },
+    {
+      "seed": 196,
+      "seed_preview": "\ud83c\udf1f Freelance Opportunity: Building DeFi Protocal \ud83d\udcb0 Budget: $9000 \ud83e\udd1d With: Cristina Prina",
+      "supports": [
+        {
+          "message_id": 293,
+          "date": "2026-08-19T11:41:45+00:00",
+          "relation": "SAME_AUTHOR_30D",
+          "relevance_score": 0.48,
+          "reason": "commercial+buyer_action+same_author_30d",
+          "preview": "\ud83c\udf1f Freelance Opportunity: Building DeFi Protocal \ud83d\udcb0 Budget: $9000 \ud83e\udd1d With: Cristina Prina"
+        },
+        {
+          "message_id": 292,
+          "date": "2026-08-19T12:05:42+00:00",
+          "relation": "SAME_AUTHOR_30D",
+          "relevance_score": 0.48,
+          "reason": "commercial+buyer_action+same_author_30d",
+          "preview": "\ud83c\udf1f Freelance Opportunity: Building DeFi protocal \ud83d\udcb0 Budget: $9000 \ud83e\udd1d With: Anna Clara"
+        },
+        {
+          "message_id": 291,
+          "date": "2026-08-19T12:24:01+00:00",
+          "relation": "SAME_AUTHOR_30D",
+          "relevance_score": 0.48,
+          "reason": "commercial+buyer_action+same_author_30d",
+          "preview": "\ud83c\udf1f Freelance Opportunity: Buliding DeFi project \ud83d\udcb0 Budget: $9000 \ud83e\udd1d With: Cristina Prina"
+        },
+        {
+          "message_id": 290,
+          "date": "2026-08-19T12:47:45+00:00",
+          "relation": "SAME_AUTHOR_30D",
+          "relevance_score": 0.48,
+          "reason": "commercial+buyer_action+same_author_30d",
+          "preview": "\ud83c\udf1f Freelance Opportunity: DeFi project \ud83d\udcb0 Budget: $9000 \ud83e\udd1d With: Cristina Prina"
+        },
+        {
+          "message_id": 289,
+          "date": "2026-08-19T13:22:56+00:00",
+          "relation": "SAME_AUTHOR_30D",
+          "relevance_score": 0.48,
+          "reason": "commercial+buyer_action+same_author_30d",
+          "preview": "\ud83c\udf1f Freelance Opportunity: Building DeFi project \ud83d\udcb0 Budget: $9000 \ud83e\udd1d With: Cristina Prina"
+        },
+        {
+          "message_id": 288,
+          "date": "2026-08-19T13:30:04+00:00",
+          "relation": "SAME_AUTHOR_30D",
+          "relevance_score": 0.48,
+          "reason": "commercial+buyer_action+same_author_30d",
+          "preview": "\ud83c\udf1f Freelance Opportunity: Building DeFi project \ud83d\udcb0 Budget: $9000 \ud83e\udd1d With: Elena Clonia"
+        },
+        {
+          "message_id": 283,
+          "date": "2026-08-19T21:24:27+00:00",
+          "relation": "SAME_AUTHOR_7D",
+          "relevance_score": 0.54,
+          "reason": "commercial+buyer_action+same_author_7d",
+          "preview": "\ud83c\udf1f Freelance Opportunity: Cryptocurrency/ technical/research writers needed \ud83d\udcb0 Budget: $3700 \ud83e\udd1d With: K"
+        },
+        {
+          "message_id": 274,
+          "date": "2026-08-20T13:50:20+00:00",
+          "relation": "SAME_AUTHOR_7D",
+          "relevance_score": 0.54,
+          "reason": "commercial+buyer_action+same_author_7d",
+          "preview": "\ud83c\udf1f Freelance Opportunity: DeFi lending and yield-routing protocol built \ud83d\udcb0 Budget: $6000 \ud83e\udd1d With: Anna "
+        }
+      ]
+    },
+    {
+      "seed": 269002,
+      "seed_preview": "#\u0420\u0435\u0437\u044e\u043c\u0435 #SeniorCopywriter #ContentStrategist #Web3 #Fintech \u041f\u043e\u0437\u0438\u0446\u0438\u044f: Senior Content Writer / Content",
+      "supports": [
+        {
+          "message_id": 269010,
+          "date": "2026-01-29T09:36:51+00:00",
+          "relation": "SAME_AUTHOR_30D",
+          "relevance_score": 1.0,
+          "reason": "commercial+domain+technical+fingerprint+buyer_action+same_author_30d",
+          "preview": "#\u0420\u0435\u0437\u044e\u043c\u0435 #SeniorCopywriter #ContentStrategist #Web3 #Fintech \u041f\u043e\u0437\u0438\u0446\u0438\u044f: Senior Content Writer / Content"
+        }
+      ]
+    },
+    {
+      "seed": 269010,
+      "seed_preview": "#\u0420\u0435\u0437\u044e\u043c\u0435 #Copywriter #SMM #ContentWriter \u0418\u0449\u0443 \u0440\u0430\u0431\u043e\u0442\u0443 \u043d\u0430 \u043f\u043e\u0437\u0438\u0446\u0438\u0438: Copywriter \\ Content Writer \\ SMM \u041f\u0440\u0438",
+      "supports": [
+        {
+          "message_id": 269016,
+          "date": "2026-01-12T12:13:12+00:00",
+          "relation": "SAME_AUTHOR_30D",
+          "relevance_score": 1.0,
+          "reason": "commercial+domain+technical+fingerprint+buyer_action+same_author_30d",
+          "preview": "#\u0420\u0435\u0437\u044e\u043c\u0435 #Copywriter #SMM #ContentWriter \u0418\u0449\u0443 \u0440\u0430\u0431\u043e\u0442\u0443 \u043d\u0430 \u043f\u043e\u0437\u0438\u0446\u0438\u0438: Copywriter \\ Content Writer \\ SMM \u041f\u0440\u0438"
+        }
+      ]
+    }
+  ],
+  "decision": "B",
+  "decision_rationale": "Stage-1 high recall works; Stage-2 finds little buyer-relevant affinity on disc_v2. Keep message-only (ctx_v1). No SDK A/B.",
+  "sdk_ab_run": false,
+  "isolation": {
+    "ai_validated_messages": 94,
+    "ai_validated_true": 0,
+    "ai_validated_false": 94,
+    "human_labels": 1524,
+    "ai_confirmed": 4,
+    "ml_training_enabled": false,
+    "contact_attempt": 0,
+    "response": 0,
+    "won": 0
+  }
+}
