@@ -16,7 +16,7 @@ from sqlalchemy import select
 
 from services.analyzer.app.scoring import LeadScorer
 from shared.commercial_ai.context import build_commercial_context
-from shared.commercial_ai.discovery import episode_key
+from shared.commercial_ai.discovery import DISCOVERY_VERSION, episode_key
 from shared.commercial_ai.streams import (
     COMMERCIAL_DISCOVERY_DLQ,
     COMMERCIAL_DISCOVERY_GROUP,
@@ -59,7 +59,7 @@ async def process_discovery(payload: dict, scorer: LeadScorer, bus: RedisBus) ->
                 select(CommercialDiscoveryCandidate).where(
                     CommercialDiscoveryCandidate.seed_message_id == seed_id,
                     CommercialDiscoveryCandidate.discovery_version
-                    == (settings.commercial_discovery_version or "disc_v1"),
+                    == (settings.commercial_discovery_version or DISCOVERY_VERSION),
                 )
             )
             if cand:
@@ -78,7 +78,9 @@ async def process_discovery(payload: dict, scorer: LeadScorer, bus: RedisBus) ->
         if confirmed:
             cand = await session.scalar(
                 select(CommercialDiscoveryCandidate).where(
-                    CommercialDiscoveryCandidate.seed_message_id == seed_id
+                    CommercialDiscoveryCandidate.seed_message_id == seed_id,
+                    CommercialDiscoveryCandidate.discovery_version
+                    == (settings.commercial_discovery_version or DISCOVERY_VERSION),
                 )
             )
             if cand:
@@ -91,7 +93,7 @@ async def process_discovery(payload: dict, scorer: LeadScorer, bus: RedisBus) ->
             select(CommercialDiscoveryCandidate).where(
                 CommercialDiscoveryCandidate.seed_message_id == seed_id,
                 CommercialDiscoveryCandidate.discovery_version
-                == (settings.commercial_discovery_version or "disc_v1"),
+                == (settings.commercial_discovery_version or DISCOVERY_VERSION),
             )
         )
         if not cand:

@@ -1,0 +1,45 @@
+# 92-partial — Commercial context shadow interruption / population integrity
+Date: 2026-09-24
+Shipped_SHA: 716c4bb
+Migration: 0010_commercial_episodes
+
+## CRITICAL METHODOLOGICAL NOTE
+Early SDK results are provisional because discovery policy changed during the run.
+Populations A/B/C below MUST NOT be pooled into one final A/B conclusion.
+
+## Recovery (2026-09-24T~14:50Z+)
+- Host tooling recovered; all compose services Up
+- alembic current = 0010_commercial_episodes
+- health ok; gates 94/0/94; ml=false; human_labels=1524; AI_CONFIRMED=4
+- Redis discovery PEL pending=0 lag=0
+- Redis episode_shadow PEL pending=0; stream XLEN=60 unread (CLI enqueued arms while
+  worker kill-switch default false — not ACKed; left unread intentionally)
+- Interrupted CLI process: gone; DB shows full 30/30 paired DECISION rows completed
+
+## Populations (NOT homogeneous)
+
+### A — fake plumbing (disc_v1, COMMERCIAL_AI_BACKEND=fake)
+Hour ~12:00Z: 5 seeds × A/B → AI_UNCERTAIN both arms
+Seeds: 8589995,8589564,8589705,8589706,8589539 (all n_messages=1)
+
+### B — first SDK batch (disc_v1, weak/noisy pre-tighten)
+Hour ~13:00Z: 5 seeds × A/B → AI_REJECTED both arms
+Seeds include Bybit feature/news/hiring-noise (8593587,8593292,8592711,8583463,8582959)
+
+### C — improved sweep mid-run (code tightened via docker cp; DB still labeled disc_v1)
+Hour ~14:00Z: 15+ seeds; A: 2 CANDIDATE / 13 REJECTED (+ prior); B: 1 CANDIDATE / 13 REJECTED / 1 UNCERTAIN
+Notable discordance: seed 22763 A=CANDIDATE B=UNCERTAIN; seed 24114 both CANDIDATE
+Context sizes mixed: mostly 1; some 2–8
+
+## Aggregate disc_v1 DB (provisional only)
+Candidates: 30 (all discovery_version=disc_v1, status=EPISODE_BUILT)
+Episodes: 30
+Arm A DECISION: CANDIDATE=2 REJECTED=23 UNCERTAIN=5
+Arm B DECISION: CANDIDATE=1 REJECTED=23 UNCERTAIN=6
+B-incremental CONFIRMED: 0
+CRM promotion: none; outreach: none
+
+## Next
+Freeze tightened discovery as disc_v2 in a focused commit.
+Run clean paired experiment aival_episode_ab_disc_v2_* with REAL SDK only.
+Final recommendation uses disc_v2 cohort only.

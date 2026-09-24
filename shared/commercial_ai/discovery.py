@@ -7,7 +7,7 @@ import json
 from dataclasses import dataclass, field
 from typing import Any
 
-DISCOVERY_VERSION = "disc_v1"
+DISCOVERY_VERSION = "disc_v2"
 
 _COMMERCIAL_PATTERN_CATS = (
     "commercial_purchase",
@@ -158,11 +158,13 @@ def evaluate_discovery(scorer: Any, text: str) -> DiscoveryFeatures:
     custom = scorer._pattern_hits(clean, "commercial_customization")
     hire = scorer._pattern_hits(clean, "commercial_hire")
     impl = scorer._pattern_hits(clean, "commercial_implementation")
-    feats.commercial_patterns = list(dict.fromkeys(purchase + custom))
+    buyer_intent = scorer._pattern_hits(clean, "buyer_intent")
+    contract = scorer._pattern_hits(clean, "contract_engagement")
+    feats.commercial_patterns = list(dict.fromkeys(purchase + custom + buyer_intent))
     feats.repair_patterns = list(repair)
-    feats.hiring_patterns = list(hire)
+    feats.hiring_patterns = list(dict.fromkeys(hire + contract))
     feats.implementation_patterns = list(impl)
-    feats.contractor_patterns = list(scorer._pattern_hits(clean, "commercial_hire"))
+    feats.contractor_patterns = list(dict.fromkeys(hire + contract))
 
     domain = [c for c in categories if c in _DOMAIN_CATS]
     tech = [c for c in categories if c in _TECH_CATS]
@@ -171,7 +173,7 @@ def evaluate_discovery(scorer: Any, text: str) -> DiscoveryFeatures:
     feats.technical_project_terms = list(dict.fromkeys(tech + tech_hits))[:12]
 
     budget_amt, _ = scorer._extract_budget(clean)
-    feats.budget_language = budget_amt is not None or bool(scorer._pattern_hits(clean, "urgency"))
+    feats.budget_language = budget_amt is not None or bool(scorer._pattern_hits(clean, "budget_context"))
     feats.timeline_language = bool(scorer._pattern_hits(clean, "urgency"))
 
     pattern_names: list[str] = []
@@ -186,27 +188,44 @@ def evaluate_discovery(scorer: Any, text: str) -> DiscoveryFeatures:
         feats.eligible = False
         return feats
 
-    commercial_any = bool(purchase or repair or custom or hire or impl)
-    has_domain = bool(domain) or scorer._has_target_financial_domain(clean)
+    # Explicit commercial action patterns (not weak buyer_intent alone).
+    explicit_commercial = bool(purchase or repair or custom or hire or impl)
+    soft_commercial = bool(buyer_intent or contract)
+    # Prefer YAML category hits over bare keyword domain detection for domain gate.
+    has_domain_cat = bool(domain)
+    has_domain_loose = scorer._has_target_financial_domain(clean)
     has_tech = bool(tech or tech_hits)
 
     trigger = None
     score = 0.0
-    if commercial_any and has_domain:
+    if explicit_commercial and has_domain_cat:
         trigger = "commercial_domain"
         score = 3.0
-    elif hire and (has_domain or has_tech):
+    elif explicit_commercial and has_domain_loose and has_tech:
+        trigger = "commercial_domain_tech"
+        score = 2.8
+    elif (hire or contract) and (has_domain_cat or has_tech):
         trigger = "client_hiring"
         score = 2.5
-    elif commercial_any and has_tech:
+    elif (hire or contract) and has_domain_loose and feats.budget_language:
+        # Freelance RFQs with budget + financial domain (AI distinguishes recruiter vs buyer later).
+        trigger = "hire_budget_domain"
+        score = 2.2
+    elif explicit_commercial and has_tech:
         trigger = "commercial_technical"
         score = 2.0
-    elif repair and (has_tech or has_domain):
+    elif repair and (has_tech or has_domain_cat):
         trigger = "repair_technical"
         score = 2.0
-    elif impl and (has_tech or has_domain):
+    elif impl and (has_tech or has_domain_cat):
         trigger = "implementation_technical"
         score = 2.0
+    elif soft_commercial and has_domain_cat and feats.budget_language:
+        trigger = "buyer_budget_domain"
+        score = 1.5
+    elif explicit_commercial and feats.budget_language and (has_domain_cat or has_tech):
+        trigger = "commercial_budget"
+        score = 1.5
 
     feats.trigger_type = trigger
     feats.trigger_score = score
