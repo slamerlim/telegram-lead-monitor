@@ -1,0 +1,89 @@
+Evidence 105: disc_v6 HIGH-tier bridge Cycle 5 (H1)
+generated_at=2026-09-25T18:19:08.685864+00:00 head=fe262ae
+runtime_sec=17.81 read_only=true wrote_candidates=false
+decision=VALIDATED_HIGH_STAYS_CRM recommendation=MEASUREMENT_ONLY_HOLD_PENDING_AUTH acceptance_pass=True
+
+=== 0. PARENT / LOCKS ===
+  parent=Evidence 104 READY_FOR_AUTH_ENABLE (H2 clean; flag OFF)
+  commercial_discovery_enabled=False
+  commercial_episode_shadow_enabled=False
+  version=disc_v6 code_default=disc_v6
+  NO flag flip / NO Option B ship / NO candidate writes / NO scoring loosen
+
+=== 1. STANDING DENOMINATOR = refined_frozen ===
+  pool_n=102 v6_eligible=16 contam=0.0%
+  LOW=10 HIGH=6 other=0
+
+=== 2. HIGH GATE QUANTIFICATION ===
+  analyzer requires tier==LOW
+  refined HIGH+eligible blocked solely by LOW tier: 6/6 (100.0%)
+  of those worker would skip (AI_CONFIRMED/blind): 6
+  of those would EPISODE_BUILT under Option B: 0
+  worker_block_breakdown={'existing_ai_confirmed': 4, 'blind_sample': 2}
+  FO probes: n=4 blocked_solely_by_low=4 all_ai_confirmed=True
+  legacy commercial∧domain: pool=1299 v6_elig=32 HIGH_elig=6 in_refined=6 outside=0 carve=6
+  HIGH id=22713 carve=True ai=True blind=False worker_skip=existing_ai_confirmed | 🌟 Freelance Opportunity: Crypto Trading Bot Developer 💰 Budget: $200 🤝
+  HIGH id=24048 carve=True ai=False blind=True worker_skip=blind_sample | 🌟 Freelance Opportunity: Need Developer to Fix Polymarket Trading Bot 
+  HIGH id=24091 carve=True ai=False blind=True worker_skip=blind_sample | 🌟 Freelance Opportunity: Need Developer to Fix Polymarket Trading Bot 
+  HIGH id=25400 carve=True ai=True blind=False worker_skip=existing_ai_confirmed | 🌟 Freelance Opportunity: Python Crypto Trading Bot Developer (GUI + Da
+  HIGH id=25570 carve=True ai=True blind=False worker_skip=existing_ai_confirmed | 🌟 Freelance Opportunity: Quick Fix Needed for Python Trading Bot 💰 Bud
+  HIGH id=25571 carve=True ai=True blind=False worker_skip=existing_ai_confirmed | 🌟 Freelance Opportunity: Quick Fix Needed for Python Trading Bot 💰 Bud
+  FO probes:
+    lead=1137 msg=25570 tier=HIGH carve=True skip=existing_ai_confirmed | 🌟 Freelance Opportunity: Quick Fix Needed for Python Trading
+    lead=1138 msg=25571 tier=HIGH carve=True skip=existing_ai_confirmed | 🌟 Freelance Opportunity: Quick Fix Needed for Python Trading
+    lead=1139 msg=22713 tier=HIGH carve=True skip=existing_ai_confirmed | 🌟 Freelance Opportunity: Crypto Trading Bot Developer 💰 Budg
+    lead=1140 msg=25400 tier=HIGH carve=True skip=existing_ai_confirmed | 🌟 Freelance Opportunity: Python Crypto Trading Bot Developer
+
+=== 3. OPTION B COUNTERFACTUAL (no writes) ===
+  predicate=LOW OR (HIGH AND fo_carve); high_cap=5/h
+  refined HIGH would_create=5/6 would_episode=0/6
+  FO probes would_create=4/4 would_episode=0/4
+  contam create_set=0.0% high_set=0.0%
+  B id=22713 create=True episode=False reasons=['would_create_pending'] worker=existing_ai_confirmed
+  B id=24048 create=True episode=False reasons=['would_create_pending'] worker=blind_sample
+  B id=24091 create=True episode=False reasons=['would_create_pending'] worker=blind_sample
+  B id=25400 create=True episode=False reasons=['would_create_pending'] worker=existing_ai_confirmed
+  B id=25570 create=True episode=False reasons=['would_create_pending'] worker=existing_ai_confirmed
+  B id=25571 create=False episode=False reasons=['high_carve_cap'] worker=None
+
+=== 4. BRIDGE OPTIONS ===
+  A) Document-only status quo: code=False contam=0.0% volΔ=0.0/h FO_cand=0/4 FO_ep=0/4
+     Preserves CRM ownership of HIGH; matches product separation.
+  B) Analyzer HIGH fo_carve bridge (strict caps): code=True contam=0.0% volΔ≈0.0357/h FO_cand=4/4 FO_ep=0/4
+     All refined HIGH survivors are AI_CONFIRMED or blind → worker skips; FO probes recover into PENDING candidates but 0 EPISODE_BUILT. Does not unlock usable discovery episodes for FO probes.
+  C) Separate CRM→discovery handoff: out_of_scope=True
+     Large scope; deferred. Not needed for LOW activation.
+  RECOMMENDED=A implement_now=False
+
+=== 5. VOLUME (empiric recent) ===
+  LOW elig=3/5000 → ~0.0179/h
+  HIGH carve=6/10 (elig=6) → ~0.0357/h
+  Option B extra ≈0.0357/h (cap 5/h)
+  live candidates flag OFF: 1h=0 24h=0 7d=60
+
+=== 6. REGRESSION ===
+  refined HIGH v4_elig=0 v6_elig=6
+  Option B does not change evaluate_discovery rules
+
+=== 7. RUNTIME VERIFY ===
+  health={'status': 'ok', 'postgres': 'ok', 'redis': 'ok'}
+  gates messages/true/false=94/0/94 ml=False ok=True
+
+=== 8. ISOLATION ===
+  human_labels=1524 AI_CONFIRMED=4 scores=133718 messages=8630149 disc_candidates=60
+  isolation_ok=True (expect 1524/4)
+
+=== 9. ACCEPTANCE / DECISION ===
+  acceptance={"standing_denominator": "refined_frozen", "refined_pool_n": 102, "refined_v6_eligible": 16, "refined_high_eligible": 6, "refined_low_eligible": 10, "blocked_solely_by_low_tier": 6, "blocked_solely_by_low_but_worker_skips": 6, "blocked_solely_by_low_would_episode_under_b": 0, "fo_probes_n": 4, "fo_probes_blocked_solely_by_low": 4, "fo_option_b_candidates": 4, "fo_option_b_episodes": 0, "legacy_high_eligible": 6, "legacy_high_in_refined": 6, "legacy_high_outside_refined": 0, "contam_refined_pct": 0.0, "contam_option_b_create_pct": 0.0, "contam_high_set_pct": 0.0, "option_recommended": "A", "implement_b": false, "flag_off": true, "shadow_off": true, "isolation_ok": true, "gates_94_0_94": true, "health_ok": true, "no_production_writes": true, "decision": "VALIDATED_HIGH_STAYS_CRM", "recommendation": "MEASUREMENT_ONLY_HOLD_PENDING_AUTH", "loop_blocked_on": "human_enable_commercial_discovery_enabled", "logic_bottleneck": false}
+  acceptance_pass=True
+  decision=VALIDATED_HIGH_STAYS_CRM recommendation=MEASUREMENT_ONLY_HOLD_PENDING_AUTH
+  rationale=H1 quantified: 6/6 refined HIGH survivors are discovery-eligible but enqueue-blocked solely by tier==LOW (6/6 would still be worker-skipped as AI_CONFIRMED/blind; 0 would reach EPISODE_BUILT). FO probes Option B: candidates 4/4, episodes 0/4. Contamination on Option B create set=0.0% (refined HIGH set 0.0%). Implementing B adds PENDING skip-noise without FO episode recovery — product-policy says HIGH stays CRM. Continuous loop blocked on human 'enable now' for LOW path (E104 READY_FOR_AUTH_ENABLE), not on a logic bottleneck.
+
+=== 10. NEXT ===
+  BLOCKED_ON_HUMAN_ENABLE — not a logic bottleneck. E104 already READY_FOR_AUTH_ENABLE for LOW path. H1 closed as product-policy: HIGH stays CRM.
+  if_enable: Flip COMMERCIAL_DISCOVERY_ENABLED with explicit 'enable now'; deploy analyzer + discovery worker; verify LOW candidate rate vs cap + isolation 1524/4. Do not ship Option B unless product explicitly wants HIGH dual-path (CRM + discovery) despite AI_CONFIRMED worker skips.
+
+=== 11. BUSINESS ===
+  NO OUTREACH / NO ML GO / FLAG REMAINS OFF / NO THRESHOLD LOOSEN / NO WRITES
+  HIGH stays CRM; continuous loop blocked on human enable (not H1 logic)
+
