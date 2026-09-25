@@ -1,0 +1,76 @@
+Evidence 101: disc_v6 post-DB remaining bottleneck (Cycle 1)
+generated_at=2026-09-25T17:55:39.367514+00:00 updated_at=2026-09-25T17:57:22.657441+00:00 head=c553f52
+runtime_sec=96.0 read_only=true code_change=false
+decision=MEASUREMENT_ONLY_STOP
+
+=== 0. POPULATION FROZEN ===
+  days=360 since=2025-09-30T17:54:03.414786+00:00
+  commercial_regex=(budget|fixed price|commission|need someone|looking for (a )?(developer|contractor|freelancer)|нужен разработчик|починить|Freelance Opportunity)
+  domain_regex=(trading bot|bybit|binance|okx|pybit|arbitrage|futures|strategy|торговый бот|Crypto Trading Bot)
+  pool_n=1299 scored=1299 unscored=0
+  (evidence_100 pool was 1300/1300; drift=1 from rolling window)
+  tiers LOW/MED/HIGH=1293/0/6
+  low_prefilter_shape_approx=207
+
+=== 1. BASELINES (Evidence 99/100 reconstructed) ===
+  E99: v4_elig=4 v6_elig=14 contam_v6=0% FO=4/4 SHIP_DEFAULT_V6 enabled=false
+  E100: backfill 1255 → pool 1300/1300; v6 any/LOW=32/26; v4 any/LOW=19/19
+  HEAD expected c553f52 actual=c553f52
+
+=== 2. FAIR COMPARE disc_v4 vs disc_v6 (same frozen pool) ===
+  disc_v4: eligible=19 LOW=19 contam=0.0% NO_PATH=617 VETO_job_agg=42
+  disc_v6: eligible=32 LOW=26 contam=0.0% NO_PATH=617 VETO_job_agg=29 carve=13
+  delta eligible v6-v4=13 newly=13 lost=0 carve_among_new=13
+  loss_family v4={'hard_veto': 663, 'semantic_miss': 617, 'survivor': 19}
+  loss_family v6={'hard_veto': 650, 'semantic_miss': 617, 'survivor': 32}
+
+=== 3. disc_v6 FIRST-LOSS ATTRIBUTION ===
+  first_loss={'NO_PATH_MATCH': 617, 'VETO_support_question': 311, 'HARD_EXCLUDE_EARLY': 242, 'VETO_corporate_employment': 35, 'RETRIEVED': 32, 'VETO_job_aggregator': 29, 'VETO_news_digest': 16, 'VETO_service_provider': 14, 'VETO_job_seeker': 2, 'VETO_generic_recruiter': 1}
+  quality(eligible)={'buyer_project': 32, 'recruiter': 3, 'fo_carve': 13}
+  duplicates={'eligible_n': 32, 'unique_preview80': 31, 'duplicate_preview_groups': 1, 'messages_in_dup_groups': 2}
+  eligible_buckets={'Direct buyer/RFQ candidate': 32}
+  eligible_directions={'BUYER': 16, 'RECRUITER': 16}
+  eligible_triggers={'v6_direct_project_domain': 10, 'v6_project_procurement': 7, 'v6_budget_deliverable': 13, 'v6_repair_domain': 2}
+
+=== 3b. NO_PATH INVENTORY (actionability) ===
+  NO_PATH n=617 buyerish_clean=11 (1.8%) non_buyerish=606
+  term_hits_top=[['commission', 220], ['budget', 35], ['need someone', 3], ['fixed price', 1], ['looking for', 1]]
+  communities_top=[['MEXC English (Official)', 161], ['Bybit English', 131], ['OKX English', 57], ['CoinEx English', 48], ['WEEX English Official', 24], ['Binance English', 21], ['Bitget English Official', 18], ['KuCoin Exchange', 16]]
+  SUPPORT buyerish_clean=8/311
+  HARD buyerish_clean=3/242
+
+=== 4. AI_CONFIRMED PROBES ===
+  lead=1137 msg=25570 tier=HIGH in_pool=True v4=VETO_job_aggregator v6_elig=True carve=True recovered=True
+  lead=1138 msg=25571 tier=HIGH in_pool=True v4=VETO_job_aggregator v6_elig=True carve=True recovered=True
+  lead=1139 msg=22713 tier=HIGH in_pool=True v4=VETO_job_aggregator v6_elig=True carve=True recovered=True
+  lead=1140 msg=25400 tier=HIGH in_pool=True v4=VETO_job_aggregator v6_elig=True carve=True recovered=True
+  FO discovery-eval recovery: 4/4
+
+=== 5. LARGEST REMAINING BOTTLENECK ===
+  id=pool_regex_noise_commission_strategy
+  Raw first-loss is dominated by NO_PATH_MATCH (617) and hard_veto family (650), but NO_PATH buyerish_clean is only 11/617 (1.8%). Term 'commission' alone hits 220 NO_PATH rows; top communities are exchange official chats. Survivors disc_v6=32 match Evidence 100 post-backfill; contamination 0%; FO probes 4/4. The measured remaining bottleneck is population-definition noise, not a disc_v6 path defect.
+
+=== 6. NEXT HYPOTHESIS ===
+  H1 (Cycle 2): Tightening the commercial∧domain audit/activation population — especially removing bare 'commission' matches without hire/developer/budget-deliverable context, and/or excluding EXCHANGE_OFFICIAL communities — will raise survivor rate without changing disc_v6 eligibility logic, and will expose whether the residual ~11 buyerish NO_PATH rows contain any true trading-bot RFQ false negatives.
+  acceptance={"metric": "refined_pool_survivor_rate_and_buyerish_nopath", "baseline": {"pool_n": 1299, "survivors_v6": 32, "survivor_rate_pct": 2.46, "buyerish_clean_nopath": 11, "contamination_pct": 0.0}, "targets": ["refined_pool_n drops while survivors_v6 stays >=32 (no true RFQ loss)", "survivor_rate_pct >= 10% on refined pool OR buyerish_clean_nopath inventory completed with FN verdict", "contamination_pct remains 0.0 on survivors"]}
+  regression=['FO probes 4/4 discovery-eval recovered', 'human_labels=1524 AI_CONFIRMED=4 unchanged', 'commercial_discovery_enabled stays false', 'no scoring.yaml threshold loosen', 'disc_v6 eligible on frozen legacy pool remains 32 (byte-compatible checkpoint)']
+
+=== 7. RUNTIME SNAPSHOT (Cycle 1 inspect) ===
+  health=ok gates=94/0/94 ml_training_enabled=false
+  commercial_discovery_enabled=false version=disc_v6
+  redis XPENDING: commercial_discovery=0 commercial_ai_review=0 messages=0 scan_requests=0
+  commercial_episode_shadow lag=120 pending=0 (shadow stream backlog, not discovery)
+  worker: commercial-discovery-worker idle (ENABLED=false)
+
+=== 8. ISOLATION / SETTINGS ===
+  human_labels=1524 AI_CONFIRMED=4 scores=133514 messages=8629945 disc_candidates=60
+  commercial_discovery_enabled=False
+  commercial_discovery_version=disc_v6
+  DISCOVERY_VERSION=disc_v6
+
+=== 9. BUSINESS ===
+  NO OUTREACH / NO ML GO / FLAG REMAINS OFF / NO THRESHOLD LOOSEN
+  rationale: Cycle 1 measurement: disc_v6 on frozen pool = 32 eligible (LOW=26), contam 0%, +13 vs v4 all FO carve; FO probes 4/4. Dominant raw losses are regex noise (commission/strategy/futures in exchange chat), not a clear smallest disc_v6 code fix. Stop for Cycle 2 population-refinement hypothesis.
+
+JSON: docs/audit/evidence/101-disc-v6-post-db-remaining-bottleneck.json
+NO_PATH inventory JSON: docs/audit/evidence/101-disc-v6-post-db-nopath-inventory.json

@@ -1,0 +1,518 @@
+{
+  "NO_PATH_MATCH": {
+    "n": 617,
+    "buyerish_clean": 11,
+    "buyerish_with_noise_hint": 0,
+    "non_buyerish": 606,
+    "buyerish_clean_pct": 1.8,
+    "term_hits_top": [
+      [
+        "commission",
+        220
+      ],
+      [
+        "budget",
+        35
+      ],
+      [
+        "need someone",
+        3
+      ],
+      [
+        "fixed price",
+        1
+      ],
+      [
+        "looking for",
+        1
+      ]
+    ],
+    "buyerish_clean_samples": [
+      {
+        "id": 1311568,
+        "community": "OKX English",
+        "tier": "LOW",
+        "buyerish": true,
+        "noise_hint": false,
+        "direction": "UNKNOWN",
+        "domain": [],
+        "commercial": [],
+        "budget": false,
+        "direct": false,
+        "scope": false,
+        "preview": "Hi, I need someone based in Europe to open an OKX account for me; the price is good."
+      },
+      {
+        "id": 424457,
+        "community": "Binance English",
+        "tier": "LOW",
+        "buyerish": true,
+        "noise_hint": false,
+        "direction": "UNKNOWN",
+        "domain": [],
+        "commercial": [],
+        "budget": false,
+        "direct": false,
+        "scope": false,
+        "preview": "Hello ineed someone help who doesnt have a binance account ? For completing a task in binance turns 9 landmarks ?"
+      },
+      {
+        "id": 425184,
+        "community": "Binance English",
+        "tier": "LOW",
+        "buyerish": true,
+        "noise_hint": false,
+        "direction": "UNKNOWN",
+        "domain": [],
+        "commercial": [],
+        "budget": false,
+        "direct": false,
+        "scope": false,
+        "preview": "But I would need someone from binance"
+      },
+      {
+        "id": 922511,
+        "community": "Bybit English",
+        "tier": "LOW",
+        "buyerish": true,
+        "noise_hint": false,
+        "direction": "UNKNOWN",
+        "domain": [],
+        "commercial": [],
+        "budget": true,
+        "direct": false,
+        "scope": false,
+        "preview": "### Trading Goals for Newbies in the Crypto Space: Focus on BTG As a newcomer to cryptocurrency trading, particularly wi"
+      },
+      {
+        "id": 389826,
+        "community": "MQL5 Algo Trading",
+        "tier": "LOW",
+        "buyerish": true,
+        "noise_hint": false,
+        "direction": "UNKNOWN",
+        "domain": [],
+        "commercial": [],
+        "budget": false,
+        "direct": false,
+        "scope": false,
+        "preview": "This article replaces gap-focused trailing logic (Skip-List + Hopfield) with a two-stage trailing stop built for smoothe"
+      },
+      {
+        "id": 37727,
+        "community": "Bybit API Discussion",
+        "tier": "LOW",
+        "buyerish": true,
+        "noise_hint": false,
+        "direction": "BUYER",
+        "domain": [],
+        "commercial": [],
+        "budget": false,
+        "direct": false,
+        "scope": false,
+        "preview": "Hi everyone, I'm an active P2P merchant and I'm experiencing a 'Silent Drop' issue with the P2P API. When I call POST /v"
+      },
+      {
+        "id": 39270,
+        "community": "Bybit API Discussion",
+        "tier": "LOW",
+        "buyerish": true,
+        "noise_hint": false,
+        "direction": "BUYER",
+        "domain": [],
+        "commercial": [
+          "\\b(?:need|looking for|seeking|want|hire|hiring|commission|purchase|buy|quote|budget|proposal)\\b.{0,180}\\b(?:developer|engineer|programmer|freelancer|contractor|bot|trading|strategy|quant|ml|ai|system)\\b"
+        ],
+        "budget": false,
+        "direct": false,
+        "scope": false,
+        "preview": "The fixed price set is lower than 53243.241 or higher than 98880.306. (ErrCode: 912120022) (ErrTime: 18:37:31). Thank yo"
+      },
+      {
+        "id": 1081595,
+        "community": "Bybit English",
+        "tier": "LOW",
+        "buyerish": true,
+        "noise_hint": false,
+        "direction": "BUYER",
+        "domain": [
+          "strategy_automation"
+        ],
+        "commercial": [
+          "\\b(?:need|looking for|seeking|want|hire|hiring|commission|purchase|buy|quote|budget|proposal)\\b.{0,180}\\b(?:developer|engineer|programmer|freelancer|contractor|bot|trading|strategy|quant|ml|ai|system)\\b"
+        ],
+        "budget": true,
+        "direct": false,
+        "scope": false,
+        "preview": "### Key Differences Between Arithmetic Grid and Geometric Grid Strategies in Automated Trading Bots Automated trading bo"
+      },
+      {
+        "id": 1126300,
+        "community": "Bybit English",
+        "tier": "LOW",
+        "buyerish": true,
+        "noise_hint": false,
+        "direction": "BUYER",
+        "domain": [],
+        "commercial": [
+          "\\b(?:need|looking for|seeking|want|hire|hiring|commission|purchase|buy|quote|budget|proposal)\\b.{0,180}\\b(?:developer|engineer|programmer|freelancer|contractor|bot|trading|strategy|quant|ml|ai|system)\\b"
+        ],
+        "budget": true,
+        "direct": false,
+        "scope": false,
+        "preview": "### Money Management in Trading: Importance and Guidelines #### Importance of Money Management Money management is a cri"
+      },
+      {
+        "id": 1132711,
+        "community": "Bybit English",
+        "tier": "LOW",
+        "buyerish": true,
+        "noise_hint": false,
+        "direction": "BUYER",
+        "domain": [],
+        "commercial": [],
+        "budget": false,
+        "direct": false,
+        "scope": false,
+        "preview": "An option contract in crypto is basically an agreement that gives you the right, but not the obligation, to buy or sell "
+      },
+      {
+        "id": 1196688,
+        "community": "Bybit English",
+        "tier": "LOW",
+        "buyerish": true,
+        "noise_hint": false,
+        "direction": "UNKNOWN",
+        "domain": [],
+        "commercial": [],
+        "budget": true,
+        "direct": false,
+        "scope": false,
+        "preview": "### The Role of Time-Based Charting in Filtering Noise During High-Volatility Sessions In the context of cryptocurrency "
+      }
+    ],
+    "communities_top": [
+      [
+        "MEXC English (Official)",
+        161
+      ],
+      [
+        "Bybit English",
+        131
+      ],
+      [
+        "OKX English",
+        57
+      ],
+      [
+        "CoinEx English",
+        48
+      ],
+      [
+        "WEEX English Official",
+        24
+      ],
+      [
+        "Binance English",
+        21
+      ],
+      [
+        "Bitget English Official",
+        18
+      ],
+      [
+        "KuCoin Exchange",
+        16
+      ]
+    ]
+  },
+  "VETO_support_question": {
+    "n": 311,
+    "buyerish_clean": 8,
+    "buyerish_with_noise_hint": 0,
+    "non_buyerish": 303,
+    "buyerish_clean_pct": 2.6,
+    "term_hits_top": [
+      [
+        "commission",
+        87
+      ],
+      [
+        "budget",
+        11
+      ],
+      [
+        "looking for",
+        8
+      ],
+      [
+        "need someone",
+        2
+      ]
+    ],
+    "buyerish_clean_samples": [
+      {
+        "id": 650276,
+        "community": "Bybit English",
+        "tier": "LOW",
+        "buyerish": true,
+        "noise_hint": false,
+        "direction": "BUYER",
+        "domain": [],
+        "commercial": [],
+        "budget": false,
+        "direct": true,
+        "scope": true,
+        "preview": "No one has asked me to provide any documents. I have contacted the Compliance team by email, contacted support through t"
+      },
+      {
+        "id": 672082,
+        "community": "Bybit English",
+        "tier": "LOW",
+        "buyerish": true,
+        "noise_hint": false,
+        "direction": "BUYER",
+        "domain": [],
+        "commercial": [],
+        "budget": false,
+        "direct": true,
+        "scope": true,
+        "preview": "Hello everyone, I have an issue, and I need someone to explain me what to do in such case. Recently, I’ve tried to trans"
+      },
+      {
+        "id": 261402,
+        "community": "JobStash.xyz - Crypto Native, Web3 and AI Jobs",
+        "tier": "LOW",
+        "buyerish": true,
+        "noise_hint": false,
+        "direction": "EMPLOYER",
+        "domain": [],
+        "commercial": [
+          "\\b(?:need|looking for|seeking|want|hire|hiring|commission|purchase|buy|quote|budget|proposal)\\b.{0,180}\\b(?:developer|engineer|programmer|freelancer|contractor|bot|trading|strategy|quant|ml|ai|system)\\b"
+        ],
+        "budget": false,
+        "direct": true,
+        "scope": false,
+        "preview": "SatoshiLabs is hiring a hybrid Developer Platform & Ecosystem Product Owner – Firmware Modularization in Europe SatoshiL"
+      },
+      {
+        "id": 529437,
+        "community": "Binance English",
+        "tier": "LOW",
+        "buyerish": true,
+        "noise_hint": false,
+        "direction": "UNKNOWN",
+        "domain": [],
+        "commercial": [],
+        "budget": false,
+        "direct": false,
+        "scope": false,
+        "preview": "I need someone from the Binance support team."
+      },
+      {
+        "id": 551056,
+        "community": "Binance English",
+        "tier": "LOW",
+        "buyerish": true,
+        "noise_hint": false,
+        "direction": "UNKNOWN",
+        "domain": [],
+        "commercial": [],
+        "budget": false,
+        "direct": false,
+        "scope": false,
+        "preview": "Binance does not support normal presales like meme coins; instead, its main early-investment feature is Binance Launchpa"
+      },
+      {
+        "id": 1074550,
+        "community": "Bybit English",
+        "tier": "LOW",
+        "buyerish": true,
+        "noise_hint": false,
+        "direction": "BUYER",
+        "domain": [],
+        "commercial": [
+          "\\b(?:need|looking for|seeking|want|hire|hiring|commission|purchase|buy|quote|budget|proposal)\\b.{0,180}\\b(?:developer|engineer|programmer|freelancer|contractor|bot|trading|strategy|quant|ml|ai|system)\\b"
+        ],
+        "budget": true,
+        "direct": false,
+        "scope": false,
+        "preview": "### Beginner Trading Strategy for BTG Objective: To provide a clear and concise trading strategy for beginners focusing "
+      },
+      {
+        "id": 5518870,
+        "community": "CoinEx English",
+        "tier": "LOW",
+        "buyerish": true,
+        "noise_hint": false,
+        "direction": "BUYER",
+        "domain": [
+          "solana_dex"
+        ],
+        "commercial": [
+          "\\b(?:need|looking for|seeking|want|hire|hiring|commission|purchase|buy|quote|budget|proposal)\\b.{0,180}\\b(?:developer|engineer|programmer|freelancer|contractor|bot|trading|strategy|quant|ml|ai|system)\\b"
+        ],
+        "budget": true,
+        "direct": false,
+        "scope": false,
+        "preview": "On Jan. 8 (ET), spot Bitcoin ETFs recorded net outflows of $399 million, spot Ethereum ETFs saw net outflows of $159 mil"
+      },
+      {
+        "id": 1124428,
+        "community": "Bybit English",
+        "tier": "LOW",
+        "buyerish": true,
+        "noise_hint": false,
+        "direction": "BUYER",
+        "domain": [
+          "solana_dex"
+        ],
+        "commercial": [
+          "\\b(?:need|looking for|seeking|want|hire|hiring|commission|purchase|buy|quote|budget|proposal)\\b.{0,180}\\b(?:developer|engineer|programmer|freelancer|contractor|bot|trading|strategy|quant|ml|ai|system)\\b"
+        ],
+        "budget": true,
+        "direct": false,
+        "scope": false,
+        "preview": "On Jan. 8 (ET), spot Bitcoin ETFs recorded net outflows of $399 million, spot Ethereum ETFs saw net outflows of $159 mil"
+      }
+    ],
+    "communities_top": [
+      [
+        "OKX English",
+        115
+      ],
+      [
+        "MEXC English (Official)",
+        44
+      ],
+      [
+        "Bybit English",
+        38
+      ],
+      [
+        "CoinEx English",
+        17
+      ],
+      [
+        "WEEX English Official",
+        12
+      ],
+      [
+        "BingX - Empowering Traders",
+        10
+      ],
+      [
+        "Binance English",
+        9
+      ],
+      [
+        "KuCoin Exchange",
+        8
+      ]
+    ]
+  },
+  "HARD_EXCLUDE_EARLY": {
+    "n": 242,
+    "buyerish_clean": 3,
+    "buyerish_with_noise_hint": 1,
+    "non_buyerish": 238,
+    "buyerish_clean_pct": 1.2,
+    "term_hits_top": [
+      [
+        "commission",
+        175
+      ],
+      [
+        "looking for",
+        2
+      ],
+      [
+        "budget",
+        1
+      ]
+    ],
+    "buyerish_clean_samples": [
+      {
+        "id": 4994585,
+        "community": "MEXC English (Official)",
+        "tier": "LOW",
+        "buyerish": true,
+        "noise_hint": false,
+        "direction": "UNKNOWN",
+        "domain": [],
+        "commercial": [],
+        "budget": false,
+        "direct": false,
+        "scope": false,
+        "preview": "Topic 1. From my perspective, the most impactful MEXC milestone was its rapid expansion into global markets combined wit"
+      },
+      {
+        "id": 3258726,
+        "community": "KuCoin Exchange 2nd Group",
+        "tier": "LOW",
+        "buyerish": true,
+        "noise_hint": false,
+        "direction": "EMPLOYER",
+        "domain": [],
+        "commercial": [],
+        "budget": true,
+        "direct": false,
+        "scope": false,
+        "preview": "We’re building the first wave of Streamers for KuCoin Futures LIVE. Early onboarding is now open. 🎁 4,000 USDT reward po"
+      },
+      {
+        "id": 2672808,
+        "community": "KuCoin Exchange",
+        "tier": "LOW",
+        "buyerish": true,
+        "noise_hint": false,
+        "direction": "EMPLOYER",
+        "domain": [],
+        "commercial": [],
+        "budget": true,
+        "direct": false,
+        "scope": false,
+        "preview": "We’re building the first wave of Streamers for KuCoin Futures LIVE. Early onboarding is now open. 🎁 4,000 USDT reward po"
+      }
+    ],
+    "communities_top": [
+      [
+        "WEEX English Official",
+        133
+      ],
+      [
+        "WEEX English 2nd Group",
+        49
+      ],
+      [
+        "MEXC English (Official)",
+        23
+      ],
+      [
+        "Bybit English",
+        7
+      ],
+      [
+        "Web3 Crypto Jobs - Remote",
+        6
+      ],
+      [
+        "KuCoin Exchange 2nd Group",
+        4
+      ],
+      [
+        "KuCoin Exchange",
+        4
+      ],
+      [
+        "KCEX English",
+        3
+      ]
+    ]
+  },
+  "interpretation": {
+    "largest_actionable_bottleneck": "pool_regex_noise_then_hard_veto",
+    "recoverable_candidate_n": 11,
+    "note": "NO_PATH=617 but buyerish_clean only 11 (1.8%); dominant mass is commercial∧domain regex false positives (commission/strategy/futures in non-RFQ text) + correct vetoes. Next: tighten pool definition OR inventory buyerish_clean NO_PATH templates before any disc_v6 path change."
+  }
+}

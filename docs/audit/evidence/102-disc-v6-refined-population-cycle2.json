@@ -1,0 +1,688 @@
+{
+  "generated_at": "2026-09-25T18:04:06.617279+00:00",
+  "head": "c553f52",
+  "runtime_sec": 28.39,
+  "read_only": true,
+  "code_change_this_cycle": false,
+  "code_change_justified": false,
+  "decision": "MEASUREMENT_ONLY_STOP",
+  "decision_rationale": "FN inventory of E101 buyerish_clean NO_PATH: 0/11 true buyer/project FNs (all 11 are support/education/account-help/exchange terminology). Refined frozen pool: n=102 v6_eligible=16 rate=15.69% (legacy 32/1299 =2.46%). Contam refined=0.0%; FO 4/4; flag OFF. Measurement clarified; no disc_v6 logic change.",
+  "cycle": 2,
+  "parent_evidence": "101",
+  "settings": {
+    "commercial_discovery_enabled": false,
+    "commercial_discovery_version": "disc_v6",
+    "code_default_DISCOVERY_VERSION": "disc_v6"
+  },
+  "population_definitions": {
+    "legacy_checkpoint": {
+      "name": "commercial_and_domain_360d_evidence_96_97_100_101",
+      "since": "2025-09-30T17:54:03.414786+00:00",
+      "commercial_regex": "(budget|fixed price|commission|need someone|looking for (a )?(developer|contractor|freelancer)|нужен разработчик|починить|Freelance Opportunity)",
+      "domain_regex": "(trading bot|bybit|binance|okx|pybit|arbitrage|futures|strategy|торговый бот|Crypto Trading Bot)",
+      "pool_n": 1299,
+      "expected_v6_eligible": 32,
+      "observed_v6_eligible": 32,
+      "checkpoint_ok": true
+    },
+    "refined_frozen": {
+      "name": "commercial_refined_ex_exchange_360d_evidence_102",
+      "since": "2025-09-30T17:54:03.414786+00:00",
+      "commercial_regex": "(budget|fixed price|need someone|looking for (a )?(developer|contractor|freelancer)|нужен разработчик|починить|Freelance Opportunity|commission.{0,100}(?:hire|hiring|developer|freelancer|contractor|budget|\\$)|(?:hire|hiring|developer|freelancer|contractor|budget).{0,100}commission)",
+      "domain_regex": "(trading bot|bybit|binance|okx|pybit|arbitrage|futures|strategy|торговый бот|Crypto Trading Bot)",
+      "excludes": [
+        "bare 'commission' without hire/developer/budget/$ proximity",
+        "community_profiles class EXCHANGE_OFFICIAL",
+        "unmapped communities whose name/username looks like exchange official (binance/bybit/okx/mexc/.../official/exchange) and not job-board"
+      ],
+      "pool_n": 102,
+      "note": "Audit/activation population only — does not change runtime discovery SQL."
+    }
+  },
+  "variants": {
+    "legacy_e101": {
+      "pool_n": 1299,
+      "disc_v4_eligible": 19,
+      "disc_v4_eligible_LOW": 19,
+      "disc_v4_contam_pct": 0.0,
+      "disc_v6_eligible": 32,
+      "disc_v6_eligible_LOW": 26,
+      "disc_v6_contam_pct": 0.0,
+      "disc_v6_carve": 13,
+      "disc_v6_no_path": 617,
+      "survivor_rate_v6_pct": 2.46,
+      "delta_v6_minus_v4": 13,
+      "legacy_v6_survivors_retained": 32,
+      "legacy_v6_survivors_dropped_n": 0,
+      "first_loss_v6": {
+        "NO_PATH_MATCH": 617,
+        "VETO_support_question": 311,
+        "HARD_EXCLUDE_EARLY": 242,
+        "VETO_corporate_employment": 35,
+        "RETRIEVED": 32,
+        "VETO_job_aggregator": 29,
+        "VETO_news_digest": 16,
+        "VETO_service_provider": 14,
+        "VETO_job_seeker": 2,
+        "VETO_generic_recruiter": 1
+      },
+      "eligible_triggers_v6": {
+        "v6_direct_project_domain": 10,
+        "v6_project_procurement": 7,
+        "v6_budget_deliverable": 13,
+        "v6_repair_domain": 2
+      },
+      "eligible_directions_v6": {
+        "BUYER": 16,
+        "RECRUITER": 16
+      }
+    },
+    "drop_bare_commission": {
+      "pool_n": 277,
+      "disc_v4_eligible": 13,
+      "disc_v4_eligible_LOW": 13,
+      "disc_v4_contam_pct": 0.0,
+      "disc_v6_eligible": 26,
+      "disc_v6_eligible_LOW": 20,
+      "disc_v6_contam_pct": 0.0,
+      "disc_v6_carve": 13,
+      "disc_v6_no_path": 109,
+      "survivor_rate_v6_pct": 9.39,
+      "delta_v6_minus_v4": 13,
+      "legacy_v6_survivors_retained": 26,
+      "legacy_v6_survivors_dropped_n": 6,
+      "first_loss_v6": {
+        "NO_PATH_MATCH": 109,
+        "VETO_support_question": 63,
+        "VETO_job_aggregator": 26,
+        "RETRIEVED": 26,
+        "VETO_corporate_employment": 25,
+        "VETO_news_digest": 12,
+        "HARD_EXCLUDE_EARLY": 9,
+        "VETO_service_provider": 4,
+        "VETO_job_seeker": 2,
+        "VETO_generic_recruiter": 1
+      },
+      "eligible_triggers_v6": {
+        "v6_direct_project_domain": 9,
+        "v6_budget_deliverable": 13,
+        "v6_project_procurement": 2,
+        "v6_repair_domain": 2
+      },
+      "eligible_directions_v6": {
+        "BUYER": 10,
+        "RECRUITER": 16
+      }
+    },
+    "exclude_exchange_official": {
+      "pool_n": 171,
+      "disc_v4_eligible": 3,
+      "disc_v4_eligible_LOW": 3,
+      "disc_v4_contam_pct": 0.0,
+      "disc_v6_eligible": 16,
+      "disc_v6_eligible_LOW": 10,
+      "disc_v6_contam_pct": 0.0,
+      "disc_v6_carve": 13,
+      "disc_v6_no_path": 37,
+      "survivor_rate_v6_pct": 9.36,
+      "delta_v6_minus_v4": 13,
+      "legacy_v6_survivors_retained": 16,
+      "legacy_v6_survivors_dropped_n": 16,
+      "first_loss_v6": {
+        "NO_PATH_MATCH": 37,
+        "VETO_support_question": 33,
+        "VETO_corporate_employment": 31,
+        "VETO_job_aggregator": 29,
+        "RETRIEVED": 16,
+        "VETO_service_provider": 12,
+        "HARD_EXCLUDE_EARLY": 11,
+        "VETO_job_seeker": 2
+      },
+      "eligible_triggers_v6": {
+        "v6_budget_deliverable": 13,
+        "v6_repair_domain": 2,
+        "v6_project_procurement": 1
+      },
+      "eligible_directions_v6": {
+        "RECRUITER": 16
+      }
+    },
+    "refined_frozen": {
+      "pool_n": 102,
+      "disc_v4_eligible": 3,
+      "disc_v4_eligible_LOW": 3,
+      "disc_v4_contam_pct": 0.0,
+      "disc_v6_eligible": 16,
+      "disc_v6_eligible_LOW": 10,
+      "disc_v6_contam_pct": 0.0,
+      "disc_v6_carve": 13,
+      "disc_v6_no_path": 12,
+      "survivor_rate_v6_pct": 15.69,
+      "delta_v6_minus_v4": 13,
+      "legacy_v6_survivors_retained": 16,
+      "legacy_v6_survivors_dropped_n": 16,
+      "first_loss_v6": {
+        "VETO_job_aggregator": 26,
+        "VETO_corporate_employment": 25,
+        "RETRIEVED": 16,
+        "VETO_support_question": 15,
+        "NO_PATH_MATCH": 12,
+        "VETO_service_provider": 4,
+        "VETO_job_seeker": 2,
+        "HARD_EXCLUDE_EARLY": 2
+      },
+      "eligible_triggers_v6": {
+        "v6_budget_deliverable": 13,
+        "v6_repair_domain": 2,
+        "v6_project_procurement": 1
+      },
+      "eligible_directions_v6": {
+        "RECRUITER": 16
+      }
+    }
+  },
+  "fn_inventory": {
+    "source": "Evidence 101 buyerish_clean NO_PATH samples (n=11)",
+    "n": 11,
+    "true_buyer_project_fn": 0,
+    "verdicts_summary": {
+      "NOT_FN_ACCOUNT_HELP": 2,
+      "NOT_FN_OTHER_NOISE": 2,
+      "NOT_FN_EDUCATIONAL": 5,
+      "NOT_FN_SUPPORT_OR_API": 1,
+      "NOT_FN_EXCHANGE_FIXED_PRICE": 1
+    },
+    "verdicts": [
+      {
+        "fn_label": "NOT_FN_ACCOUNT_HELP",
+        "is_true_buyer_project_fn": false,
+        "reason": "Account opening / task help, not trading-bot RFQ.",
+        "preview": "Hi, I need someone based in Europe to open an OKX account for me; the price is good.",
+        "community": "OKX English",
+        "message_id": 1311568,
+        "community_username": "OKXOfficial_English",
+        "community_class": "OTHER",
+        "is_exchange": true,
+        "direction": "UNKNOWN",
+        "domain": [],
+        "budget": false,
+        "direct": false,
+        "scope": false,
+        "commercial_patterns": false,
+        "first_loss_v6": "NO_PATH_MATCH",
+        "full_text_chars": 84
+      },
+      {
+        "fn_label": "NOT_FN_ACCOUNT_HELP",
+        "is_true_buyer_project_fn": false,
+        "reason": "Account opening / task help, not trading-bot RFQ.",
+        "preview": "Hello ineed someone help who doesnt have a binance account ? For completing a task in binance turns 9 landmarks ?",
+        "community": "Binance English",
+        "message_id": 424457,
+        "community_username": "binanceexchange",
+        "community_class": "EXCHANGE_OFFICIAL",
+        "is_exchange": true,
+        "direction": "UNKNOWN",
+        "domain": [],
+        "budget": false,
+        "direct": false,
+        "scope": false,
+        "commercial_patterns": false,
+        "first_loss_v6": "NO_PATH_MATCH",
+        "full_text_chars": 113
+      },
+      {
+        "fn_label": "NOT_FN_OTHER_NOISE",
+        "is_true_buyer_project_fn": false,
+        "reason": "Buyerish-regex collision without trading-bot project intent.",
+        "preview": "But I would need someone from binance",
+        "community": "Binance English",
+        "message_id": 425184,
+        "community_username": "binanceexchange",
+        "community_class": "EXCHANGE_OFFICIAL",
+        "is_exchange": true,
+        "direction": "UNKNOWN",
+        "domain": [],
+        "budget": false,
+        "direct": false,
+        "scope": false,
+        "commercial_patterns": false,
+        "first_loss_v6": "NO_PATH_MATCH",
+        "full_text_chars": 37
+      },
+      {
+        "fn_label": "NOT_FN_EDUCATIONAL",
+        "is_true_buyer_project_fn": false,
+        "reason": "Educational / digest content with commercial∧domain regex collision.",
+        "preview": "### Trading Goals for Newbies in the Crypto Space: Focus on BTG As a newcomer to cryptocurrency trading, particularly with a focus on Bitcoin Gold (BTG), it's essential to establish clear and achievable trading goals. He",
+        "community": "Bybit English",
+        "message_id": 922511,
+        "community_username": "BybitEnglish",
+        "community_class": "EXCHANGE_OFFICIAL",
+        "is_exchange": true,
+        "direction": "UNKNOWN",
+        "domain": [],
+        "budget": true,
+        "direct": false,
+        "scope": false,
+        "commercial_patterns": false,
+        "first_loss_v6": "NO_PATH_MATCH",
+        "full_text_chars": 2839
+      },
+      {
+        "fn_label": "NOT_FN_EDUCATIONAL",
+        "is_true_buyer_project_fn": false,
+        "reason": "Educational / digest content with commercial∧domain regex collision.",
+        "preview": "This article replaces gap-focused trailing logic (Skip-List + Hopfield) with a two-stage trailing stop built for smoother, continuous trends: Reservoir Sampling as a memory-fixed price “engine”, plus an OLS Linear Regres",
+        "community": "MQL5 Algo Trading",
+        "message_id": 389826,
+        "community_username": "mql5dev",
+        "community_class": "OTHER",
+        "is_exchange": false,
+        "direction": "UNKNOWN",
+        "domain": [],
+        "budget": false,
+        "direct": false,
+        "scope": false,
+        "commercial_patterns": false,
+        "first_loss_v6": "NO_PATH_MATCH",
+        "full_text_chars": 895
+      },
+      {
+        "fn_label": "NOT_FN_SUPPORT_OR_API",
+        "is_true_buyer_project_fn": false,
+        "reason": "Support / API troubleshooting, not a project RFQ.",
+        "preview": "Hi everyone, I'm an active P2P merchant and I'm experiencing a 'Silent Drop' issue with the P2P API. When I call POST /v5/p2p/item/update to update my ad price (Fixed Price / priceType: 0), the API responds with ret_code",
+        "community": "Bybit API Discussion",
+        "message_id": 37727,
+        "community_username": "BybitAPI",
+        "community_class": "EXCHANGE_OFFICIAL",
+        "is_exchange": true,
+        "direction": "BUYER",
+        "domain": [],
+        "budget": false,
+        "direct": false,
+        "scope": false,
+        "commercial_patterns": false,
+        "first_loss_v6": "NO_PATH_MATCH",
+        "full_text_chars": 749
+      },
+      {
+        "fn_label": "NOT_FN_EXCHANGE_FIXED_PRICE",
+        "is_true_buyer_project_fn": false,
+        "reason": "'fixed price' is exchange/P2P order terminology, not RFQ budget.",
+        "preview": "The fixed price set is lower than 53243.241 or higher than 98880.306. (ErrCode: 912120022) (ErrTime: 18:37:31). Thank you i was able to update the ads, my problem i want to get API where this price 98880.306 is coming...",
+        "community": "Bybit API Discussion",
+        "message_id": 39270,
+        "community_username": "BybitAPI",
+        "community_class": "EXCHANGE_OFFICIAL",
+        "is_exchange": true,
+        "direction": "BUYER",
+        "domain": [],
+        "budget": false,
+        "direct": false,
+        "scope": false,
+        "commercial_patterns": true,
+        "first_loss_v6": "NO_PATH_MATCH",
+        "full_text_chars": 316
+      },
+      {
+        "fn_label": "NOT_FN_EDUCATIONAL",
+        "is_true_buyer_project_fn": false,
+        "reason": "Educational / digest content with commercial∧domain regex collision.",
+        "preview": "### Key Differences Between Arithmetic Grid and Geometric Grid Strategies in Automated Trading Bots Automated trading bots utilize various strategies to capitalize on market movements. Two common strategies are the arith",
+        "community": "Bybit English",
+        "message_id": 1081595,
+        "community_username": "BybitEnglish",
+        "community_class": "EXCHANGE_OFFICIAL",
+        "is_exchange": true,
+        "direction": "BUYER",
+        "domain": [
+          "strategy_automation"
+        ],
+        "budget": true,
+        "direct": false,
+        "scope": false,
+        "commercial_patterns": true,
+        "first_loss_v6": "NO_PATH_MATCH",
+        "full_text_chars": 3374
+      },
+      {
+        "fn_label": "NOT_FN_EDUCATIONAL",
+        "is_true_buyer_project_fn": false,
+        "reason": "Educational / digest content with commercial∧domain regex collision.",
+        "preview": "### Money Management in Trading: Importance and Guidelines #### Importance of Money Management Money management is a critical aspect of trading, particularly in the volatile cryptocurrency market. Effective money managem",
+        "community": "Bybit English",
+        "message_id": 1126300,
+        "community_username": "BybitEnglish",
+        "community_class": "EXCHANGE_OFFICIAL",
+        "is_exchange": true,
+        "direction": "BUYER",
+        "domain": [],
+        "budget": true,
+        "direct": false,
+        "scope": false,
+        "commercial_patterns": true,
+        "first_loss_v6": "NO_PATH_MATCH",
+        "full_text_chars": 3099
+      },
+      {
+        "fn_label": "NOT_FN_OTHER_NOISE",
+        "is_true_buyer_project_fn": false,
+        "reason": "Buyerish-regex collision without trading-bot project intent.",
+        "preview": "An option contract in crypto is basically an agreement that gives you the right, but not the obligation, to buy or sell a cryptocurrency at a fixed price within a specific time period. You pay a premium for this right. I",
+        "community": "Bybit English",
+        "message_id": 1132711,
+        "community_username": "BybitEnglish",
+        "community_class": "EXCHANGE_OFFICIAL",
+        "is_exchange": true,
+        "direction": "BUYER",
+        "domain": [],
+        "budget": false,
+        "direct": false,
+        "scope": false,
+        "commercial_patterns": false,
+        "first_loss_v6": "NO_PATH_MATCH",
+        "full_text_chars": 534
+      },
+      {
+        "fn_label": "NOT_FN_EDUCATIONAL",
+        "is_true_buyer_project_fn": false,
+        "reason": "Educational / digest content with commercial∧domain regex collision.",
+        "preview": "### The Role of Time-Based Charting in Filtering Noise During High-Volatility Sessions In the context of cryptocurrency trading, particularly for tokens like BTG (Bitcoin Gold), time-based charting techniques such as Hei",
+        "community": "Bybit English",
+        "message_id": 1196688,
+        "community_username": "BybitEnglish",
+        "community_class": "EXCHANGE_OFFICIAL",
+        "is_exchange": true,
+        "direction": "UNKNOWN",
+        "domain": [],
+        "budget": true,
+        "direct": false,
+        "scope": false,
+        "commercial_patterns": false,
+        "first_loss_v6": "NO_PATH_MATCH",
+        "full_text_chars": 3381
+      }
+    ]
+  },
+  "dropped_legacy_survivors_under_refined": {
+    "n": 16,
+    "by_qualitative": {
+      "exchange_noise_survivor": 16
+    },
+    "samples": [
+      {
+        "message_id": 392304,
+        "community": "Binance English",
+        "is_exchange": true,
+        "fails_refined_commercial": false,
+        "trigger": "v6_direct_project_domain",
+        "carve": false,
+        "direction": "BUYER",
+        "qualitative": "exchange_noise_survivor",
+        "preview": "I need someone to teach me how to make money on binance"
+      },
+      {
+        "message_id": 4765361,
+        "community": "MEXC English (Official)",
+        "is_exchange": true,
+        "fails_refined_commercial": true,
+        "trigger": "v6_project_procurement",
+        "carve": false,
+        "direction": "BUYER",
+        "qualitative": "exchange_noise_survivor",
+        "preview": "Fee wall used to be real for me every trade I closed a chunk was already gone before I even saw green. Started trading stocks on MEXC and it"
+      },
+      {
+        "message_id": 4768282,
+        "community": "MEXC English (Official)",
+        "is_exchange": true,
+        "fails_refined_commercial": true,
+        "trigger": "v6_project_procurement",
+        "carve": false,
+        "direction": "BUYER",
+        "qualitative": "exchange_noise_survivor",
+        "preview": "The best way to break the Fee Wall is to remove the wall from the start. With zero-commission stock trading on MEXC, I can focus on my strat"
+      },
+      {
+        "message_id": 678746,
+        "community": "Bybit English",
+        "is_exchange": true,
+        "fails_refined_commercial": false,
+        "trigger": "v6_direct_project_domain",
+        "carve": false,
+        "direction": "BUYER",
+        "qualitative": "exchange_noise_survivor",
+        "preview": "I need someone to tech me more about bybit"
+      },
+      {
+        "message_id": 3635841,
+        "community": "Bitget English Official",
+        "is_exchange": true,
+        "fails_refined_commercial": false,
+        "trigger": "v6_project_procurement",
+        "carve": false,
+        "direction": "BUYER",
+        "qualitative": "exchange_noise_survivor",
+        "preview": "My strategy is to capture sustained upside moves when price escapes a well-defined 20-bar range with confirmed institutional participation. "
+      },
+      {
+        "message_id": 414031,
+        "community": "Binance English",
+        "is_exchange": true,
+        "fails_refined_commercial": false,
+        "trigger": "v6_direct_project_domain",
+        "carve": false,
+        "direction": "BUYER",
+        "qualitative": "exchange_noise_survivor",
+        "preview": "Greetings members I need someone to help me in swapping waxp to USD earning strategy"
+      },
+      {
+        "message_id": 957861,
+        "community": "Bybit English",
+        "is_exchange": true,
+        "fails_refined_commercial": false,
+        "trigger": "v6_direct_project_domain",
+        "carve": false,
+        "direction": "BUYER",
+        "qualitative": "exchange_noise_survivor",
+        "preview": "Yeah, that’s spot on. In knockout games, chances don’t come easy, so you really need someone who can finish under pressure. Portugal have th"
+      },
+      {
+        "message_id": 4943626,
+        "community": "MEXC English (Official)",
+        "is_exchange": true,
+        "fails_refined_commercial": true,
+        "trigger": "v6_project_procurement",
+        "carve": false,
+        "direction": "BUYER",
+        "qualitative": "exchange_noise_survivor",
+        "preview": "4️⃣ Topic: MEXC Zero Fee Trading Experience MEXC’s zero-fee trading has completely changed my strategy. Before this, I used to hesitate whil"
+      },
+      {
+        "message_id": 5023068,
+        "community": "MEXC English (Official)",
+        "is_exchange": true,
+        "fails_refined_commercial": true,
+        "trigger": "v6_project_procurement",
+        "carve": false,
+        "direction": "BUYER",
+        "qualitative": "exchange_noise_survivor",
+        "preview": "One of the best ways to maximize referral rebates on MEXC is to invite not just random people, but those who will actually trade. My strateg"
+      },
+      {
+        "message_id": 5023558,
+        "community": "MEXC English (Official)",
+        "is_exchange": true,
+        "fails_refined_commercial": true,
+        "trigger": "v6_project_procurement",
+        "carve": false,
+        "direction": "BUYER",
+        "qualitative": "exchange_noise_survivor",
+        "preview": "I used to try spamming links everywhere… and the result was nobody cared 😂 Then I changed my strategy: Writing articles sharing real trading"
+      },
+      {
+        "message_id": 7206717,
+        "community": "WEEX English Official",
+        "is_exchange": true,
+        "fails_refined_commercial": false,
+        "trigger": "v6_direct_project_domain",
+        "carve": false,
+        "direction": "BUYER",
+        "qualitative": "exchange_noise_survivor",
+        "preview": "i have the strategy, just need someone to translate it into an algorithm ⚙️"
+      },
+      {
+        "message_id": 570927,
+        "community": "Binance English",
+        "is_exchange": true,
+        "fails_refined_commercial": false,
+        "trigger": "v6_direct_project_domain",
+        "carve": false,
+        "direction": "BUYER",
+        "qualitative": "exchange_noise_survivor",
+        "preview": "i need someone who has binance verified accont"
+      },
+      {
+        "message_id": 591399,
+        "community": "Binance English",
+        "is_exchange": true,
+        "fails_refined_commercial": false,
+        "trigger": "v6_direct_project_domain",
+        "carve": false,
+        "direction": "BUYER",
+        "qualitative": "exchange_noise_survivor",
+        "preview": "I need someone to show me how binance work"
+      },
+      {
+        "message_id": 593813,
+        "community": "Binance English",
+        "is_exchange": true,
+        "fails_refined_commercial": false,
+        "trigger": "v6_direct_project_domain",
+        "carve": false,
+        "direction": "BUYER",
+        "qualitative": "exchange_noise_survivor",
+        "preview": "I need someone to guide me on how to trade on Binance"
+      },
+      {
+        "message_id": 609461,
+        "community": "Binance English",
+        "is_exchange": true,
+        "fails_refined_commercial": false,
+        "trigger": "v6_direct_project_domain",
+        "carve": false,
+        "direction": "BUYER",
+        "qualitative": "exchange_noise_survivor",
+        "preview": "Please I need someone to teach me how to do buying and selling bitcoin on binance app or how to trade"
+      },
+      {
+        "message_id": 3025137,
+        "community": "KuCoin Exchange",
+        "is_exchange": true,
+        "fails_refined_commercial": true,
+        "trigger": "v6_direct_project_domain",
+        "carve": false,
+        "direction": "BUYER",
+        "qualitative": "exchange_noise_survivor",
+        "preview": "KuCoin is a treasure trove of exciting features and opportunities. Here are some more interesting things about KuCoin: - *KuCoin Earn*: This"
+      }
+    ]
+  },
+  "probes": [
+    {
+      "lead_id": 1137,
+      "message_id": 25570,
+      "score_tier": "HIGH",
+      "in_legacy_pool": true,
+      "in_refined_pool": true,
+      "community": "Web3 Jobs | LaborX",
+      "v4_eligible": false,
+      "v6_eligible": true,
+      "v6_carve": true,
+      "discovery_eval_recovered": true,
+      "preview": "🌟 Freelance Opportunity: Quick Fix Needed for Python Trading Bot 💰 Budget: $320 🤝 With: david lil"
+    },
+    {
+      "lead_id": 1138,
+      "message_id": 25571,
+      "score_tier": "HIGH",
+      "in_legacy_pool": true,
+      "in_refined_pool": true,
+      "community": "Web3 Jobs | LaborX",
+      "v4_eligible": false,
+      "v6_eligible": true,
+      "v6_carve": true,
+      "discovery_eval_recovered": true,
+      "preview": "🌟 Freelance Opportunity: Quick Fix Needed for Python Trading Bot 💰 Budget: $50 🤝 With: Ryan Peterson"
+    },
+    {
+      "lead_id": 1139,
+      "message_id": 22713,
+      "score_tier": "HIGH",
+      "in_legacy_pool": true,
+      "in_refined_pool": true,
+      "community": "Web3 Jobs | LaborX",
+      "v4_eligible": false,
+      "v6_eligible": true,
+      "v6_carve": true,
+      "discovery_eval_recovered": true,
+      "preview": "🌟 Freelance Opportunity: Crypto Trading Bot Developer 💰 Budget: $200 🤝 With: Yohans Hayla"
+    },
+    {
+      "lead_id": 1140,
+      "message_id": 25400,
+      "score_tier": "HIGH",
+      "in_legacy_pool": true,
+      "in_refined_pool": true,
+      "community": "Web3 Jobs | LaborX",
+      "v4_eligible": false,
+      "v6_eligible": true,
+      "v6_carve": true,
+      "discovery_eval_recovered": true,
+      "preview": "🌟 Freelance Opportunity: Python Crypto Trading Bot Developer (GUI + Dashboard) 💰 Budget: $800 🤝 With: Harry Bennett"
+    }
+  ],
+  "fo_false_negative_recovery": "4/4",
+  "isolation": {
+    "human_labels": 1524,
+    "ai_confirmed": 4,
+    "scores": 133514,
+    "messages": 8629945,
+    "disc_candidates": 60
+  },
+  "acceptance": {
+    "fn_inventory_complete": true,
+    "true_buyer_project_fn_among_11": 0,
+    "legacy_checkpoint_v6_eligible_32": true,
+    "refined_survivor_rate_pct": 15.69,
+    "refined_survivor_rate_ge_10": true,
+    "refined_contam_0": true,
+    "fo_probes": "4/4",
+    "flag_off": true,
+    "isolation_ok": true,
+    "note": "Survivors on refined pool are fewer than legacy 32 because legacy counted EXCHANGE_OFFICIAL 'need someone to teach me binance' / zero-commission marketing as eligible; refined metric drops those as population noise, not as disc_v6 RFQ loss. FO LaborX carve rows remain in refined pool."
+  },
+  "acceptance_pass": true,
+  "largest_remaining_bottleneck": {
+    "bottleneck_id": "activation_not_semantics",
+    "note": "With refined population, survivor rate is material and residual buyerish NO_PATH FNs are 0. Remaining product bottleneck is enable-flag activation / LOW-prefilter visibility, not disc_v6 path defect."
+  },
+  "next_hypothesis": {
+    "statement": "H1 (Cycle 3): Adopt refined_frozen as the standing audit/activation denominator for commercial discovery GO/NO-GO; document LOW-prefilter visibility of the refined survivors and an enable checklist — still without flipping commercial_discovery_enabled until authorized.",
+    "acceptance": {
+      "metric": "refined_activation_readiness",
+      "targets": [
+        "document how many refined survivors pass LOW prefilter shape",
+        "enable checklist recorded; flag remains OFF until auth",
+        "contam 0%; FO 4/4; isolation 1524/4"
+      ]
+    },
+    "regression_metrics": [
+      "legacy checkpoint remains v6=32 on E101 since",
+      "no disc_v6 path change without ≥10 verified FNs",
+      "commercial_discovery_enabled stays false"
+    ]
+  }
+}

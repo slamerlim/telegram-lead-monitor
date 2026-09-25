@@ -1,0 +1,81 @@
+Evidence 102: disc_v6 refined population Cycle 2 (measurement-only)
+generated_at=2026-09-25T18:04:06.617279+00:00 head=c553f52
+runtime_sec=28.39 read_only=true code_change=false
+decision=MEASUREMENT_ONLY_STOP acceptance_pass=True
+
+=== 0. PARENT / LOCKS ===
+  parent=Evidence 101 MEASUREMENT_ONLY_STOP (pool_regex_noise)
+  since_frozen=2025-09-30T17:54:03.414786+00:00
+  commercial_discovery_enabled=False
+  version=disc_v6 code_default=disc_v6
+  NO flag flip / NO scoring loosen / NO veto removal / NO label mutation
+
+=== 1. LEGACY CHECKPOINT (E100/E101 byte-compatible) ===
+  pool_n=1299 v4=19 v6=32 rate=2.46% contam=0.0%
+  expected_v6=32 checkpoint_ok=True
+  first_loss_v6={'NO_PATH_MATCH': 617, 'VETO_support_question': 311, 'HARD_EXCLUDE_EARLY': 242, 'VETO_corporate_employment': 35, 'RETRIEVED': 32, 'VETO_job_aggregator': 29, 'VETO_news_digest': 16, 'VETO_service_provider': 14, 'VETO_job_seeker': 2, 'VETO_generic_recruiter': 1}
+
+=== 2. FN INVENTORY (11 buyerish_clean NO_PATH from E101) ===
+  true_buyer_project_fn=0/11
+  verdicts={'NOT_FN_ACCOUNT_HELP': 2, 'NOT_FN_OTHER_NOISE': 2, 'NOT_FN_EDUCATIONAL': 5, 'NOT_FN_SUPPORT_OR_API': 1, 'NOT_FN_EXCHANGE_FIXED_PRICE': 1}
+  id=1311568 NOT_FN_ACCOUNT_HELP ex=True | Hi, I need someone based in Europe to open an OKX account for me; the price is good.
+  id=424457 NOT_FN_ACCOUNT_HELP ex=True | Hello ineed someone help who doesnt have a binance account ? For completing a task in binance turns 
+  id=425184 NOT_FN_OTHER_NOISE ex=True | But I would need someone from binance
+  id=922511 NOT_FN_EDUCATIONAL ex=True | ### Trading Goals for Newbies in the Crypto Space: Focus on BTG As a newcomer to cryptocurrency trad
+  id=389826 NOT_FN_EDUCATIONAL ex=False | This article replaces gap-focused trailing logic (Skip-List + Hopfield) with a two-stage trailing st
+  id=37727 NOT_FN_SUPPORT_OR_API ex=True | Hi everyone, I'm an active P2P merchant and I'm experiencing a 'Silent Drop' issue with the P2P API.
+  id=39270 NOT_FN_EXCHANGE_FIXED_PRICE ex=True | The fixed price set is lower than 53243.241 or higher than 98880.306. (ErrCode: 912120022) (ErrTime:
+  id=1081595 NOT_FN_EDUCATIONAL ex=True | ### Key Differences Between Arithmetic Grid and Geometric Grid Strategies in Automated Trading Bots 
+  id=1126300 NOT_FN_EDUCATIONAL ex=True | ### Money Management in Trading: Importance and Guidelines #### Importance of Money Management Money
+  id=1132711 NOT_FN_OTHER_NOISE ex=True | An option contract in crypto is basically an agreement that gives you the right, but not the obligat
+  id=1196688 NOT_FN_EDUCATIONAL ex=True | ### The Role of Time-Based Charting in Filtering Noise During High-Volatility Sessions In the contex
+
+=== 3. REFINED POPULATION DEFINITION ===
+  commercial_regex=(budget|fixed price|need someone|looking for (a )?(developer|contractor|freelancer)|нужен разработчик|починить|Freelance Opportunity|commission.{0,100}(?:hire|hiring|developer|freelancer|contractor|budget|\$)|(?:hire|hiring|developer|freelancer|contractor|budget).{0,100}commission)
+  domain_regex=(trading bot|bybit|binance|okx|pybit|arbitrage|futures|strategy|торговый бот|Crypto Trading Bot)
+  exclude: EXCHANGE_OFFICIAL profile + unmapped exchange-name communities
+  refined_pool_n=102
+
+=== 4. VARIANT REMEASURE (v4 vs v6) ===
+  legacy_e101: pool=1299 v4=19 v6=32 rate=2.46% contam=0.0% retained_legacy_v6=32 dropped=0
+  drop_bare_commission: pool=277 v4=13 v6=26 rate=9.39% contam=0.0% retained_legacy_v6=26 dropped=6
+  exclude_exchange_official: pool=171 v4=3 v6=16 rate=9.36% contam=0.0% retained_legacy_v6=16 dropped=16
+  refined_frozen: pool=102 v4=3 v6=16 rate=15.69% contam=0.0% retained_legacy_v6=16 dropped=16
+
+=== 5. DROPPED LEGACY 'SURVIVORS' UNDER REFINED (qualitative) ===
+  n=16 by={'exchange_noise_survivor': 16}
+  id=392304 exchange_noise_survivor Binance English | I need someone to teach me how to make money on binance
+  id=4765361 exchange_noise_survivor MEXC English (Official) | Fee wall used to be real for me every trade I closed a chunk was already gone before I eve
+  id=4768282 exchange_noise_survivor MEXC English (Official) | The best way to break the Fee Wall is to remove the wall from the start. With zero-commiss
+  id=678746 exchange_noise_survivor Bybit English | I need someone to tech me more about bybit
+  id=3635841 exchange_noise_survivor Bitget English Official | My strategy is to capture sustained upside moves when price escapes a well-defined 20-bar 
+  id=414031 exchange_noise_survivor Binance English | Greetings members I need someone to help me in swapping waxp to USD earning strategy
+  id=957861 exchange_noise_survivor Bybit English | Yeah, that’s spot on. In knockout games, chances don’t come easy, so you really need someo
+  id=4943626 exchange_noise_survivor MEXC English (Official) | 4️⃣ Topic: MEXC Zero Fee Trading Experience MEXC’s zero-fee trading has completely changed
+
+=== 6. FAIR COMPARE ON REFINED_FROZEN ===
+  disc_v4: eligible=3 LOW=3 contam=0.0%
+  disc_v6: eligible=16 LOW=10 contam=0.0% carve=13 NO_PATH=12
+  delta v6-v4=13 survivor_rate=15.69% (legacy was 2.46%)
+  triggers={'v6_budget_deliverable': 13, 'v6_repair_domain': 2, 'v6_project_procurement': 1} directions={'RECRUITER': 16}
+
+=== 7. AI_CONFIRMED / FO PROBES ===
+  lead=1137 msg=25570 tier=HIGH legacy=True refined=True v6=True carve=True recovered=True
+  lead=1138 msg=25571 tier=HIGH legacy=True refined=True v6=True carve=True recovered=True
+  lead=1139 msg=22713 tier=HIGH legacy=True refined=True v6=True carve=True recovered=True
+  lead=1140 msg=25400 tier=HIGH legacy=True refined=True v6=True carve=True recovered=True
+  FO discovery-eval recovery: 4/4
+
+=== 8. ACCEPTANCE / DECISION ===
+  acceptance={"fn_inventory_complete": true, "true_buyer_project_fn_among_11": 0, "legacy_checkpoint_v6_eligible_32": true, "refined_survivor_rate_pct": 15.69, "refined_survivor_rate_ge_10": true, "refined_contam_0": true, "fo_probes": "4/4", "flag_off": true, "isolation_ok": true, "note": "Survivors on refined pool are fewer than legacy 32 because legacy counted EXCHANGE_OFFICIAL 'need someone to teach me binance' / zero-commission marketing as eligible; refined metric drops those as population noise, not as disc_v6 RFQ loss. FO LaborX carve rows remain in refined pool."}
+  acceptance_pass=True
+  decision=MEASUREMENT_ONLY_STOP
+  rationale=FN inventory of E101 buyerish_clean NO_PATH: 0/11 true buyer/project FNs (all 11 are support/education/account-help/exchange terminology). Refined frozen pool: n=102 v6_eligible=16 rate=15.69% (legacy 32/1299 =2.46%). Contam refined=0.0%; FO 4/4; flag OFF. Measurement clarified; no disc_v6 logic change.
+
+=== 9. ISOLATION / BUSINESS ===
+  human_labels=1524 AI_CONFIRMED=4 scores=133514 messages=8629945 disc_candidates=60
+  NO OUTREACH / NO ML GO / FLAG REMAINS OFF / NO THRESHOLD LOOSEN
+  next=H1 (Cycle 3): Adopt refined_frozen as the standing audit/activation denominator for commercial discovery GO/NO-GO; document LOW-prefilter visibility of the refined survivors and an enable checklist — still without flipping commercial_discovery_enabled until authorized.
+
+JSON: /app/docs/audit/evidence/102-disc-v6-refined-population-cycle2.json
+FN verdicts: /app/docs/audit/evidence/102-nopath-buyerish-fn-verdicts.json
