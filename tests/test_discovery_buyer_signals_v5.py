@@ -9,6 +9,7 @@ from shared.commercial_ai.discovery import (
     DISCOVERY_VERSION,
     DISCOVERY_VERSION_V4,
     DISCOVERY_VERSION_V5,
+    DISCOVERY_VERSION_V6,
     evaluate_discovery,
 )
 
@@ -19,10 +20,11 @@ def _scorer() -> LeadScorer:
     return LeadScorer(str(CFG))
 
 
-def test_default_version_remains_v4_until_acceptance():
-    """Production default stays disc_v4; v5 is opt-in via evaluate_discovery(version=)."""
-    assert DISCOVERY_VERSION == DISCOVERY_VERSION_V4 == "disc_v4"
+def test_default_version_is_v6_v5_remains_opt_in():
+    """Production default is disc_v6; v5 stays opt-in (C HOLD)."""
+    assert DISCOVERY_VERSION == DISCOVERY_VERSION_V6 == "disc_v6"
     assert DISCOVERY_VERSION_V5 == "disc_v5"
+    assert DISCOVERY_VERSION_V4 == "disc_v4"
 
 
 def test_v5_recovers_need_trading_bot_budget():

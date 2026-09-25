@@ -1,0 +1,42 @@
+Evidence 99: LaborX FO veto carve (disc_v6)
+generated_at=2026-09-25T13:46:10.010542+00:00 head=unknown
+runtime_sec=55.31 read_only=true capped=2500
+
+=== 1. VERSION COMPARISON (identical capped prefilter) ===
+  disc_v2: eligible=225 contamination=69.3%
+  disc_v4: eligible=4 contamination=0.0% VETO_job_aggregator_first=355
+  disc_v6: eligible=14 contamination=0.0% VETO_job_aggregator_first=345 carve_true_on_cap=10
+  newly eligible vs v4: 10 (delta=10) carve_among_new=10
+  first_loss v6: {'NO_PATH_MATCH': 1610, 'VETO_job_aggregator': 345, 'VETO_support_question': 231, 'HARD_EXCLUDE_EARLY': 133, 'VETO_corporate_employment': 78, 'VETO_job_seeker': 65, 'VETO_service_provider': 16, 'RETRIEVED': 14, 'VETO_marketing_broadcast': 4, 'VETO_generic_recruiter': 2, 'VETO_news_digest': 2}
+
+=== 2. AI_CONFIRMED PROBES (discovery eval) ===
+  lead=1137 msg=25570 tier=HIGH v4_fl=VETO_job_aggregator v6_elig=True v6_fl=RETRIEVED carve=True recovered=True HIGH_prefilter_note=True
+    | 🌟 Freelance Opportunity: Quick Fix Needed for Python Trading Bot 💰 Budget: $320 🤝 With: david lil
+  lead=1138 msg=25571 tier=HIGH v4_fl=VETO_job_aggregator v6_elig=True v6_fl=RETRIEVED carve=True recovered=True HIGH_prefilter_note=True
+    | 🌟 Freelance Opportunity: Quick Fix Needed for Python Trading Bot 💰 Budget: $50 🤝 With: Ryan Peterson
+  lead=1139 msg=22713 tier=HIGH v4_fl=VETO_job_aggregator v6_elig=True v6_fl=RETRIEVED carve=True recovered=True HIGH_prefilter_note=True
+    | 🌟 Freelance Opportunity: Crypto Trading Bot Developer 💰 Budget: $200 🤝 With: Yohans Hayla
+  lead=1140 msg=25400 tier=HIGH v4_fl=VETO_job_aggregator v6_elig=True v6_fl=RETRIEVED carve=True recovered=True HIGH_prefilter_note=True
+    | 🌟 Freelance Opportunity: Python Crypto Trading Bot Developer (GUI + Dashboard) 💰 Budget: $800 🤝 With: Harry Bennett
+  FO false-negative recovery (discovery-eval): 4/4
+
+=== 3. ACCEPTANCE ===
+  DECISION=SHIP_DEFAULT_V6 shippable_default=True
+  rationale: probes 4/4 recovered; contamination 0.0% near v4; newly_eligible=10 (carve_share=1.0). Safe to flip default to disc_v6.
+  contamination: v2=69.3% v4=0.0% v6=0.0% (target ≪ v2 ~72.7%, near v4 0%)
+
+=== 4. ISOLATION ===
+  human_labels=1524 AI_CONFIRMED=4
+  commercial_discovery_enabled=False
+  commercial_discovery_version=disc_v4
+  code DISCOVERY_VERSION=disc_v4
+
+=== 5. BUSINESS ===
+  NO OUTREACH / NO ML GO / NO FLAG FLIP UNLESS DECISION=SHIP_DEFAULT_V6
+
+JSON: /app/docs/audit/evidence/99-laborx-veto-carve-v6.json
+
+=== 6. DEFAULT FLIP (post-acceptance) ===
+  DISCOVERY_VERSION and settings.commercial_discovery_version → disc_v6
+  commercial_discovery_enabled remains False (no enqueue flag flip)
+  Reason: evidence 99 DECISION=SHIP_DEFAULT_V6 (probes 4/4, contamination 0.0%, newly=10 carve-only)

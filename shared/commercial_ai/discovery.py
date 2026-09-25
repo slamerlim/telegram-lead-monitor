@@ -2,7 +2,8 @@
 
 disc_v3/v4 add buyer_direction + non-buyer vetoes. Does NOT alter LeadScorer.score().
 disc_v4 expands positive buyer-signal conjunctions without weakening hard vetoes.
-disc_v5 recovers NO_PATH buyer/project phrases (C-only); keeps LaborX/gig vetoes (D later).
+disc_v5 recovers NO_PATH buyer/project phrases (C-only); keeps LaborX/gig vetoes.
+disc_v6 = disc_v4 paths + narrow FO gig-marketplace project carve (D); default after acceptance.
 """
 
 from __future__ import annotations
@@ -13,11 +14,12 @@ import re
 from dataclasses import dataclass, field
 from typing import Any, Literal
 
-DISCOVERY_VERSION = "disc_v4"
+DISCOVERY_VERSION = "disc_v6"
 DISCOVERY_VERSION_V2 = "disc_v2"
 DISCOVERY_VERSION_V3 = "disc_v3"
 DISCOVERY_VERSION_V4 = "disc_v4"
 DISCOVERY_VERSION_V5 = "disc_v5"
+DISCOVERY_VERSION_V6 = "disc_v6"
 
 BuyerDirection = Literal[
     "BUYER",
@@ -280,6 +282,37 @@ _GIG_MARKETPLACE_RX = re.compile(
     re.IGNORECASE,
 )
 
+# Narrow FO listing templates eligible for disc_v6 project carve (not bare laborx / GIG OF THE DAY).
+_FO_LISTING_RX = re.compile(
+    r"(?:"
+    r"🌟\s*freelance\s+opportunity\b|"
+    r"\bfreelance\s+opportunity\s*:|"
+    r"\bnew\s+project\s+on\s+laborx\b"
+    r")",
+    re.IGNORECASE,
+)
+# Trading-bot / repair project body inside an FO listing.
+_FO_TRADING_BOT_PROJECT_RX = re.compile(
+    r"(?:"
+    r"\b(?:trading\s+bot|crypto\s+(?:trading\s+)?bot|grid\s+bot|"
+    r"python\s+(?:crypto\s+)?(?:trading\s+)?bot|copy\s+trading\s+bot)\b|"
+    r"\b(?:fix|repair|quick\s+fix)\b.{0,60}\b(?:trading\s+)?bot\b|"
+    r"\b(?:trading\s+)?bot\s+(?:developer|engineer|fix|repair)\b|"
+    r"\b(?:developer|engineer)\b.{0,40}\b(?:trading\s+)?bot\b"
+    r")",
+    re.IGNORECASE,
+)
+_FO_EMPLOYMENT_FLOOD_RX = re.compile(
+    r"(?:"
+    r"\b(?:full[- ]time|part[- ]time)\s+(?:role|position|job|engineer|developer)\b|"
+    r"\bsalary\s*(?:range|:)|"
+    r"\bapply\s+(?:now|here|below)\b|"
+    r"#(?:вакансия|hiring|fulltime)\b|"
+    r"\bopen\s+(?:role|position|vacancy)\b"
+    r")",
+    re.IGNORECASE,
+)
+
 # Product/support "FIX API" / exchange announcements — not buyer repair RFQs.
 _REPAIR_FALSE_POSITIVE_RX = re.compile(
     r"(?:"
@@ -292,6 +325,28 @@ _REPAIR_FALSE_POSITIVE_RX = re.compile(
     r")",
     re.IGNORECASE,
 )
+
+
+def _is_gig_project_carve(clean: str) -> bool:
+    """Message-level FO carve: listing ∧ (repair ∨ trading-bot project) ∧ budget evidence.
+
+    Does not lift bare laborx / gig-of-the-day / sponsorship marketplace noise.
+    """
+    if not _FO_LISTING_RX.search(clean):
+        return False
+    if _CORPORATE_JD_HARD_RX.search(clean) or _FO_EMPLOYMENT_FLOOD_RX.search(clean):
+        return False
+    repair = bool(_REPAIR_CONJ_RX.search(clean)) and not bool(
+        _REPAIR_FALSE_POSITIVE_RX.search(clean)
+    )
+    trading_bot_project = bool(_FO_TRADING_BOT_PROJECT_RX.search(clean))
+    if not (repair or trading_bot_project):
+        return False
+    budget_or_project = bool(_TRUE_BUDGET_RX.search(clean)) or bool(
+        re.search(r"💰\s*budget\b|\bbudget\s*:\s*\$", clean, re.IGNORECASE)
+    )
+    return budget_or_project
+
 
 # Concrete project / deliverable buyer language (first-person / RFQ — not JD "to build").
 _PROJECT_SCOPE_RX = re.compile(
@@ -455,6 +510,7 @@ class DiscoveryFeatures:
     matched_paths: list[str] = field(default_factory=list)
     true_budget_signal: bool = False
     bot_deliverable_signal: bool = False
+    gig_project_carve: bool = False
 
     def to_signals_dict(self) -> dict[str, Any]:
         return {
@@ -501,6 +557,7 @@ class DiscoveryFeatures:
             "matched_paths": self.matched_paths,
             "true_budget_signal": self.true_budget_signal,
             "bot_deliverable_signal": self.bot_deliverable_signal,
+            "gig_project_carve": self.gig_project_carve,
         }
 
 
@@ -540,7 +597,14 @@ def _population_bucket(feats: DiscoveryFeatures) -> str:
         return "News/editorial"
     if feats.marketing_signal or "marketing_broadcast" in feats.veto_categories:
         return "Marketing/promo"
-    if feats.aggregator_signal or "job_aggregator" in feats.veto_categories:
+    # disc_v6 FO carve: marketplace template matched but project RFQ recovered.
+    if feats.gig_project_carve and (
+        feats.eligible or feats.project_scope or feats.repair_signal
+    ):
+        return "Direct buyer/RFQ candidate"
+    if (feats.aggregator_signal or "job_aggregator" in feats.veto_categories) and not (
+        feats.gig_project_carve
+    ):
         return "Corporate/job-board hiring"
     if feats.buyer_direction == "SEEKER" or feats.seeker_signal:
         return "Job seeker/resume"
@@ -575,6 +639,7 @@ def classify_buyer_direction(
     """Deterministic retrieval label — not commercial truth."""
     ver = version or DISCOVERY_VERSION
     v5 = ver == DISCOVERY_VERSION_V5
+    v6 = ver == DISCOVERY_VERSION_V6
 
     seeker_hits = scorer._pattern_hits(clean, "job_seeker")
     provider_hits = scorer._pattern_hits(clean, "service_provider")
@@ -602,7 +667,9 @@ def classify_buyer_direction(
     feats.bot_deliverable_signal = bool(_BOT_DELIVERABLE_RX.search(clean))
 
     gig_marketplace = bool(_GIG_MARKETPLACE_RX.search(clean))
-    feats.project_procurement_signal = (not gig_marketplace) and (
+    feats.gig_project_carve = bool(v6 and _is_gig_project_carve(clean))
+    carve = feats.gig_project_carve
+    feats.project_procurement_signal = (not gig_marketplace or carve) and (
         bool(_PROJECT_PROCUREMENT_RX.search(clean))
         or (
             bool(_PROCUREMENT_RX.search(clean))
@@ -641,15 +708,18 @@ def classify_buyer_direction(
             and feats.direct_request_signal
             and (feats.true_budget_signal or feats.ownership_signal)
         )
+        or carve
     )
     # Hard JD boilerplate demotes project scope; soft full-time alone does not when
     # ownership/direct/procurement evidence exists (v4 recall path).
-    if corporate_jd_hard or gig_marketplace:
+    # disc_v6 FO carve keeps project scope despite gig marketplace template.
+    if corporate_jd_hard or (gig_marketplace and not carve):
         feats.project_scope = False
     elif corporate_jd and not (
         feats.ownership_signal
         or feats.direct_request_signal
         or feats.project_procurement_signal
+        or carve
     ):
         feats.project_scope = False
     else:
@@ -663,7 +733,7 @@ def classify_buyer_direction(
         _PRODUCT_PROMO_RX.search(clean)
     )
     feats.news_signal = bool(scorer._is_news_digest(clean)) or bool(_EDITORIAL_RX.search(clean))
-    feats.repair_signal = (repair_conj or yaml_repair) and not gig_marketplace
+    feats.repair_signal = (repair_conj or yaml_repair) and (not gig_marketplace or carve)
     feats.budget_signal = feats.budget_language or bool(
         re.search(r"\b(?:budget|бюджет|quote|стоимость)\b", clean, re.I)
     )
@@ -695,6 +765,8 @@ def classify_buyer_direction(
         families.append("TIMELINED_REQUEST")
     if feats.bot_deliverable_signal and feats.direct_request_signal:
         families.append("BOT_PURCHASE_REQUEST")
+    if carve:
+        families.append("FO_GIG_PROJECT_CARVE")
     if _DOMAIN_LOOSE_RX.search(clean):
         if re.search(r"\b(?:bybit|binance|okx|pybit|exchange\s*api)\b", clean, re.I):
             families.append("EXCHANGE_INTEGRATION_REQUEST")
@@ -723,16 +795,17 @@ def classify_buyer_direction(
         or feats.automation_signal
         or (feats.direct_request_signal and (feats.budget_signal or feats.project_scope))
         or feats.project_procurement_signal
+        or carve
         or (
             v5
             and feats.direct_request_signal
             and feats.bot_deliverable_signal
             and (feats.true_budget_signal or feats.project_scope)
         )
-    ) and not feats.aggregator_signal
+    ) and (not feats.aggregator_signal or carve)
     feats.soft_direction = strong_buyer_evidence and (
         feats.recruiter_signal or feats.employment_signal
-    ) and not corporate_jd_hard and not feats.aggregator_signal
+    ) and not corporate_jd_hard and (not feats.aggregator_signal or carve)
     # disc_v5: vacancy hashtags are hard employment — never soft-override (job-board noise).
     if v5 and re.search(r"#(?:вакансия|vacancy|hiring|fulltime)\b", clean, re.I):
         feats.soft_direction = False
@@ -740,7 +813,7 @@ def classify_buyer_direction(
             feats.employment_signal = True
 
     # Priority: hard non-buyer roles first.
-    if feats.aggregator_signal:
+    if feats.aggregator_signal and not carve:
         return "RECRUITER" if feats.recruiter_signal else "EMPLOYER"
     # Vacancy hashtags without project/procurement evidence → employer (v5 job-board guard).
     if v5 and re.search(r"#(?:вакансия|vacancy|hiring|fulltime)\b", clean, re.I):
@@ -796,8 +869,15 @@ def _apply_vetoes(feats: DiscoveryFeatures, *, soft: bool = False) -> None:
     """Apply non-buyer vetoes. soft=True (disc_v4) allows project-procurement overrides."""
     vetoes: list[str] = []
     if feats.hard_exclude:
-        vetoes.extend(feats.exclude_reasons)
-    if feats.aggregator_signal:
+        # disc_v6 FO carve: keep marketplace template visible but do not hard-veto
+        # solely on job_aggregator when the carve applies.
+        if feats.gig_project_carve:
+            for reason in feats.exclude_reasons:
+                if reason != "job_aggregator":
+                    vetoes.append(reason)
+        else:
+            vetoes.extend(feats.exclude_reasons)
+    if feats.aggregator_signal and not feats.gig_project_carve:
         vetoes.append("job_aggregator")
     # Clear resume/seeker: hard veto unless soft mode has ownership+project evidence.
     if feats.seeker_signal:
@@ -831,6 +911,7 @@ def _apply_vetoes(feats: DiscoveryFeatures, *, soft: bool = False) -> None:
             and not feats.project_scope
             and not feats.project_procurement_signal
             and not feats.soft_direction
+            and not feats.gig_project_carve
         ):
             vetoes.append("generic_recruiter")
     else:
@@ -1064,13 +1145,13 @@ def _eligible_v4(
         feats.project_procurement_signal
         and (feats.project_scope or feats.ownership_signal or feats.direct_request_signal)
         and has_domain
-        and not feats.aggregator_signal
+        and (not feats.aggregator_signal or feats.gig_project_carve)
     )
     path_e = (
         (feats.budget_signal or feats.timeline_signal)
         and has_domain
-        and (feats.direct_request_signal or feats.ownership_signal)
-        and not feats.aggregator_signal
+        and (feats.direct_request_signal or feats.ownership_signal or feats.gig_project_carve)
+        and (not feats.aggregator_signal or feats.gig_project_carve)
     )
 
     if not (path_a or path_b or path_c or path_d or path_e):
@@ -1401,7 +1482,25 @@ def evaluate_discovery(
         _eligible_v5(feats, clean=clean, **common)
         return feats
 
-    # disc_v4 (default)
+    if ver == DISCOVERY_VERSION_V6:
+        # disc_v6 = disc_v4 paths + FO gig project carve (D).
+        if feats.hard_exclude and not (
+            feats.project_scope
+            or feats.soft_direction
+            or feats.repair_signal
+            or feats.gig_project_carve
+        ):
+            _apply_vetoes(feats, soft=True)
+            feats.eligible = False
+            return feats
+        _eligible_v4(feats, clean=clean, **common)
+        if feats.eligible and feats.trigger_type and feats.trigger_type.startswith("v4_"):
+            feats.trigger_type = "v6_" + feats.trigger_type[3:]
+        if feats.eligible and feats.gig_project_carve and "CARVE" not in feats.matched_paths:
+            feats.matched_paths = list(feats.matched_paths) + ["CARVE"]
+        return feats
+
+    # Explicit disc_v4 / unknown versions: v4 paths (no FO carve).
     if feats.hard_exclude and not (
         feats.project_scope or feats.soft_direction or feats.repair_signal
     ):

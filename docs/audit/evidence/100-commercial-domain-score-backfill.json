@@ -1,0 +1,71 @@
+{
+  "generated_at": "2026-09-25T13:55:13.091224+00:00",
+  "head": "unknown",
+  "days": 360,
+  "dry_run": false,
+  "pool_regex": {
+    "commercial": "(budget|fixed price|commission|need someone|looking for (a )?(developer|contractor|freelancer)|нужен разработчик|починить|Freelance Opportunity)",
+    "domain": "(trading bot|bybit|binance|okx|pybit|arbitrage|futures|strategy|торговый бот|Crypto Trading Bot)"
+  },
+  "before": {
+    "pool_n": 1300,
+    "scored_n": 45,
+    "unscored_n": 1255,
+    "low_prefilter_shape_n": 20,
+    "pct_scored": 3.46
+  },
+  "discovery_visible_eligible_before": {
+    "scored_sampled": 45,
+    "disc_v4_eligible_any_tier": 1,
+    "disc_v6_eligible_any_tier": 14,
+    "disc_v4_eligible_LOW": 1,
+    "disc_v6_eligible_LOW": 8
+  },
+  "isolation_before": {
+    "human_labels": 1524,
+    "ai_confirmed": 4,
+    "scores": 127017,
+    "messages": 8624703
+  },
+  "candidate_ids": 1255,
+  "processed": 1255,
+  "skipped_already_scored": 0,
+  "tiers_written": {
+    "LOW": 1255
+  },
+  "rule_version": "2.4",
+  "after": {
+    "pool_n": 1300,
+    "scored_n": 1300,
+    "unscored_n": 0,
+    "low_prefilter_shape_n": 203,
+    "pct_scored": 100.0
+  },
+  "discovery_visible_eligible_after": {
+    "scored_sampled": 1300,
+    "disc_v4_eligible_any_tier": 19,
+    "disc_v6_eligible_any_tier": 32,
+    "disc_v4_eligible_LOW": 19,
+    "disc_v6_eligible_LOW": 26
+  },
+  "isolation_after": {
+    "human_labels": 1524,
+    "ai_confirmed": 4,
+    "scores": 128272,
+    "messages": 8624703
+  },
+  "delta": {
+    "scored_n": 1255,
+    "unscored_n": -1255,
+    "low_prefilter_shape_n": 183,
+    "disc_v4_eligible_LOW": 18,
+    "disc_v6_eligible_LOW": 18,
+    "disc_v4_eligible_any_tier": 18,
+    "disc_v6_eligible_any_tier": 18,
+    "human_labels": 0,
+    "ai_confirmed": 0
+  },
+  "runtime_sec": 264.08,
+  "stopped_after_pool": true,
+  "expanded_to_full_corpus": false
+}

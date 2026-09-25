@@ -9,6 +9,7 @@ from shared.commercial_ai.discovery import (
     DISCOVERY_VERSION,
     DISCOVERY_VERSION_V3,
     DISCOVERY_VERSION_V4,
+    DISCOVERY_VERSION_V6,
     evaluate_discovery,
 )
 
@@ -19,8 +20,9 @@ def _scorer() -> LeadScorer:
     return LeadScorer(str(CFG))
 
 
-def test_default_version_is_v4():
-    assert DISCOVERY_VERSION == DISCOVERY_VERSION_V4 == "disc_v4"
+def test_default_version_is_v6():
+    assert DISCOVERY_VERSION == DISCOVERY_VERSION_V6 == "disc_v6"
+    assert DISCOVERY_VERSION_V4 == "disc_v4"
 
 
 def test_score_independent_from_discovery_score():

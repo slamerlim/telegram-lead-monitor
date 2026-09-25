@@ -1,0 +1,437 @@
+{
+  "generated_at": "2026-09-25T13:46:10.010542+00:00",
+  "head": "unknown",
+  "runtime_sec": 55.31,
+  "read_only": true,
+  "cap": 2500,
+  "days": 7,
+  "examined": 2500,
+  "isolation": {
+    "human_labels": 1524,
+    "ai_confirmed": 4
+  },
+  "settings": {
+    "commercial_discovery_enabled": false,
+    "commercial_discovery_version": "disc_v4",
+    "code_default_DISCOVERY_VERSION": "disc_v4"
+  },
+  "version_stats": {
+    "disc_v2": {
+      "examined": 2500,
+      "eligible": 225,
+      "eligible_pct": 9.0,
+      "no_path_match": 2017,
+      "veto_job_aggregator_first_loss": 0,
+      "contamination_pct": 69.3,
+      "first_loss": {
+        "NO_PATH_MATCH": 2017,
+        "RETRIEVED": 225,
+        "HARD_EXCLUDE_EARLY": 133,
+        "DIRECTION_EMPLOYER": 79,
+        "DIRECTION_SEEKER": 34,
+        "DIRECTION_PROVIDER": 12
+      },
+      "veto_rates": {},
+      "carve_true_count": 0,
+      "eligible_triggers": {
+        "client_hiring": 65,
+        "commercial_domain": 40,
+        "hire_budget_domain": 106,
+        "buyer_budget_domain": 12,
+        "commercial_domain_tech": 2
+      },
+      "eligible_buckets": {
+        "Direct buyer/RFQ candidate": 69,
+        "Corporate/job-board hiring": 107,
+        "Job seeker/resume": 31,
+        "Support/question": 6,
+        "Provider/self-promotion": 5,
+        "Recruiter": 1,
+        "News/editorial": 2,
+        "Marketing/promo": 4
+      },
+      "eligible_directions": {
+        "BUYER": 79,
+        "RECRUITER": 74,
+        "EMPLOYER": 37,
+        "SEEKER": 30,
+        "PROVIDER": 5
+      }
+    },
+    "disc_v4": {
+      "examined": 2500,
+      "eligible": 4,
+      "eligible_pct": 0.16,
+      "no_path_match": 1610,
+      "veto_job_aggregator_first_loss": 355,
+      "contamination_pct": 0.0,
+      "first_loss": {
+        "NO_PATH_MATCH": 1610,
+        "VETO_job_aggregator": 355,
+        "VETO_support_question": 231,
+        "HARD_EXCLUDE_EARLY": 133,
+        "VETO_corporate_employment": 78,
+        "VETO_job_seeker": 65,
+        "VETO_service_provider": 16,
+        "RETRIEVED": 4,
+        "VETO_marketing_broadcast": 4,
+        "VETO_generic_recruiter": 2,
+        "VETO_news_digest": 2
+      },
+      "veto_rates": {
+        "corporate_employment": 527,
+        "job_aggregator": 451,
+        "generic_recruiter": 441,
+        "support_question": 322,
+        "job_seeker": 67,
+        "marketing_broadcast": 39,
+        "service_provider": 17,
+        "news_digest": 4
+      },
+      "carve_true_count": 0,
+      "eligible_triggers": {
+        "v4_budget_deliverable": 1,
+        "v4_project_procurement": 1,
+        "v4_direct_project_domain": 2
+      },
+      "eligible_buckets": {
+        "Direct buyer/RFQ candidate": 4
+      },
+      "eligible_directions": {
+        "BUYER": 1,
+        "RECRUITER": 3
+      }
+    },
+    "disc_v6": {
+      "examined": 2500,
+      "eligible": 14,
+      "eligible_pct": 0.56,
+      "no_path_match": 1610,
+      "veto_job_aggregator_first_loss": 345,
+      "contamination_pct": 0.0,
+      "first_loss": {
+        "NO_PATH_MATCH": 1610,
+        "VETO_job_aggregator": 345,
+        "VETO_support_question": 231,
+        "HARD_EXCLUDE_EARLY": 133,
+        "VETO_corporate_employment": 78,
+        "VETO_job_seeker": 65,
+        "VETO_service_provider": 16,
+        "RETRIEVED": 14,
+        "VETO_marketing_broadcast": 4,
+        "VETO_generic_recruiter": 2,
+        "VETO_news_digest": 2
+      },
+      "veto_rates": {
+        "corporate_employment": 527,
+        "job_aggregator": 441,
+        "generic_recruiter": 431,
+        "support_question": 322,
+        "job_seeker": 67,
+        "marketing_broadcast": 39,
+        "service_provider": 17,
+        "news_digest": 4
+      },
+      "carve_true_count": 10,
+      "eligible_triggers": {
+        "v6_budget_deliverable": 11,
+        "v6_project_procurement": 1,
+        "v6_direct_project_domain": 2
+      },
+      "eligible_buckets": {
+        "Direct buyer/RFQ candidate": 14
+      },
+      "eligible_directions": {
+        "BUYER": 1,
+        "RECRUITER": 13
+      }
+    }
+  },
+  "newly_eligible_vs_v4": {
+    "count": 10,
+    "delta_eligible": 10,
+    "carve_true": 10,
+    "samples": [
+      {
+        "message_id": 22763,
+        "community": "Web3 Jobs | LaborX",
+        "carve": true,
+        "trigger": "v6_budget_deliverable",
+        "paths": [
+          "A",
+          "E",
+          "CARVE"
+        ],
+        "direction": "RECRUITER",
+        "preview": "🌟 Freelance Opportunity: Senior Solana MEV / Flash Loan Arbitrage Bot Developer 💰 Budget: $100 🤝 With: Obukohwo David"
+      },
+      {
+        "message_id": 24114,
+        "community": "Web3 Jobs | LaborX",
+        "carve": true,
+        "trigger": "v6_budget_deliverable",
+        "paths": [
+          "A",
+          "E",
+          "CARVE"
+        ],
+        "direction": "RECRUITER",
+        "preview": "🌟 Freelance Opportunity: Improve Safety for a TypeScript Polymarket Copy-Trading Bot 💰 Budget: $4000 🤝 With: dub"
+      },
+      {
+        "message_id": 196,
+        "community": "Web3 Jobs | LaborX",
+        "carve": true,
+        "trigger": "v6_budget_deliverable",
+        "paths": [
+          "A",
+          "E",
+          "CARVE"
+        ],
+        "direction": "RECRUITER",
+        "preview": "🌟 Freelance Opportunity: Create a trading bot for 2,500 PEPE. 💰 Budget: $15 🤝 With: Quetta Audy"
+      },
+      {
+        "message_id": 23747,
+        "community": "Web3 Jobs | LaborX",
+        "carve": true,
+        "trigger": "v6_budget_deliverable",
+        "paths": [
+          "A",
+          "E",
+          "CARVE"
+        ],
+        "direction": "RECRUITER",
+        "preview": "🌟 Freelance Opportunity: Sales Closer Needed to Sell High-Performance Trading Bot 💰 Budget: $100 🤝 With: EARNEST MWAURA"
+      },
+      {
+        "message_id": 24977,
+        "community": "Web3 Jobs | LaborX",
+        "carve": true,
+        "trigger": "v6_budget_deliverable",
+        "paths": [
+          "A",
+          "E",
+          "CARVE"
+        ],
+        "direction": "RECRUITER",
+        "preview": "🌟 Freelance Opportunity: Crypto Arbitrage Bot Developer for Prediction Markets 💰 Budget: $200 🤝 With: Deniz Akguner"
+      },
+      {
+        "message_id": 26575,
+        "community": "Web3 Jobs | LaborX",
+        "carve": true,
+        "trigger": "v6_budget_deliverable",
+        "paths": [
+          "A",
+          "E",
+          "CARVE"
+        ],
+        "direction": "RECRUITER",
+        "preview": "🌟 Freelance Opportunity: Forex and stocks trading bot 💰 Budget: $500 🤝 With: Sid Khan"
+      },
+      {
+        "message_id": 27317,
+        "community": "Web3 Jobs | LaborX",
+        "carve": true,
+        "trigger": "v6_budget_deliverable",
+        "paths": [
+          "A",
+          "E",
+          "CARVE"
+        ],
+        "direction": "RECRUITER",
+        "preview": "🌟 Freelance Opportunity: Assistance in developing a trading bot in ETH/SOL networks 💰 Budget: $1500 🤝 With: Rick Willson"
+      },
+      {
+        "message_id": 8555439,
+        "community": "Web3 Jobs | LaborX",
+        "carve": true,
+        "trigger": "v6_budget_deliverable",
+        "paths": [
+          "A",
+          "E",
+          "CARVE"
+        ],
+        "direction": "RECRUITER",
+        "preview": "🌟 Freelance Opportunity: Python/FastAPI API Bug Fixes and Small Improvements 💰 Budget: $15000 🤝 With: Nathan Raymond"
+      },
+      {
+        "message_id": 214,
+        "community": "Web3 Jobs | LaborX",
+        "carve": true,
+        "trigger": "v6_budget_deliverable",
+        "paths": [
+          "A",
+          "E",
+          "CARVE"
+        ],
+        "direction": "RECRUITER",
+        "preview": "🌟 Freelance Opportunity: Trading Platform–Security Fix,Feature Completion&amp;Deployment 💰 Budget: $400 🤝 With: arlo ski"
+      },
+      {
+        "message_id": 312,
+        "community": "Web3 Jobs | LaborX",
+        "carve": true,
+        "trigger": "v6_budget_deliverable",
+        "paths": [
+          "A",
+          "E",
+          "CARVE"
+        ],
+        "direction": "RECRUITER",
+        "preview": "🌟 Freelance Opportunity: Trading Platform–Security Fix,Feature Completion&amp;Deployment 💰 Budget: $800 🤝 With: arlo ski"
+      }
+    ]
+  },
+  "probes": [
+    {
+      "lead_id": 1137,
+      "message_id": 25570,
+      "score_tier": "HIGH",
+      "community": "Web3 Jobs | LaborX",
+      "username": "LaborXWeb3Jobs",
+      "v4": {
+        "eligible": false,
+        "first_loss": "VETO_job_aggregator",
+        "veto": [
+          "job_aggregator",
+          "generic_recruiter"
+        ],
+        "carve": false
+      },
+      "v6": {
+        "eligible": true,
+        "first_loss": "RETRIEVED",
+        "veto": [],
+        "carve": true,
+        "paths": [
+          "A",
+          "E",
+          "CARVE"
+        ],
+        "trigger": "v6_budget_deliverable",
+        "direction": "RECRUITER"
+      },
+      "discovery_eval_recovered": true,
+      "note_high_tier_prefilter_separate": true,
+      "preview": "🌟 Freelance Opportunity: Quick Fix Needed for Python Trading Bot 💰 Budget: $320 🤝 With: david lil"
+    },
+    {
+      "lead_id": 1138,
+      "message_id": 25571,
+      "score_tier": "HIGH",
+      "community": "Web3 Jobs | LaborX",
+      "username": "LaborXWeb3Jobs",
+      "v4": {
+        "eligible": false,
+        "first_loss": "VETO_job_aggregator",
+        "veto": [
+          "job_aggregator",
+          "generic_recruiter"
+        ],
+        "carve": false
+      },
+      "v6": {
+        "eligible": true,
+        "first_loss": "RETRIEVED",
+        "veto": [],
+        "carve": true,
+        "paths": [
+          "A",
+          "E",
+          "CARVE"
+        ],
+        "trigger": "v6_budget_deliverable",
+        "direction": "RECRUITER"
+      },
+      "discovery_eval_recovered": true,
+      "note_high_tier_prefilter_separate": true,
+      "preview": "🌟 Freelance Opportunity: Quick Fix Needed for Python Trading Bot 💰 Budget: $50 🤝 With: Ryan Peterson"
+    },
+    {
+      "lead_id": 1139,
+      "message_id": 22713,
+      "score_tier": "HIGH",
+      "community": "Web3 Jobs | LaborX",
+      "username": "LaborXWeb3Jobs",
+      "v4": {
+        "eligible": false,
+        "first_loss": "VETO_job_aggregator",
+        "veto": [
+          "job_aggregator",
+          "generic_recruiter"
+        ],
+        "carve": false
+      },
+      "v6": {
+        "eligible": true,
+        "first_loss": "RETRIEVED",
+        "veto": [],
+        "carve": true,
+        "paths": [
+          "A",
+          "E",
+          "CARVE"
+        ],
+        "trigger": "v6_budget_deliverable",
+        "direction": "RECRUITER"
+      },
+      "discovery_eval_recovered": true,
+      "note_high_tier_prefilter_separate": true,
+      "preview": "🌟 Freelance Opportunity: Crypto Trading Bot Developer 💰 Budget: $200 🤝 With: Yohans Hayla"
+    },
+    {
+      "lead_id": 1140,
+      "message_id": 25400,
+      "score_tier": "HIGH",
+      "community": "Web3 Jobs | LaborX",
+      "username": "LaborXWeb3Jobs",
+      "v4": {
+        "eligible": false,
+        "first_loss": "VETO_job_aggregator",
+        "veto": [
+          "job_aggregator",
+          "generic_recruiter"
+        ],
+        "carve": false
+      },
+      "v6": {
+        "eligible": true,
+        "first_loss": "RETRIEVED",
+        "veto": [],
+        "carve": true,
+        "paths": [
+          "A",
+          "E",
+          "CARVE"
+        ],
+        "trigger": "v6_budget_deliverable",
+        "direction": "RECRUITER"
+      },
+      "discovery_eval_recovered": true,
+      "note_high_tier_prefilter_separate": true,
+      "preview": "🌟 Freelance Opportunity: Python Crypto Trading Bot Developer (GUI + Dashboard) 💰 Budget: $800 🤝 With: Harry Bennett"
+    }
+  ],
+  "fo_false_negative_recovery": "4/4",
+  "acceptance": {
+    "decision": "SHIP_DEFAULT_V6",
+    "shippable_default": true,
+    "contamination_v2": 69.3,
+    "contamination_v4": 0.0,
+    "contamination_v6": 0.0,
+    "eligible_v4": 4,
+    "eligible_v6": 14,
+    "veto_job_aggregator_first_loss_v4": 355,
+    "veto_job_aggregator_first_loss_v6": 345,
+    "rationale": "probes 4/4 recovered; contamination 0.0% near v4; newly_eligible=10 (carve_share=1.0). Safe to flip default to disc_v6.",
+    "note": "AI_CONFIRMED probes are HIGH-tier → discovery SQL prefilter (LOW-only) still excludes them; recovery is discovery-eval / first_loss taxonomy."
+  },
+  "default_flip": {
+    "DISCOVERY_VERSION": "disc_v6",
+    "settings.commercial_discovery_version": "disc_v6",
+    "commercial_discovery_enabled": false,
+    "reason": "SHIP_DEFAULT_V6 acceptance"
+  }
+}

@@ -1,0 +1,27 @@
+Evidence 100: commercial∧domain score backfill (Phase B)
+generated_at=2026-09-25T13:55:13.091224+00:00 head=unknown
+runtime_sec=264.08 dry_run=False days=360
+
+=== 1. POOL BEFORE ===
+  pool=1300 scored=45 unscored=1255 pct=3.46% low_prefilter_shape=20
+  discovery-visible eligible: {'scored_sampled': 45, 'disc_v4_eligible_any_tier': 1, 'disc_v6_eligible_any_tier': 14, 'disc_v4_eligible_LOW': 1, 'disc_v6_eligible_LOW': 8}
+
+=== 2. BACKFILL ===
+  candidates=1255 processed=1255 skipped=0
+  tiers={'LOW': 1255}
+  CRM upsert=False (score-only persist_message_score)
+
+=== 3. POOL AFTER ===
+  pool=1300 scored=1300 unscored=0 pct=100.0% low_prefilter_shape=203
+  discovery-visible eligible: {'scored_sampled': 1300, 'disc_v4_eligible_any_tier': 19, 'disc_v6_eligible_any_tier': 32, 'disc_v4_eligible_LOW': 19, 'disc_v6_eligible_LOW': 26}
+  delta={'scored_n': 1255, 'unscored_n': -1255, 'low_prefilter_shape_n': 183, 'disc_v4_eligible_LOW': 18, 'disc_v6_eligible_LOW': 18, 'disc_v4_eligible_any_tier': 18, 'disc_v6_eligible_any_tier': 18, 'human_labels': 0, 'ai_confirmed': 0}
+
+=== 4. ISOLATION ===
+  before={'human_labels': 1524, 'ai_confirmed': 4, 'scores': 127017, 'messages': 8624703}
+  after={'human_labels': 1524, 'ai_confirmed': 4, 'scores': 128272, 'messages': 8624703}
+  human_labels/AI_CONFIRMED unchanged=True
+
+=== 5. SCOPE ===
+  Stopped after commercial∧domain pool. Did not expand to full corpus.
+
+JSON: /app/docs/audit/evidence/100-commercial-domain-score-backfill.json
