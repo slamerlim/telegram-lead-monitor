@@ -1,0 +1,76 @@
+Evidence 98: commercial discovery v5 semantics (C-only NO_PATH recovery)
+generated_at=2026-09-25T13:25:40.703128+00:00 head=e4b58be
+runtime_sec=56.3 read_only=true capped=2500
+
+=== 1. V4 NO_PATH_MATCH CLASSIFICATION ===
+  n=1609 buckets={'OTHER': 4, 'DOMAIN': 1059, 'PROJECT_SCOPE': 43, 'BUDGET_DELIVERABLE': 489, 'PROCUREMENT': 9, 'REPAIR': 4, 'BUYER_SIGNAL': 1}
+  signal_presence={'ownership': 4, 'project_scope': 5, 'domain_loose': 1114, 'direction_BUYER': 114, 'hire': 77, 'domain_cat': 374, 'commercial': 60, 'direction_UNKNOWN': 1495, 'repair': 4, 'budget': 513, 'timeline': 6}
+  near_miss={'commercial+domain_no_buyer': 32, 'hire+domain_no_scope': 75, 'domain_only': 800, 'procurement_rx_not_signal': 9}
+  -- BUDGET_DELIVERABLE examples --
+    id=8604186 dir=UNKNOWN | $15.9B in BTC options expiring Friday means market makers will aggressively pin price near max pain. Instead of guessing
+    id=8564294 dir=UNKNOWN | Clean targets, but while BTC grinds between here and $88K, there’s plenty of intraday volatility to harvest. You can spi
+    id=8072714 dir=UNKNOWN | 🚀 Build your strategy with Futures Grid Bot and win a share of the 150,000 USDT prize pool! Enhance your trading experie
+  -- BUYER_SIGNAL examples --
+    id=8561722 dir=BUYER | OKX features built-in Trading Bots (like Grid, DCA, and Arbitrage bots) that are 100% free to use. They allow users to a
+  -- DOMAIN examples --
+    id=5480092 dir=BUYER | Hello. A few days ago I transferred a large amount of Tether from Trust Wallet to the Coinex exchange. First, I transfer
+    id=1207870 dir=UNKNOWN | Hello Admin please, I have an issue…I initially registered on Bybit Telegram community using my Old username :(Pegasus_0
+    id=36549 dir=BUYER | If you experience an API error message, kindly provide the full request you're sending to the exchange and the full resp
+  -- OTHER examples --
+    id=35831 dir=BUYER | the error message is pretty self-explanatory, you've reached the current risk limit: https://bybit-exchange.github.io/do
+    id=1015 dir=BUYER | my api connection are disabled on bybit and my account
+    id=1159 dir=BUYER | Thank you Dear is there any other option user can Trade Babit CFD through our Api designed Terminal which already work w
+  -- PROCUREMENT examples --
+    id=8487486 dir=BUYER | What do you think? https://preview.redd.it/j2pffl0e5nph1.png?width=1543&format=png&auto=webp&s=5db5ccbbed8d2d61c97f8be68
+    id=1721 dir=UNKNOWN | Perfect, thank you very much for the answer, great news that read-only scope is configurable and revocation is automatic
+    id=8569148 dir=UNKNOWN | Solana Eyes Major Milestone: Analysts break down what it would take for Solana (SOL) to break back past its previous loc
+  -- PROJECT_SCOPE examples --
+    id=1084484 dir=BUYER | One challenge I’ve always had as a trader is consistency. Not strategy — consistency. I could plan a trade perfectly and
+    id=1113753 dir=BUYER | ### Common Statistical Arbitrage Strategies Used by Quantitative Traders Statistical arbitrage (stat arb) is a trading s
+    id=932163 dir=BUYER | Building a perfect crypto portfolio for an AI-powered economy in 2030 would involve selecting assets that are likely to 
+  -- REPAIR examples --
+    id=935 dir=BUYER | Would like to report a possible bug which has been bothering me for years, not sure if it's actually a bug or a feature,
+    id=8149519 dir=UNKNOWN | BREAKING: Trading bot accidentally sent 167 ETH worth $300k to a random wallet. The transfer was caused by a software bu
+    id=1339 dir=UNKNOWN | Yes should be out now Please note FIX API access requires whitelist onboarding at either UID or institutional ID (ins_id
+
+=== 2. VERSION COMPARISON (identical capped population) ===
+  disc_v2: eligible=225 NO_PATH=2017 (80.68%) contamination=69.3% triggers={'client_hiring': 65, 'commercial_domain': 40, 'hire_budget_domain': 106, 'buyer_budget_domain': 12, 'commercial_domain_tech': 2}
+    first_loss={'RETRIEVED': 225, 'NO_PATH_MATCH': 2017, 'HARD_EXCLUDE_EARLY': 133, 'DIRECTION_EMPLOYER': 79, 'DIRECTION_SEEKER': 34, 'DIRECTION_PROVIDER': 12}
+    veto_rates(top)={}
+  disc_v4: eligible=4 NO_PATH=1609 (64.36%) contamination=0.0% triggers={'v4_budget_deliverable': 1, 'v4_project_procurement': 1, 'v4_direct_project_domain': 2}
+    path_counters={'E': 2, 'path_E': 2, 'trigger:v4_budget_deliverable': 1, 'A': 3, 'D': 1, 'path_A': 3, 'path_D': 1, 'trigger:v4_project_procurement': 1, 'trigger:v4_direct_project_domain': 2}
+    first_loss={'VETO_support_question': 232, 'VETO_job_aggregator': 355, 'VETO_corporate_employment': 78, 'RETRIEVED': 4, 'HARD_EXCLUDE_EARLY': 133, 'NO_PATH_MATCH': 1609, 'VETO_job_seeker': 65, 'VETO_generic_recruiter': 2, 'VETO_service_provider': 16, 'VETO_news_digest': 2, 'VETO_marketing_broadcast': 4}
+    veto_rates(top)={'corporate_employment': 527, 'job_aggregator': 451, 'generic_recruiter': 441, 'support_question': 323, 'job_seeker': 67, 'marketing_broadcast': 39, 'service_provider': 17, 'news_digest': 4}
+  disc_v5: eligible=4 NO_PATH=1608 (64.32%) contamination=0.0% triggers={'v5_budget_deliverable': 1, 'v5_project_procurement': 1, 'v5_direct_project_domain': 2}
+    path_counters={'E': 2, 'path_E': 2, 'trigger:v5_budget_deliverable': 1, 'A': 3, 'D': 1, 'path_A': 3, 'path_D': 1, 'trigger:v5_project_procurement': 1, 'trigger:v5_direct_project_domain': 2}
+    first_loss={'VETO_support_question': 232, 'VETO_job_aggregator': 355, 'VETO_corporate_employment': 78, 'RETRIEVED': 4, 'HARD_EXCLUDE_EARLY': 133, 'NO_PATH_MATCH': 1608, 'VETO_job_seeker': 65, 'VETO_service_provider': 17, 'VETO_generic_recruiter': 2, 'VETO_news_digest': 2, 'VETO_marketing_broadcast': 4}
+    veto_rates(top)={'corporate_employment': 529, 'job_aggregator': 451, 'generic_recruiter': 441, 'support_question': 323, 'job_seeker': 67, 'marketing_broadcast': 39, 'service_provider': 18, 'news_digest': 4}
+
+=== 3. V5 RECOVERY FROM V4 NO_PATH ===
+  total_recovered=0 by_bucket={}
+
+=== 4. ACCEPTANCE ===
+  NO_PATH delta: 1609 → 1608 (-1, -0.06%)
+  contamination: v2=69.3% v4=0.0% v5=0.0% (delta_pp=0.0)
+  eligible: v2=225 v4=4 v5=4
+  DECISION=HOLD shippable=False
+  rationale: NO_PATH delta insufficient (1 / 0.06%); do not ship a weak v5.
+  NOTE: D (LaborX FO veto carve) and B (historical unscored) remain next.
+
+=== 5. ISOLATION ===
+  human_labels=1524 AI_CONFIRMED=4
+  commercial_discovery_enabled=False
+  commercial_discovery_version=disc_v4
+
+=== 6. BUSINESS ===
+  NO OUTREACH / NO ML GO / NO FLAG FLIP IN THIS PHASE
+
+=== 7. C-ONLY CONCLUSION ===
+  Classification (v4 NO_PATH ~1609): DOMAIN≈66%, BUDGET_DELIVERABLE≈30% (mostly false $-amounts),
+  PROJECT_SCOPE≈43, PROCUREMENT/REPAIR/BUYER_SIGNAL tiny.
+  Buyer-KW prefilter subset among NO_PATH ≈33 — all noise (support/promo/referral); 0 genuine RFQs.
+  Real FO/RFQ-shaped buyer text is lost at veto (D: job_aggregator / LaborX FO), not NO_PATH.
+  Tight disc_v5 regexes (synthetic gaps) recover 0 on this capped population.
+  Loose expansions recover vacancy/provider contamination → rejected.
+  DECISION=HOLD: do not flip default to disc_v5. Keep disc_v4. Opt-in version=disc_v5 for audits.
+  NEXT: D (LaborX FO veto carve), then B (historical unscored). Remeasure C after D/B.

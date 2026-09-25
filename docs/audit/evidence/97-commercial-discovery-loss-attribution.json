@@ -1,0 +1,1897 @@
+{
+  "generated_at": "2026-09-25T12:28:06.781599+00:00",
+  "head": "e4b58be",
+  "discovery_version": "disc_v4",
+  "context_version": "ctx_v1",
+  "read_only": true,
+  "sdk_run": false,
+  "code_changes": false,
+  "S1_run": {
+    "invariants_before": {
+      "human_labels": 1524,
+      "ai_confirmed": 4,
+      "disc_candidates": 60,
+      "episodes": 60,
+      "scores": 123940,
+      "messages": 8621626
+    },
+    "live_settings": {
+      "commercial_discovery_enabled": false,
+      "commercial_episode_shadow_enabled": false,
+      "commercial_discovery_version": "disc_v4",
+      "commercial_context_version": "ctx_v1",
+      "ml_note": "ml_training_enabled from /validation/gates (API)"
+    },
+    "invariants_after": {
+      "human_labels": 1524,
+      "ai_confirmed": 4,
+      "disc_candidates": 60
+    },
+    "invariants_unchanged": true,
+    "runtime_sec": 226.84
+  },
+  "score_reconciliation": {
+    "windows": {
+      "7d": {
+        "messages": 117462,
+        "scored": 117462,
+        "pct_scored": 100.0,
+        "low": 117461,
+        "medium": 0,
+        "high": 1
+      },
+      "30d": {
+        "messages": 705416,
+        "scored": 122361,
+        "pct_scored": 17.35,
+        "low": 122360,
+        "medium": 0,
+        "high": 1
+      },
+      "90d": {
+        "messages": 2284107,
+        "scored": 123563,
+        "pct_scored": 5.41,
+        "low": 123561,
+        "medium": 0,
+        "high": 2
+      },
+      "360d": {
+        "messages": 8359391,
+        "scored": 123920,
+        "pct_scored": 1.48,
+        "low": 123910,
+        "medium": 0,
+        "high": 10
+      }
+    },
+    "current_score_per_message": {
+      "definition": "INNER/LEFT JOIN message_scores ON message_id; UNIQUE(message_id)",
+      "scores_total": 123940,
+      "distinct_scored": 123940,
+      "multi_score_msgs": 0,
+      "invariant_ok": true
+    },
+    "low_by_scored_at_7d": 123930,
+    "low_by_msg_date_7d": 117461,
+    "low_rescored_older_than_7d": 6469,
+    "msgs_vs_score_rows_note": "7d message_date LOW count differs from scored_at LOW count when older messages are re-scored into the window (not duplicate rows)."
+  },
+  "S2_pool": {
+    "pool_v1_compat": {
+      "7d": 16,
+      "30d": 81,
+      "90d": 286,
+      "360d": 1299
+    },
+    "pool_360d_full": 1299,
+    "pool_fetched": 1299,
+    "pool_cap": 5000,
+    "pool_truncated": false,
+    "boundary_probe_7d": {
+      "hiring_backslash_b": 0,
+      "hiring_backslash_y": 345
+    },
+    "boundary_note": "In PostgreSQL ARE, \\b is backspace not word boundary; \\y is word boundary. Evidence 96 semantic zeros using \\b are measurement artifacts. Pool v1 regex intentionally matches evidence 96 (no \\b)."
+  },
+  "S5_prefilter": {
+    "uncapped_7d": 2529,
+    "capped": 2500,
+    "cap": 2500,
+    "cap_truncated": 29,
+    "order_by": "(commercial_score+technical_score) DESC, message_date DESC",
+    "date_filter": "s.scored_at >= since (NOT m.message_date)",
+    "tier": "LOW",
+    "full_7d_low_top_communities": [
+      {
+        "name": "Bitget English Official",
+        "low_msgs": 22611
+      },
+      {
+        "name": "Bybit English",
+        "low_msgs": 12423
+      },
+      {
+        "name": "OKX English",
+        "low_msgs": 12063
+      },
+      {
+        "name": "WEEX English Official",
+        "low_msgs": 12040
+      },
+      {
+        "name": "WEEX English 2nd Group",
+        "low_msgs": 8237
+      },
+      {
+        "name": "Crypto Bulls Community",
+        "low_msgs": 5047
+      },
+      {
+        "name": "KCEX English",
+        "low_msgs": 4376
+      },
+      {
+        "name": "XT Futures",
+        "low_msgs": 3691
+      },
+      {
+        "name": "KuCoin Exchange",
+        "low_msgs": 3670
+      },
+      {
+        "name": "KuCoin Exchange 2nd Group",
+        "low_msgs": 3018
+      },
+      {
+        "name": "HTX English",
+        "low_msgs": 2973
+      },
+      {
+        "name": "Binance English",
+        "low_msgs": 2861
+      },
+      {
+        "name": "LBank Official Group",
+        "low_msgs": 2620
+      },
+      {
+        "name": "XT Exchange Official",
+        "low_msgs": 2563
+      },
+      {
+        "name": "Toobit English",
+        "low_msgs": 2430
+      }
+    ],
+    "capped_top_communities": [
+      {
+        "name": "Bybit English",
+        "in_cap": 989
+      },
+      {
+        "name": "Bybit API Discussion",
+        "in_cap": 330
+      },
+      {
+        "name": "JobStash.xyz - Crypto Native, Web3 and AI Jobs",
+        "in_cap": 296
+      },
+      {
+        "name": "LBank Official Group",
+        "in_cap": 211
+      },
+      {
+        "name": "Web3 Jobs",
+        "in_cap": 86
+      },
+      {
+        "name": "Jobs Crypto UAE \ud83d\udc2a",
+        "in_cap": 71
+      },
+      {
+        "name": "Web3 Jobs | LaborX",
+        "in_cap": 69
+      },
+      {
+        "name": "\u0411\u043b\u043e\u043a\u0447\u0435\u0439\u043d Hunter | \u0412\u0430\u043a\u0430\u043d\u0441\u0438\u0438 \u0432 \u043a\u0440\u0438\u043f\u0442\u043e-\u0438\u043d\u0434\u0443\u0441\u0442\u0440\u0438\u0438",
+        "in_cap": 48
+      },
+      {
+        "name": "\u041a\u0440\u0438\u043f\u0442\u043e HeadHunter | WEB 3 Jobs",
+        "in_cap": 36
+      },
+      {
+        "name": "HTX English",
+        "in_cap": 29
+      },
+      {
+        "name": "CC | \u041a\u0440\u0438\u043f\u0442\u043e \u0412\u0430\u043a\u0430\u043d\u0441\u0438\u0438",
+        "in_cap": 25
+      },
+      {
+        "name": "OKX English",
+        "in_cap": 25
+      },
+      {
+        "name": "Bybit Announcements",
+        "in_cap": 24
+      },
+      {
+        "name": "Bitget English Official",
+        "in_cap": 20
+      },
+      {
+        "name": "SOLANA Jobs",
+        "in_cap": 19
+      }
+    ],
+    "capped_tier_dist": {
+      "LOW": 2500
+    },
+    "bias_finding": "CT-ranked LIMIT 2500 skews toward high commercial+technical communities; compare full_7d_low_top vs capped_top."
+  },
+  "S3_planes": {
+    "audit": {
+      "description": "LOW + scored_at window + regex/CT OR + ORDER BY CT LIMIT",
+      "prefilter_cap": 2500
+    },
+    "production": {
+      "commercial_discovery_enabled": false,
+      "enqueue": "analyzer: flag AND tier==LOW AND discovery_features.eligible",
+      "candidates_by_version_status_skip": [
+        {
+          "version": "disc_v1",
+          "status": "EPISODE_BUILT",
+          "skip_reason": "",
+          "n": 30
+        },
+        {
+          "version": "disc_v2",
+          "status": "EPISODE_BUILT",
+          "skip_reason": "",
+          "n": 30
+        }
+      ]
+    },
+    "mismatch_items": [
+      "Audit uses scored_at + LIMIT 2500; production streams ingest-time LOW+eligible",
+      "Production flag default False \u2014 disc_v4 never emitted candidates in live defaults",
+      "Existing candidates are disc_v1/disc_v2 only"
+    ]
+  },
+  "S4_production_loss": {
+    "live_settings": {
+      "commercial_discovery_enabled": false,
+      "commercial_episode_shadow_enabled": false,
+      "commercial_discovery_version": "disc_v4",
+      "commercial_context_version": "ctx_v1",
+      "ml_note": "ml_training_enabled from /validation/gates (API)"
+    },
+    "first_loss": {
+      "FLAG_DISABLED": "100% of potential seeds while commercial_discovery_enabled=false"
+    },
+    "counterfactual_after_stage": "FLAG_DISABLED",
+    "note": "Do not treat production veto rates as live until flag is enabled."
+  },
+  "S6_disc_v4_measured": {
+    "examined": 2500,
+    "eligible_measured": 4,
+    "eligible_ids": [
+      39187,
+      270199,
+      1898,
+      2194
+    ],
+    "evidence_96_hardcoded": 4,
+    "matches_96": true,
+    "veto_hit_counts_multi_label": {
+      "corporate_employment": 538,
+      "job_aggregator": 454,
+      "generic_recruiter": 443,
+      "support_question": 322,
+      "job_seeker": 69,
+      "marketing_broadcast": 39,
+      "service_provider": 17,
+      "news_digest": 4
+    },
+    "first_loss_on_capped_prefilter": {
+      "NO_PATH_MATCH": 1599,
+      "VETO_job_aggregator": 355,
+      "VETO_support_question": 199,
+      "VETO_corporate_employment": 153,
+      "HARD_EXCLUDE_EARLY": 136,
+      "VETO_job_seeker": 31,
+      "VETO_service_provider": 14,
+      "RETRIEVED": 4,
+      "VETO_marketing_broadcast": 4,
+      "VETO_generic_recruiter": 3,
+      "VETO_news_digest": 2
+    }
+  },
+  "S8_commercial_domain_loss_report": {
+    "pool_fetched": 1299,
+    "pool_360d_sql_count": 1299,
+    "tier_distribution": {
+      "LOW": 38,
+      "UNSCORED": 1255,
+      "HIGH": 6
+    },
+    "unscored": 1255,
+    "rows": [
+      {
+        "stage": "NOT_SCORED",
+        "n": 1255,
+        "pct_of_pool": 96.61,
+        "cumulative_pct": 96.61,
+        "plane": "audit"
+      },
+      {
+        "stage": "NOT_LOW",
+        "n": 6,
+        "pct_of_pool": 0.46,
+        "cumulative_pct": 97.07,
+        "plane": "audit"
+      },
+      {
+        "stage": "CT_CAP_TRUNCATED",
+        "n": 19,
+        "pct_of_pool": 1.46,
+        "cumulative_pct": 98.54,
+        "plane": "audit"
+      },
+      {
+        "stage": "HARD_EXCLUDE_EARLY",
+        "n": 1,
+        "pct_of_pool": 0.08,
+        "cumulative_pct": 98.61,
+        "plane": "audit"
+      },
+      {
+        "stage": "VETO_job_aggregator",
+        "n": 10,
+        "pct_of_pool": 0.77,
+        "cumulative_pct": 99.38,
+        "plane": "audit"
+      },
+      {
+        "stage": "VETO_corporate_employment",
+        "n": 2,
+        "pct_of_pool": 0.15,
+        "cumulative_pct": 99.54,
+        "plane": "audit"
+      },
+      {
+        "stage": "VETO_support_question",
+        "n": 1,
+        "pct_of_pool": 0.08,
+        "cumulative_pct": 99.62,
+        "plane": "audit"
+      },
+      {
+        "stage": "NO_PATH_MATCH",
+        "n": 4,
+        "pct_of_pool": 0.31,
+        "cumulative_pct": 99.92,
+        "plane": "audit"
+      },
+      {
+        "stage": "RETRIEVED",
+        "n": 1,
+        "pct_of_pool": 0.08,
+        "cumulative_pct": 100.0,
+        "plane": "audit"
+      }
+    ],
+    "sums_to_pool": true,
+    "first_loss_counts": {
+      "NOT_SCORED": 1255,
+      "CT_CAP_TRUNCATED": 19,
+      "VETO_job_aggregator": 10,
+      "NOT_LOW": 6,
+      "NO_PATH_MATCH": 4,
+      "VETO_corporate_employment": 2,
+      "VETO_support_question": 1,
+      "HARD_EXCLUDE_EARLY": 1,
+      "RETRIEVED": 1
+    },
+    "no_path_match_detail": {}
+  },
+  "S9_veto_x_domain": {
+    "in_pool_multi_label_hits": {
+      "support_question": 357,
+      "marketing_broadcast": 233,
+      "corporate_employment": 105,
+      "generic_recruiter": 48,
+      "job_aggregator": 47,
+      "news_digest": 22,
+      "service_provider": 14,
+      "job_seeker": 2
+    },
+    "note": "Multi-label: one message can hit multiple vetoes; first-loss is single-assignment in S8."
+  },
+  "S12_low_but_commercial": {
+    "n": 38,
+    "samples": [
+      {
+        "message_id": 8618788,
+        "community": "THORChain Community",
+        "commercial_score": 12.0,
+        "technical_score": 16.0,
+        "first_loss": "VETO_support_question",
+        "semantic_gap": "SUPPORT_FALSE_POSITIVE",
+        "gig_marketplace": false,
+        "v4": {
+          "eligible": false,
+          "buyer_direction": "UNKNOWN",
+          "veto_categories": [
+            "support_question"
+          ],
+          "repair_signal": false,
+          "project_scope": false,
+          "aggregator_signal": false,
+          "soft_direction": false,
+          "families": [
+            "BUDGETED_REQUEST"
+          ]
+        },
+        "v2_eligible": false,
+        "preview": "Quick recap of THORChain Podcast #237 for anyone who didn\u2019t have 2h40 to spare \ud83d\ude04 \u2022 Houdini / STO Houdini private swaps are completely option"
+      },
+      {
+        "message_id": 8615453,
+        "community": "Official Crypto Traders (Chatbox)",
+        "commercial_score": 12.0,
+        "technical_score": 0.0,
+        "first_loss": "CT_CAP_TRUNCATED",
+        "semantic_gap": "PREFILTER_MISS",
+        "gig_marketplace": false,
+        "v4": {
+          "eligible": false,
+          "buyer_direction": "UNKNOWN",
+          "veto_categories": [
+            "support_question"
+          ],
+          "repair_signal": false,
+          "project_scope": false,
+          "aggregator_signal": false,
+          "soft_direction": false,
+          "families": [
+            "BUDGETED_REQUEST",
+            "ARBITRAGE_PROJECT_REQUEST"
+          ]
+        },
+        "v2_eligible": false,
+        "preview": "\ud83d\ude80 TRONCORE \u2014 PUT YOUR TRX TO WORK! \ud83d\udc8e LAUNCHED FEW HOURS AGO Click here to join\ud83d\udc47\ud83d\udc47 https://t.me/troncorebot?start=5624301782 Group Chat\ud83d\udc47\ud83d\udc47 http"
+      },
+      {
+        "message_id": 8611875,
+        "community": "OKX English",
+        "commercial_score": 0.0,
+        "technical_score": 0.0,
+        "first_loss": "CT_CAP_TRUNCATED",
+        "semantic_gap": "PREFILTER_MISS",
+        "gig_marketplace": false,
+        "v4": {
+          "eligible": false,
+          "buyer_direction": "UNKNOWN",
+          "veto_categories": [
+            "support_question"
+          ],
+          "repair_signal": false,
+          "project_scope": false,
+          "aggregator_signal": false,
+          "soft_direction": false,
+          "families": [
+            "EXCHANGE_INTEGRATION_REQUEST"
+          ]
+        },
+        "v2_eligible": false,
+        "preview": "Bitcoin Miner Hive Escalates Swedish VAT Dispute to European Commission The Swedish Tax Agency, Bikupa Datacenter AB, and Bikupa Datacenter "
+      },
+      {
+        "message_id": 8605487,
+        "community": "MQL5 Algo Trading",
+        "commercial_score": 0.0,
+        "technical_score": 16.0,
+        "first_loss": "CT_CAP_TRUNCATED",
+        "semantic_gap": "PREFILTER_MISS",
+        "gig_marketplace": false,
+        "v4": {
+          "eligible": false,
+          "buyer_direction": "UNKNOWN",
+          "veto_categories": [],
+          "repair_signal": false,
+          "project_scope": false,
+          "aggregator_signal": false,
+          "soft_direction": false,
+          "families": []
+        },
+        "v2_eligible": false,
+        "preview": "This article proposes a reusable MQL5 Expert Advisor template that separates strategy rules from platform plumbing. Instead of mixing signal"
+      },
+      {
+        "message_id": 8604779,
+        "community": "OKX English",
+        "commercial_score": 0.0,
+        "technical_score": 0.0,
+        "first_loss": "CT_CAP_TRUNCATED",
+        "semantic_gap": "PREFILTER_MISS",
+        "gig_marketplace": false,
+        "v4": {
+          "eligible": false,
+          "buyer_direction": "UNKNOWN",
+          "veto_categories": [
+            "support_question"
+          ],
+          "repair_signal": false,
+          "project_scope": false,
+          "aggregator_signal": false,
+          "soft_direction": false,
+          "families": [
+            "EXCHANGE_INTEGRATION_REQUEST"
+          ]
+        },
+        "v2_eligible": false,
+        "preview": "SEC Commissioner Hester \u2018Crypto Mom\u2019 Peirce Advocates Privacy-Preserving Tech Bitcoin Magazine SEC Commissioner Hester \u2018Crypto Mom\u2019 Peirce A"
+      },
+      {
+        "message_id": 8594706,
+        "community": "OKX English",
+        "commercial_score": 12.0,
+        "technical_score": 0.0,
+        "first_loss": "CT_CAP_TRUNCATED",
+        "semantic_gap": "PREFILTER_MISS",
+        "gig_marketplace": false,
+        "v4": {
+          "eligible": false,
+          "buyer_direction": "BUYER",
+          "veto_categories": [
+            "support_question"
+          ],
+          "repair_signal": false,
+          "project_scope": false,
+          "aggregator_signal": false,
+          "soft_direction": false,
+          "families": [
+            "BUDGETED_REQUEST",
+            "EXCHANGE_INTEGRATION_REQUEST"
+          ]
+        },
+        "v2_eligible": false,
+        "preview": "Pentagon seeks $29.5 billion under AI Arsenal initiative in fiscal 2027 budget The Pentagon's AI investment could reshape military infrastru"
+      },
+      {
+        "message_id": 8593743,
+        "community": "THORChain Community",
+        "commercial_score": 0.0,
+        "technical_score": 0.0,
+        "first_loss": "CT_CAP_TRUNCATED",
+        "semantic_gap": "PREFILTER_MISS",
+        "gig_marketplace": false,
+        "v4": {
+          "eligible": false,
+          "buyer_direction": "UNKNOWN",
+          "veto_categories": [
+            "support_question"
+          ],
+          "repair_signal": false,
+          "project_scope": false,
+          "aggregator_signal": false,
+          "soft_direction": false,
+          "families": [
+            "BUDGETED_REQUEST"
+          ]
+        },
+        "v2_eligible": false,
+        "preview": "as for Marketing, I am sure the vast majority of people are behind Kenton anyone in business, who has done mail-in flyers or SEO on websites"
+      },
+      {
+        "message_id": 8589995,
+        "community": "Bybit English",
+        "commercial_score": 0.0,
+        "technical_score": 0.0,
+        "first_loss": "CT_CAP_TRUNCATED",
+        "semantic_gap": "PREFILTER_MISS",
+        "gig_marketplace": false,
+        "v4": {
+          "eligible": false,
+          "buyer_direction": "BUYER",
+          "veto_categories": [],
+          "repair_signal": false,
+          "project_scope": false,
+          "aggregator_signal": false,
+          "soft_direction": false,
+          "families": []
+        },
+        "v2_eligible": false,
+        "preview": "Kalshi: The U.S. Commodity Futures Trading Commission (CFTC) is not conducting any investigation into its trading activities."
+      },
+      {
+        "message_id": 8572251,
+        "community": "OKX English",
+        "commercial_score": 0.0,
+        "technical_score": 0.0,
+        "first_loss": "CT_CAP_TRUNCATED",
+        "semantic_gap": "PREFILTER_MISS",
+        "gig_marketplace": false,
+        "v4": {
+          "eligible": false,
+          "buyer_direction": "UNKNOWN",
+          "veto_categories": [
+            "support_question"
+          ],
+          "repair_signal": false,
+          "project_scope": false,
+          "aggregator_signal": false,
+          "soft_direction": false,
+          "families": [
+            "EXCHANGE_INTEGRATION_REQUEST"
+          ]
+        },
+        "v2_eligible": false,
+        "preview": "Ex-SEC acting chair: Agency dropped crypto cases to avoid issues with credibility SEC Commissioner Mark Uyeda said that the agency dropped m"
+      },
+      {
+        "message_id": 8560440,
+        "community": "Web3 Jobs | LaborX",
+        "commercial_score": 12.0,
+        "technical_score": 0.0,
+        "first_loss": "VETO_job_aggregator",
+        "semantic_gap": "MARKETPLACE_FALSE_POSITIVE",
+        "gig_marketplace": true,
+        "v4": {
+          "eligible": false,
+          "buyer_direction": "RECRUITER",
+          "veto_categories": [
+            "job_aggregator",
+            "generic_recruiter"
+          ],
+          "repair_signal": false,
+          "project_scope": false,
+          "aggregator_signal": true,
+          "soft_direction": false,
+          "families": [
+            "BUDGETED_REQUEST",
+            "EXCHANGE_INTEGRATION_REQUEST"
+          ]
+        },
+        "v2_eligible": true,
+        "preview": "\ud83c\udf1f Freelance Opportunity: Platforms to Buy Verified Bybit Accounts LocalUsaShop \ud83d\udcb0 Budget: $156 \ud83e\udd1d With: Top Website for Buy Verified Stripe Ac"
+      },
+      {
+        "message_id": 8542685,
+        "community": "Bybit English",
+        "commercial_score": 0.0,
+        "technical_score": 0.0,
+        "first_loss": "CT_CAP_TRUNCATED",
+        "semantic_gap": "PREFILTER_MISS",
+        "gig_marketplace": false,
+        "v4": {
+          "eligible": false,
+          "buyer_direction": "UNKNOWN",
+          "veto_categories": [],
+          "repair_signal": false,
+          "project_scope": false,
+          "aggregator_signal": false,
+          "soft_direction": false,
+          "families": []
+        },
+        "v2_eligible": false,
+        "preview": "The U.S. Commodity Futures Trading Commission (CFTC) warns against risky \"male\" contracts in prediction markets"
+      },
+      {
+        "message_id": 8542686,
+        "community": "Bybit English",
+        "commercial_score": 0.0,
+        "technical_score": 0.0,
+        "first_loss": "CT_CAP_TRUNCATED",
+        "semantic_gap": "PREFILTER_MISS",
+        "gig_marketplace": false,
+        "v4": {
+          "eligible": false,
+          "buyer_direction": "UNKNOWN",
+          "veto_categories": [],
+          "repair_signal": false,
+          "project_scope": false,
+          "aggregator_signal": false,
+          "soft_direction": false,
+          "families": []
+        },
+        "v2_eligible": false,
+        "preview": "The U.S. Commodity Futures Trading Commission (CFTC) warns against risky \"male\" contracts in prediction markets."
+      },
+      {
+        "message_id": 8542689,
+        "community": "Bybit English",
+        "commercial_score": 0.0,
+        "technical_score": 0.0,
+        "first_loss": "CT_CAP_TRUNCATED",
+        "semantic_gap": "PREFILTER_MISS",
+        "gig_marketplace": false,
+        "v4": {
+          "eligible": false,
+          "buyer_direction": "UNKNOWN",
+          "veto_categories": [],
+          "repair_signal": false,
+          "project_scope": false,
+          "aggregator_signal": false,
+          "soft_direction": false,
+          "families": []
+        },
+        "v2_eligible": false,
+        "preview": "The U.S. Commodity Futures Trading Commission (CFTC) warns against risky \"male\" contracts in prediction markets."
+      },
+      {
+        "message_id": 8535615,
+        "community": "Bitget English Official",
+        "commercial_score": 0.0,
+        "technical_score": 0.0,
+        "first_loss": "CT_CAP_TRUNCATED",
+        "semantic_gap": "PREFILTER_MISS",
+        "gig_marketplace": false,
+        "v4": {
+          "eligible": false,
+          "buyer_direction": "UNKNOWN",
+          "veto_categories": [],
+          "repair_signal": false,
+          "project_scope": false,
+          "aggregator_signal": false,
+          "soft_direction": false,
+          "families": []
+        },
+        "v2_eligible": false,
+        "preview": "\ud83d\udea8 CFTC Issues Guidance on Prediction Market Risks The Commodity Futures Trading Commission has warned regulated entities that \"mention marke"
+      },
+      {
+        "message_id": 8521899,
+        "community": "Bybit English",
+        "commercial_score": 0.0,
+        "technical_score": 0.0,
+        "first_loss": "CT_CAP_TRUNCATED",
+        "semantic_gap": "PREFILTER_MISS",
+        "gig_marketplace": false,
+        "v4": {
+          "eligible": false,
+          "buyer_direction": "UNKNOWN",
+          "veto_categories": [],
+          "repair_signal": false,
+          "project_scope": false,
+          "aggregator_signal": false,
+          "soft_direction": false,
+          "families": []
+        },
+        "v2_eligible": false,
+        "preview": "The US Commodity Futures Trading Commission (CFTC) issued a landmark no-action letter extending regulatory relief to passive software develo"
+      },
+      {
+        "message_id": 8520168,
+        "community": "Bybit English",
+        "commercial_score": 0.0,
+        "technical_score": 0.0,
+        "first_loss": "CT_CAP_TRUNCATED",
+        "semantic_gap": "PREFILTER_MISS",
+        "gig_marketplace": false,
+        "v4": {
+          "eligible": false,
+          "buyer_direction": "UNKNOWN",
+          "veto_categories": [],
+          "repair_signal": false,
+          "project_scope": false,
+          "aggregator_signal": false,
+          "soft_direction": false,
+          "families": []
+        },
+        "v2_eligible": false,
+        "preview": "The US Commodity Futures Trading Commission (CFTC) issued a landmark no-action letter extending regulatory relief to passive software develo"
+      },
+      {
+        "message_id": 8487486,
+        "community": "/r/algotrading",
+        "commercial_score": 12.0,
+        "technical_score": 34.0,
+        "first_loss": "NO_PATH_MATCH",
+        "semantic_gap": "BUYER_SIGNAL_NOT_RECOGNIZED",
+        "gig_marketplace": false,
+        "v4": {
+          "eligible": false,
+          "buyer_direction": "BUYER",
+          "veto_categories": [],
+          "repair_signal": false,
+          "project_scope": false,
+          "aggregator_signal": false,
+          "soft_direction": false,
+          "families": [
+            "BUDGETED_REQUEST",
+            "BOT_PURCHASE_REQUEST"
+          ]
+        },
+        "v2_eligible": true,
+        "preview": "What do you think? https://preview.redd.it/j2pffl0e5nph1.png?width=1543&format=png&auto=webp&s=5db5ccbbed8d2d61c97f8be68674b4fbb4c76097 http"
+      },
+      {
+        "message_id": 1,
+        "community": "CryptoJobsList | Web3 Jobs",
+        "commercial_score": 0.0,
+        "technical_score": 0.0,
+        "first_loss": "CT_CAP_TRUNCATED",
+        "semantic_gap": "PREFILTER_MISS",
+        "gig_marketplace": false,
+        "v4": {
+          "eligible": false,
+          "buyer_direction": "EMPLOYER",
+          "veto_categories": [
+            "corporate_employment"
+          ],
+          "repair_signal": false,
+          "project_scope": false,
+          "aggregator_signal": false,
+          "soft_direction": false,
+          "families": [
+            "BUDGETED_REQUEST"
+          ]
+        },
+        "v2_eligible": false,
+        "preview": "\ud83d\udc97 A useful way to understand what you should build next in your career is to look at jobs you\u2019re not ready for yet. Find roles one level abo"
+      },
+      {
+        "message_id": 196,
+        "community": "Web3 Jobs | LaborX",
+        "commercial_score": 57.0,
+        "technical_score": 18.0,
+        "first_loss": "VETO_job_aggregator",
+        "semantic_gap": "MARKETPLACE_FALSE_POSITIVE",
+        "gig_marketplace": true,
+        "v4": {
+          "eligible": false,
+          "buyer_direction": "RECRUITER",
+          "veto_categories": [
+            "job_aggregator",
+            "generic_recruiter"
+          ],
+          "repair_signal": false,
+          "project_scope": false,
+          "aggregator_signal": true,
+          "soft_direction": false,
+          "families": [
+            "BUDGETED_REQUEST",
+            "BOT_PURCHASE_REQUEST"
+          ]
+        },
+        "v2_eligible": true,
+        "preview": "\ud83c\udf1f Freelance Opportunity: Create a trading bot for 2,500 PEPE. \ud83d\udcb0 Budget: $15 \ud83e\udd1d With: Quetta Audy"
+      },
+      {
+        "message_id": 682,
+        "community": "3Commas Community",
+        "commercial_score": 0.0,
+        "technical_score": 0.0,
+        "first_loss": "NO_PATH_MATCH",
+        "semantic_gap": "DOMAIN_NOT_RECOGNIZED",
+        "gig_marketplace": false,
+        "v4": {
+          "eligible": false,
+          "buyer_direction": "UNKNOWN",
+          "veto_categories": [],
+          "repair_signal": false,
+          "project_scope": false,
+          "aggregator_signal": false,
+          "soft_direction": false,
+          "families": [
+            "EXCHANGE_INTEGRATION_REQUEST"
+          ]
+        },
+        "v2_eligible": false,
+        "preview": "This is my \"My Commissions\" page on Bybit."
+      },
+      {
+        "message_id": 712,
+        "community": "3Commas Community",
+        "commercial_score": 0.0,
+        "technical_score": 0.0,
+        "first_loss": "NO_PATH_MATCH",
+        "semantic_gap": "DOMAIN_NOT_RECOGNIZED",
+        "gig_marketplace": false,
+        "v4": {
+          "eligible": false,
+          "buyer_direction": "UNKNOWN",
+          "veto_categories": [],
+          "repair_signal": false,
+          "project_scope": false,
+          "aggregator_signal": false,
+          "soft_direction": false,
+          "families": [
+            "EXCHANGE_INTEGRATION_REQUEST"
+          ]
+        },
+        "v2_eligible": false,
+        "preview": "I have some news that will delight everyone using grid bots. In the new version, positions are closed using market orders instead of limit o"
+      },
+      {
+        "message_id": 236,
+        "community": "Web3 Jobs | LaborX",
+        "commercial_score": 0.0,
+        "technical_score": 0.0,
+        "first_loss": "CT_CAP_TRUNCATED",
+        "semantic_gap": "PREFILTER_MISS",
+        "gig_marketplace": false,
+        "v4": {
+          "eligible": false,
+          "buyer_direction": "EMPLOYER",
+          "veto_categories": [
+            "corporate_employment"
+          ],
+          "repair_signal": false,
+          "project_scope": false,
+          "aggregator_signal": false,
+          "soft_direction": false,
+          "families": []
+        },
+        "v2_eligible": false,
+        "preview": "\ud83d\udcbc Director - Futures Commission Merchant (FCM) at \u0421rypto.com \ud83d\udccd Chicago, USA | New York, USA | San Francisco, USA \ud83c\udf0e Office, Remote, Full time"
+      },
+      {
+        "message_id": 1721,
+        "community": "Bybit API Discussion",
+        "commercial_score": 0.0,
+        "technical_score": 30.0,
+        "first_loss": "NO_PATH_MATCH",
+        "semantic_gap": "DOMAIN_NOT_RECOGNIZED",
+        "gig_marketplace": false,
+        "v4": {
+          "eligible": false,
+          "buyer_direction": "UNKNOWN",
+          "veto_categories": [],
+          "repair_signal": false,
+          "project_scope": false,
+          "aggregator_signal": false,
+          "soft_direction": false,
+          "families": [
+            "BUDGETED_REQUEST",
+            "EXCHANGE_INTEGRATION_REQUEST"
+          ]
+        },
+        "v2_eligible": false,
+        "preview": "Perfect, thank you very much for the answer, great news that read-only scope is configurable and revocation is automatic. Understood on the "
+      },
+      {
+        "message_id": 22581,
+        "community": "Web3 Jobs | LaborX",
+        "commercial_score": 57.0,
+        "technical_score": 18.0,
+        "first_loss": "VETO_job_aggregator",
+        "semantic_gap": "MARKETPLACE_FALSE_POSITIVE",
+        "gig_marketplace": true,
+        "v4": {
+          "eligible": false,
+          "buyer_direction": "RECRUITER",
+          "veto_categories": [
+            "job_aggregator",
+            "corporate_employment",
+            "generic_recruiter"
+          ],
+          "repair_signal": false,
+          "project_scope": false,
+          "aggregator_signal": true,
+          "soft_direction": false,
+          "families": [
+            "BUDGETED_REQUEST",
+            "BOT_PURCHASE_REQUEST"
+          ]
+        },
+        "v2_eligible": true,
+        "preview": "\ud83c\udf1f Freelance Opportunity: We are hiring Trading bot developers! \ud83d\udcb0 Budget: $8000 \ud83e\udd1d With: Charlie Mcfann"
+      },
+      {
+        "message_id": 22763,
+        "community": "Web3 Jobs | LaborX",
+        "commercial_score": 57.0,
+        "technical_score": 34.0,
+        "first_loss": "VETO_job_aggregator",
+        "semantic_gap": "MARKETPLACE_FALSE_POSITIVE",
+        "gig_marketplace": true,
+        "v4": {
+          "eligible": false,
+          "buyer_direction": "RECRUITER",
+          "veto_categories": [
+            "job_aggregator",
+            "generic_recruiter"
+          ],
+          "repair_signal": false,
+          "project_scope": false,
+          "aggregator_signal": true,
+          "soft_direction": false,
+          "families": [
+            "BUDGETED_REQUEST",
+            "ARBITRAGE_PROJECT_REQUEST",
+            "SOLANA_DEX_PROJECT_REQUEST"
+          ]
+        },
+        "v2_eligible": true,
+        "preview": "\ud83c\udf1f Freelance Opportunity: Senior Solana MEV / Flash Loan Arbitrage Bot Developer \ud83d\udcb0 Budget: $100 \ud83e\udd1d With: Obukohwo David"
+      },
+      {
+        "message_id": 22862,
+        "community": "Web3 Jobs | LaborX",
+        "commercial_score": 12.0,
+        "technical_score": 0.0,
+        "first_loss": "CT_CAP_TRUNCATED",
+        "semantic_gap": "PREFILTER_MISS",
+        "gig_marketplace": true,
+        "v4": {
+          "eligible": false,
+          "buyer_direction": "RECRUITER",
+          "veto_categories": [
+            "job_aggregator",
+            "generic_recruiter"
+          ],
+          "repair_signal": false,
+          "project_scope": false,
+          "aggregator_signal": true,
+          "soft_direction": false,
+          "families": [
+            "BUDGETED_REQUEST"
+          ]
+        },
+        "v2_eligible": true,
+        "preview": "\ud83c\udf1f Freelance Opportunity: Expert Website Marketing and Content Strategy Specialist \ud83d\udcb0 Budget: $130 \ud83e\udd1d With: Design and build Limited Branding W"
+      },
+      {
+        "message_id": 23360,
+        "community": "Web3 Jobs | LaborX",
+        "commercial_score": 12.0,
+        "technical_score": 0.0,
+        "first_loss": "CT_CAP_TRUNCATED",
+        "semantic_gap": "PREFILTER_MISS",
+        "gig_marketplace": true,
+        "v4": {
+          "eligible": false,
+          "buyer_direction": "RECRUITER",
+          "veto_categories": [
+            "job_aggregator",
+            "generic_recruiter"
+          ],
+          "repair_signal": false,
+          "project_scope": false,
+          "aggregator_signal": true,
+          "soft_direction": false,
+          "families": [
+            "BUDGETED_REQUEST"
+          ]
+        },
+        "v2_eligible": true,
+        "preview": "\ud83c\udf1f Freelance Opportunity: TokenTrack: Real-Time Market &amp; Strategy Dashboard \ud83d\udcb0 Budget: $2500 \ud83e\udd1d With: steven Gwillim"
+      },
+      {
+        "message_id": 23747,
+        "community": "Web3 Jobs | LaborX",
+        "commercial_score": 57.0,
+        "technical_score": 18.0,
+        "first_loss": "VETO_job_aggregator",
+        "semantic_gap": "MARKETPLACE_FALSE_POSITIVE",
+        "gig_marketplace": true,
+        "v4": {
+          "eligible": false,
+          "buyer_direction": "RECRUITER",
+          "veto_categories": [
+            "job_aggregator",
+            "generic_recruiter"
+          ],
+          "repair_signal": false,
+          "project_scope": false,
+          "aggregator_signal": true,
+          "soft_direction": false,
+          "families": [
+            "BUDGETED_REQUEST",
+            "BOT_PURCHASE_REQUEST"
+          ]
+        },
+        "v2_eligible": true,
+        "preview": "\ud83c\udf1f Freelance Opportunity: Sales Closer Needed to Sell High-Performance Trading Bot \ud83d\udcb0 Budget: $100 \ud83e\udd1d With: EARNEST MWAURA"
+      },
+      {
+        "message_id": 262527,
+        "community": "JobStash.xyz - Crypto Native, Web3 and AI Jobs",
+        "commercial_score": 63.0,
+        "technical_score": 18.0,
+        "first_loss": "HARD_EXCLUDE_EARLY",
+        "semantic_gap": "EMPLOYMENT_FALSE_POSITIVE",
+        "gig_marketplace": false,
+        "v4": {
+          "eligible": false,
+          "buyer_direction": "EMPLOYER",
+          "veto_categories": [
+            "marketing_broadcast",
+            "corporate_employment"
+          ],
+          "repair_signal": false,
+          "project_scope": false,
+          "aggregator_signal": false,
+          "soft_direction": false,
+          "families": [
+            "BOT_PURCHASE_REQUEST"
+          ]
+        },
+        "v2_eligible": false,
+        "preview": "Humaniq is hiring a Project Manager Humaniq is looking for a Project Manager to draft TOR, monitor implementation and deadlines, assess sub-"
+      },
+      {
+        "message_id": 24114,
+        "community": "Web3 Jobs | LaborX",
+        "commercial_score": 57.0,
+        "technical_score": 34.0,
+        "first_loss": "VETO_job_aggregator",
+        "semantic_gap": "MARKETPLACE_FALSE_POSITIVE",
+        "gig_marketplace": true,
+        "v4": {
+          "eligible": false,
+          "buyer_direction": "RECRUITER",
+          "veto_categories": [
+            "job_aggregator",
+            "generic_recruiter"
+          ],
+          "repair_signal": false,
+          "project_scope": false,
+          "aggregator_signal": true,
+          "soft_direction": false,
+          "families": [
+            "BUDGETED_REQUEST",
+            "BOT_PURCHASE_REQUEST"
+          ]
+        },
+        "v2_eligible": true,
+        "preview": "\ud83c\udf1f Freelance Opportunity: Improve Safety for a TypeScript Polymarket Copy-Trading Bot \ud83d\udcb0 Budget: $4000 \ud83e\udd1d With: dub"
+      },
+      {
+        "message_id": 24190,
+        "community": "Web3 Jobs | LaborX",
+        "commercial_score": 57.0,
+        "technical_score": 0.0,
+        "first_loss": "VETO_job_aggregator",
+        "semantic_gap": "MARKETPLACE_FALSE_POSITIVE",
+        "gig_marketplace": true,
+        "v4": {
+          "eligible": false,
+          "buyer_direction": "RECRUITER",
+          "veto_categories": [
+            "job_aggregator",
+            "generic_recruiter"
+          ],
+          "repair_signal": false,
+          "project_scope": false,
+          "aggregator_signal": true,
+          "soft_direction": false,
+          "families": [
+            "BUDGETED_REQUEST"
+          ]
+        },
+        "v2_eligible": false,
+        "preview": "\ud83c\udf1f Freelance Opportunity: Polymarket copytrading bot \ud83d\udcb0 Budget: $50 \ud83e\udd1d With: Jorge Robles"
+      },
+      {
+        "message_id": 24496,
+        "community": "Web3 Jobs | LaborX",
+        "commercial_score": 12.0,
+        "technical_score": 0.0,
+        "first_loss": "CT_CAP_TRUNCATED",
+        "semantic_gap": "PREFILTER_MISS",
+        "gig_marketplace": true,
+        "v4": {
+          "eligible": false,
+          "buyer_direction": "RECRUITER",
+          "veto_categories": [
+            "job_aggregator",
+            "generic_recruiter"
+          ],
+          "repair_signal": false,
+          "project_scope": false,
+          "aggregator_signal": true,
+          "soft_direction": false,
+          "families": [
+            "BUDGETED_REQUEST"
+          ]
+        },
+        "v2_eligible": true,
+        "preview": "\ud83c\udf1f Freelance Opportunity: Success Lead: Retention &amp; Growth Strategy \ud83d\udcb0 Budget: $2200 \ud83e\udd1d With: Alex Sterling"
+      },
+      {
+        "message_id": 24977,
+        "community": "Web3 Jobs | LaborX",
+        "commercial_score": 57.0,
+        "technical_score": 18.0,
+        "first_loss": "VETO_job_aggregator",
+        "semantic_gap": "MARKETPLACE_FALSE_POSITIVE",
+        "gig_marketplace": true,
+        "v4": {
+          "eligible": false,
+          "buyer_direction": "RECRUITER",
+          "veto_categories": [
+            "job_aggregator",
+            "generic_recruiter"
+          ],
+          "repair_signal": false,
+          "project_scope": false,
+          "aggregator_signal": true,
+          "soft_direction": false,
+          "families": [
+            "BUDGETED_REQUEST",
+            "ARBITRAGE_PROJECT_REQUEST"
+          ]
+        },
+        "v2_eligible": true,
+        "preview": "\ud83c\udf1f Freelance Opportunity: Crypto Arbitrage Bot Developer for Prediction Markets \ud83d\udcb0 Budget: $200 \ud83e\udd1d With: Deniz Akguner"
+      },
+      {
+        "message_id": 270199,
+        "community": "\u0420\u0430\u0431\u043e\u0442\u0430 \u0432 \u043a\u0440\u0438\u043f\u0442\u0435, IT, AI | Web3 | \u0412\u0430\u043a\u0430\u043d\u0441\u0438\u0438 | \u0420\u0435\u0437\u044e\u043c\u0435 \u0431\u0435\u0441\u043f\u043b\u0430\u0442\u043d\u043e!",
+        "commercial_score": 0.0,
+        "technical_score": 67.0,
+        "first_loss": "RETRIEVED",
+        "semantic_gap": "OTHER",
+        "gig_marketplace": false,
+        "v4": {
+          "eligible": true,
+          "buyer_direction": "RECRUITER",
+          "veto_categories": [],
+          "repair_signal": false,
+          "project_scope": true,
+          "aggregator_signal": false,
+          "soft_direction": true,
+          "families": [
+            "DIRECT_PROJECT_REQUEST",
+            "CUSTOM_DEVELOPMENT_REQUEST",
+            "BUDGETED_REQUEST",
+            "EXCHANGE_INTEGRATION_REQUEST",
+            "MARKET_MAKING_PROJECT_REQUEST",
+            "SOLANA_DEX_PROJECT_REQUEST"
+          ]
+        },
+        "v2_eligible": true,
+        "preview": "\u2699\ufe0f \u041d\u0443\u0436\u0435\u043d \u0440\u0430\u0437\u0440\u0430\u0431\u043e\u0442\u0447\u0438\u043a Senior Backend Full-stack developer \ud83d\udccc \u041e \u043a\u043e\u043c\u043f\u0430\u043d\u0438\u0438 \u0438 \u043f\u0440\u043e\u0435\u043a\u0442\u0435: \ud83d\udd6f \u0422\u0435\u0445\u043d\u043e\u043b\u043e\u0433\u0438\u0447\u0435\u0441\u043a\u0430\u044f \u043a\u043e\u043c\u043f\u0430\u043d\u0438\u044f \u0438 liquidity provider \u0432 \u043a\u0440\u0438\u043f\u0442\u043e \u0438\u043d"
+      },
+      {
+        "message_id": 269798,
+        "community": "WEB 3.0 JOB",
+        "commercial_score": 45.0,
+        "technical_score": 52.0,
+        "first_loss": "VETO_corporate_employment",
+        "semantic_gap": "EMPLOYMENT_FALSE_POSITIVE",
+        "gig_marketplace": false,
+        "v4": {
+          "eligible": false,
+          "buyer_direction": "EMPLOYER",
+          "veto_categories": [
+            "corporate_employment"
+          ],
+          "repair_signal": false,
+          "project_scope": false,
+          "aggregator_signal": false,
+          "soft_direction": false,
+          "families": [
+            "BUDGETED_REQUEST"
+          ]
+        },
+        "v2_eligible": true,
+        "preview": "2064 #Vacancy #\u0412\u0430\u043a\u0430\u043d\u0441\u0438\u044f #Developer #Senior #DeFi #Rust #Fulltime #Remote #\u0423\u0434\u0430\u043b\u0435\u043d\u043d\u043e We are looking for a Senior Rust Developer - DeFi Infrast"
+      },
+      {
+        "message_id": 59666,
+        "community": "\u0411\u043b\u043e\u043a\u0447\u0435\u0439\u043d Hunter | \u0412\u0430\u043a\u0430\u043d\u0441\u0438\u0438 \u0432 \u043a\u0440\u0438\u043f\u0442\u043e-\u0438\u043d\u0434\u0443\u0441\u0442\u0440\u0438\u0438",
+        "commercial_score": 45.0,
+        "technical_score": 52.0,
+        "first_loss": "VETO_corporate_employment",
+        "semantic_gap": "EMPLOYMENT_FALSE_POSITIVE",
+        "gig_marketplace": false,
+        "v4": {
+          "eligible": false,
+          "buyer_direction": "EMPLOYER",
+          "veto_categories": [
+            "corporate_employment"
+          ],
+          "repair_signal": false,
+          "project_scope": false,
+          "aggregator_signal": false,
+          "soft_direction": false,
+          "families": [
+            "BUDGETED_REQUEST"
+          ]
+        },
+        "v2_eligible": true,
+        "preview": "2064 #Vacancy #\u0412\u0430\u043a\u0430\u043d\u0441\u0438\u044f #Developer #Senior #DeFi #Rust #Fulltime #Remote #\u0423\u0434\u0430\u043b\u0435\u043d\u043d\u043e We are looking for a Senior Rust Developer - DeFi Infrast"
+      },
+      {
+        "message_id": 26575,
+        "community": "Web3 Jobs | LaborX",
+        "commercial_score": 57.0,
+        "technical_score": 18.0,
+        "first_loss": "VETO_job_aggregator",
+        "semantic_gap": "MARKETPLACE_FALSE_POSITIVE",
+        "gig_marketplace": true,
+        "v4": {
+          "eligible": false,
+          "buyer_direction": "RECRUITER",
+          "veto_categories": [
+            "job_aggregator",
+            "generic_recruiter"
+          ],
+          "repair_signal": false,
+          "project_scope": false,
+          "aggregator_signal": true,
+          "soft_direction": false,
+          "families": [
+            "BUDGETED_REQUEST",
+            "BOT_PURCHASE_REQUEST"
+          ]
+        },
+        "v2_eligible": true,
+        "preview": "\ud83c\udf1f Freelance Opportunity: Forex and stocks trading bot \ud83d\udcb0 Budget: $500 \ud83e\udd1d With: Sid Khan"
+      },
+      {
+        "message_id": 27317,
+        "community": "Web3 Jobs | LaborX",
+        "commercial_score": 57.0,
+        "technical_score": 18.0,
+        "first_loss": "VETO_job_aggregator",
+        "semantic_gap": "MARKETPLACE_FALSE_POSITIVE",
+        "gig_marketplace": true,
+        "v4": {
+          "eligible": false,
+          "buyer_direction": "RECRUITER",
+          "veto_categories": [
+            "job_aggregator",
+            "generic_recruiter"
+          ],
+          "repair_signal": false,
+          "project_scope": false,
+          "aggregator_signal": true,
+          "soft_direction": false,
+          "families": [
+            "BUDGETED_REQUEST",
+            "BOT_PURCHASE_REQUEST"
+          ]
+        },
+        "v2_eligible": true,
+        "preview": "\ud83c\udf1f Freelance Opportunity: Assistance in developing a trading bot in ETH/SOL networks \ud83d\udcb0 Budget: $1500 \ud83e\udd1d With: Rick Willson"
+      }
+    ],
+    "first_loss_on_samples": {
+      "CT_CAP_TRUNCATED": 19,
+      "VETO_job_aggregator": 10,
+      "NO_PATH_MATCH": 4,
+      "VETO_corporate_employment": 2,
+      "VETO_support_question": 1,
+      "HARD_EXCLUDE_EARLY": 1,
+      "RETRIEVED": 1
+    }
+  },
+  "S13_semantic_gaps": {
+    "boundary_bug": {
+      "pg_b_is_backspace": true,
+      "hiring_7d": {
+        "hiring_backslash_b": 0,
+        "hiring_backslash_y": 345
+      }
+    },
+    "categories": {
+      "SCORE_SELECTION_BUG": 1255,
+      "PREFILTER_MISS": 25,
+      "MARKETPLACE_FALSE_POSITIVE": 10,
+      "DOMAIN_NOT_RECOGNIZED": 3,
+      "EMPLOYMENT_FALSE_POSITIVE": 3,
+      "SUPPORT_FALSE_POSITIVE": 1,
+      "BUYER_SIGNAL_NOT_RECOGNIZED": 1,
+      "OTHER": 1
+    },
+    "examples": {
+      "SUPPORT_FALSE_POSITIVE": [
+        {
+          "message_id": 8618788,
+          "first_loss": "VETO_support_question",
+          "preview": "Quick recap of THORChain Podcast #237 for anyone who didn\u2019t have 2h40 to spare \ud83d\ude04 \u2022 Houdini / STO Houdini private swaps are completely option"
+        }
+      ],
+      "PREFILTER_MISS": [
+        {
+          "message_id": 8615453,
+          "first_loss": "CT_CAP_TRUNCATED",
+          "preview": "\ud83d\ude80 TRONCORE \u2014 PUT YOUR TRX TO WORK! \ud83d\udc8e LAUNCHED FEW HOURS AGO Click here to join\ud83d\udc47\ud83d\udc47 https://t.me/troncorebot?start=5624301782 Group Chat\ud83d\udc47\ud83d\udc47 http"
+        },
+        {
+          "message_id": 8611875,
+          "first_loss": "CT_CAP_TRUNCATED",
+          "preview": "Bitcoin Miner Hive Escalates Swedish VAT Dispute to European Commission The Swedish Tax Agency, Bikupa Datacenter AB, and Bikupa Datacenter "
+        },
+        {
+          "message_id": 8605487,
+          "first_loss": "CT_CAP_TRUNCATED",
+          "preview": "This article proposes a reusable MQL5 Expert Advisor template that separates strategy rules from platform plumbing. Instead of mixing signal"
+        }
+      ],
+      "MARKETPLACE_FALSE_POSITIVE": [
+        {
+          "message_id": 8560440,
+          "first_loss": "VETO_job_aggregator",
+          "preview": "\ud83c\udf1f Freelance Opportunity: Platforms to Buy Verified Bybit Accounts LocalUsaShop \ud83d\udcb0 Budget: $156 \ud83e\udd1d With: Top Website for Buy Verified Stripe Ac"
+        },
+        {
+          "message_id": 196,
+          "first_loss": "VETO_job_aggregator",
+          "preview": "\ud83c\udf1f Freelance Opportunity: Create a trading bot for 2,500 PEPE. \ud83d\udcb0 Budget: $15 \ud83e\udd1d With: Quetta Audy"
+        },
+        {
+          "message_id": 22581,
+          "first_loss": "VETO_job_aggregator",
+          "preview": "\ud83c\udf1f Freelance Opportunity: We are hiring Trading bot developers! \ud83d\udcb0 Budget: $8000 \ud83e\udd1d With: Charlie Mcfann"
+        }
+      ],
+      "SCORE_SELECTION_BUG": [
+        {
+          "message_id": 8494421,
+          "first_loss": "NOT_SCORED",
+          "preview": "Hong Kong SFC Grants First Retail Staking License: The Securities and Futures Commission of Hong Kong officially issues its inaugural retail"
+        },
+        {
+          "message_id": 8488757,
+          "first_loss": "NOT_SCORED",
+          "preview": "Ping Identity Corporation is hiring a remote Senior Director of Marketing Operations Ping Identity is looking for a Senior Director of Marke"
+        },
+        {
+          "message_id": 5423721,
+          "first_loss": "NOT_SCORED",
+          "preview": "[Important Announcement] CoinEx to Cease Operations and Begin an Orderly Wind-Down Dear CoinEx Users, After prudent evaluation, and in light"
+        }
+      ],
+      "BUYER_SIGNAL_NOT_RECOGNIZED": [
+        {
+          "message_id": 8487486,
+          "first_loss": "NO_PATH_MATCH",
+          "preview": "What do you think? https://preview.redd.it/j2pffl0e5nph1.png?width=1543&format=png&auto=webp&s=5db5ccbbed8d2d61c97f8be68674b4fbb4c76097 http"
+        }
+      ],
+      "DOMAIN_NOT_RECOGNIZED": [
+        {
+          "message_id": 682,
+          "first_loss": "NO_PATH_MATCH",
+          "preview": "This is my \"My Commissions\" page on Bybit."
+        },
+        {
+          "message_id": 712,
+          "first_loss": "NO_PATH_MATCH",
+          "preview": "I have some news that will delight everyone using grid bots. In the new version, positions are closed using market orders instead of limit o"
+        },
+        {
+          "message_id": 1721,
+          "first_loss": "NO_PATH_MATCH",
+          "preview": "Perfect, thank you very much for the answer, great news that read-only scope is configurable and revocation is automatic. Understood on the "
+        }
+      ],
+      "EMPLOYMENT_FALSE_POSITIVE": [
+        {
+          "message_id": 262527,
+          "first_loss": "HARD_EXCLUDE_EARLY",
+          "preview": "Humaniq is hiring a Project Manager Humaniq is looking for a Project Manager to draft TOR, monitor implementation and deadlines, assess sub-"
+        },
+        {
+          "message_id": 269798,
+          "first_loss": "VETO_corporate_employment",
+          "preview": "2064 #Vacancy #\u0412\u0430\u043a\u0430\u043d\u0441\u0438\u044f #Developer #Senior #DeFi #Rust #Fulltime #Remote #\u0423\u0434\u0430\u043b\u0435\u043d\u043d\u043e We are looking for a Senior Rust Developer - DeFi Infrast"
+        },
+        {
+          "message_id": 59666,
+          "first_loss": "VETO_corporate_employment",
+          "preview": "2064 #Vacancy #\u0412\u0430\u043a\u0430\u043d\u0441\u0438\u044f #Developer #Senior #DeFi #Rust #Fulltime #Remote #\u0423\u0434\u0430\u043b\u0435\u043d\u043d\u043e We are looking for a Senior Rust Developer - DeFi Infrast"
+        }
+      ],
+      "OTHER": [
+        {
+          "message_id": 270199,
+          "first_loss": "RETRIEVED",
+          "preview": "\u2699\ufe0f \u041d\u0443\u0436\u0435\u043d \u0440\u0430\u0437\u0440\u0430\u0431\u043e\u0442\u0447\u0438\u043a Senior Backend Full-stack developer \ud83d\udccc \u041e \u043a\u043e\u043c\u043f\u0430\u043d\u0438\u0438 \u0438 \u043f\u0440\u043e\u0435\u043a\u0442\u0435: \ud83d\udd6f \u0422\u0435\u0445\u043d\u043e\u043b\u043e\u0433\u0438\u0447\u0435\u0441\u043a\u0430\u044f \u043a\u043e\u043c\u043f\u0430\u043d\u0438\u044f \u0438 liquidity provider \u0432 \u043a\u0440\u0438\u043f\u0442\u043e \u0438\u043d"
+        }
+      ]
+    }
+  },
+  "S10_veto_x_ai_confirmed": {
+    "n_probes": 4,
+    "probe_retrieval_coverage_v4": 0,
+    "veto_multi_label_hits": {
+      "job_aggregator": 4,
+      "generic_recruiter": 4
+    },
+    "probes": [
+      {
+        "lead_id": 1137,
+        "message_id": 25570,
+        "community": "Web3 Jobs | LaborX",
+        "username": "LaborXWeb3Jobs",
+        "url": "https://t.me/LaborXWeb3Jobs",
+        "is_laborx": true,
+        "score_tier": "HIGH",
+        "lead_type": "TRADING_SYSTEM_CONTRACT",
+        "buyer_type": "RECRUITER",
+        "lost_at_stage": "discovery_prefilter_LOW",
+        "first_loss_taxonomy": "NOT_LOW",
+        "stage_trace": [
+          {
+            "stage": "SEED",
+            "pass": true,
+            "note": "lead=1137 msg=25570"
+          },
+          {
+            "stage": "current_score_row",
+            "pass": true,
+            "note": "score_tier=HIGH lead_tier=HIGH score=93.0"
+          },
+          {
+            "stage": "discovery_prefilter_LOW",
+            "pass": false,
+            "note": "FAIL: disc_v4 audit/production discovery requires LOW; HIGH goes scorer\u2192CRM. Also AI_CONFIRMED ids excluded from audit SQL."
+          },
+          {
+            "stage": "discovery_features",
+            "pass": true,
+            "note": "gig=True agg=True repair=False scope=False families=['BUDGETED_REQUEST', 'BOT_PURCHASE_REQUEST']"
+          },
+          {
+            "stage": "buyer_direction",
+            "pass": false,
+            "note": "dir=RECRUITER soft=False"
+          },
+          {
+            "stage": "hard_veto",
+            "pass": false,
+            "note": "veto=['job_aggregator', 'generic_recruiter']"
+          },
+          {
+            "stage": "disc_v4_eligible",
+            "pass": false,
+            "note": "trig=None score=0.0 v2_eligible=True"
+          }
+        ],
+        "v4": {
+          "eligible": false,
+          "buyer_direction": "RECRUITER",
+          "veto_categories": [
+            "job_aggregator",
+            "generic_recruiter"
+          ],
+          "repair_signal": false,
+          "project_scope": false,
+          "aggregator_signal": true,
+          "soft_direction": false,
+          "paths": {
+            "A": false,
+            "B": false,
+            "C": false,
+            "D": false,
+            "E": false
+          }
+        },
+        "v2_eligible": true,
+        "structure": "FO_REPAIR",
+        "preview": "\ud83c\udf1f Freelance Opportunity: Quick Fix Needed for Python Trading Bot \ud83d\udcb0 Budget: $320 \ud83e\udd1d With: david lil"
+      },
+      {
+        "lead_id": 1138,
+        "message_id": 25571,
+        "community": "Web3 Jobs | LaborX",
+        "username": "LaborXWeb3Jobs",
+        "url": "https://t.me/LaborXWeb3Jobs",
+        "is_laborx": true,
+        "score_tier": "HIGH",
+        "lead_type": "TRADING_SYSTEM_CONTRACT",
+        "buyer_type": "RECRUITER",
+        "lost_at_stage": "discovery_prefilter_LOW",
+        "first_loss_taxonomy": "NOT_LOW",
+        "stage_trace": [
+          {
+            "stage": "SEED",
+            "pass": true,
+            "note": "lead=1138 msg=25571"
+          },
+          {
+            "stage": "current_score_row",
+            "pass": true,
+            "note": "score_tier=HIGH lead_tier=HIGH score=93.0"
+          },
+          {
+            "stage": "discovery_prefilter_LOW",
+            "pass": false,
+            "note": "FAIL: disc_v4 audit/production discovery requires LOW; HIGH goes scorer\u2192CRM. Also AI_CONFIRMED ids excluded from audit SQL."
+          },
+          {
+            "stage": "discovery_features",
+            "pass": true,
+            "note": "gig=True agg=True repair=False scope=False families=['BUDGETED_REQUEST', 'BOT_PURCHASE_REQUEST']"
+          },
+          {
+            "stage": "buyer_direction",
+            "pass": false,
+            "note": "dir=RECRUITER soft=False"
+          },
+          {
+            "stage": "hard_veto",
+            "pass": false,
+            "note": "veto=['job_aggregator', 'generic_recruiter']"
+          },
+          {
+            "stage": "disc_v4_eligible",
+            "pass": false,
+            "note": "trig=None score=0.0 v2_eligible=True"
+          }
+        ],
+        "v4": {
+          "eligible": false,
+          "buyer_direction": "RECRUITER",
+          "veto_categories": [
+            "job_aggregator",
+            "generic_recruiter"
+          ],
+          "repair_signal": false,
+          "project_scope": false,
+          "aggregator_signal": true,
+          "soft_direction": false,
+          "paths": {
+            "A": false,
+            "B": false,
+            "C": false,
+            "D": false,
+            "E": false
+          }
+        },
+        "v2_eligible": true,
+        "structure": "FO_REPAIR",
+        "preview": "\ud83c\udf1f Freelance Opportunity: Quick Fix Needed for Python Trading Bot \ud83d\udcb0 Budget: $50 \ud83e\udd1d With: Ryan Peterson"
+      },
+      {
+        "lead_id": 1139,
+        "message_id": 22713,
+        "community": "Web3 Jobs | LaborX",
+        "username": "LaborXWeb3Jobs",
+        "url": "https://t.me/LaborXWeb3Jobs",
+        "is_laborx": true,
+        "score_tier": "HIGH",
+        "lead_type": "TRADING_SYSTEM_CONTRACT",
+        "buyer_type": "RECRUITER",
+        "lost_at_stage": "discovery_prefilter_LOW",
+        "first_loss_taxonomy": "NOT_LOW",
+        "stage_trace": [
+          {
+            "stage": "SEED",
+            "pass": true,
+            "note": "lead=1139 msg=22713"
+          },
+          {
+            "stage": "current_score_row",
+            "pass": true,
+            "note": "score_tier=HIGH lead_tier=HIGH score=88.0"
+          },
+          {
+            "stage": "discovery_prefilter_LOW",
+            "pass": false,
+            "note": "FAIL: disc_v4 audit/production discovery requires LOW; HIGH goes scorer\u2192CRM. Also AI_CONFIRMED ids excluded from audit SQL."
+          },
+          {
+            "stage": "discovery_features",
+            "pass": true,
+            "note": "gig=True agg=True repair=False scope=False families=['BUDGETED_REQUEST', 'BOT_PURCHASE_REQUEST']"
+          },
+          {
+            "stage": "buyer_direction",
+            "pass": false,
+            "note": "dir=RECRUITER soft=False"
+          },
+          {
+            "stage": "hard_veto",
+            "pass": false,
+            "note": "veto=['job_aggregator', 'generic_recruiter']"
+          },
+          {
+            "stage": "disc_v4_eligible",
+            "pass": false,
+            "note": "trig=None score=0.0 v2_eligible=True"
+          }
+        ],
+        "v4": {
+          "eligible": false,
+          "buyer_direction": "RECRUITER",
+          "veto_categories": [
+            "job_aggregator",
+            "generic_recruiter"
+          ],
+          "repair_signal": false,
+          "project_scope": false,
+          "aggregator_signal": true,
+          "soft_direction": false,
+          "paths": {
+            "A": false,
+            "B": false,
+            "C": false,
+            "D": false,
+            "E": false
+          }
+        },
+        "v2_eligible": true,
+        "structure": "FO_PROJECT_RFQ_TRADING",
+        "preview": "\ud83c\udf1f Freelance Opportunity: Crypto Trading Bot Developer \ud83d\udcb0 Budget: $200 \ud83e\udd1d With: Yohans Hayla"
+      },
+      {
+        "lead_id": 1140,
+        "message_id": 25400,
+        "community": "Web3 Jobs | LaborX",
+        "username": "LaborXWeb3Jobs",
+        "url": "https://t.me/LaborXWeb3Jobs",
+        "is_laborx": true,
+        "score_tier": "HIGH",
+        "lead_type": "TRADING_SYSTEM_CONTRACT",
+        "buyer_type": "RECRUITER",
+        "lost_at_stage": "discovery_prefilter_LOW",
+        "first_loss_taxonomy": "NOT_LOW",
+        "stage_trace": [
+          {
+            "stage": "SEED",
+            "pass": true,
+            "note": "lead=1140 msg=25400"
+          },
+          {
+            "stage": "current_score_row",
+            "pass": true,
+            "note": "score_tier=HIGH lead_tier=HIGH score=93.0"
+          },
+          {
+            "stage": "discovery_prefilter_LOW",
+            "pass": false,
+            "note": "FAIL: disc_v4 audit/production discovery requires LOW; HIGH goes scorer\u2192CRM. Also AI_CONFIRMED ids excluded from audit SQL."
+          },
+          {
+            "stage": "discovery_features",
+            "pass": true,
+            "note": "gig=True agg=True repair=False scope=False families=['BUDGETED_REQUEST', 'BOT_PURCHASE_REQUEST']"
+          },
+          {
+            "stage": "buyer_direction",
+            "pass": false,
+            "note": "dir=RECRUITER soft=False"
+          },
+          {
+            "stage": "hard_veto",
+            "pass": false,
+            "note": "veto=['job_aggregator', 'generic_recruiter']"
+          },
+          {
+            "stage": "disc_v4_eligible",
+            "pass": false,
+            "note": "trig=None score=0.0 v2_eligible=True"
+          }
+        ],
+        "v4": {
+          "eligible": false,
+          "buyer_direction": "RECRUITER",
+          "veto_categories": [
+            "job_aggregator",
+            "generic_recruiter"
+          ],
+          "repair_signal": false,
+          "project_scope": false,
+          "aggregator_signal": true,
+          "soft_direction": false,
+          "paths": {
+            "A": false,
+            "B": false,
+            "C": false,
+            "D": false,
+            "E": false
+          }
+        },
+        "v2_eligible": true,
+        "structure": "FO_PROJECT_RFQ_TRADING",
+        "preview": "\ud83c\udf1f Freelance Opportunity: Python Crypto Trading Bot Developer (GUI + Dashboard) \ud83d\udcb0 Budget: $800 \ud83e\udd1d With: Harry Bennett"
+      }
+    ]
+  },
+  "S11_laborx_structure": {
+    "community_id": 2,
+    "sql_360d": {
+      "msgs": 5465,
+      "fo": 3430,
+      "repairish": 34,
+      "trading_botish": 753,
+      "budgeted": 3438
+    },
+    "sample_n": 200,
+    "categories": {
+      "FO_PROJECT_RFQ_OTHER_WEB3": 198,
+      "FO_PROJECT_RFQ_TRADING": 2
+    },
+    "v4_eligible_by_category": {},
+    "first_loss_by_category": {
+      "FO_PROJECT_RFQ_OTHER_WEB3:VETO_job_aggregator": 191,
+      "FO_PROJECT_RFQ_OTHER_WEB3:NOT_SCORED": 7,
+      "FO_PROJECT_RFQ_TRADING:VETO_job_aggregator": 2
+    },
+    "finding": "FO templates match _GIG_MARKETPLACE_RX \u2192 job_aggregator veto clears repair. Source-level LaborX ban would over-block; message-level FO/gig structure is the actual veto trigger. AI_CONFIRMED BOT_REPAIR FO posts are message-level false positives of a marketplace template veto.",
+    "source_vs_message": "MESSAGE_LEVEL_STRUCTURAL_VETO (gig FO template), not community_id ban"
+  },
+  "S7_discovery_funnel_7d": [
+    {
+      "stage": "RAW messages (7d message_date)",
+      "input": 117462,
+      "survivors": 117462,
+      "rejected": 0,
+      "rejection_pct": 0.0,
+      "top_rejection_reason": "n/a"
+    },
+    {
+      "stage": "CURRENT SCORE ROW",
+      "input": 117462,
+      "survivors": 117462,
+      "rejected": 0,
+      "rejection_pct": 0.0,
+      "top_rejection_reason": "unscored (negligible in 7d)"
+    },
+    {
+      "stage": "LOW tier (discovery plane)",
+      "input": 117462,
+      "survivors": 117461,
+      "rejected": 1,
+      "rejection_pct": 0.0,
+      "top_rejection_reason": "MEDIUM/HIGH \u2192 scorer CRM path"
+    },
+    {
+      "stage": "DISCOVERY PREFILTER (uncapped)",
+      "input": 117461,
+      "survivors": 2529,
+      "rejected": 114932,
+      "rejection_pct": 97.85,
+      "top_rejection_reason": "CT/keyword OR fail or scored_at window"
+    },
+    {
+      "stage": "PREFILTER CAP 2500",
+      "input": 2529,
+      "survivors": 2500,
+      "rejected": 29,
+      "rejection_pct": 1.15,
+      "top_rejection_reason": "ORDER BY CT DESC LIMIT"
+    },
+    {
+      "stage": "DISC_V4 CANDIDATE (measured)",
+      "input": 2500,
+      "survivors": 4,
+      "rejected": 2496,
+      "rejection_pct": 99.84,
+      "top_rejection_reason": "NO_PATH_MATCH",
+      "per_veto_first_loss": {
+        "VETO_support_question": 199,
+        "VETO_job_aggregator": 355,
+        "VETO_corporate_employment": 153,
+        "VETO_job_seeker": 31,
+        "VETO_generic_recruiter": 3,
+        "VETO_service_provider": 14,
+        "VETO_news_digest": 2,
+        "VETO_marketing_broadcast": 4
+      }
+    }
+  ],
+  "S16_decision": {
+    "decision": "E",
+    "label": "MULTIPLE",
+    "shares_pct_of_pool": {
+      "A_PREFILTER": 1.92,
+      "B_SCORE_QUERY": 96.61,
+      "C_DISCOVERY_SEMANTICS": 0.31,
+      "D_VETO": 1.08,
+      "RETRIEVED": 0.08
+    },
+    "rationale": "MULTIPLE internal bottlenecks (not community expansion). (B) 360d commercial\u2227domain pool: 1255/1299 (96.6%) NOT_SCORED \u2014 discovery JOIN cannot see them (current_score_per_message invariant OK; coverage gap). (C) On measured 7d capped prefilter 2500: NO_PATH_MATCH/direction=1599 (64.0%) \u2014 buyer/project conjunction not recognized. (D) Veto/hard-exclude first-loss=897 (35.9%); job_aggregator multi-label hits=454; 4/4 AI_CONFIRMED LaborX FO lost_at=discovery_prefilter_LOW (HIGH) and text-eval veto=[\"job_aggregator\",\"generic_recruiter\"] (message-level FO structure, not source ban). (A) Prefilter uncapped keeps only ~2.1% of 7d LOW (CT/keyword). Measured disc_v4 survivors=4/2500 (matches evidence96 hardcoded 4). Production plane: commercial_discovery_enabled=false \u2192 FLAG_DISABLED (counterfactual thereafter).",
+    "plane_disagreement": true,
+    "production_plane": "FLAG_DISABLED",
+    "fix_recommendation_smallest": "1) Do NOT expand communities. 2) Ops/backfill score coverage for 8\u2013360d commercial\u2227domain so JOIN can see the pool (B). 3) Keep message-level gig FO veto; carve FO+repair/trading-bot+budget exception (LaborX AI_CONFIRMED pattern) \u2014 not a LaborX source ban (D). 4) After (2)\u2013(3), remeasure NO_PATH_MATCH on capped prefilter (C) and CT-cap bias (A). No scoring.yaml / score() threshold changes. Do not flip discovery flag in this phase.",
+    "cohorts": {
+      "pool_360d_primary_share": "B_SCORE_QUERY (NOT_SCORED)",
+      "capped_prefilter_7d_primary_share": "C_DISCOVERY_SEMANTICS (NO_PATH_MATCH)",
+      "capped_prefilter_veto_share_pct": 35.88,
+      "capped_prefilter_semantics_share_pct": 63.96,
+      "overall": "E_MULTIPLE"
+    }
+  }
+}

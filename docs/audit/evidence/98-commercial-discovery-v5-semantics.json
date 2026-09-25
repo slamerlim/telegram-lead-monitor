@@ -1,0 +1,931 @@
+{
+  "evidence": "98",
+  "generated_at": "2026-09-25T13:25:40.703128+00:00",
+  "head": "e4b58be",
+  "runtime_sec": 56.3,
+  "read_only": true,
+  "cap": 2500,
+  "days": 7,
+  "capped_n": 2500,
+  "isolation": {
+    "human_labels": 1524,
+    "ai_confirmed": 4,
+    "commercial_discovery_enabled": false,
+    "commercial_discovery_version": "disc_v4"
+  },
+  "v4_no_path_classification": {
+    "buckets": {
+      "OTHER": 4,
+      "DOMAIN": 1059,
+      "PROJECT_SCOPE": 43,
+      "BUDGET_DELIVERABLE": 489,
+      "PROCUREMENT": 9,
+      "REPAIR": 4,
+      "BUYER_SIGNAL": 1
+    },
+    "signal_presence": {
+      "ownership": 4,
+      "project_scope": 5,
+      "domain_loose": 1114,
+      "direction_BUYER": 114,
+      "hire": 77,
+      "domain_cat": 374,
+      "commercial": 60,
+      "direction_UNKNOWN": 1495,
+      "repair": 4,
+      "budget": 513,
+      "timeline": 6
+    },
+    "near_miss": {
+      "commercial+domain_no_buyer": 32,
+      "hire+domain_no_scope": 75,
+      "domain_only": 800,
+      "procurement_rx_not_signal": 9
+    },
+    "examples": {
+      "OTHER": [
+        {
+          "message_id": 35831,
+          "community": "Bybit API Discussion",
+          "buyer_direction": "BUYER",
+          "signals": {
+            "direct": false,
+            "ownership": true,
+            "project_scope": true,
+            "procurement": false,
+            "repair": false,
+            "automation": false,
+            "budget": false,
+            "domain_categories": [],
+            "commercial": [],
+            "hire": []
+          },
+          "preview": "the error message is pretty self-explanatory, you've reached the current risk limit: https://bybit-exchange.github.io/docs/v5/market/risk-li"
+        },
+        {
+          "message_id": 1015,
+          "community": "Bybit API Discussion",
+          "buyer_direction": "BUYER",
+          "signals": {
+            "direct": false,
+            "ownership": true,
+            "project_scope": true,
+            "procurement": false,
+            "repair": false,
+            "automation": false,
+            "budget": false,
+            "domain_categories": [],
+            "commercial": [],
+            "hire": []
+          },
+          "preview": "my api connection are disabled on bybit and my account"
+        },
+        {
+          "message_id": 1159,
+          "community": "Bybit API Discussion",
+          "buyer_direction": "BUYER",
+          "signals": {
+            "direct": false,
+            "ownership": true,
+            "project_scope": true,
+            "procurement": false,
+            "repair": false,
+            "automation": false,
+            "budget": false,
+            "domain_categories": [],
+            "commercial": [],
+            "hire": []
+          },
+          "preview": "Thank you Dear is there any other option user can Trade Babit CFD through our Api designed Terminal which already work well for Bybit produc"
+        },
+        {
+          "message_id": 1377,
+          "community": "Bybit API Discussion",
+          "buyer_direction": "BUYER",
+          "signals": {
+            "direct": false,
+            "ownership": true,
+            "project_scope": true,
+            "procurement": false,
+            "repair": false,
+            "automation": false,
+            "budget": false,
+            "domain_categories": [],
+            "commercial": [],
+            "hire": []
+          },
+          "preview": "I'm a Verified Advertiser Request: POST https://api.bybit.id/v5/p2p/order/simplifyList Body: {\"status\":10,\"page\":1,\"size\":1} Response: HTTP "
+        }
+      ],
+      "DOMAIN": [
+        {
+          "message_id": 5480092,
+          "community": "CoinEx English",
+          "buyer_direction": "BUYER",
+          "signals": {
+            "direct": false,
+            "ownership": false,
+            "project_scope": false,
+            "procurement": false,
+            "repair": false,
+            "automation": false,
+            "budget": false,
+            "domain_categories": [],
+            "commercial": [],
+            "hire": [
+              "\\bcontract\\b"
+            ]
+          },
+          "preview": "Hello. A few days ago I transferred a large amount of Tether from Trust Wallet to the Coinex exchange. First, I transferred 10 Tethers for t"
+        },
+        {
+          "message_id": 1207870,
+          "community": "Bybit English",
+          "buyer_direction": "UNKNOWN",
+          "signals": {
+            "direct": false,
+            "ownership": false,
+            "project_scope": false,
+            "procurement": false,
+            "repair": false,
+            "automation": false,
+            "budget": false,
+            "domain_categories": [],
+            "commercial": [],
+            "hire": []
+          },
+          "preview": "Hello Admin please, I have an issue…I initially registered on Bybit Telegram community using my Old username :(Pegasus_001 ) which I later c"
+        },
+        {
+          "message_id": 36549,
+          "community": "Bybit API Discussion",
+          "buyer_direction": "BUYER",
+          "signals": {
+            "direct": false,
+            "ownership": false,
+            "project_scope": false,
+            "procurement": false,
+            "repair": true,
+            "automation": false,
+            "budget": false,
+            "domain_categories": [],
+            "commercial": [
+              "\\b(?:need|looking for|seeking|want|hire|hiring|commission|purchase|buy|quote|budget|proposal)\\b.{0,180}\\b(?:developer|engineer|programmer|freelancer|contractor|bot|trading|strategy|quant|ml|ai|system)\\b"
+            ],
+            "hire": []
+          },
+          "preview": "If you experience an API error message, kindly provide the full request you're sending to the exchange and the full response. For that, you "
+        },
+        {
+          "message_id": 74373,
+          "community": "Web3 Crypto Jobs - Remote",
+          "buyer_direction": "BUYER",
+          "signals": {
+            "direct": false,
+            "ownership": false,
+            "project_scope": false,
+            "procurement": false,
+            "repair": true,
+            "automation": false,
+            "budget": false,
+            "domain_categories": [],
+            "commercial": [
+              "\\b(?:need|looking for|seeking|want|hire|hiring|commission|purchase|buy|quote|budget|proposal)\\b.{0,180}\\b(?:developer|engineer|programmer|freelancer|contractor|bot|trading|strategy|quant|ml|ai|system)\\b"
+            ],
+            "hire": [
+              "\\bcontract\\b",
+              "\\bfreelance\\b"
+            ]
+          },
+          "preview": "🚀 Senior Full Stack AI Engineer | 10+ Years ivan-portfolio-beige.vercel .app Helping startups and businesses build AI-powered products, SaaS"
+        },
+        {
+          "message_id": 40794,
+          "community": "Bybit API Discussion",
+          "buyer_direction": "BUYER",
+          "signals": {
+            "direct": false,
+            "ownership": false,
+            "project_scope": false,
+            "procurement": false,
+            "repair": false,
+            "automation": false,
+            "budget": false,
+            "domain_categories": [],
+            "commercial": [
+              "\\b(?:need|looking for|seeking|want|hire|hiring|commission|purchase|buy|quote|budget|proposal)\\b.{0,180}\\b(?:developer|engineer|programmer|freelancer|contractor|bot|trading|strategy|quant|ml|ai|system)\\b"
+            ],
+            "hire": []
+          },
+          "preview": "It's not an API-sided error message. You should troubleshoot this error message on your side in your code, as it's generated by your code. I"
+        },
+        {
+          "message_id": 8504772,
+          "community": "3Commas Community",
+          "buyer_direction": "UNKNOWN",
+          "signals": {
+            "direct": false,
+            "ownership": false,
+            "project_scope": false,
+            "procurement": false,
+            "repair": false,
+            "automation": false,
+            "budget": false,
+            "domain_categories": [
+              "trading_bot"
+            ],
+            "commercial": [],
+            "hire": []
+          },
+          "preview": "How to start and how it work is this ai trading bot for crypto"
+        }
+      ],
+      "PROJECT_SCOPE": [
+        {
+          "message_id": 1084484,
+          "community": "Bybit English",
+          "buyer_direction": "BUYER",
+          "signals": {
+            "direct": false,
+            "ownership": false,
+            "project_scope": false,
+            "procurement": false,
+            "repair": false,
+            "automation": false,
+            "budget": false,
+            "domain_categories": [
+              "trading_bot"
+            ],
+            "commercial": [
+              "\\b(?:need|looking for|seeking|want|hire|hiring|commission|purchase|buy|quote|budget|proposal)\\b.{0,180}\\b(?:developer|engineer|programmer|freelancer|contractor|bot|trading|strategy|quant|ml|ai|system)\\b"
+            ],
+            "hire": []
+          },
+          "preview": "One challenge I’ve always had as a trader is consistency. Not strategy — consistency. I could plan a trade perfectly and still ruin it by en"
+        },
+        {
+          "message_id": 1113753,
+          "community": "Bybit English",
+          "buyer_direction": "BUYER",
+          "signals": {
+            "direct": false,
+            "ownership": false,
+            "project_scope": false,
+            "procurement": false,
+            "repair": false,
+            "automation": false,
+            "budget": false,
+            "domain_categories": [
+              "market_making"
+            ],
+            "commercial": [
+              "\\b(?:need|looking for|seeking|want|hire|hiring|commission|purchase|buy|quote|budget|proposal)\\b.{0,180}\\b(?:developer|engineer|programmer|freelancer|contractor|bot|trading|strategy|quant|ml|ai|system)\\b"
+            ],
+            "hire": [
+              "\\b(?:hire|hiring|looking for|seeking)\\b.{0,120}\\b(?:developers?|engineers?|programmers?|quant|quantitative|ml engineer|ai engineer|machine learning|freelancers?|contractors?)\\b"
+            ]
+          },
+          "preview": "### Common Statistical Arbitrage Strategies Used by Quantitative Traders Statistical arbitrage (stat arb) is a trading strategy that seeks t"
+        },
+        {
+          "message_id": 932163,
+          "community": "Bybit English",
+          "buyer_direction": "BUYER",
+          "signals": {
+            "direct": false,
+            "ownership": false,
+            "project_scope": false,
+            "procurement": false,
+            "repair": false,
+            "automation": false,
+            "budget": false,
+            "domain_categories": [
+              "solana_dex"
+            ],
+            "commercial": [
+              "\\b(?:need|looking for|seeking|want|hire|hiring|commission|purchase|buy|quote|budget|proposal)\\b.{0,180}\\b(?:developer|engineer|programmer|freelancer|contractor|bot|trading|strategy|quant|ml|ai|system)\\b"
+            ],
+            "hire": [
+              "\\bcontract\\b"
+            ]
+          },
+          "preview": "Building a perfect crypto portfolio for an AI-powered economy in 2030 would involve selecting assets that are likely to thrive in a technolo"
+        },
+        {
+          "message_id": 5461376,
+          "community": "CoinEx English",
+          "buyer_direction": "BUYER",
+          "signals": {
+            "direct": false,
+            "ownership": false,
+            "project_scope": false,
+            "procurement": false,
+            "repair": false,
+            "automation": false,
+            "budget": false,
+            "domain_categories": [
+              "copy_trading"
+            ],
+            "commercial": [
+              "\\b(?:need|looking for|seeking|want|hire|hiring|commission|purchase|buy|quote|budget|proposal)\\b.{0,180}\\b(?:developer|engineer|programmer|freelancer|contractor|bot|trading|strategy|quant|ml|ai|system)\\b"
+            ],
+            "hire": []
+          },
+          "preview": "🎛️ The \"Distributed Control System\" (DCS) Sync Feature: CoinEx Copy Trading * The Process: Why manually calculate complex thermodynamic setp"
+        },
+        {
+          "message_id": 5462859,
+          "community": "CoinEx English",
+          "buyer_direction": "BUYER",
+          "signals": {
+            "direct": false,
+            "ownership": false,
+            "project_scope": false,
+            "procurement": false,
+            "repair": false,
+            "automation": false,
+            "budget": false,
+            "domain_categories": [
+              "copy_trading"
+            ],
+            "commercial": [
+              "\\b(?:need|looking for|seeking|want|hire|hiring|commission|purchase|buy|quote|budget|proposal)\\b.{0,180}\\b(?:developer|engineer|programmer|freelancer|contractor|bot|trading|strategy|quant|ml|ai|system)\\b"
+            ],
+            "hire": []
+          },
+          "preview": "🎧 The \"Legendary-Producer\" Mix Feature: CoinEx Copy Trading * The Session: Why spend years learning to mix from scratch when you can have a "
+        },
+        {
+          "message_id": 5008941,
+          "community": "MEXC English (Official)",
+          "buyer_direction": "BUYER",
+          "signals": {
+            "direct": false,
+            "ownership": false,
+            "project_scope": false,
+            "procurement": false,
+            "repair": false,
+            "automation": false,
+            "budget": false,
+            "domain_categories": [
+              "solana_dex"
+            ],
+            "commercial": [
+              "\\b(?:need|looking for|seeking|want|hire|hiring|commission|purchase|buy|quote|budget|proposal)\\b.{0,180}\\b(?:developer|engineer|programmer|freelancer|contractor|bot|trading|strategy|quant|ml|ai|system)\\b"
+            ],
+            "hire": []
+          },
+          "preview": "$TRX has a strong position in the crypto market mainly because of its dominance in stablecoin transactions and low cost transfers. It proces"
+        }
+      ],
+      "BUDGET_DELIVERABLE": [
+        {
+          "message_id": 8604186,
+          "community": "XT Futures",
+          "buyer_direction": "UNKNOWN",
+          "signals": {
+            "direct": false,
+            "ownership": false,
+            "project_scope": false,
+            "procurement": false,
+            "repair": false,
+            "automation": false,
+            "budget": true,
+            "domain_categories": [
+              "trading_bot",
+              "strategy_automation"
+            ],
+            "commercial": [],
+            "hire": []
+          },
+          "preview": "$15.9B in BTC options expiring Friday means market makers will aggressively pin price near max pain. Instead of guessing the direction of ev"
+        },
+        {
+          "message_id": 8564294,
+          "community": "XT Futures",
+          "buyer_direction": "UNKNOWN",
+          "signals": {
+            "direct": false,
+            "ownership": false,
+            "project_scope": false,
+            "procurement": false,
+            "repair": false,
+            "automation": false,
+            "budget": true,
+            "domain_categories": [
+              "trading_bot",
+              "strategy_automation"
+            ],
+            "commercial": [],
+            "hire": []
+          },
+          "preview": "Clean targets, but while BTC grinds between here and $88K, there’s plenty of intraday volatility to harvest. You can spin up an XT Futures G"
+        },
+        {
+          "message_id": 8072714,
+          "community": "Toobit Announcements",
+          "buyer_direction": "UNKNOWN",
+          "signals": {
+            "direct": false,
+            "ownership": false,
+            "project_scope": false,
+            "procurement": false,
+            "repair": false,
+            "automation": false,
+            "budget": true,
+            "domain_categories": [
+              "trading_bot",
+              "strategy_automation"
+            ],
+            "commercial": [],
+            "hire": []
+          },
+          "preview": "🚀 Build your strategy with Futures Grid Bot and win a share of the 150,000 USDT prize pool! Enhance your trading experience with the Toobit "
+        },
+        {
+          "message_id": 8595641,
+          "community": "XT Futures",
+          "buyer_direction": "UNKNOWN",
+          "signals": {
+            "direct": false,
+            "ownership": false,
+            "project_scope": false,
+            "procurement": false,
+            "repair": false,
+            "automation": false,
+            "budget": true,
+            "domain_categories": [
+              "market_making"
+            ],
+            "commercial": [],
+            "hire": []
+          },
+          "preview": "That’s textbook market maker behavior. ahead of weekend Keep your stops locked on XT and watch how $83.5K holds!"
+        },
+        {
+          "message_id": 8555942,
+          "community": "Bybit English",
+          "buyer_direction": "UNKNOWN",
+          "signals": {
+            "direct": false,
+            "ownership": false,
+            "project_scope": false,
+            "procurement": false,
+            "repair": false,
+            "automation": false,
+            "budget": true,
+            "domain_categories": [
+              "market_making"
+            ],
+            "commercial": [],
+            "hire": []
+          },
+          "preview": "#BTCUSDT 4h, Analysis Bitcoin is transitioning back into consolidation following the rally. The liquidity pool below $85K is of interest to "
+        },
+        {
+          "message_id": 8538037,
+          "community": "HTX English",
+          "buyer_direction": "UNKNOWN",
+          "signals": {
+            "direct": false,
+            "ownership": false,
+            "project_scope": false,
+            "procurement": false,
+            "repair": false,
+            "automation": false,
+            "budget": true,
+            "domain_categories": [
+              "trading_bot"
+            ],
+            "commercial": [],
+            "hire": []
+          },
+          "preview": "🔥 HTX Futures Trading Bot Challenge #1 is giving users a chance to explore automated futures trading without needing to monitor the market c"
+        }
+      ],
+      "PROCUREMENT": [
+        {
+          "message_id": 8487486,
+          "community": "/r/algotrading",
+          "buyer_direction": "BUYER",
+          "signals": {
+            "direct": false,
+            "ownership": false,
+            "project_scope": false,
+            "procurement": false,
+            "repair": false,
+            "automation": false,
+            "budget": true,
+            "domain_categories": [
+              "trading_bot"
+            ],
+            "commercial": [],
+            "hire": [
+              "\\bcontract\\b"
+            ]
+          },
+          "preview": "What do you think? https://preview.redd.it/j2pffl0e5nph1.png?width=1543&format=png&auto=webp&s=5db5ccbbed8d2d61c97f8be68674b4fbb4c76097 http"
+        },
+        {
+          "message_id": 1721,
+          "community": "Bybit API Discussion",
+          "buyer_direction": "UNKNOWN",
+          "signals": {
+            "direct": false,
+            "ownership": false,
+            "project_scope": false,
+            "procurement": false,
+            "repair": false,
+            "automation": false,
+            "budget": true,
+            "domain_categories": [],
+            "commercial": [],
+            "hire": []
+          },
+          "preview": "Perfect, thank you very much for the answer, great news that read-only scope is configurable and revocation is automatic. Understood on the "
+        },
+        {
+          "message_id": 8569148,
+          "community": "Bybit English",
+          "buyer_direction": "UNKNOWN",
+          "signals": {
+            "direct": false,
+            "ownership": false,
+            "project_scope": false,
+            "procurement": false,
+            "repair": false,
+            "automation": false,
+            "budget": true,
+            "domain_categories": [
+              "solana_dex"
+            ],
+            "commercial": [],
+            "hire": []
+          },
+          "preview": "Solana Eyes Major Milestone: Analysts break down what it would take for Solana (SOL) to break back past its previous local peak of $295."
+        },
+        {
+          "message_id": 8616918,
+          "community": "Bybit English",
+          "buyer_direction": "UNKNOWN",
+          "signals": {
+            "direct": false,
+            "ownership": false,
+            "project_scope": false,
+            "procurement": false,
+            "repair": false,
+            "automation": false,
+            "budget": true,
+            "domain_categories": [],
+            "commercial": [],
+            "hire": []
+          },
+          "preview": "Not in a single standard trade, most merchants cap orders at $1k–$10k. You'd need a Bulk Advertiser (BA) merchant to handle $100k at once, s"
+        },
+        {
+          "message_id": 1837,
+          "community": "Bybit API Discussion",
+          "buyer_direction": "UNKNOWN",
+          "signals": {
+            "direct": false,
+            "ownership": false,
+            "project_scope": false,
+            "procurement": false,
+            "repair": false,
+            "automation": false,
+            "budget": false,
+            "domain_categories": [
+              "exchange_api"
+            ],
+            "commercial": [],
+            "hire": []
+          },
+          "preview": "[API Update] Options Batch Order Size Change Dear Traders, To optimize Options order processing performance, Bybit will introduce a change t"
+        },
+        {
+          "message_id": 8611046,
+          "community": "Bybit English",
+          "buyer_direction": "UNKNOWN",
+          "signals": {
+            "direct": false,
+            "ownership": false,
+            "project_scope": false,
+            "procurement": false,
+            "repair": false,
+            "automation": false,
+            "budget": false,
+            "domain_categories": [],
+            "commercial": [],
+            "hire": []
+          },
+          "preview": "Sorry to said , if dunt have enough man power for compliance review , hired more people to handle daily thousand cases . Not put client fund"
+        }
+      ],
+      "REPAIR": [
+        {
+          "message_id": 935,
+          "community": "Bybit API Discussion",
+          "buyer_direction": "BUYER",
+          "signals": {
+            "direct": false,
+            "ownership": false,
+            "project_scope": false,
+            "procurement": false,
+            "repair": true,
+            "automation": false,
+            "budget": false,
+            "domain_categories": [],
+            "commercial": [],
+            "hire": []
+          },
+          "preview": "Would like to report a possible bug which has been bothering me for years, not sure if it's actually a bug or a feature, but if you switch t"
+        },
+        {
+          "message_id": 8149519,
+          "community": "Bitunix Global | Official",
+          "buyer_direction": "UNKNOWN",
+          "signals": {
+            "direct": false,
+            "ownership": false,
+            "project_scope": false,
+            "procurement": false,
+            "repair": false,
+            "automation": false,
+            "budget": true,
+            "domain_categories": [
+              "trading_bot"
+            ],
+            "commercial": [],
+            "hire": []
+          },
+          "preview": "BREAKING: Trading bot accidentally sent 167 ETH worth $300k to a random wallet. The transfer was caused by a software bug, and the bot opera"
+        },
+        {
+          "message_id": 1339,
+          "community": "Bybit API Discussion",
+          "buyer_direction": "UNKNOWN",
+          "signals": {
+            "direct": false,
+            "ownership": false,
+            "project_scope": false,
+            "procurement": false,
+            "repair": false,
+            "automation": false,
+            "budget": false,
+            "domain_categories": [],
+            "commercial": [],
+            "hire": []
+          },
+          "preview": "Yes should be out now Please note FIX API access requires whitelist onboarding at either UID or institutional ID (ins_id) granularity. A non"
+        },
+        {
+          "message_id": 1652,
+          "community": "Bybit API Discussion",
+          "buyer_direction": "BUYER",
+          "signals": {
+            "direct": false,
+            "ownership": false,
+            "project_scope": false,
+            "procurement": false,
+            "repair": true,
+            "automation": false,
+            "budget": false,
+            "domain_categories": [],
+            "commercial": [],
+            "hire": []
+          },
+          "preview": "Error message 10003 API key is invalid is indicative of one of two issues: 1) You’ve entered your API key and secret incorrectly. This can h"
+        }
+      ],
+      "BUYER_SIGNAL": [
+        {
+          "message_id": 8561722,
+          "community": "OKX English",
+          "buyer_direction": "BUYER",
+          "signals": {
+            "direct": false,
+            "ownership": false,
+            "project_scope": true,
+            "procurement": false,
+            "repair": false,
+            "automation": false,
+            "budget": false,
+            "domain_categories": [],
+            "commercial": [],
+            "hire": []
+          },
+          "preview": "OKX features built-in Trading Bots (like Grid, DCA, and Arbitrage bots) that are 100% free to use. They allow users to automate their tradin"
+        }
+      ]
+    }
+  },
+  "versions": {
+    "disc_v2": {
+      "examined": 2500,
+      "eligible": 225,
+      "eligible_pct": 9.0,
+      "no_path_match": 2017,
+      "no_path_rate_pct": 80.68,
+      "no_path_plus_direction": 2142,
+      "contamination_pct": 69.3,
+      "first_loss": {
+        "RETRIEVED": 225,
+        "NO_PATH_MATCH": 2017,
+        "HARD_EXCLUDE_EARLY": 133,
+        "DIRECTION_EMPLOYER": 79,
+        "DIRECTION_SEEKER": 34,
+        "DIRECTION_PROVIDER": 12
+      },
+      "veto_rates": {},
+      "direction_counts": {
+        "BUYER": 144,
+        "RECRUITER": 444,
+        "EMPLOYER": 128,
+        "SEEKER": 66,
+        "UNKNOWN": 1701,
+        "PROVIDER": 17
+      },
+      "path_counters": {},
+      "eligible_triggers": {
+        "client_hiring": 65,
+        "commercial_domain": 40,
+        "hire_budget_domain": 106,
+        "buyer_budget_domain": 12,
+        "commercial_domain_tech": 2
+      },
+      "eligible_buckets": {
+        "Direct buyer/RFQ candidate": 69,
+        "Corporate/job-board hiring": 107,
+        "Job seeker/resume": 31,
+        "Support/question": 6,
+        "Provider/self-promotion": 5,
+        "Recruiter": 1,
+        "News/editorial": 2,
+        "Marketing/promo": 4
+      },
+      "eligible_directions": {
+        "BUYER": 79,
+        "RECRUITER": 74,
+        "EMPLOYER": 37,
+        "SEEKER": 30,
+        "PROVIDER": 5
+      }
+    },
+    "disc_v4": {
+      "examined": 2500,
+      "eligible": 4,
+      "eligible_pct": 0.16,
+      "no_path_match": 1609,
+      "no_path_rate_pct": 64.36,
+      "no_path_plus_direction": 1609,
+      "contamination_pct": 0.0,
+      "first_loss": {
+        "VETO_support_question": 232,
+        "VETO_job_aggregator": 355,
+        "VETO_corporate_employment": 78,
+        "RETRIEVED": 4,
+        "HARD_EXCLUDE_EARLY": 133,
+        "NO_PATH_MATCH": 1609,
+        "VETO_job_seeker": 65,
+        "VETO_generic_recruiter": 2,
+        "VETO_service_provider": 16,
+        "VETO_news_digest": 2,
+        "VETO_marketing_broadcast": 4
+      },
+      "veto_rates": {
+        "support_question": 323,
+        "job_aggregator": 451,
+        "corporate_employment": 527,
+        "generic_recruiter": 441,
+        "marketing_broadcast": 39,
+        "job_seeker": 67,
+        "service_provider": 17,
+        "news_digest": 4
+      },
+      "direction_counts": {
+        "BUYER": 144,
+        "RECRUITER": 444,
+        "EMPLOYER": 128,
+        "SEEKER": 66,
+        "UNKNOWN": 1701,
+        "PROVIDER": 17
+      },
+      "path_counters": {
+        "E": 2,
+        "path_E": 2,
+        "trigger:v4_budget_deliverable": 1,
+        "A": 3,
+        "D": 1,
+        "path_A": 3,
+        "path_D": 1,
+        "trigger:v4_project_procurement": 1,
+        "trigger:v4_direct_project_domain": 2
+      },
+      "eligible_triggers": {
+        "v4_budget_deliverable": 1,
+        "v4_project_procurement": 1,
+        "v4_direct_project_domain": 2
+      },
+      "eligible_buckets": {
+        "Direct buyer/RFQ candidate": 4
+      },
+      "eligible_directions": {
+        "BUYER": 1,
+        "RECRUITER": 3
+      }
+    },
+    "disc_v5": {
+      "examined": 2500,
+      "eligible": 4,
+      "eligible_pct": 0.16,
+      "no_path_match": 1608,
+      "no_path_rate_pct": 64.32,
+      "no_path_plus_direction": 1608,
+      "contamination_pct": 0.0,
+      "first_loss": {
+        "VETO_support_question": 232,
+        "VETO_job_aggregator": 355,
+        "VETO_corporate_employment": 78,
+        "RETRIEVED": 4,
+        "HARD_EXCLUDE_EARLY": 133,
+        "NO_PATH_MATCH": 1608,
+        "VETO_job_seeker": 65,
+        "VETO_service_provider": 17,
+        "VETO_generic_recruiter": 2,
+        "VETO_news_digest": 2,
+        "VETO_marketing_broadcast": 4
+      },
+      "veto_rates": {
+        "support_question": 323,
+        "job_aggregator": 451,
+        "corporate_employment": 529,
+        "generic_recruiter": 441,
+        "marketing_broadcast": 39,
+        "job_seeker": 67,
+        "service_provider": 18,
+        "news_digest": 4
+      },
+      "direction_counts": {
+        "BUYER": 146,
+        "RECRUITER": 444,
+        "EMPLOYER": 163,
+        "SEEKER": 29,
+        "UNKNOWN": 1700,
+        "PROVIDER": 18
+      },
+      "path_counters": {
+        "E": 2,
+        "path_E": 2,
+        "trigger:v5_budget_deliverable": 1,
+        "A": 3,
+        "D": 1,
+        "path_A": 3,
+        "path_D": 1,
+        "trigger:v5_project_procurement": 1,
+        "trigger:v5_direct_project_domain": 2
+      },
+      "eligible_triggers": {
+        "v5_budget_deliverable": 1,
+        "v5_project_procurement": 1,
+        "v5_direct_project_domain": 2
+      },
+      "eligible_buckets": {
+        "Direct buyer/RFQ candidate": 4
+      },
+      "eligible_directions": {
+        "BUYER": 1,
+        "RECRUITER": 3
+      }
+    }
+  },
+  "recovery_v4_no_path_to_v5": {
+    "by_bucket": {},
+    "total": 0,
+    "examples": []
+  },
+  "deltas": {
+    "no_path_v4_to_v5": 1,
+    "no_path_v4_to_v5_pct": 0.06,
+    "eligible_v4_to_v5": 0,
+    "contamination_v4_to_v5_pp": 0.0,
+    "contamination_v2": 69.3
+  },
+  "decision": "HOLD",
+  "shippable": false,
+  "rationale": "NO_PATH delta insufficient (1 / 0.06%); do not ship a weak v5.",
+  "next": "D (LaborX FO veto carve) and B (historical unscored) remain next; C-only this turn.",
+  "default_version_unchanged": "disc_v4",
+  "c_only_conclusion": {
+    "no_path_v4": 1609,
+    "no_path_v5": 1608,
+    "eligible_v2": 225,
+    "eligible_v4": 4,
+    "eligible_v5": 4,
+    "contamination_v2": 69.3,
+    "contamination_v4": 0.0,
+    "contamination_v5": 0.0,
+    "recovered_from_v4_no_path": 0,
+    "why_hold": "CT-capped NO_PATH is mostly domain chatter + false budget; genuine buyer phrases are absent from NO_PATH (vetoed under D). Safe C expansions cannot materially cut NO_PATH; unsafe expansions reintroduce vacancy/provider contamination.",
+    "next": "D then B; remasure C after"
+  }
+}

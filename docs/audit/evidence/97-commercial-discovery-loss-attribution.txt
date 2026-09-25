@@ -1,0 +1,91 @@
+Evidence 97: commercial discovery loss attribution
+generated_at=2026-09-25T12:28:06.781599+00:00 head=e4b58be disc=disc_v4
+runtime_sec=226.84 read_only=true sdk=false
+
+=== 1. RAW CORPUS ===
+  7d: msgs=117462 scored=117462 (100.0%) L/M/H=117461/0/1
+  30d: msgs=705416 scored=122361 (17.35%) L/M/H=122360/0/1
+  90d: msgs=2284107 scored=123563 (5.41%) L/M/H=123561/0/2
+  360d: msgs=8359391 scored=123920 (1.48%) L/M/H=123910/0/10
+
+=== 2. SCORE RECONCILIATION ===
+  current_score_per_message invariant_ok=True multi=0
+  low_by_scored_at_7d=123930 low_by_msg_date_7d=117461 rescored_older=6469
+  note: 7d message_date LOW count differs from scored_at LOW count when older messages are re-scored into the window (not duplicate rows).
+
+=== 3. PREFILTER ===
+  uncapped=2529 capped=2500 truncated=29
+  bias: CT-ranked LIMIT 2500 skews toward high commercial+technical communities; compare full_7d_low_top vs capped_top.
+  capped_top:
+    Bybit English: 989
+    Bybit API Discussion: 330
+    JobStash.xyz - Crypto Native, Web3 and AI Jobs: 296
+    LBank Official Group: 211
+    Web3 Jobs: 86
+    Jobs Crypto UAE 🐪: 71
+    Web3 Jobs | LaborX: 69
+    Блокчейн Hunter | Вакансии в крипто-индустрии: 48
+
+=== 4. DISCOVERY FUNNEL (7d, measured) ===
+  RAW messages (7d message_date): in=117462 out=117462 rej=0 (0.0%) reason=n/a
+  CURRENT SCORE ROW: in=117462 out=117462 rej=0 (0.0%) reason=unscored (negligible in 7d)
+  LOW tier (discovery plane): in=117462 out=117461 rej=1 (0.0%) reason=MEDIUM/HIGH → scorer CRM path
+  DISCOVERY PREFILTER (uncapped): in=117461 out=2529 rej=114932 (97.85%) reason=CT/keyword OR fail or scored_at window
+  PREFILTER CAP 2500: in=2529 out=2500 rej=29 (1.15%) reason=ORDER BY CT DESC LIMIT
+  DISC_V4 CANDIDATE (measured): in=2500 out=4 rej=2496 (99.84%) reason=NO_PATH_MATCH
+  per-veto first-loss on cap: {'VETO_support_question': 199, 'VETO_job_aggregator': 355, 'VETO_corporate_employment': 153, 'VETO_job_seeker': 31, 'VETO_generic_recruiter': 3, 'VETO_service_provider': 14, 'VETO_news_digest': 2, 'VETO_marketing_broadcast': 4}
+
+=== 5. KNOWN-POSITIVE RECALL (AI_CONFIRMED) ===
+  lead=1137 msg=25570 tier=HIGH laborx=True lost_at=discovery_prefilter_LOW first_loss=NOT_LOW veto=['job_aggregator', 'generic_recruiter'] v2_elig=True struct=FO_REPAIR | 🌟 Freelance Opportunity: Quick Fix Needed for Python Trading Bot 💰 Budget: $320 🤝 With: david lil
+  lead=1138 msg=25571 tier=HIGH laborx=True lost_at=discovery_prefilter_LOW first_loss=NOT_LOW veto=['job_aggregator', 'generic_recruiter'] v2_elig=True struct=FO_REPAIR | 🌟 Freelance Opportunity: Quick Fix Needed for Python Trading Bot 💰 Budget: $50 🤝 With: Ryan Peterson
+  lead=1139 msg=22713 tier=HIGH laborx=True lost_at=discovery_prefilter_LOW first_loss=NOT_LOW veto=['job_aggregator', 'generic_recruiter'] v2_elig=True struct=FO_PROJECT_RFQ_TRADING | 🌟 Freelance Opportunity: Crypto Trading Bot Developer 💰 Budget: $200 🤝 With: Yohans Hayla
+  lead=1140 msg=25400 tier=HIGH laborx=True lost_at=discovery_prefilter_LOW first_loss=NOT_LOW veto=['job_aggregator', 'generic_recruiter'] v2_elig=True struct=FO_PROJECT_RFQ_TRADING | 🌟 Freelance Opportunity: Python Crypto Trading Bot Developer (GUI + Dashboard) 💰 Budget: $800 🤝 With: Harry Bennett
+  coverage_v4=0/4
+
+=== 6. LABORX ===
+  {"community_id": 2, "sql_360d": {"msgs": 5465, "fo": 3430, "repairish": 34, "trading_botish": 753, "budgeted": 3438}, "sample_n": 200, "categories": {"FO_PROJECT_RFQ_OTHER_WEB3": 198, "FO_PROJECT_RFQ_TRADING": 2}, "v4_eligible_by_category": {}, "first_loss_by_category": {"FO_PROJECT_RFQ_OTHER_WEB3:VETO_job_aggregator": 191, "FO_PROJECT_RFQ_OTHER_WEB3:NOT_SCORED": 7, "FO_PROJECT_RFQ_TRADING:VETO_job_aggregator": 2}, "finding": "FO templates match _GIG_MARKETPLACE_RX \u2192 job_aggregator veto clears repair. Source-level LaborX ban would over-block; message-level FO/gig structure is the actual veto trigger. AI_CONFIRMED BOT_REPAIR FO posts are message-level false positives of a marketplace template veto.", "source_vs_message": "MESSAGE_LEVEL_STRUCTURAL_VETO (gig FO template), not community_id ban"}
+
+=== 7. VETO LOSSES (commercial∧domain pool, multi-label) ===
+  {'support_question': 357, 'marketing_broadcast': 233, 'corporate_employment': 105, 'generic_recruiter': 48, 'job_aggregator': 47, 'news_digest': 22, 'service_provider': 14, 'job_seeker': 2}
+  AI_CONFIRMED multi-label: {'job_aggregator': 4, 'generic_recruiter': 4}
+
+=== 8. LOW-BUT-COMMERCIAL ===
+  n=38 first_loss={'CT_CAP_TRUNCATED': 19, 'VETO_job_aggregator': 10, 'NO_PATH_MATCH': 4, 'VETO_corporate_employment': 2, 'VETO_support_question': 1, 'HARD_EXCLUDE_EARLY': 1, 'RETRIEVED': 1}
+
+=== 9. ROOT CAUSE ===
+  DECISION E — MULTIPLE
+  shares_pool={'A_PREFILTER': 1.92, 'B_SCORE_QUERY': 96.61, 'C_DISCOVERY_SEMANTICS': 0.31, 'D_VETO': 1.08, 'RETRIEVED': 0.08}
+  cohorts={'pool_360d_primary_share': 'B_SCORE_QUERY (NOT_SCORED)', 'capped_prefilter_7d_primary_share': 'C_DISCOVERY_SEMANTICS (NO_PATH_MATCH)', 'capped_prefilter_veto_share_pct': 35.88, 'capped_prefilter_semantics_share_pct': 63.96, 'overall': 'E_MULTIPLE'}
+  MULTIPLE internal bottlenecks (not community expansion). (B) 360d commercial∧domain pool: 1255/1299 (96.6%) NOT_SCORED — discovery JOIN cannot see them (current_score_per_message invariant OK; coverage gap). (C) On measured 7d capped prefilter 2500: NO_PATH_MATCH/direction=1599 (64.0%) — buyer/project conjunction not recognized. (D) Veto/hard-exclude first-loss=897 (35.9%); job_aggregator multi-label hits=454; 4/4 AI_CONFIRMED LaborX FO lost_at=discovery_prefilter_LOW (HIGH) and text-eval veto=["job_aggregator","generic_recruiter"] (message-level FO structure, not source ban). (A) Prefilter uncapped keeps only ~2.1% of 7d LOW (CT/keyword). Measured disc_v4 survivors=4/2500 (matches evidence96 hardcoded 4). Production plane: commercial_discovery_enabled=false → FLAG_DISABLED (counterfactual thereafter).
+
+=== 10. FIX RECOMMENDATION ===
+  1) Do NOT expand communities. 2) Ops/backfill score coverage for 8–360d commercial∧domain so JOIN can see the pool (B). 3) Keep message-level gig FO veto; carve FO+repair/trading-bot+budget exception (LaborX AI_CONFIRMED pattern) — not a LaborX source ban (D). 4) After (2)–(3), remeasure NO_PATH_MATCH on capped prefilter (C) and CT-cap bias (A). No scoring.yaml / score() threshold changes. Do not flip discovery flag in this phase.
+
+=== 11. ISOLATION ===
+  before={'human_labels': 1524, 'ai_confirmed': 4, 'disc_candidates': 60, 'episodes': 60, 'scores': 123940, 'messages': 8621626}
+  after={'human_labels': 1524, 'ai_confirmed': 4, 'disc_candidates': 60}
+  unchanged=True
+  gates: see curl /validation/gates (expect 94/0/94, ml_training_enabled=false)
+
+=== 12. TESTS ===
+  (runner executes pytest -q separately)
+
+=== 13. BUSINESS MILESTONE ===
+  NO OUTREACH IN THIS PHASE
+
+=== commercial_domain_loss_report ===
+  NOT_SCORED: n=1255 (96.61%) cum=96.61%
+  NOT_LOW: n=6 (0.46%) cum=97.07%
+  CT_CAP_TRUNCATED: n=19 (1.46%) cum=98.54%
+  HARD_EXCLUDE_EARLY: n=1 (0.08%) cum=98.61%
+  VETO_job_aggregator: n=10 (0.77%) cum=99.38%
+  VETO_corporate_employment: n=2 (0.15%) cum=99.54%
+  VETO_support_question: n=1 (0.08%) cum=99.62%
+  NO_PATH_MATCH: n=4 (0.31%) cum=99.92%
+  RETRIEVED: n=1 (0.08%) cum=100.0%
+
+=== semantic gaps ===
+  {'SCORE_SELECTION_BUG': 1255, 'PREFILTER_MISS': 25, 'MARKETPLACE_FALSE_POSITIVE': 10, 'DOMAIN_NOT_RECOGNIZED': 3, 'EMPLOYMENT_FALSE_POSITIVE': 3, 'SUPPORT_FALSE_POSITIVE': 1, 'BUYER_SIGNAL_NOT_RECOGNIZED': 1, 'OTHER': 1}
+  boundary hiring \b vs \y: {'hiring_backslash_b': 0, 'hiring_backslash_y': 345}
+
+JSON: /app/docs/audit/evidence/97-commercial-discovery-loss-attribution.json

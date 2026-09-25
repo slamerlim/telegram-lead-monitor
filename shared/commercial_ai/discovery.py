@@ -2,6 +2,7 @@
 
 disc_v3/v4 add buyer_direction + non-buyer vetoes. Does NOT alter LeadScorer.score().
 disc_v4 expands positive buyer-signal conjunctions without weakening hard vetoes.
+disc_v5 recovers NO_PATH buyer/project phrases (C-only); keeps LaborX/gig vetoes (D later).
 """
 
 from __future__ import annotations
@@ -16,6 +17,7 @@ DISCOVERY_VERSION = "disc_v4"
 DISCOVERY_VERSION_V2 = "disc_v2"
 DISCOVERY_VERSION_V3 = "disc_v3"
 DISCOVERY_VERSION_V4 = "disc_v4"
+DISCOVERY_VERSION_V5 = "disc_v5"
 
 BuyerDirection = Literal[
     "BUYER",
@@ -113,7 +115,7 @@ _CORPORATE_JD_RX = re.compile(
     re.IGNORECASE,
 )
 
-# disc_v4 positive buyer-signal families
+# disc_v4/v5 positive buyer-signal families
 _DIRECT_REQUEST_RX = re.compile(
     r"(?:"
     r"\blooking\s+for\s+(?:someone|a\s+developer|a\s+freelancer|a\s+contractor|an?\s+engineer)\b|"
@@ -130,6 +132,34 @@ _DIRECT_REQUEST_RX = re.compile(
     r")",
     re.IGNORECASE,
 )
+# disc_v5: additional buyer/request phrases that v4 missed (C-only; not employment/gig).
+# Keep tight: require explicit hire-to-build / bot-deliverable / pay-to-automate forms.
+# Do NOT use bare "нужен человек" / "требуется" (Russian job-board contamination).
+_DIRECT_REQUEST_V5_RX = re.compile(
+    r"(?:"
+    r"\blooking\s+for\s+(?:an?\s+)?(?:experienced\s+|senior\s+|junior\s+|python\s+|ml\s+|ai\s+|quant\s+|backend\s+)?"
+    r"(?:developer|engineer|freelancer|contractor|programmer)\b|"
+    r"\b(?:need|want|seeking)\s+(?:an?\s+)?(?:experienced\s+|senior\s+|python\s+|quant\s+)?"
+    r"(?:developer|engineer|freelancer|contractor|programmer)\b|"
+    r"\bhire\s+(?:an?\s+)?(?:developer|engineer|freelancer|contractor)\s+to\s+"
+    r"(?:build|develop|implement|automate|fix|integrate)\b|"
+    r"\blooking\s+to\s+(?:hire|pay|commission)\s+someone\b|"
+    r"\b(?:need|want)\s+(?:an?\s+)?(?:custom\s+)?trading\s+bot\b|"
+    r"\b(?:need|want)\s+(?:an?\s+)?custom\s+bot\b|"
+    r"\b(?:build|develop)\s+(?:me\s+|us\s+)?(?:an?\s+)?(?:custom\s+)?(?:trading\s+)?bot\b|"
+    r"\bcommission\s+(?:a\s+)?(?:custom\s+)?(?:trading\s+)?bot\b|"
+    r"\b(?:anyone|anybody)\s+(?:available\s+to|who\s+can)\s+(?:build|code|develop|fix|automate)\b|"
+    r"\bcan\s+(?:anybody|someone)\s+(?:build|develop|code|fix)\b|"
+    r"\bi\s+need\s+help\s+(?:building|developing|fixing)\b|"
+    r"\bneed\s+an?\s+expert\s+to\s+(?:integrate|build|develop|fix)\b|"
+    r"\bseeking\s+(?:a\s+)?(?:freelancer|contractor|developer)\s+to\s+"
+    r"(?:develop|build|implement|integrate)\b|"
+    r"\brequire\s+(?:a\s+)?contractor\s+for\s+(?:solana|dex|arbitrage|trading|bot)\b|"
+    r"\bneed\s+(?:a\s+)?quant\s+engineer\s+for\b|"
+    r"\bpaid\s+(?:project|gig)\b"
+    r")",
+    re.IGNORECASE,
+)
 _OWNERSHIP_RX = re.compile(
     r"(?:"
     r"\b(?:my|our)\s+(?:bot|strategy|trading\s+system|system|exchange\s+integration|api)\b|"
@@ -137,6 +167,52 @@ _OWNERSHIP_RX = re.compile(
     r"\bмо[яй]\s+(?:бот|стратеги\w*|систем\w*)\b|"
     r"\bнаш[ае]?\s+(?:бот|стратеги\w*|систем\w*)\b|"
     r"\bтекущ\w*\s+бот\b"
+    r")",
+    re.IGNORECASE,
+)
+# disc_v5: allow one domain token between possessive and asset ("my Binance strategy").
+# Exclude provider "my telegram bot" / "my signal bot" offer patterns via negative lookbehind-ish
+# by requiring trading/strategy/exchange/api/system assets (not bare bot after chat apps).
+_OWNERSHIP_V5_RX = re.compile(
+    r"(?:"
+    r"\b(?:my|our)\s+(?:binance|bybit|okx|exchange|futures|spot|existing|current|broken)\s+"
+    r"(?:bot|strategy|system|api|integration)\b|"
+    r"\b(?:my|our)\s+(?:trading\s+)?(?:strategy|system|execution\s+(?:engine|system)|"
+    r"exchange\s+integration)\b|"
+    r"\b(?:existing|current|broken)\s+(?:\w+\s+){0,1}(?:trading\s+)?(?:bot|strategy|system)\b"
+    r")",
+    re.IGNORECASE,
+)
+# True project-budget language (excludes lone market $-amounts / prize pools).
+_TRUE_BUDGET_RX = re.compile(
+    r"(?:"
+    r"\bbudget\b|"
+    r"\bбюджет\b|"
+    r"\bfixed[- ]price\b|"
+    r"\bhourly\s+(?:rate|\$)|"
+    r"\bquote\b|"
+    r"\bmilestone\b|"
+    r"\bcan\s+pay\b|"
+    r"\bi\s+can\s+pay\b|"
+    r"\bwe\s+can\s+pay\b|"
+    r"\bpaying\s+for\b|"
+    r"\bpaid\s+(?:project|gig|freelance|work)\b|"
+    r"\$\s?\d{2,6}(?:\s*(?:k|usd))?\s*(?:budget|fixed|total)|"
+    r"\bbudget\s*(?:of|:)?\s*\$?\d|"
+    r"\bстоимость\b|"
+    r"\bоплат\w*\b"
+    r")",
+    re.IGNORECASE,
+)
+# Bot/system deliverable as the thing being procured (v5 path F).
+_BOT_DELIVERABLE_RX = re.compile(
+    r"(?:"
+    r"\b(?:custom\s+)?(?:trading\s+)?(?:grid\s+)?bot\b|"
+    r"\b(?:copy\s+trading|arbitrage|market[- ]making|sniper)\s+bot\b|"
+    r"\bexecution\s+(?:engine|system)\b|"
+    r"\btrading\s+system\b|"
+    r"\bexchange\s+api\s+integration\b|"
+    r"\bpybit\b"
     r")",
     re.IGNORECASE,
 )
@@ -239,6 +315,24 @@ _PROJECT_SCOPE_RX = re.compile(
     r")",
     re.IGNORECASE,
 )
+# disc_v5 project-scope expansions (hire-to-build / bot deliverable / integrate).
+_PROJECT_SCOPE_V5_RX = re.compile(
+    r"(?:"
+    r"\bhire\s+(?:an?\s+)?(?:developer|engineer|freelancer|contractor)\s+to\s+"
+    r"(?:build|develop|implement|automate|fix|integrate)\b|"
+    r"\bseeking\s+(?:a\s+)?(?:freelancer|contractor|developer)\s+to\s+"
+    r"(?:develop|build|implement|integrate)\b|"
+    r"\b(?:want|need)\s+(?:a\s+)?custom\s+(?:trading\s+)?bot\b|"
+    r"\b(?:build|develop)\s+(?:me\s+|us\s+)?(?:a\s+)?(?:custom\s+)?(?:trading\s+)?bot\b|"
+    r"\bintegrate\s+(?:pybit|bybit|binance|okx)\b|"
+    r"\bneed\s+an?\s+expert\s+to\s+integrate\b|"
+    r"\b(?:quant|python|ml|ai)\s+engineer\s+for\s+(?:a\s+)?(?:short[- ]term\s+)?"
+    r"(?:trading|bot|strategy|project)\b|"
+    r"\bcontractor\s+for\s+(?:solana|dex|arbitrage|trading|bot)\b|"
+    r"\blooking\s+to\s+pay\s+someone\s+to\s+(?:automate|build|develop|fix)\b"
+    r")",
+    re.IGNORECASE,
+)
 
 _PROVIDER_EXTRA_RX = re.compile(
     r"(?:"
@@ -256,6 +350,15 @@ _PROVIDER_EXTRA_RX = re.compile(
     r"\bwant\s+to\s+know\s+how\s+(?:the\s+)?bot\s+works\b|"
     r"\bdm\s+for\s+more\s+details\b|"
     r"\bfeel\s+free\s+to\s+(?:dm|message|reach\s+out)\b.{0,60}\b(?:developer|build|cbot)\b"
+    r")",
+    re.IGNORECASE,
+)
+# disc_v5-only provider guards (do not alter v4 population).
+_PROVIDER_EXTRA_V5_RX = re.compile(
+    r"(?:"
+    r"\bi\s+can\s+offer\b|"
+    r"\bhelping\s+startups\b|"
+    r"\b\d+\+?\s+years?\b.{0,40}\bportfolio\b"
     r")",
     re.IGNORECASE,
 )
@@ -349,6 +452,9 @@ class DiscoveryFeatures:
     automation_signal: bool = False
     hard_veto: bool = False
     soft_direction: bool = False
+    matched_paths: list[str] = field(default_factory=list)
+    true_budget_signal: bool = False
+    bot_deliverable_signal: bool = False
 
     def to_signals_dict(self) -> dict[str, Any]:
         return {
@@ -392,6 +498,9 @@ class DiscoveryFeatures:
             "automation_signal": self.automation_signal,
             "hard_veto": self.hard_veto,
             "soft_direction": self.soft_direction,
+            "matched_paths": self.matched_paths,
+            "true_budget_signal": self.true_budget_signal,
+            "bot_deliverable_signal": self.bot_deliverable_signal,
         }
 
 
@@ -461,28 +570,49 @@ def classify_buyer_direction(
     clean: str,
     scorer: Any,
     feats: DiscoveryFeatures,
+    version: str | None = None,
 ) -> BuyerDirection:
     """Deterministic retrieval label — not commercial truth."""
+    ver = version or DISCOVERY_VERSION
+    v5 = ver == DISCOVERY_VERSION_V5
+
     seeker_hits = scorer._pattern_hits(clean, "job_seeker")
     provider_hits = scorer._pattern_hits(clean, "service_provider")
     recruiter_hits = scorer._pattern_hits(clean, "recruiter")
 
     feats.seeker_signal = bool(seeker_hits) or bool(_SEEKER_EXTRA_RX.search(clean))
     feats.provider_signal = bool(provider_hits) or bool(_PROVIDER_EXTRA_RX.search(clean))
+    if v5 and not feats.provider_signal:
+        feats.provider_signal = bool(_PROVIDER_EXTRA_V5_RX.search(clean))
     feats.recruiter_signal = bool(recruiter_hits)
     feats.employment_signal = bool(_EMPLOYER_RX.search(clean))
     corporate_jd = bool(_CORPORATE_JD_RX.search(clean))
     corporate_jd_hard = bool(_CORPORATE_JD_HARD_RX.search(clean))
 
     feats.direct_request_signal = bool(_DIRECT_REQUEST_RX.search(clean))
+    if v5 and not feats.direct_request_signal:
+        feats.direct_request_signal = bool(_DIRECT_REQUEST_V5_RX.search(clean))
+
     feats.ownership_signal = bool(_OWNERSHIP_RX.search(clean))
+    if v5 and not feats.ownership_signal:
+        feats.ownership_signal = bool(_OWNERSHIP_V5_RX.search(clean))
+
     feats.automation_signal = bool(_AUTOMATION_RX.search(clean))
+    feats.true_budget_signal = bool(_TRUE_BUDGET_RX.search(clean))
+    feats.bot_deliverable_signal = bool(_BOT_DELIVERABLE_RX.search(clean))
+
     gig_marketplace = bool(_GIG_MARKETPLACE_RX.search(clean))
     feats.project_procurement_signal = (not gig_marketplace) and (
         bool(_PROJECT_PROCUREMENT_RX.search(clean))
         or (
             bool(_PROCUREMENT_RX.search(clean))
             and (feats.direct_request_signal or feats.ownership_signal)
+        )
+        or (
+            v5
+            and feats.direct_request_signal
+            and feats.true_budget_signal
+            and feats.bot_deliverable_signal
         )
     )
     repair_conj = bool(_REPAIR_CONJ_RX.search(clean)) and not bool(
@@ -492,8 +622,12 @@ def classify_buyer_direction(
         feats.ownership_signal or feats.direct_request_signal or repair_conj
     )
 
+    project_scope_hit = bool(_PROJECT_SCOPE_RX.search(clean))
+    if v5 and not project_scope_hit:
+        project_scope_hit = bool(_PROJECT_SCOPE_V5_RX.search(clean))
+
     raw_project = (
-        bool(_PROJECT_SCOPE_RX.search(clean))
+        project_scope_hit
         or yaml_repair
         or bool(feats.implementation_patterns)
         or feats.direct_request_signal
@@ -501,6 +635,12 @@ def classify_buyer_direction(
         or feats.automation_signal
         or feats.project_procurement_signal
         or (repair_conj and (feats.ownership_signal or feats.direct_request_signal))
+        or (
+            v5
+            and feats.bot_deliverable_signal
+            and feats.direct_request_signal
+            and (feats.true_budget_signal or feats.ownership_signal)
+        )
     )
     # Hard JD boilerplate demotes project scope; soft full-time alone does not when
     # ownership/direct/procurement evidence exists (v4 recall path).
@@ -527,6 +667,11 @@ def classify_buyer_direction(
     feats.budget_signal = feats.budget_language or bool(
         re.search(r"\b(?:budget|бюджет|quote|стоимость)\b", clean, re.I)
     )
+    if v5:
+        # Prefer true project-budget language over lone $-amounts / prize pools.
+        feats.budget_signal = feats.budget_signal or feats.true_budget_signal
+        if feats.true_budget_signal:
+            feats.budget_language = True
     if feats.budget_signal:
         feats.budget_language = True
     feats.timeline_signal = feats.timeline_language or bool(
@@ -544,10 +689,12 @@ def classify_buyer_direction(
         families.append("STRATEGY_AUTOMATION_REQUEST")
     if feats.project_procurement_signal:
         families.append("CUSTOM_DEVELOPMENT_REQUEST")
-    if feats.budget_signal:
+    if feats.budget_signal or feats.true_budget_signal:
         families.append("BUDGETED_REQUEST")
     if feats.timeline_signal:
         families.append("TIMELINED_REQUEST")
+    if feats.bot_deliverable_signal and feats.direct_request_signal:
+        families.append("BOT_PURCHASE_REQUEST")
     if _DOMAIN_LOOSE_RX.search(clean):
         if re.search(r"\b(?:bybit|binance|okx|pybit|exchange\s*api)\b", clean, re.I):
             families.append("EXCHANGE_INTEGRATION_REQUEST")
@@ -576,16 +723,44 @@ def classify_buyer_direction(
         or feats.automation_signal
         or (feats.direct_request_signal and (feats.budget_signal or feats.project_scope))
         or feats.project_procurement_signal
+        or (
+            v5
+            and feats.direct_request_signal
+            and feats.bot_deliverable_signal
+            and (feats.true_budget_signal or feats.project_scope)
+        )
     ) and not feats.aggregator_signal
     feats.soft_direction = strong_buyer_evidence and (
         feats.recruiter_signal or feats.employment_signal
     ) and not corporate_jd_hard and not feats.aggregator_signal
+    # disc_v5: vacancy hashtags are hard employment — never soft-override (job-board noise).
+    if v5 and re.search(r"#(?:вакансия|vacancy|hiring|fulltime)\b", clean, re.I):
+        feats.soft_direction = False
+        if not feats.project_procurement_signal:
+            feats.employment_signal = True
 
     # Priority: hard non-buyer roles first.
     if feats.aggregator_signal:
         return "RECRUITER" if feats.recruiter_signal else "EMPLOYER"
+    # Vacancy hashtags without project/procurement evidence → employer (v5 job-board guard).
+    if v5 and re.search(r"#(?:вакансия|vacancy|hiring|fulltime)\b", clean, re.I):
+        if not (
+            feats.project_procurement_signal
+            or feats.ownership_signal
+            or feats.repair_signal
+            or (feats.direct_request_signal and feats.bot_deliverable_signal)
+        ):
+            return "EMPLOYER"
     if feats.seeker_signal and not strong_buyer_evidence:
         return "SEEKER"
+    # disc_v5 provider spam (portfolio / "i can offer") wins over weak repair/commercial hits.
+    if v5 and bool(_PROVIDER_EXTRA_V5_RX.search(clean)):
+        if not (
+            feats.ownership_signal
+            and feats.direct_request_signal
+            and (feats.true_budget_signal or feats.budget_signal)
+        ):
+            return "PROVIDER"
     if feats.provider_signal and (
         bool(_PROVIDER_EXTRA_RX.search(clean))
         or "gig of the day" in clean.lower()
@@ -932,6 +1107,19 @@ def _eligible_v4(
     else:
         trigger, score = "v4_buyer_weak", 1.5
 
+    paths_hit = []
+    if path_a:
+        paths_hit.append("A")
+    if path_b:
+        paths_hit.append("B")
+    if path_c:
+        paths_hit.append("C")
+    if path_d:
+        paths_hit.append("D")
+    if path_e:
+        paths_hit.append("E")
+    feats.matched_paths = paths_hit
+
     dscore = score
     if feats.budget_signal:
         dscore += 0.3
@@ -943,6 +1131,155 @@ def _eligible_v4(
         dscore += 0.2
     if feats.project_procurement_signal:
         dscore += 0.15
+    dscore += 0.05 * min(6, len(feats.buyer_signal_families))
+    dscore += min(0.5, feats.buyer_persistence_signal)
+    feats.trigger_type = trigger
+    feats.trigger_score = score
+    feats.discovery_score = round(dscore, 3)
+    feats.eligible = True
+
+
+def _eligible_v5(
+    feats: DiscoveryFeatures,
+    *,
+    purchase: list,
+    repair: list,
+    custom: list,
+    hire: list,
+    impl: list,
+    buyer_intent: list,
+    contract: list,
+    domain: list,
+    tech: list,
+    tech_hits: list,
+    has_domain_loose: bool,
+    clean: str,
+) -> None:
+    """disc_v5: v4 paths A–E plus bot-deliverable path F; true-budget path E.
+
+    Does not weaken LaborX / gig marketplace / job_aggregator vetoes (D later).
+    """
+    _apply_vetoes(feats, soft=True)
+    if feats.veto_categories:
+        feats.eligible = False
+        feats.trigger_type = None
+        feats.trigger_score = 0.0
+        feats.discovery_score = 0.0
+        feats.matched_paths = []
+        return
+
+    has_domain_cat = bool(domain)
+    has_tech = bool(tech or tech_hits)
+    has_domain_kw = bool(_DOMAIN_LOOSE_RX.search(clean)) or has_domain_loose
+    has_domain = has_domain_cat or has_domain_kw or (feats.project_scope and has_tech)
+
+    explicit_commercial = bool(purchase or repair or custom or hire or impl)
+    soft_commercial = bool(buyer_intent or contract)
+    direct = feats.direct_request_signal or soft_commercial or explicit_commercial
+    # Path E: keep v4 budget_signal recall; true_budget is additive, not restrictive.
+    budget_ok = bool(feats.budget_signal or feats.true_budget_signal)
+
+    path_a = direct and has_domain and (
+        feats.project_scope
+        or feats.ownership_signal
+        or feats.direct_request_signal
+        or (explicit_commercial and budget_ok)
+    )
+    path_b = (
+        feats.repair_signal
+        and (has_domain or has_tech)
+        and (feats.ownership_signal or feats.direct_request_signal)
+    )
+    path_c = (feats.automation_signal or bool(impl)) and has_domain and (
+        feats.ownership_signal or feats.direct_request_signal or feats.project_scope
+    )
+    path_d = (
+        feats.project_procurement_signal
+        and (feats.project_scope or feats.ownership_signal or feats.direct_request_signal)
+        and has_domain
+        and not feats.aggregator_signal
+    )
+    path_e = (
+        (budget_ok or feats.timeline_signal)
+        and has_domain
+        and (feats.direct_request_signal or feats.ownership_signal)
+        and not feats.aggregator_signal
+    )
+    # Path F: bot/system deliverable request + domain + (true budget OR ownership OR project).
+    path_f = (
+        feats.bot_deliverable_signal
+        and feats.direct_request_signal
+        and has_domain
+        and (budget_ok or feats.ownership_signal or feats.project_scope)
+        and not feats.aggregator_signal
+    )
+
+    paths_hit: list[str] = []
+    if path_a:
+        paths_hit.append("A")
+    if path_b:
+        paths_hit.append("B")
+    if path_c:
+        paths_hit.append("C")
+    if path_d:
+        paths_hit.append("D")
+    if path_e:
+        paths_hit.append("E")
+    if path_f:
+        paths_hit.append("F")
+    feats.matched_paths = paths_hit
+
+    if not paths_hit:
+        feats.eligible = False
+        feats.trigger_type = None
+        feats.trigger_score = 0.0
+        feats.discovery_score = 0.0
+        return
+
+    # Soft direction: SEEKER/PROVIDER/EMPLOYER still blocked unless soft_direction override.
+    if feats.buyer_direction in ("SEEKER", "PROVIDER") and not feats.soft_direction:
+        feats.eligible = False
+        feats.veto_categories.append(f"direction_{feats.buyer_direction.lower()}")
+        feats.veto_categories = list(dict.fromkeys(feats.veto_categories))
+        feats.hard_veto = True
+        feats.matched_paths = []
+        return
+    if feats.buyer_direction == "EMPLOYER" and not feats.soft_direction:
+        feats.eligible = False
+        feats.veto_categories.append("direction_employer")
+        feats.veto_categories = list(dict.fromkeys(feats.veto_categories))
+        feats.hard_veto = True
+        feats.matched_paths = []
+        return
+
+    if path_b:
+        trigger, score = "v5_repair_domain", 3.3
+    elif path_c:
+        trigger, score = "v5_automation_domain", 3.2
+    elif path_f:
+        trigger, score = "v5_bot_deliverable", 3.15
+    elif path_d:
+        trigger, score = "v5_project_procurement", 3.1
+    elif path_e:
+        trigger, score = "v5_budget_deliverable", 3.0
+    elif path_a:
+        trigger, score = "v5_direct_project_domain", 2.9
+    else:
+        trigger, score = "v5_buyer_weak", 1.5
+
+    dscore = score
+    if budget_ok:
+        dscore += 0.3
+    if feats.timeline_signal:
+        dscore += 0.15
+    if feats.ownership_signal:
+        dscore += 0.25
+    if feats.repair_signal:
+        dscore += 0.2
+    if feats.project_procurement_signal:
+        dscore += 0.15
+    if feats.bot_deliverable_signal:
+        dscore += 0.1
     dscore += 0.05 * min(6, len(feats.buyer_signal_families))
     dscore += min(0.5, feats.buyer_persistence_signal)
     feats.trigger_type = trigger
@@ -1020,7 +1357,9 @@ def evaluate_discovery(
     )
 
     has_domain_loose = scorer._has_target_financial_domain(clean)
-    feats.buyer_direction = classify_buyer_direction(clean=clean, scorer=scorer, feats=feats)
+    feats.buyer_direction = classify_buyer_direction(
+        clean=clean, scorer=scorer, feats=feats, version=ver
+    )
 
     common = dict(
         purchase=purchase,
@@ -1050,6 +1389,16 @@ def evaluate_discovery(
             feats.eligible = False
             return feats
         _eligible_v3(feats, **common)
+        return feats
+
+    if ver == DISCOVERY_VERSION_V5:
+        if feats.hard_exclude and not (
+            feats.project_scope or feats.soft_direction or feats.repair_signal
+        ):
+            _apply_vetoes(feats, soft=True)
+            feats.eligible = False
+            return feats
+        _eligible_v5(feats, clean=clean, **common)
         return feats
 
     # disc_v4 (default)
