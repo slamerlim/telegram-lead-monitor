@@ -1,0 +1,132 @@
+{
+  "evidence_id": 106,
+  "title": "disc_v6 commercial discovery ENABLE event",
+  "generated_at": "2026-09-25T19:29:19Z",
+  "head": "196f2ee0b8815a4b1ee9a00bcb40be57d30f7cd7",
+  "parent": "Evidence 104 READY_FOR_AUTH_ENABLE (checklist 10/10 via Evidence 103)",
+  "authorization": "User explicitly said 'enable now' / AUTHORIZED: enable now",
+  "decision": "ENABLED",
+  "read_only": false,
+  "code_change": false,
+  "tracked_config_change": false,
+  "env_only_enable": true,
+  "secrets_committed": false,
+  "before": {
+    "commercial_discovery_enabled": false,
+    "commercial_discovery_version": "disc_v6",
+    "commercial_discovery_max_candidates_per_hour": 120,
+    "commercial_episode_shadow_enabled": false,
+    "COMMERCIAL_DISCOVERY_ENABLED_in_dotenv": false,
+    "human_labels": 1524,
+    "ai_confirmed": 4,
+    "disc_candidates": 60,
+    "disc_v6_candidates": 0,
+    "cand_1h": 0,
+    "cand_24h": 0,
+    "redis_stream": "telegram:commercial_discovery",
+    "redis_group": "commercial-discovery-workers",
+    "redis_xpending": 0,
+    "redis_consumers": 0,
+    "redis_xlen": 0,
+    "health": {"status": "ok", "postgres": "ok", "redis": "ok"},
+    "gates": {
+      "ai_validated_messages": 94,
+      "ai_validated_true": 0,
+      "ai_validated_false": 94,
+      "ml_training_enabled": false
+    },
+    "candidates_by_version_status": [
+      {"discovery_version": "disc_v1", "status": "EPISODE_BUILT", "n": 30},
+      {"discovery_version": "disc_v2", "status": "EPISODE_BUILT", "n": 30}
+    ]
+  },
+  "action": {
+    "dotenv_change": "APPENDED COMMERCIAL_DISCOVERY_ENABLED=true to host .env (gitignored; not committed)",
+    "COMMERCIAL_DISCOVERY_VERSION_in_dotenv": "absent (code default disc_v6)",
+    "shadow_left_off": true,
+    "services_recreated": ["analyzer", "commercial-discovery-worker"],
+    "rebuild": false,
+    "command": "docker compose up -d --force-recreate --no-deps analyzer commercial-discovery-worker",
+    "recreated_at_utc": "2026-09-25T19:27:00Z"
+  },
+  "after": {
+    "analyzer_settings": {
+      "commercial_discovery_enabled": true,
+      "commercial_discovery_version": "disc_v6",
+      "commercial_discovery_max_candidates_per_hour": 120,
+      "commercial_episode_shadow_enabled": false
+    },
+    "worker_settings": {
+      "commercial_discovery_enabled": true,
+      "commercial_discovery_version": "disc_v6",
+      "commercial_discovery_max_candidates_per_hour": 120,
+      "commercial_episode_shadow_enabled": false
+    },
+    "human_labels": 1524,
+    "ai_confirmed": 4,
+    "disc_candidates": 60,
+    "disc_v6_candidates": 0,
+    "cand_1h_any": 0,
+    "message_scores": 134770,
+    "messages": 8631201,
+    "redis_xpending": 0,
+    "redis_xlen": 0,
+    "redis_consumers": [{"name": "disc-1", "pending": 0}],
+    "health": {"status": "ok", "postgres": "ok", "redis": "ok"},
+    "gates": {
+      "ai_validated_messages": 94,
+      "ai_validated_true": 0,
+      "ai_validated_false": 94,
+      "ml_training_enabled": false,
+      "ai_validation_gate_ready": false
+    },
+    "observe_window_sec": 60,
+    "first_n_candidates": [],
+    "note_no_immediate_candidates": "Expected: empiric UB ~0.018/h ~0.43/d from Evidence 104; live traffic may not yield a candidate within first minutes. Cap remains 120/h."
+  },
+  "isolation_ok": true,
+  "locks_honored": {
+    "no_outreach": true,
+    "no_ml_enable": true,
+    "no_scoring_yaml_loosen": true,
+    "no_global_veto_removal": true,
+    "no_human_labels_mutation": true,
+    "no_ai_confirmed_mutation": true,
+    "no_docker_down_v": true,
+    "no_blind_xack": true,
+    "shadow_off": true
+  },
+  "rollback": {
+    "steps": [
+      "Set COMMERCIAL_DISCOVERY_ENABLED=false in host .env (do not commit).",
+      "docker compose up -d --force-recreate --no-deps analyzer commercial-discovery-worker",
+      "Confirm GET /health ok; container settings commercial_discovery_enabled=False; worker logs 'COMMERCIAL_DISCOVERY_ENABLED=false — worker idle'.",
+      "Verify isolation SQL: human_labels / AI_CONFIRMED unchanged vs pre-enable snapshot (1524 / 4)."
+    ],
+    "blast_radius": "Stops new CommercialDiscoveryCandidate rows and redis stream publishes from analyzer; does not delete historical candidates/episodes; does not touch 0007 or human_labels; no CRM/outreach side effects to reverse."
+  },
+  "acceptance": {
+    "flag_on": true,
+    "version_disc_v6": true,
+    "health_ok": true,
+    "gates_94_0_94_ml_false": true,
+    "isolation_human_labels_1524": true,
+    "isolation_ai_confirmed_4": true,
+    "redis_xpending_not_exploding": true,
+    "cap_120_per_hour": true,
+    "env_only_not_committed": true,
+    "shadow_off": true
+  },
+  "acceptance_pass": true,
+  "business": {
+    "outreach": false,
+    "ml_go": false,
+    "ml_training_enabled": false,
+    "threshold_loosen": false
+  },
+  "next": [
+    "Monitor disc_v6 PENDING/EPISODE_BUILT creation rate vs 120/h cap over next 24h.",
+    "Sample first live candidates when they appear; confirm worker builds episodes without blind/AI_CONFIRMED skips.",
+    "H1 (HIGH-tier FO bridge) remains optional/deferred product decision."
+  ]
+}

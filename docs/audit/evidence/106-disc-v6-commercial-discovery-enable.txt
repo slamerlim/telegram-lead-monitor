@@ -1,0 +1,72 @@
+Evidence 106: disc_v6 commercial discovery ENABLE event
+generated_at=2026-09-25T19:29:19Z head=196f2ee0b8815a4b1ee9a00bcb40be57d30f7cd7
+decision=ENABLED env_only=true code_change=false secrets_committed=false
+authorization=User explicitly said 'enable now' (AUTHORIZED)
+
+=== 0. PARENT / LOCKS ===
+  parent=Evidence 104 READY_FOR_AUTH_ENABLE (Evidence 103 checklist 10/10 PASS)
+  NO outreach / NO ML enable / NO scoring.yaml loosen / NO global veto removal
+  NO human_labels / AI_CONFIRMED mutation / NO docker down -v / NO blind XACK
+  Shadow left OFF (COMMERCIAL_EPISODE_SHADOW_ENABLED default false)
+
+=== 1. BEFORE ===
+  commercial_discovery_enabled=False
+  commercial_discovery_version=disc_v6 (code default)
+  max_candidates_per_hour=120
+  commercial_episode_shadow_enabled=False
+  COMMERCIAL_DISCOVERY_ENABLED absent from .env (default False)
+  human_labels=1524 AI_CONFIRMED=4 disc_candidates=60 disc_v6=0
+  cand_1h=0 cand_24h=0
+  redis stream=telegram:commercial_discovery group=commercial-discovery-workers
+  XPENDING=0 consumers=0 XLEN=0
+  health={"status":"ok","postgres":"ok","redis":"ok"}
+  gates=94/0/94 ml_training_enabled=false
+  by_ver: disc_v1 EPISODE_BUILT=30; disc_v2 EPISODE_BUILT=30
+
+=== 2. ACTION ===
+  APPENDED to host .env (gitignored; NOT committed):
+    COMMERCIAL_DISCOVERY_ENABLED=true
+  COMMERCIAL_DISCOVERY_VERSION not set in .env (code default disc_v6 OK)
+  Recreate (no rebuild; env_file reload):
+    docker compose up -d --force-recreate --no-deps analyzer commercial-discovery-worker
+  recreated_at≈2026-09-25T19:27:00Z
+  services: analyzer Up; commercial-discovery-worker Up
+
+=== 3. AFTER (runtime verify) ===
+  analyzer: enabled=True version=disc_v6 max_h=120 shadow=False
+  worker:   enabled=True version=disc_v6 max_h=120 shadow=False
+  health={"status":"ok","postgres":"ok","redis":"ok"}
+  gates=94/0/94 ml_training_enabled=false (ai_validation_gate_ready=false; unchanged)
+  human_labels=1524 AI_CONFIRMED=4 disc_candidates=60 disc_v6=0
+  message_scores=134770 messages=8631201
+  Redis: XLEN=0 XPENDING=0 consumer=disc-1 pending=0
+  observe_window≈60s: no new PENDING/EPISODE_BUILT disc_v6 rows (expected; empiric UB ~0.018/h)
+  first_n_candidates=[] (none yet)
+
+=== 4. ISOLATION ===
+  human_labels unchanged 1524
+  AI_CONFIRMED unchanged 4
+  isolation_ok=True
+
+=== 5. ROLLBACK ===
+  1) Set COMMERCIAL_DISCOVERY_ENABLED=false in host .env (do not commit).
+  2) docker compose up -d --force-recreate --no-deps analyzer commercial-discovery-worker
+  3) Confirm GET /health ok; settings enabled=False; worker logs
+     'COMMERCIAL_DISCOVERY_ENABLED=false — worker idle'.
+  4) Verify human_labels / AI_CONFIRMED still 1524 / 4.
+  blast_radius=Stops new candidate creates + stream publishes; does not delete
+  historical candidates/episodes; no CRM/outreach rollback needed.
+
+=== 6. ACCEPTANCE ===
+  flag_on=True version=disc_v6 health_ok=True gates_94_0_94_ml_false=True
+  isolation_ok=True xpending_ok=True cap_120=True env_only_not_committed=True
+  shadow_off=True acceptance_pass=True decision=ENABLED
+
+=== 7. NEXT ===
+  Monitor disc_v6 candidate rate vs 120/h over 24h; sample first live
+  PENDING/EPISODE_BUILT when they appear. H1 HIGH-tier FO bridge remains deferred.
+
+=== 8. BUSINESS ===
+  DISCOVERY ENABLED (env-only) / NO OUTREACH / NO ML GO / NO THRESHOLD LOOSEN
+
+JSON: docs/audit/evidence/106-disc-v6-commercial-discovery-enable.json
