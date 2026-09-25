@@ -1,0 +1,102 @@
+Evidence 103: disc_v6 activation readiness Cycle 3 (measurement-only)
+generated_at=2026-09-25T18:09:06.331226+00:00 head=c741de8
+runtime_sec=18.94 read_only=true code_change=false
+decision=HOLD_PENDING_AUTH recommendation=HOLD acceptance_pass=True
+
+=== 0. PARENT / LOCKS ===
+  parent=Evidence 102 MEASUREMENT_ONLY_STOP (refined_frozen ready)
+  since_frozen=2025-09-30T17:54:03.414786+00:00
+  commercial_discovery_enabled=False
+  version=disc_v6 code_default=disc_v6
+  NO flag flip / NO scoring loosen / NO veto removal / NO label mutation
+  production prefilter SQL unchanged (audit denominator only)
+
+=== 1. STANDING DENOMINATOR = refined_frozen ===
+  pool_n=102 v4=3 v6=16 rate=15.69% contam=0.0%
+  legacy_checkpoint v6=32/1299 expected=32 ok=True
+  ADOPTED as standing audit/activation GO/NO-GO denominator
+
+=== 2. LOW-PREFILTER VISIBILITY (counterfactual if flag ON) ===
+  refined survivors: 16 | LOW+eligible enqueue=10 | HIGH excluded=6 | other=0
+  id=196 tier=LOW enqueue=True high_excl=False trig=v6_budget_deliverable | 🌟 Freelance Opportunity: Create a trading bot for 2,500 PEPE. 💰 Budget: $15 🤝 With: Quetta
+  id=22713 tier=HIGH enqueue=False high_excl=True trig=v6_budget_deliverable | 🌟 Freelance Opportunity: Crypto Trading Bot Developer 💰 Budget: $200 🤝 With: Yohans Hayla
+  id=22763 tier=LOW enqueue=True high_excl=False trig=v6_budget_deliverable | 🌟 Freelance Opportunity: Senior Solana MEV / Flash Loan Arbitrage Bot Developer 💰 Budget: 
+  id=23747 tier=LOW enqueue=True high_excl=False trig=v6_budget_deliverable | 🌟 Freelance Opportunity: Sales Closer Needed to Sell High-Performance Trading Bot 💰 Budget
+  id=24048 tier=HIGH enqueue=False high_excl=True trig=v6_repair_domain | 🌟 Freelance Opportunity: Need Developer to Fix Polymarket Trading Bot (Urgent) 💰 Budget: $
+  id=24091 tier=HIGH enqueue=False high_excl=True trig=v6_repair_domain | 🌟 Freelance Opportunity: Need Developer to Fix Polymarket Trading Bot (Urgent) 💰 Budget: $
+  id=24114 tier=LOW enqueue=True high_excl=False trig=v6_budget_deliverable | 🌟 Freelance Opportunity: Improve Safety for a TypeScript Polymarket Copy-Trading Bot 💰 Bud
+  id=24977 tier=LOW enqueue=True high_excl=False trig=v6_budget_deliverable | 🌟 Freelance Opportunity: Crypto Arbitrage Bot Developer for Prediction Markets 💰 Budget: $
+  id=25400 tier=HIGH enqueue=False high_excl=True trig=v6_budget_deliverable | 🌟 Freelance Opportunity: Python Crypto Trading Bot Developer (GUI + Dashboard) 💰 Budget: $
+  id=25570 tier=HIGH enqueue=False high_excl=True trig=v6_budget_deliverable | 🌟 Freelance Opportunity: Quick Fix Needed for Python Trading Bot 💰 Budget: $320 🤝 With: da
+  id=25571 tier=HIGH enqueue=False high_excl=True trig=v6_budget_deliverable | 🌟 Freelance Opportunity: Quick Fix Needed for Python Trading Bot 💰 Budget: $50 🤝 With: Rya
+  id=26575 tier=LOW enqueue=True high_excl=False trig=v6_budget_deliverable | 🌟 Freelance Opportunity: Forex and stocks trading bot 💰 Budget: $500 🤝 With: Sid Khan
+  id=27317 tier=LOW enqueue=True high_excl=False trig=v6_budget_deliverable | 🌟 Freelance Opportunity: Assistance in developing a trading bot in ETH/SOL networks 💰 Budg
+  id=269028 tier=LOW enqueue=True high_excl=False trig=v6_budget_deliverable | #vacancy #remote #web3 #operations 🔥 Operations Lead at Statemind (Remote) We are a leadin
+  id=270199 tier=LOW enqueue=True high_excl=False trig=v6_project_procurement | ⚙️ Нужен разработчик Senior Backend Full-stack developer 📌 О компании и проекте: 🕯 Техноло
+  id=270490 tier=LOW enqueue=True high_excl=False trig=v6_budget_deliverable | #Recruitment 🏡 Wormhole #Infra #Cross·Chain 🐇 Introduction: https://wormhole.com/ A decent
+  FO probes: n=4 enqueue_LOW=0 HIGH_excluded=4 recovered=4/4
+  lead=1137 msg=25570 tier=HIGH enqueue=False high_excl=True | 🌟 Freelance Opportunity: Quick Fix Needed for Python Trading Bot 💰 Budget: $320 
+  lead=1138 msg=25571 tier=HIGH enqueue=False high_excl=True | 🌟 Freelance Opportunity: Quick Fix Needed for Python Trading Bot 💰 Budget: $50 🤝
+  lead=1139 msg=22713 tier=HIGH enqueue=False high_excl=True | 🌟 Freelance Opportunity: Crypto Trading Bot Developer 💰 Budget: $200 🤝 With: Yoh
+  lead=1140 msg=25400 tier=HIGH enqueue=False high_excl=True | 🌟 Freelance Opportunity: Python Crypto Trading Bot Developer (GUI + Dashboard) 💰
+
+=== 3. HIGH-TIER EXCLUSION GATE (separate) ===
+  disc_v6 recovers FO at discovery-eval, but production enqueue is LOW-only; 4/4 AI_CONFIRMED FO remain on CRM/HIGH path and would NOT enter discovery if flag ON. Separate product decision: HIGH-tier FO bridge vs keep CRM path.
+  survivors_high_excl=6 fo_high_excl=4
+
+=== 4. EXPECTED VOLUME IF ENABLED ===
+  settings_cap=120/h (2880/d)
+  empiric recent LOW sample: elig=3/5000 → ~0.018/h ~0.43/d
+  upper_bound (min empiric,cap): ~0.018/h ~0.43/d
+  refined_audit LOW+elig density: 10 over ~360d → ~0.0278/d
+  live candidates while flag OFF: 24h=0 7d=60
+
+=== 5. ACTIVATION CHECKLIST (10 controlled-activation rules) ===
+  summary PASS=10 FAIL=0 HOLD_GATE=0 fully_green=True
+  [PASS] R1_deterministic Deterministic discovery behavior (disc_v6 rule eval stable)
+      re-eval fingerprint mismatch=0 on 16 refined survivors; version=disc_v6
+  [PASS] R2_contamination Contamination on refined_frozen survivors == 0%
+      refined_frozen contam=0.0% eligible=16/102
+  [PASS] R3_fn_regression FN regression gate (0 true buyer FNs among E101 NO_PATH; FO 4/4)
+      E102: 0/11 true buyer/project FNs; this cycle FO discovery-eval 4/4; legacy checkpoint v6=32 (expect 32)
+  [PASS] R4_e2e_path_flag_off E2E runtime path exists while flag OFF (gated; no live enqueue)
+      flag_off=True; analyzer gate snippet_ok=True; worker idle_when_off=True; candidates_created_24h=0
+  [PASS] R5_bounded_enqueue Bounded enqueue design (max_candidates_per_hour)
+      commercial_discovery_max_candidates_per_hour=120; analyzer rate-limit code present=True
+  [PASS] R6_dup_retry Dup / retry safety (uq seed+version; DLQ after MAX_DELIVERY)
+      UniqueConstraint(seed_message_id, discovery_version); analyzer skips existing; worker MAX_DELIVERY→DLQ=True; dedup test present=True
+  [PASS] R7_ai_vs_0007_isolation AI / episode plane isolated from 0007 validation + human_labels
+      isolation tests present=True; human_labels=1524 (expect 1524); AI_CONFIRMED=4 (expect 4); worker no CRM promote=True
+  [PASS] R8_ai_confirmed_untouched AI_CONFIRMED leads untouched by discovery enqueue path
+      worker skips existing_ai_confirmed=True; FO probes would_enqueue_LOW=0/4 (expect 0); AI_CONFIRMED count=4
+  [PASS] R9_rollback Rollback procedure documented and reversible via flag
+      Disable COMMERCIAL_DISCOVERY_ENABLED + restart analyzer/discovery worker; no CRM/outreach side effects to reverse.
+  [PASS] R10_expected_volume Expected candidate volume bounded and understood
+      settings cap=120/h (2880/d); empiric disc_v6-eligible among recent LOW sample 3/5000 over 7d → ~0.018/h ~0.43/d; bounded UB ~0.018/h ~0.43/d; refined_frozen LOW+eligible density ~0.0278/d over 360d au
+
+=== 6. ROLLBACK ===
+  - Set COMMERCIAL_DISCOVERY_ENABLED=false in host .env (do not commit).
+  - docker compose up -d analyzer commercial-discovery-worker
+  - Confirm GET /health ok; worker logs 'COMMERCIAL_DISCOVERY_ENABLED=false — worker idle'.
+  - Optional: leave COMMERCIAL_EPISODE_SHADOW_ENABLED=false; no CRM/outreach rollback needed (discovery never promotes leads).
+  - Verify isolation SQL: human_labels / AI_CONFIRMED unchanged vs pre-enable snapshot.
+  blast_radius=Stops new CommercialDiscoveryCandidate rows and redis stream publishes from analyzer; does not delete historical candidates/episodes; does not touch 0007 or human_labels.
+
+=== 7. ISOLATION ===
+  human_labels=1524 AI_CONFIRMED=4 scores=133718 messages=8630149 disc_candidates=60
+
+=== 8. ACCEPTANCE / RECOMMENDATION ===
+  acceptance={"refined_frozen_adopted_as_standing_denominator": true, "refined_pool_n": 102, "refined_v6_eligible": 16, "refined_survivor_rate_pct": 15.69, "refined_contam_0": true, "low_visibility_survivors_enqueue": "10/16", "fo_high_exclusion": "4/4", "checklist_pass": 10, "checklist_fail": 0, "checklist_fully_green": true, "flag_off": true, "isolation_ok": true, "legacy_checkpoint_v6_32": true, "production_prefilter_sql_unchanged": true, "recommendation": "HOLD"}
+  acceptance_pass=True
+  recommendation=HOLD decision=HOLD_PENDING_AUTH
+  rationale=Activation checklist is fully green (10/10 PASS) and expected volume is bounded (≤120/h). Still HOLD: user has not said 'enable now'. If authorized, expect ~0.018/h ~0.43/d upper bound from recent LOW traffic (cap 120/h). Note HIGH-tier FO 4/4 remain excluded by LOW-only gate — CRM path keeps them.
+
+=== 9. NEXT ===
+  if_HOLD: H1: HIGH-tier FO bridge into discovery (opt-in carve for gig_project_carve when tier==HIGH) vs keep FO on CRM/commercial_ai path; H2: shadow enqueue dry-run (log-only counterfactual) for LOW+eligible refined survivors without flipping commercial_discovery_enabled.
+  if_green: Wait for explicit human authorization ('enable now') before flipping COMMERCIAL_DISCOVERY_ENABLED; then deploy analyzer + discovery worker and verify candidate rate vs cap + isolation snapshot.
+
+=== 10. BUSINESS ===
+  NO OUTREACH / NO ML GO / FLAG REMAINS OFF / NO THRESHOLD LOOSEN
+  recommend only — do not flip commercial_discovery_enabled without explicit enable
+
+JSON: /app/docs/audit/evidence/103-disc-v6-activation-readiness-cycle3.json

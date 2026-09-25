@@ -1,0 +1,622 @@
+{
+  "generated_at": "2026-09-25T18:09:06.331226+00:00",
+  "head": "c741de8",
+  "runtime_sec": 18.94,
+  "read_only": true,
+  "code_change_this_cycle": false,
+  "code_change_justified": false,
+  "cycle": 3,
+  "parent_evidence": "102",
+  "decision": "HOLD_PENDING_AUTH",
+  "recommendation": "HOLD",
+  "decision_rationale": "Activation checklist is fully green (10/10 PASS) and expected volume is bounded (≤120/h). Still HOLD: user has not said 'enable now'. If authorized, expect ~0.018/h ~0.43/d upper bound from recent LOW traffic (cap 120/h). Note HIGH-tier FO 4/4 remain excluded by LOW-only gate — CRM path keeps them.",
+  "settings": {
+    "commercial_discovery_enabled": false,
+    "commercial_discovery_version": "disc_v6",
+    "code_default_DISCOVERY_VERSION": "disc_v6",
+    "commercial_discovery_max_candidates_per_hour": 120,
+    "commercial_episode_shadow_enabled": false
+  },
+  "standing_denominator": {
+    "name": "refined_frozen",
+    "adopted": true,
+    "source": "commercial_refined_ex_exchange_360d_evidence_102",
+    "since": "2025-09-30T17:54:03.414786+00:00",
+    "commercial_regex": "(budget|fixed price|need someone|looking for (a )?(developer|contractor|freelancer)|нужен разработчик|починить|Freelance Opportunity|commission.{0,100}(?:hire|hiring|developer|freelancer|contractor|budget|\\$)|(?:hire|hiring|developer|freelancer|contractor|budget).{0,100}commission)",
+    "domain_regex": "(trading bot|bybit|binance|okx|pybit|arbitrage|futures|strategy|торговый бот|Crypto Trading Bot)",
+    "excludes": [
+      "bare 'commission' without hire/developer/budget/$ proximity",
+      "community_profiles class EXCHANGE_OFFICIAL",
+      "unmapped communities whose name/username looks like exchange official"
+    ],
+    "pool_n": 102,
+    "disc_v4_eligible": 3,
+    "disc_v6_eligible": 16,
+    "survivor_rate_v6_pct": 15.69,
+    "contam_pct": 0.0,
+    "note": "Standing audit/activation denominator for GO/NO-GO. Does NOT change production analyzer prefilter SQL (still LOW+eligible on all scored traffic when flag ON)."
+  },
+  "legacy_checkpoint": {
+    "pool_n": 1299,
+    "disc_v6_eligible": 32,
+    "expected": 32,
+    "ok": true
+  },
+  "low_prefilter_visibility": {
+    "refined_v6_survivors": {
+      "n": 16,
+      "would_enter_low_eligible_enqueue": 10,
+      "high_tier_exclusion_gate": 6,
+      "other_tier": 0,
+      "rows": [
+        {
+          "message_id": 196,
+          "lead_id": null,
+          "community": "Web3 Jobs | LaborX",
+          "community_username": "LaborXWeb3Jobs",
+          "tier": "LOW",
+          "v6_eligible": true,
+          "v6_carve": true,
+          "trigger": "v6_budget_deliverable",
+          "direction": "RECRUITER",
+          "first_loss": "RETRIEVED",
+          "bucket": "Direct buyer/RFQ candidate",
+          "feat_fp": "61567ced6daa9a0d",
+          "would_enter_low_eligible_enqueue": true,
+          "high_tier_exclusion_gate": false,
+          "preview": "🌟 Freelance Opportunity: Create a trading bot for 2,500 PEPE. 💰 Budget: $15 🤝 With: Quetta Audy"
+        },
+        {
+          "message_id": 22713,
+          "lead_id": null,
+          "community": "Web3 Jobs | LaborX",
+          "community_username": "LaborXWeb3Jobs",
+          "tier": "HIGH",
+          "v6_eligible": true,
+          "v6_carve": true,
+          "trigger": "v6_budget_deliverable",
+          "direction": "RECRUITER",
+          "first_loss": "RETRIEVED",
+          "bucket": "Direct buyer/RFQ candidate",
+          "feat_fp": "61567ced6daa9a0d",
+          "would_enter_low_eligible_enqueue": false,
+          "high_tier_exclusion_gate": true,
+          "preview": "🌟 Freelance Opportunity: Crypto Trading Bot Developer 💰 Budget: $200 🤝 With: Yohans Hayla"
+        },
+        {
+          "message_id": 22763,
+          "lead_id": null,
+          "community": "Web3 Jobs | LaborX",
+          "community_username": "LaborXWeb3Jobs",
+          "tier": "LOW",
+          "v6_eligible": true,
+          "v6_carve": true,
+          "trigger": "v6_budget_deliverable",
+          "direction": "RECRUITER",
+          "first_loss": "RETRIEVED",
+          "bucket": "Direct buyer/RFQ candidate",
+          "feat_fp": "61567ced6daa9a0d",
+          "would_enter_low_eligible_enqueue": true,
+          "high_tier_exclusion_gate": false,
+          "preview": "🌟 Freelance Opportunity: Senior Solana MEV / Flash Loan Arbitrage Bot Developer 💰 Budget: $100 🤝 With: Obukohwo David"
+        },
+        {
+          "message_id": 23747,
+          "lead_id": null,
+          "community": "Web3 Jobs | LaborX",
+          "community_username": "LaborXWeb3Jobs",
+          "tier": "LOW",
+          "v6_eligible": true,
+          "v6_carve": true,
+          "trigger": "v6_budget_deliverable",
+          "direction": "RECRUITER",
+          "first_loss": "RETRIEVED",
+          "bucket": "Direct buyer/RFQ candidate",
+          "feat_fp": "61567ced6daa9a0d",
+          "would_enter_low_eligible_enqueue": true,
+          "high_tier_exclusion_gate": false,
+          "preview": "🌟 Freelance Opportunity: Sales Closer Needed to Sell High-Performance Trading Bot 💰 Budget: $100 🤝 With: EARNEST MWAURA"
+        },
+        {
+          "message_id": 24048,
+          "lead_id": null,
+          "community": "Web3 Jobs | LaborX",
+          "community_username": "LaborXWeb3Jobs",
+          "tier": "HIGH",
+          "v6_eligible": true,
+          "v6_carve": true,
+          "trigger": "v6_repair_domain",
+          "direction": "RECRUITER",
+          "first_loss": "RETRIEVED",
+          "bucket": "Direct buyer/RFQ candidate",
+          "feat_fp": "87a04ed8c289d5c5",
+          "would_enter_low_eligible_enqueue": false,
+          "high_tier_exclusion_gate": true,
+          "preview": "🌟 Freelance Opportunity: Need Developer to Fix Polymarket Trading Bot (Urgent) 💰 Budget: $1500 🤝 With: Maxu"
+        },
+        {
+          "message_id": 24091,
+          "lead_id": null,
+          "community": "Web3 Jobs | LaborX",
+          "community_username": "LaborXWeb3Jobs",
+          "tier": "HIGH",
+          "v6_eligible": true,
+          "v6_carve": true,
+          "trigger": "v6_repair_domain",
+          "direction": "RECRUITER",
+          "first_loss": "RETRIEVED",
+          "bucket": "Direct buyer/RFQ candidate",
+          "feat_fp": "87a04ed8c289d5c5",
+          "would_enter_low_eligible_enqueue": false,
+          "high_tier_exclusion_gate": true,
+          "preview": "🌟 Freelance Opportunity: Need Developer to Fix Polymarket Trading Bot (Urgent) 💰 Budget: $500 🤝 With: Thomas Ken"
+        },
+        {
+          "message_id": 24114,
+          "lead_id": null,
+          "community": "Web3 Jobs | LaborX",
+          "community_username": "LaborXWeb3Jobs",
+          "tier": "LOW",
+          "v6_eligible": true,
+          "v6_carve": true,
+          "trigger": "v6_budget_deliverable",
+          "direction": "RECRUITER",
+          "first_loss": "RETRIEVED",
+          "bucket": "Direct buyer/RFQ candidate",
+          "feat_fp": "61567ced6daa9a0d",
+          "would_enter_low_eligible_enqueue": true,
+          "high_tier_exclusion_gate": false,
+          "preview": "🌟 Freelance Opportunity: Improve Safety for a TypeScript Polymarket Copy-Trading Bot 💰 Budget: $4000 🤝 With: dub"
+        },
+        {
+          "message_id": 24977,
+          "lead_id": null,
+          "community": "Web3 Jobs | LaborX",
+          "community_username": "LaborXWeb3Jobs",
+          "tier": "LOW",
+          "v6_eligible": true,
+          "v6_carve": true,
+          "trigger": "v6_budget_deliverable",
+          "direction": "RECRUITER",
+          "first_loss": "RETRIEVED",
+          "bucket": "Direct buyer/RFQ candidate",
+          "feat_fp": "61567ced6daa9a0d",
+          "would_enter_low_eligible_enqueue": true,
+          "high_tier_exclusion_gate": false,
+          "preview": "🌟 Freelance Opportunity: Crypto Arbitrage Bot Developer for Prediction Markets 💰 Budget: $200 🤝 With: Deniz Akguner"
+        },
+        {
+          "message_id": 25400,
+          "lead_id": null,
+          "community": "Web3 Jobs | LaborX",
+          "community_username": "LaborXWeb3Jobs",
+          "tier": "HIGH",
+          "v6_eligible": true,
+          "v6_carve": true,
+          "trigger": "v6_budget_deliverable",
+          "direction": "RECRUITER",
+          "first_loss": "RETRIEVED",
+          "bucket": "Direct buyer/RFQ candidate",
+          "feat_fp": "61567ced6daa9a0d",
+          "would_enter_low_eligible_enqueue": false,
+          "high_tier_exclusion_gate": true,
+          "preview": "🌟 Freelance Opportunity: Python Crypto Trading Bot Developer (GUI + Dashboard) 💰 Budget: $800 🤝 With: Harry Bennett"
+        },
+        {
+          "message_id": 25570,
+          "lead_id": null,
+          "community": "Web3 Jobs | LaborX",
+          "community_username": "LaborXWeb3Jobs",
+          "tier": "HIGH",
+          "v6_eligible": true,
+          "v6_carve": true,
+          "trigger": "v6_budget_deliverable",
+          "direction": "RECRUITER",
+          "first_loss": "RETRIEVED",
+          "bucket": "Direct buyer/RFQ candidate",
+          "feat_fp": "61567ced6daa9a0d",
+          "would_enter_low_eligible_enqueue": false,
+          "high_tier_exclusion_gate": true,
+          "preview": "🌟 Freelance Opportunity: Quick Fix Needed for Python Trading Bot 💰 Budget: $320 🤝 With: david lil"
+        },
+        {
+          "message_id": 25571,
+          "lead_id": null,
+          "community": "Web3 Jobs | LaborX",
+          "community_username": "LaborXWeb3Jobs",
+          "tier": "HIGH",
+          "v6_eligible": true,
+          "v6_carve": true,
+          "trigger": "v6_budget_deliverable",
+          "direction": "RECRUITER",
+          "first_loss": "RETRIEVED",
+          "bucket": "Direct buyer/RFQ candidate",
+          "feat_fp": "61567ced6daa9a0d",
+          "would_enter_low_eligible_enqueue": false,
+          "high_tier_exclusion_gate": true,
+          "preview": "🌟 Freelance Opportunity: Quick Fix Needed for Python Trading Bot 💰 Budget: $50 🤝 With: Ryan Peterson"
+        },
+        {
+          "message_id": 26575,
+          "lead_id": null,
+          "community": "Web3 Jobs | LaborX",
+          "community_username": "LaborXWeb3Jobs",
+          "tier": "LOW",
+          "v6_eligible": true,
+          "v6_carve": true,
+          "trigger": "v6_budget_deliverable",
+          "direction": "RECRUITER",
+          "first_loss": "RETRIEVED",
+          "bucket": "Direct buyer/RFQ candidate",
+          "feat_fp": "61567ced6daa9a0d",
+          "would_enter_low_eligible_enqueue": true,
+          "high_tier_exclusion_gate": false,
+          "preview": "🌟 Freelance Opportunity: Forex and stocks trading bot 💰 Budget: $500 🤝 With: Sid Khan"
+        },
+        {
+          "message_id": 27317,
+          "lead_id": null,
+          "community": "Web3 Jobs | LaborX",
+          "community_username": "LaborXWeb3Jobs",
+          "tier": "LOW",
+          "v6_eligible": true,
+          "v6_carve": true,
+          "trigger": "v6_budget_deliverable",
+          "direction": "RECRUITER",
+          "first_loss": "RETRIEVED",
+          "bucket": "Direct buyer/RFQ candidate",
+          "feat_fp": "61567ced6daa9a0d",
+          "would_enter_low_eligible_enqueue": true,
+          "high_tier_exclusion_gate": false,
+          "preview": "🌟 Freelance Opportunity: Assistance in developing a trading bot in ETH/SOL networks 💰 Budget: $1500 🤝 With: Rick Willson"
+        },
+        {
+          "message_id": 269028,
+          "lead_id": null,
+          "community": "Blockchain Jobs",
+          "community_username": "blockchain_job",
+          "tier": "LOW",
+          "v6_eligible": true,
+          "v6_carve": false,
+          "trigger": "v6_budget_deliverable",
+          "direction": "RECRUITER",
+          "first_loss": "RETRIEVED",
+          "bucket": "Direct buyer/RFQ candidate",
+          "feat_fp": "e56a29ea2e05994c",
+          "would_enter_low_eligible_enqueue": true,
+          "high_tier_exclusion_gate": false,
+          "preview": "#vacancy #remote #web3 #operations 🔥 Operations Lead at Statemind (Remote) We are a leading blockchain security audit company (partners with"
+        },
+        {
+          "message_id": 270199,
+          "lead_id": null,
+          "community": "Работа в крипте, IT, AI | Web3 | Вакансии | Резюме бесплатно!",
+          "community_username": "rabotaweb3",
+          "tier": "LOW",
+          "v6_eligible": true,
+          "v6_carve": false,
+          "trigger": "v6_project_procurement",
+          "direction": "RECRUITER",
+          "first_loss": "RETRIEVED",
+          "bucket": "Direct buyer/RFQ candidate",
+          "feat_fp": "6ccba97ed31d7ff6",
+          "would_enter_low_eligible_enqueue": true,
+          "high_tier_exclusion_gate": false,
+          "preview": "⚙️ Нужен разработчик Senior Backend Full-stack developer 📌 О компании и проекте: 🕯 Технологическая компания и liquidity provider в крипто ин"
+        },
+        {
+          "message_id": 270490,
+          "lead_id": null,
+          "community": "DeJob Global—Web3 Jobs📮",
+          "community_username": "DeJob_Global",
+          "tier": "LOW",
+          "v6_eligible": true,
+          "v6_carve": false,
+          "trigger": "v6_budget_deliverable",
+          "direction": "RECRUITER",
+          "first_loss": "RETRIEVED",
+          "bucket": "Direct buyer/RFQ candidate",
+          "feat_fp": "e56a29ea2e05994c",
+          "would_enter_low_eligible_enqueue": true,
+          "high_tier_exclusion_gate": false,
+          "preview": "#Recruitment 🏡 Wormhole #Infra #Cross·Chain 🐇 Introduction: https://wormhole.com/ A decentralized, universal message-passing protocol. 🛵 #Fu"
+        }
+      ]
+    },
+    "fo_probes": {
+      "n": 4,
+      "would_enter_low_eligible_enqueue": 0,
+      "high_tier_exclusion_gate": 4,
+      "discovery_eval_recovered": "4/4",
+      "rows": [
+        {
+          "message_id": 25570,
+          "lead_id": 1137,
+          "community": "Web3 Jobs | LaborX",
+          "community_username": "LaborXWeb3Jobs",
+          "tier": "HIGH",
+          "v6_eligible": true,
+          "v6_carve": true,
+          "trigger": "v6_budget_deliverable",
+          "direction": "RECRUITER",
+          "first_loss": "RETRIEVED",
+          "bucket": "Direct buyer/RFQ candidate",
+          "feat_fp": "61567ced6daa9a0d",
+          "would_enter_low_eligible_enqueue": false,
+          "high_tier_exclusion_gate": true,
+          "preview": "🌟 Freelance Opportunity: Quick Fix Needed for Python Trading Bot 💰 Budget: $320 🤝 With: david lil"
+        },
+        {
+          "message_id": 25571,
+          "lead_id": 1138,
+          "community": "Web3 Jobs | LaborX",
+          "community_username": "LaborXWeb3Jobs",
+          "tier": "HIGH",
+          "v6_eligible": true,
+          "v6_carve": true,
+          "trigger": "v6_budget_deliverable",
+          "direction": "RECRUITER",
+          "first_loss": "RETRIEVED",
+          "bucket": "Direct buyer/RFQ candidate",
+          "feat_fp": "61567ced6daa9a0d",
+          "would_enter_low_eligible_enqueue": false,
+          "high_tier_exclusion_gate": true,
+          "preview": "🌟 Freelance Opportunity: Quick Fix Needed for Python Trading Bot 💰 Budget: $50 🤝 With: Ryan Peterson"
+        },
+        {
+          "message_id": 22713,
+          "lead_id": 1139,
+          "community": "Web3 Jobs | LaborX",
+          "community_username": "LaborXWeb3Jobs",
+          "tier": "HIGH",
+          "v6_eligible": true,
+          "v6_carve": true,
+          "trigger": "v6_budget_deliverable",
+          "direction": "RECRUITER",
+          "first_loss": "RETRIEVED",
+          "bucket": "Direct buyer/RFQ candidate",
+          "feat_fp": "61567ced6daa9a0d",
+          "would_enter_low_eligible_enqueue": false,
+          "high_tier_exclusion_gate": true,
+          "preview": "🌟 Freelance Opportunity: Crypto Trading Bot Developer 💰 Budget: $200 🤝 With: Yohans Hayla"
+        },
+        {
+          "message_id": 25400,
+          "lead_id": 1140,
+          "community": "Web3 Jobs | LaborX",
+          "community_username": "LaborXWeb3Jobs",
+          "tier": "HIGH",
+          "v6_eligible": true,
+          "v6_carve": true,
+          "trigger": "v6_budget_deliverable",
+          "direction": "RECRUITER",
+          "first_loss": "RETRIEVED",
+          "bucket": "Direct buyer/RFQ candidate",
+          "feat_fp": "61567ced6daa9a0d",
+          "would_enter_low_eligible_enqueue": false,
+          "high_tier_exclusion_gate": true,
+          "preview": "🌟 Freelance Opportunity: Python Crypto Trading Bot Developer (GUI + Dashboard) 💰 Budget: $800 🤝 With: Harry Bennett"
+        }
+      ]
+    },
+    "high_tier_gap": {
+      "gate": "analyzer requires tier==LOW",
+      "refined_survivors_high_excluded": 6,
+      "refined_survivors_low_enqueue": 10,
+      "fo_probes_high_excluded": 4,
+      "fo_probes_would_enqueue": 0,
+      "note": "disc_v6 recovers FO at discovery-eval, but production enqueue is LOW-only; 4/4 AI_CONFIRMED FO remain on CRM/HIGH path and would NOT enter discovery if flag ON. Separate product decision: HIGH-tier FO bridge vs keep CRM path."
+    }
+  },
+  "expected_volume_if_enabled": {
+    "settings_cap_per_hour": 120,
+    "settings_cap_per_day": 2880,
+    "empiric_recent_low_sample_n": 5000,
+    "empiric_recent_low_v6_eligible": 3,
+    "empiric_per_hour": 0.018,
+    "empiric_per_day": 0.43,
+    "upper_bound_per_hour": 0.018,
+    "upper_bound_per_day": 0.43,
+    "refined_audit_low_elig_per_day_360d": 0.0278,
+    "live_candidates_created_24h_while_flag_off": 0,
+    "live_candidates_created_7d_while_flag_off": 60
+  },
+  "activation_checklist": [
+    {
+      "id": "R1_deterministic",
+      "title": "Deterministic discovery behavior (disc_v6 rule eval stable)",
+      "status": "PASS",
+      "evidence": "re-eval fingerprint mismatch=0 on 16 refined survivors; version=disc_v6",
+      "detail": {
+        "survivors": 16,
+        "mismatch": 0
+      }
+    },
+    {
+      "id": "R2_contamination",
+      "title": "Contamination on refined_frozen survivors == 0%",
+      "status": "PASS",
+      "evidence": "refined_frozen contam=0.0% eligible=16/102",
+      "detail": {
+        "contam_pct": 0.0,
+        "eligible": 16
+      }
+    },
+    {
+      "id": "R3_fn_regression",
+      "title": "FN regression gate (0 true buyer FNs among E101 NO_PATH; FO 4/4)",
+      "status": "PASS",
+      "evidence": "E102: 0/11 true buyer/project FNs; this cycle FO discovery-eval 4/4; legacy checkpoint v6=32 (expect 32)",
+      "detail": {
+        "fo_recovered": "4/4",
+        "legacy_v6_eligible": 32,
+        "e102_true_buyer_fn": "0/11"
+      }
+    },
+    {
+      "id": "R4_e2e_path_flag_off",
+      "title": "E2E runtime path exists while flag OFF (gated; no live enqueue)",
+      "status": "PASS",
+      "evidence": "flag_off=True; analyzer gate snippet_ok=True; worker idle_when_off=True; candidates_created_24h=0",
+      "detail": {
+        "analyzer_gate": {
+          "path": "services/analyzer/app/main.py",
+          "requires_flag": true,
+          "requires_eligible": true,
+          "rate_limit_setting": true,
+          "dup_check": true,
+          "snippet_ok": true
+        },
+        "worker_gate": {
+          "path": "services/commercial_discovery/app/main.py",
+          "idle_when_flag_off": true,
+          "skips_ai_confirmed": true,
+          "no_crm_promote": true,
+          "dlq_retry_cap": true
+        },
+        "candidates_24h": 0,
+        "candidates_7d": 60
+      }
+    },
+    {
+      "id": "R5_bounded_enqueue",
+      "title": "Bounded enqueue design (max_candidates_per_hour)",
+      "status": "PASS",
+      "evidence": "commercial_discovery_max_candidates_per_hour=120; analyzer rate-limit code present=True",
+      "detail": {
+        "max_per_hour": 120,
+        "cap_per_day": 2880
+      }
+    },
+    {
+      "id": "R6_dup_retry",
+      "title": "Dup / retry safety (uq seed+version; DLQ after MAX_DELIVERY)",
+      "status": "PASS",
+      "evidence": "UniqueConstraint(seed_message_id, discovery_version); analyzer skips existing; worker MAX_DELIVERY→DLQ=True; dedup test present=True",
+      "detail": {
+        "analyzer_dup_check": true,
+        "dlq": true
+      }
+    },
+    {
+      "id": "R7_ai_vs_0007_isolation",
+      "title": "AI / episode plane isolated from 0007 validation + human_labels",
+      "status": "PASS",
+      "evidence": "isolation tests present=True; human_labels=1524 (expect 1524); AI_CONFIRMED=4 (expect 4); worker no CRM promote=True",
+      "detail": {
+        "iso_counts": {
+          "human_labels": 1524,
+          "ai_confirmed": 4,
+          "scores": 133718,
+          "messages": 8630149,
+          "disc_candidates": 60
+        },
+        "tests": {
+          "test_commercial_episode_isolation": true,
+          "test_commercial_ai_isolation": true,
+          "test_commercial_shadow_flag_default_off": true,
+          "test_commercial_episode_dedup": true,
+          "all_present": true
+        }
+      }
+    },
+    {
+      "id": "R8_ai_confirmed_untouched",
+      "title": "AI_CONFIRMED leads untouched by discovery enqueue path",
+      "status": "PASS",
+      "evidence": "worker skips existing_ai_confirmed=True; FO probes would_enqueue_LOW=0/4 (expect 0); AI_CONFIRMED count=4",
+      "detail": {
+        "probe_would_enqueue": 0,
+        "skips": true
+      }
+    },
+    {
+      "id": "R9_rollback",
+      "title": "Rollback procedure documented and reversible via flag",
+      "status": "PASS",
+      "evidence": "Disable COMMERCIAL_DISCOVERY_ENABLED + restart analyzer/discovery worker; no CRM/outreach side effects to reverse.",
+      "detail": {
+        "steps": [
+          "Set COMMERCIAL_DISCOVERY_ENABLED=false in host .env (do not commit).",
+          "docker compose up -d analyzer commercial-discovery-worker",
+          "Confirm GET /health ok; worker logs 'COMMERCIAL_DISCOVERY_ENABLED=false — worker idle'.",
+          "Optional: leave COMMERCIAL_EPISODE_SHADOW_ENABLED=false; no CRM/outreach rollback needed (discovery never promotes leads).",
+          "Verify isolation SQL: human_labels / AI_CONFIRMED unchanged vs pre-enable snapshot."
+        ],
+        "blast_radius": "Stops new CommercialDiscoveryCandidate rows and redis stream publishes from analyzer; does not delete historical candidates/episodes; does not touch 0007 or human_labels.",
+        "runbook": "docs/ops/PRODUCTION_RUNBOOK.md § Commercial episode shadow"
+      }
+    },
+    {
+      "id": "R10_expected_volume",
+      "title": "Expected candidate volume bounded and understood",
+      "status": "PASS",
+      "evidence": "settings cap=120/h (2880/d); empiric disc_v6-eligible among recent LOW sample 3/5000 over 7d → ~0.018/h ~0.43/d; bounded UB ~0.018/h ~0.43/d; refined_frozen LOW+eligible density ~0.0278/d over 360d audit window",
+      "detail": {
+        "max_candidates_per_hour": 120,
+        "cap_per_day": 2880,
+        "recent_low_sampled": 5000,
+        "recent_low_v6_eligible": 3,
+        "empiric_per_hour": 0.018,
+        "empiric_per_day": 0.43,
+        "expected_upper_bound_per_hour": 0.018,
+        "expected_upper_bound_per_day": 0.43,
+        "refined_low_elig_n": 10,
+        "refined_low_per_day_360d": 0.0278
+      }
+    }
+  ],
+  "checklist_summary": {
+    "pass": 10,
+    "fail": 0,
+    "hold_gate": 0,
+    "fully_green": true
+  },
+  "rollback_procedure": {
+    "steps": [
+      "Set COMMERCIAL_DISCOVERY_ENABLED=false in host .env (do not commit).",
+      "docker compose up -d analyzer commercial-discovery-worker",
+      "Confirm GET /health ok; worker logs 'COMMERCIAL_DISCOVERY_ENABLED=false — worker idle'.",
+      "Optional: leave COMMERCIAL_EPISODE_SHADOW_ENABLED=false; no CRM/outreach rollback needed (discovery never promotes leads).",
+      "Verify isolation SQL: human_labels / AI_CONFIRMED unchanged vs pre-enable snapshot."
+    ],
+    "blast_radius": "Stops new CommercialDiscoveryCandidate rows and redis stream publishes from analyzer; does not delete historical candidates/episodes; does not touch 0007 or human_labels.",
+    "runbook": "docs/ops/PRODUCTION_RUNBOOK.md § Commercial episode shadow"
+  },
+  "isolation": {
+    "human_labels": 1524,
+    "ai_confirmed": 4,
+    "scores": 133718,
+    "messages": 8630149,
+    "disc_candidates": 60
+  },
+  "acceptance": {
+    "refined_frozen_adopted_as_standing_denominator": true,
+    "refined_pool_n": 102,
+    "refined_v6_eligible": 16,
+    "refined_survivor_rate_pct": 15.69,
+    "refined_contam_0": true,
+    "low_visibility_survivors_enqueue": "10/16",
+    "fo_high_exclusion": "4/4",
+    "checklist_pass": 10,
+    "checklist_fail": 0,
+    "checklist_fully_green": true,
+    "flag_off": true,
+    "isolation_ok": true,
+    "legacy_checkpoint_v6_32": true,
+    "production_prefilter_sql_unchanged": true,
+    "recommendation": "HOLD"
+  },
+  "acceptance_pass": true,
+  "next_hypothesis": {
+    "if_hold": "H1: HIGH-tier FO bridge into discovery (opt-in carve for gig_project_carve when tier==HIGH) vs keep FO on CRM/commercial_ai path; H2: shadow enqueue dry-run (log-only counterfactual) for LOW+eligible refined survivors without flipping commercial_discovery_enabled.",
+    "if_checklist_green": "Wait for explicit human authorization ('enable now') before flipping COMMERCIAL_DISCOVERY_ENABLED; then deploy analyzer + discovery worker and verify candidate rate vs cap + isolation snapshot."
+  },
+  "locks": {
+    "no_flag_flip": true,
+    "no_scoring_loosen": true,
+    "no_global_veto_removal": true,
+    "no_0007_ml_sdk_outreach_human_labels_mutation": true,
+    "production_prefilter_sql_unchanged": true
+  }
+}
