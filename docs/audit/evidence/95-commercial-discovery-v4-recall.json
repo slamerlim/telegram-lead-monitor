@@ -1,0 +1,1177 @@
+{
+  "generated_at": "2026-09-25T11:37:17.063657+00:00",
+  "discovery_versions": {
+    "v3": "disc_v3",
+    "v4": "disc_v4"
+  },
+  "baseline": {
+    "messages_7d": 116723,
+    "low_tier_scores_7d": 123191,
+    "prefilter_examined": 2500,
+    "prefilter_cap": 2500
+  },
+  "v3": {
+    "candidates": 12,
+    "unique_authors": 10,
+    "unique_communities": 10,
+    "density_per_1000_examined": 4.8,
+    "non_buyer_contamination_pct": 0.0,
+    "population_buckets": {
+      "Direct buyer/RFQ candidate": 12
+    },
+    "buyer_direction": {
+      "BUYER": 9,
+      "RECRUITER": 3
+    },
+    "triggers": {
+      "buyer_commercial_domain": 1,
+      "buyer_project_scope": 3,
+      "buyer_budget_domain": 7,
+      "buyer_weak": 1
+    },
+    "veto_counts_on_examined": {
+      "corporate_employment": 529,
+      "job_aggregator": 454,
+      "generic_recruiter": 443,
+      "support_question": 323,
+      "job_seeker": 69,
+      "marketing_broadcast": 39,
+      "service_provider": 17,
+      "news_digest": 4
+    }
+  },
+  "v4": {
+    "candidates": 4,
+    "unique_authors": 3,
+    "unique_communities": 3,
+    "density_per_1000_examined": 1.6,
+    "non_buyer_contamination_pct": 0.0,
+    "population_buckets": {
+      "Direct buyer/RFQ candidate": 4
+    },
+    "buyer_direction": {
+      "BUYER": 1,
+      "RECRUITER": 3
+    },
+    "triggers": {
+      "v4_budget_deliverable": 1,
+      "v4_project_procurement": 1,
+      "v4_direct_project_domain": 2
+    },
+    "buyer_signal_families": {
+      "DIRECT_PROJECT_REQUEST": 3,
+      "SOLANA_DEX_PROJECT_REQUEST": 3,
+      "SPECIFIC_DELIVERABLE_REQUEST": 1,
+      "TIMELINED_REQUEST": 1,
+      "CUSTOM_DEVELOPMENT_REQUEST": 1,
+      "BUDGETED_REQUEST": 1,
+      "EXCHANGE_INTEGRATION_REQUEST": 1,
+      "MARKET_MAKING_PROJECT_REQUEST": 1
+    },
+    "veto_counts_on_examined": {
+      "corporate_employment": 537,
+      "job_aggregator": 454,
+      "generic_recruiter": 443,
+      "support_question": 323,
+      "job_seeker": 69,
+      "marketing_broadcast": 39,
+      "service_provider": 17,
+      "news_digest": 4
+    },
+    "recovered_from_v3_rejects": 1,
+    "lost_vs_v3": 9
+  },
+  "recall_gap": {
+    "v3_reject_buyerish_miss_reasons": {
+      "support_question": 6,
+      "hard_veto": 5,
+      "insufficient_combination": 4,
+      "service_provider": 3,
+      "corporate_employment": 1,
+      "job_seeker": 1,
+      "job_aggregator": 1
+    },
+    "recovered_samples": [
+      {
+        "message_id": 39187,
+        "v3_veto": [],
+        "v3_dir": "BUYER",
+        "v4_dir": "BUYER",
+        "v4_trigger": "v4_budget_deliverable",
+        "families": [
+          "SPECIFIC_DELIVERABLE_REQUEST",
+          "TIMELINED_REQUEST"
+        ],
+        "preview": "First of all, thank you for the previous clarification regarding the Singapore apse1-az2/az3 server location. "
+      }
+    ],
+    "lost_samples": [
+      {
+        "message_id": 1113753,
+        "v4_veto": [],
+        "v3_dir": "BUYER",
+        "v4_dir": "BUYER",
+        "preview": "### Common Statistical Arbitrage Strategies Used by Quantitative Traders Statistical arbitrage (stat arb) is a"
+      },
+      {
+        "message_id": 8487486,
+        "v4_veto": [],
+        "v3_dir": "BUYER",
+        "v4_dir": "BUYER",
+        "preview": "What do you think? https://preview.redd.it/j2pffl0e5nph1.png?width=1543&format=png&auto=webp&s=5db5ccbbed8d2d6"
+      },
+      {
+        "message_id": 8599720,
+        "v4_veto": [],
+        "v3_dir": "BUYER",
+        "v4_dir": "BUYER",
+        "preview": "🔥 “This system is really changing my trading experience!” The mechanical trading system has been giving me sol"
+      },
+      {
+        "message_id": 8560893,
+        "v4_veto": [],
+        "v3_dir": "BUYER",
+        "v4_dir": "BUYER",
+        "preview": "I like following Margin Survivor because the performance really caught my attention. The +43.15% ROI over 7 da"
+      },
+      {
+        "message_id": 5766135,
+        "v4_veto": [],
+        "v3_dir": "BUYER",
+        "v4_dir": "BUYER",
+        "preview": "💳 PayAI Network (PAYAI): Powering AI Agent Payments on Solana PayAI Network (PAYAI) is a Solana-based token en"
+      },
+      {
+        "message_id": 5739296,
+        "v4_veto": [],
+        "v3_dir": "BUYER",
+        "v4_dir": "BUYER",
+        "preview": "💳 PayAI Network (PAYAI): Powering AI Agent Payments on Solana PayAI Network (PAYAI) is a Solana-based token en"
+      },
+      {
+        "message_id": 5769264,
+        "v4_veto": [],
+        "v3_dir": "BUYER",
+        "v4_dir": "BUYER",
+        "preview": "💳 PayAI Network (PAYAI): Powering AI Agent Payments on Solana PayAI Network (PAYAI) is a Solana-based token en"
+      },
+      {
+        "message_id": 3004746,
+        "v4_veto": [],
+        "v3_dir": "BUYER",
+        "v4_dir": "BUYER",
+        "preview": "The crypto market in 2025 is experiencing significant developments across various sectors, including tokenizat"
+      },
+      {
+        "message_id": 8308889,
+        "v4_veto": [],
+        "v3_dir": "BUYER",
+        "v4_dir": "BUYER",
+        "preview": "😊 Strategy buys 1,550 Bitcoin after selling 32 Strategy disclosed a purchase of 1,550 BTC for $101 million at "
+      }
+    ]
+  },
+  "retrieval_coverage_diagnostic": [
+    {
+      "population": "human_labels_provisional",
+      "n": 200,
+      "retrieved_v3": 0,
+      "retrieved_v4": 0,
+      "missed_v4": 200,
+      "miss_samples": [
+        {
+          "message_id": 621107,
+          "label": "TRUE_LEAD",
+          "v3": false,
+          "v4_veto": [],
+          "v4_dir": "UNKNOWN",
+          "preview": "My favorite command is /analyse , since it allows me to easily analyze any token I want to buy without the nee"
+        },
+        {
+          "message_id": 1018623,
+          "label": "TRUE_LEAD",
+          "v3": false,
+          "v4_veto": [],
+          "v4_dir": "UNKNOWN",
+          "preview": "🔥 NEW: Predict $BTC Bottom & Win 1,000 USDT EVERY DAY! Want to buy $BTC at the bottom AND get extra rewards? ✅"
+        },
+        {
+          "message_id": 1031985,
+          "label": "TRUE_LEAD",
+          "v3": false,
+          "v4_veto": [],
+          "v4_dir": "UNKNOWN",
+          "preview": "🔥 NEW: Predict $BTC Bottom & Win 1,000 USDT EVERY DAY! Want to buy $BTC at the bottom AND get extra rewards? ✅"
+        },
+        {
+          "message_id": 1210259,
+          "label": "TRUE_LEAD",
+          "v3": false,
+          "v4_veto": [],
+          "v4_dir": "UNKNOWN",
+          "preview": "Each time i want to buy/sell I'm asked to provide a code from BOTH my email and authenticator"
+        },
+        {
+          "message_id": 1222288,
+          "label": "TRUE_LEAD",
+          "v3": false,
+          "v4_veto": [],
+          "v4_dir": "UNKNOWN",
+          "preview": "🔥 NEW: Predict $BTC Bottom & Win 1,000 USDT EVERY DAY! Want to buy $BTC at the bottom AND get extra rewards? ✅"
+        },
+        {
+          "message_id": 1222331,
+          "label": "TRUE_LEAD",
+          "v3": false,
+          "v4_veto": [],
+          "v4_dir": "UNKNOWN",
+          "preview": "🔥 NEW: Predict $BTC Bottom & Win 1,000 USDT EVERY DAY! Want to buy $BTC at the bottom AND get extra rewards? ✅"
+        },
+        {
+          "message_id": 5242766,
+          "label": "TRUE_LEAD",
+          "v3": false,
+          "v4_veto": [
+            "support_question"
+          ],
+          "v4_dir": "UNKNOWN",
+          "preview": "Topic 1:- We might see some short-term price chop or a dip from this 'miner capitulation.' But looking at the "
+        },
+        {
+          "message_id": 5478764,
+          "label": "TRUE_LEAD",
+          "v3": false,
+          "v4_veto": [],
+          "v4_dir": "UNKNOWN",
+          "preview": "⚖️ CoinEx Dual Investment: The Strategic Win-Win Can't decide if you want to buy the dip or take profit? Dual "
+        },
+        {
+          "message_id": 259387,
+          "label": "TRUE_LEAD",
+          "v3": false,
+          "v4_veto": [
+            "job_aggregator",
+            "support_question",
+            "corporate_employment",
+            "generic_recruiter"
+          ],
+          "v4_dir": "RECRUITER",
+          "preview": "Adyen is hiring a Engineering Director Adyen is looking for an Engineering Director to define developer experi"
+        },
+        {
+          "message_id": 260501,
+          "label": "TRUE_LEAD",
+          "v3": false,
+          "v4_veto": [
+            "job_aggregator",
+            "corporate_employment",
+            "generic_recruiter"
+          ],
+          "v4_dir": "RECRUITER",
+          "preview": "Robinhood Markets, Inc. is hiring an onsite Engineering Manager, Prediction Markets in New York, NY Robinhood "
+        },
+        {
+          "message_id": 265382,
+          "label": "TRUE_LEAD",
+          "v3": false,
+          "v4_veto": [
+            "corporate_employment",
+            "generic_recruiter"
+          ],
+          "v4_dir": "RECRUITER",
+          "preview": "Zero Hash LLC is hiring a remote Engineering Manager, Trading Zero Hash is looking for an Engineering Manager "
+        },
+        {
+          "message_id": 265659,
+          "label": "TRUE_LEAD",
+          "v3": false,
+          "v4_veto": [
+            "corporate_employment"
+          ],
+          "v4_dir": "EMPLOYER",
+          "preview": "Keyrock is hiring a remote Engineering Lead - Platform Keyrock is looking for an Engineering Lead Platform to "
+        },
+        {
+          "message_id": 384947,
+          "label": "TRUE_LEAD",
+          "v3": false,
+          "v4_veto": [
+            "support_question"
+          ],
+          "v4_dir": "RECRUITER",
+          "preview": "تمام 👍 هذه الرسالة بالإنجليزية، جاهزة للإرسال: Hello, I’m looking for a developer with experience in cTrader t"
+        },
+        {
+          "message_id": 106,
+          "label": "TRUE_LEAD",
+          "v3": false,
+          "v4_veto": [
+            "job_aggregator",
+            "generic_recruiter"
+          ],
+          "v4_dir": "RECRUITER",
+          "preview": "🌟 Freelance Opportunity: Apple and Google Developer Account Verification 💰 Budget: $200 🤝 With: SOLUTIONS GLOB"
+        },
+        {
+          "message_id": 107,
+          "label": "TRUE_LEAD",
+          "v3": false,
+          "v4_veto": [
+            "job_aggregator",
+            "generic_recruiter"
+          ],
+          "v4_dir": "RECRUITER",
+          "preview": "🌟 Freelance Opportunity: Apple and Google Developer Account Verification 💰 Budget: $500 🤝 With: Sergei Prokhor"
+        }
+      ]
+    },
+    {
+      "population": "AI_CONFIRMED_source_msgs",
+      "n": 4,
+      "retrieved_v3": 0,
+      "retrieved_v4": 0,
+      "missed_v4": 4,
+      "miss_samples": [
+        {
+          "message_id": 25570,
+          "label": "AI_CONFIRMED",
+          "v3": false,
+          "v4_veto": [
+            "job_aggregator",
+            "generic_recruiter"
+          ],
+          "v4_dir": "RECRUITER",
+          "preview": "🌟 Freelance Opportunity: Quick Fix Needed for Python Trading Bot 💰 Budget: $320 🤝 With: david lil"
+        },
+        {
+          "message_id": 25571,
+          "label": "AI_CONFIRMED",
+          "v3": false,
+          "v4_veto": [
+            "job_aggregator",
+            "generic_recruiter"
+          ],
+          "v4_dir": "RECRUITER",
+          "preview": "🌟 Freelance Opportunity: Quick Fix Needed for Python Trading Bot 💰 Budget: $50 🤝 With: Ryan Peterson"
+        },
+        {
+          "message_id": 22713,
+          "label": "AI_CONFIRMED",
+          "v3": false,
+          "v4_veto": [
+            "job_aggregator",
+            "generic_recruiter"
+          ],
+          "v4_dir": "RECRUITER",
+          "preview": "🌟 Freelance Opportunity: Crypto Trading Bot Developer 💰 Budget: $200 🤝 With: Yohans Hayla"
+        },
+        {
+          "message_id": 25400,
+          "label": "AI_CONFIRMED",
+          "v3": false,
+          "v4_veto": [
+            "job_aggregator",
+            "generic_recruiter"
+          ],
+          "v4_dir": "RECRUITER",
+          "preview": "🌟 Freelance Opportunity: Python Crypto Trading Bot Developer (GUI + Dashboard) 💰 Budget: $800 🤝 With: Harry Be"
+        }
+      ]
+    }
+  ],
+  "community_profiles_top": [
+    {
+      "community_id": 6,
+      "community": "Bybit API Discussion",
+      "username": "BybitAPI",
+      "messages_7d": 153,
+      "low_messages_7d": 1158,
+      "disc_v3_candidates": 0,
+      "disc_v4_candidates": 1,
+      "buyer_signal_candidates": 1,
+      "hard_veto_hits_in_prefilter": 73,
+      "buyer_signal_density": 6.536,
+      "project_request_density": 0.0,
+      "repair_request_density": 0.0
+    },
+    {
+      "community_id": 64,
+      "community": "Bitget English Official",
+      "username": "BitgetENOfficial",
+      "messages_7d": 22536,
+      "low_messages_7d": 22539,
+      "disc_v3_candidates": 0,
+      "disc_v4_candidates": 0,
+      "buyer_signal_candidates": 0,
+      "hard_veto_hits_in_prefilter": 10,
+      "buyer_signal_density": 0.0,
+      "project_request_density": 0.0,
+      "repair_request_density": 0.0
+    },
+    {
+      "community_id": 57,
+      "community": "Bybit English",
+      "username": "BybitEnglish",
+      "messages_7d": 12373,
+      "low_messages_7d": 12383,
+      "disc_v3_candidates": 2,
+      "disc_v4_candidates": 0,
+      "buyer_signal_candidates": 0,
+      "hard_veto_hits_in_prefilter": 119,
+      "buyer_signal_density": 0.0,
+      "project_request_density": 0.0,
+      "repair_request_density": 0.0
+    },
+    {
+      "community_id": 96,
+      "community": "WEEX English Official",
+      "username": "WeexGlobal_Group",
+      "messages_7d": 12006,
+      "low_messages_7d": 12006,
+      "disc_v3_candidates": 0,
+      "disc_v4_candidates": 0,
+      "buyer_signal_candidates": 0,
+      "hard_veto_hits_in_prefilter": 1,
+      "buyer_signal_density": 0.0,
+      "project_request_density": 0.0,
+      "repair_request_density": 0.0
+    },
+    {
+      "community_id": 59,
+      "community": "OKX English",
+      "username": "OKXOfficial_English",
+      "messages_7d": 11923,
+      "low_messages_7d": 11923,
+      "disc_v3_candidates": 0,
+      "disc_v4_candidates": 0,
+      "buyer_signal_candidates": 0,
+      "hard_veto_hits_in_prefilter": 9,
+      "buyer_signal_density": 0.0,
+      "project_request_density": 0.0,
+      "repair_request_density": 0.0
+    },
+    {
+      "community_id": 97,
+      "community": "WEEX English 2nd Group",
+      "username": "WeexGlobalGroup_New",
+      "messages_7d": 8221,
+      "low_messages_7d": 8222,
+      "disc_v3_candidates": 0,
+      "disc_v4_candidates": 0,
+      "buyer_signal_candidates": 0,
+      "hard_veto_hits_in_prefilter": 0,
+      "buyer_signal_density": 0.0,
+      "project_request_density": 0.0,
+      "repair_request_density": 0.0
+    },
+    {
+      "community_id": 130,
+      "community": "Crypto Bulls Community",
+      "username": "CryptoBulls_Community",
+      "messages_7d": 5000,
+      "low_messages_7d": 7770,
+      "disc_v3_candidates": 0,
+      "disc_v4_candidates": 0,
+      "buyer_signal_candidates": 0,
+      "hard_veto_hits_in_prefilter": 0,
+      "buyer_signal_density": 0.0,
+      "project_request_density": 0.0,
+      "repair_request_density": 0.0
+    },
+    {
+      "community_id": 110,
+      "community": "KCEX English",
+      "username": "KCEX_English",
+      "messages_7d": 4336,
+      "low_messages_7d": 4339,
+      "disc_v3_candidates": 1,
+      "disc_v4_candidates": 0,
+      "buyer_signal_candidates": 0,
+      "hard_veto_hits_in_prefilter": 0,
+      "buyer_signal_density": 0.0,
+      "project_request_density": 0.0,
+      "repair_request_density": 0.0
+    },
+    {
+      "community_id": 99,
+      "community": "XT Futures",
+      "username": "XT_Futures_EN",
+      "messages_7d": 3659,
+      "low_messages_7d": 3659,
+      "disc_v3_candidates": 0,
+      "disc_v4_candidates": 0,
+      "buyer_signal_candidates": 0,
+      "hard_veto_hits_in_prefilter": 0,
+      "buyer_signal_density": 0.0,
+      "project_request_density": 0.0,
+      "repair_request_density": 0.0
+    },
+    {
+      "community_id": 61,
+      "community": "KuCoin Exchange",
+      "username": "Kucoin_Exchange",
+      "messages_7d": 3638,
+      "low_messages_7d": 3645,
+      "disc_v3_candidates": 1,
+      "disc_v4_candidates": 0,
+      "buyer_signal_candidates": 0,
+      "hard_veto_hits_in_prefilter": 3,
+      "buyer_signal_density": 0.0,
+      "project_request_density": 0.0,
+      "repair_request_density": 0.0
+    },
+    {
+      "community_id": 62,
+      "community": "KuCoin Exchange 2nd Group",
+      "username": "KuCoin_Exchange_New",
+      "messages_7d": 3006,
+      "low_messages_7d": 3006,
+      "disc_v3_candidates": 0,
+      "disc_v4_candidates": 0,
+      "buyer_signal_candidates": 0,
+      "hard_veto_hits_in_prefilter": 1,
+      "buyer_signal_density": 0.0,
+      "project_request_density": 0.0,
+      "repair_request_density": 0.0
+    },
+    {
+      "community_id": 66,
+      "community": "HTX English",
+      "username": "htxglobalofficial",
+      "messages_7d": 2956,
+      "low_messages_7d": 2956,
+      "disc_v3_candidates": 0,
+      "disc_v4_candidates": 0,
+      "buyer_signal_candidates": 0,
+      "hard_veto_hits_in_prefilter": 7,
+      "buyer_signal_density": 0.0,
+      "project_request_density": 0.0,
+      "repair_request_density": 0.0
+    },
+    {
+      "community_id": 55,
+      "community": "Binance English",
+      "username": "binanceexchange",
+      "messages_7d": 2829,
+      "low_messages_7d": 2830,
+      "disc_v3_candidates": 0,
+      "disc_v4_candidates": 0,
+      "buyer_signal_candidates": 0,
+      "hard_veto_hits_in_prefilter": 0,
+      "buyer_signal_density": 0.0,
+      "project_request_density": 0.0,
+      "repair_request_density": 0.0
+    },
+    {
+      "community_id": 90,
+      "community": "LBank Official Group",
+      "username": "LBank_en",
+      "messages_7d": 2605,
+      "low_messages_7d": 2606,
+      "disc_v3_candidates": 0,
+      "disc_v4_candidates": 0,
+      "buyer_signal_candidates": 0,
+      "hard_veto_hits_in_prefilter": 1,
+      "buyer_signal_density": 0.0,
+      "project_request_density": 0.0,
+      "repair_request_density": 0.0
+    },
+    {
+      "community_id": 98,
+      "community": "XT Exchange Official",
+      "username": "XTexchange_EN",
+      "messages_7d": 2532,
+      "low_messages_7d": 2533,
+      "disc_v3_candidates": 0,
+      "disc_v4_candidates": 0,
+      "buyer_signal_candidates": 0,
+      "hard_veto_hits_in_prefilter": 0,
+      "buyer_signal_density": 0.0,
+      "project_request_density": 0.0,
+      "repair_request_density": 0.0
+    },
+    {
+      "community_id": 105,
+      "community": "Toobit English",
+      "username": "Toobit_EN",
+      "messages_7d": 2408,
+      "low_messages_7d": 2409,
+      "disc_v3_candidates": 0,
+      "disc_v4_candidates": 0,
+      "buyer_signal_candidates": 0,
+      "hard_veto_hits_in_prefilter": 0,
+      "buyer_signal_density": 0.0,
+      "project_request_density": 0.0,
+      "repair_request_density": 0.0
+    },
+    {
+      "community_id": 67,
+      "community": "MEXC English (Official)",
+      "username": "MEXCEnglish",
+      "messages_7d": 2273,
+      "low_messages_7d": 2288,
+      "disc_v3_candidates": 0,
+      "disc_v4_candidates": 0,
+      "buyer_signal_candidates": 0,
+      "hard_veto_hits_in_prefilter": 8,
+      "buyer_signal_density": 0.0,
+      "project_request_density": 0.0,
+      "repair_request_density": 0.0
+    },
+    {
+      "community_id": 119,
+      "community": "THORChain Community",
+      "username": "thorchain_org",
+      "messages_7d": 2161,
+      "low_messages_7d": 2740,
+      "disc_v3_candidates": 0,
+      "disc_v4_candidates": 0,
+      "buyer_signal_candidates": 0,
+      "hard_veto_hits_in_prefilter": 1,
+      "buyer_signal_density": 0.0,
+      "project_request_density": 0.0,
+      "repair_request_density": 0.0
+    },
+    {
+      "community_id": 80,
+      "community": "BingX - Empowering Traders",
+      "username": "BingXOfficial",
+      "messages_7d": 1775,
+      "low_messages_7d": 1776,
+      "disc_v3_candidates": 0,
+      "disc_v4_candidates": 0,
+      "buyer_signal_candidates": 0,
+      "hard_veto_hits_in_prefilter": 1,
+      "buyer_signal_density": 0.0,
+      "project_request_density": 0.0,
+      "repair_request_density": 0.0
+    },
+    {
+      "community_id": 109,
+      "community": "Bitunix Global | Official",
+      "username": "bitunixglobal",
+      "messages_7d": 1518,
+      "low_messages_7d": 1522,
+      "disc_v3_candidates": 0,
+      "disc_v4_candidates": 0,
+      "buyer_signal_candidates": 0,
+      "hard_veto_hits_in_prefilter": 2,
+      "buyer_signal_density": 0.0,
+      "project_request_density": 0.0,
+      "repair_request_density": 0.0
+    },
+    {
+      "community_id": 74,
+      "community": "Bitrue Community",
+      "username": "BitrueOfficial",
+      "messages_7d": 858,
+      "low_messages_7d": 858,
+      "disc_v3_candidates": 0,
+      "disc_v4_candidates": 0,
+      "buyer_signal_candidates": 0,
+      "hard_veto_hits_in_prefilter": 1,
+      "buyer_signal_density": 0.0,
+      "project_request_density": 0.0,
+      "repair_request_density": 0.0
+    },
+    {
+      "community_id": 92,
+      "community": "CoinW Official",
+      "username": "coinwoff",
+      "messages_7d": 833,
+      "low_messages_7d": 833,
+      "disc_v3_candidates": 0,
+      "disc_v4_candidates": 0,
+      "buyer_signal_candidates": 0,
+      "hard_veto_hits_in_prefilter": 0,
+      "buyer_signal_density": 0.0,
+      "project_request_density": 0.0,
+      "repair_request_density": 0.0
+    },
+    {
+      "community_id": 95,
+      "community": "Tapbit Exchange",
+      "username": "TapbitGlobalOfficial",
+      "messages_7d": 765,
+      "low_messages_7d": 765,
+      "disc_v3_candidates": 0,
+      "disc_v4_candidates": 0,
+      "buyer_signal_candidates": 0,
+      "hard_veto_hits_in_prefilter": 0,
+      "buyer_signal_density": 0.0,
+      "project_request_density": 0.0,
+      "repair_request_density": 0.0
+    },
+    {
+      "community_id": 72,
+      "community": "BitMart Exchange",
+      "username": "BitMartExchange",
+      "messages_7d": 650,
+      "low_messages_7d": 651,
+      "disc_v3_candidates": 0,
+      "disc_v4_candidates": 0,
+      "buyer_signal_candidates": 0,
+      "hard_veto_hits_in_prefilter": 0,
+      "buyer_signal_density": 0.0,
+      "project_request_density": 0.0,
+      "repair_request_density": 0.0
+    },
+    {
+      "community_id": 86,
+      "community": "Crypto.com",
+      "username": "CryptoComOfficial",
+      "messages_7d": 410,
+      "low_messages_7d": 410,
+      "disc_v3_candidates": 0,
+      "disc_v4_candidates": 0,
+      "buyer_signal_candidates": 0,
+      "hard_veto_hits_in_prefilter": 0,
+      "buyer_signal_density": 0.0,
+      "project_request_density": 0.0,
+      "repair_request_density": 0.0
+    },
+    {
+      "community_id": 18,
+      "community": "Web3 Crypto Jobs - Remote",
+      "username": "web3jobs",
+      "messages_7d": 382,
+      "low_messages_7d": 384,
+      "disc_v3_candidates": 0,
+      "disc_v4_candidates": 0,
+      "buyer_signal_candidates": 0,
+      "hard_veto_hits_in_prefilter": 1,
+      "buyer_signal_density": 0.0,
+      "project_request_density": 0.0,
+      "repair_request_density": 0.0
+    },
+    {
+      "community_id": 77,
+      "community": "Phemex Futures Trading Group",
+      "username": "PhemexFutures_en",
+      "messages_7d": 369,
+      "low_messages_7d": 370,
+      "disc_v3_candidates": 1,
+      "disc_v4_candidates": 0,
+      "buyer_signal_candidates": 0,
+      "hard_veto_hits_in_prefilter": 0,
+      "buyer_signal_density": 0.0,
+      "project_request_density": 0.0,
+      "repair_request_density": 0.0
+    },
+    {
+      "community_id": 104,
+      "community": "AscendEX Russian Official",
+      "username": "AscendEXRussian",
+      "messages_7d": 338,
+      "low_messages_7d": 338,
+      "disc_v3_candidates": 0,
+      "disc_v4_candidates": 0,
+      "buyer_signal_candidates": 0,
+      "hard_veto_hits_in_prefilter": 0,
+      "buyer_signal_density": 0.0,
+      "project_request_density": 0.0,
+      "repair_request_density": 0.0
+    },
+    {
+      "community_id": 76,
+      "community": "Phemex Global",
+      "username": "Phemex_EN",
+      "messages_7d": 333,
+      "low_messages_7d": 334,
+      "disc_v3_candidates": 1,
+      "disc_v4_candidates": 0,
+      "buyer_signal_candidates": 0,
+      "hard_veto_hits_in_prefilter": 0,
+      "buyer_signal_density": 0.0,
+      "project_request_density": 0.0,
+      "repair_request_density": 0.0
+    },
+    {
+      "community_id": 46,
+      "community": "DEXTools Community",
+      "username": "DEXToolsCommunity",
+      "messages_7d": 312,
+      "low_messages_7d": 313,
+      "disc_v3_candidates": 0,
+      "disc_v4_candidates": 0,
+      "buyer_signal_candidates": 0,
+      "hard_veto_hits_in_prefilter": 0,
+      "buyer_signal_density": 0.0,
+      "project_request_density": 0.0,
+      "repair_request_density": 0.0
+    },
+    {
+      "community_id": 84,
+      "community": "Deribit Support Chat",
+      "username": "deribit",
+      "messages_7d": 288,
+      "low_messages_7d": 288,
+      "disc_v3_candidates": 0,
+      "disc_v4_candidates": 0,
+      "buyer_signal_candidates": 0,
+      "hard_veto_hits_in_prefilter": 0,
+      "buyer_signal_density": 0.0,
+      "project_request_density": 0.0,
+      "repair_request_density": 0.0
+    },
+    {
+      "community_id": 107,
+      "community": "BloFin Exchange",
+      "username": "BloFin_Official",
+      "messages_7d": 285,
+      "low_messages_7d": 287,
+      "disc_v3_candidates": 0,
+      "disc_v4_candidates": 0,
+      "buyer_signal_candidates": 0,
+      "hard_veto_hits_in_prefilter": 3,
+      "buyer_signal_density": 0.0,
+      "project_request_density": 0.0,
+      "repair_request_density": 0.0
+    },
+    {
+      "community_id": 125,
+      "community": "PancakeSwap",
+      "username": "PancakeSwap",
+      "messages_7d": 281,
+      "low_messages_7d": 351,
+      "disc_v3_candidates": 0,
+      "disc_v4_candidates": 0,
+      "buyer_signal_candidates": 0,
+      "hard_veto_hits_in_prefilter": 2,
+      "buyer_signal_density": 0.0,
+      "project_request_density": 0.0,
+      "repair_request_density": 0.0
+    },
+    {
+      "community_id": 22,
+      "community": "JobStash.xyz - Crypto Native, Web3 and AI Jobs",
+      "username": "jobstash",
+      "messages_7d": 280,
+      "low_messages_7d": 296,
+      "disc_v3_candidates": 0,
+      "disc_v4_candidates": 0,
+      "buyer_signal_candidates": 0,
+      "hard_veto_hits_in_prefilter": 928,
+      "buyer_signal_density": 0.0,
+      "project_request_density": 0.0,
+      "repair_request_density": 0.0
+    },
+    {
+      "community_id": 82,
+      "community": "WhiteBIT",
+      "username": "White_Bit",
+      "messages_7d": 185,
+      "low_messages_7d": 185,
+      "disc_v3_candidates": 0,
+      "disc_v4_candidates": 0,
+      "buyer_signal_candidates": 0,
+      "hard_veto_hits_in_prefilter": 0,
+      "buyer_signal_density": 0.0,
+      "project_request_density": 0.0,
+      "repair_request_density": 0.0
+    },
+    {
+      "community_id": 88,
+      "community": "Poloniex English",
+      "username": "PoloniexEnglish",
+      "messages_7d": 168,
+      "low_messages_7d": 168,
+      "disc_v3_candidates": 0,
+      "disc_v4_candidates": 0,
+      "buyer_signal_candidates": 0,
+      "hard_veto_hits_in_prefilter": 0,
+      "buyer_signal_density": 0.0,
+      "project_request_density": 0.0,
+      "repair_request_density": 0.0
+    },
+    {
+      "community_id": 115,
+      "community": "Raydium Protocol",
+      "username": "raydiumprotocol",
+      "messages_7d": 120,
+      "low_messages_7d": 120,
+      "disc_v3_candidates": 0,
+      "disc_v4_candidates": 0,
+      "buyer_signal_candidates": 0,
+      "hard_veto_hits_in_prefilter": 0,
+      "buyer_signal_density": 0.0,
+      "project_request_density": 0.0,
+      "repair_request_density": 0.0
+    },
+    {
+      "community_id": 128,
+      "community": "Solana developers",
+      "username": "solanadevelopers",
+      "messages_7d": 110,
+      "low_messages_7d": 129,
+      "disc_v3_candidates": 0,
+      "disc_v4_candidates": 0,
+      "buyer_signal_candidates": 0,
+      "hard_veto_hits_in_prefilter": 6,
+      "buyer_signal_density": 0.0,
+      "project_request_density": 0.0,
+      "repair_request_density": 0.0
+    },
+    {
+      "community_id": 23,
+      "community": "JobStash Community",
+      "username": "jobstashxyz",
+      "messages_7d": 108,
+      "low_messages_7d": 108,
+      "disc_v3_candidates": 0,
+      "disc_v4_candidates": 0,
+      "buyer_signal_candidates": 0,
+      "hard_veto_hits_in_prefilter": 0,
+      "buyer_signal_density": 0.0,
+      "project_request_density": 0.0,
+      "repair_request_density": 0.0
+    },
+    {
+      "community_id": 47,
+      "community": "cTrader Algorithmic Trading",
+      "username": "cTrader_bots",
+      "messages_7d": 101,
+      "low_messages_7d": 103,
+      "disc_v3_candidates": 1,
+      "disc_v4_candidates": 0,
+      "buyer_signal_candidates": 0,
+      "hard_veto_hits_in_prefilter": 1,
+      "buyer_signal_density": 0.0,
+      "project_request_density": 0.0,
+      "repair_request_density": 0.0
+    }
+  ],
+  "sample_report": {
+    "strongest": [
+      {
+        "message_id": 270199,
+        "discovery_score": 3.85,
+        "buyer_direction": "RECRUITER",
+        "trigger": "v4_project_procurement",
+        "families": [
+          "DIRECT_PROJECT_REQUEST",
+          "CUSTOM_DEVELOPMENT_REQUEST",
+          "BUDGETED_REQUEST",
+          "EXCHANGE_INTEGRATION_REQUEST",
+          "MARKET_MAKING_PROJECT_REQUEST",
+          "SOLANA_DEX_PROJECT_REQUEST"
+        ],
+        "soft_direction": true,
+        "bucket": "Direct buyer/RFQ candidate",
+        "preview": "⚙️ Нужен разработчик Senior Backend Full-stack developer 📌 О компании и проекте: 🕯 Технологическая компания и "
+      },
+      {
+        "message_id": 39187,
+        "discovery_score": 3.5,
+        "buyer_direction": "BUYER",
+        "trigger": "v4_budget_deliverable",
+        "families": [
+          "SPECIFIC_DELIVERABLE_REQUEST",
+          "TIMELINED_REQUEST"
+        ],
+        "soft_direction": false,
+        "bucket": "Direct buyer/RFQ candidate",
+        "preview": "First of all, thank you for the previous clarification regarding the Singapore apse1-az2/az3 server location. "
+      },
+      {
+        "message_id": 1898,
+        "discovery_score": 3.0,
+        "buyer_direction": "RECRUITER",
+        "trigger": "v4_direct_project_domain",
+        "families": [
+          "DIRECT_PROJECT_REQUEST",
+          "SOLANA_DEX_PROJECT_REQUEST"
+        ],
+        "soft_direction": true,
+        "bucket": "Direct buyer/RFQ candidate",
+        "preview": "Hi everyone, I’m currently looking for a Solana smart contract developer for a Web3 project. Looking for someo"
+      },
+      {
+        "message_id": 2194,
+        "discovery_score": 3.0,
+        "buyer_direction": "RECRUITER",
+        "trigger": "v4_direct_project_domain",
+        "families": [
+          "DIRECT_PROJECT_REQUEST",
+          "SOLANA_DEX_PROJECT_REQUEST"
+        ],
+        "soft_direction": true,
+        "bucket": "Direct buyer/RFQ candidate",
+        "preview": "Hi everyone, I’m currently looking for a Solana smart contract developer for a Web3 project. Looking for someo"
+      }
+    ],
+    "medium": [
+      {
+        "message_id": 39187,
+        "discovery_score": 3.5,
+        "buyer_direction": "BUYER",
+        "trigger": "v4_budget_deliverable",
+        "families": [
+          "SPECIFIC_DELIVERABLE_REQUEST",
+          "TIMELINED_REQUEST"
+        ],
+        "soft_direction": false,
+        "bucket": "Direct buyer/RFQ candidate",
+        "preview": "First of all, thank you for the previous clarification regarding the Singapore apse1-az2/az3 server location. "
+      },
+      {
+        "message_id": 1898,
+        "discovery_score": 3.0,
+        "buyer_direction": "RECRUITER",
+        "trigger": "v4_direct_project_domain",
+        "families": [
+          "DIRECT_PROJECT_REQUEST",
+          "SOLANA_DEX_PROJECT_REQUEST"
+        ],
+        "soft_direction": true,
+        "bucket": "Direct buyer/RFQ candidate",
+        "preview": "Hi everyone, I’m currently looking for a Solana smart contract developer for a Web3 project. Looking for someo"
+      },
+      {
+        "message_id": 2194,
+        "discovery_score": 3.0,
+        "buyer_direction": "RECRUITER",
+        "trigger": "v4_direct_project_domain",
+        "families": [
+          "DIRECT_PROJECT_REQUEST",
+          "SOLANA_DEX_PROJECT_REQUEST"
+        ],
+        "soft_direction": true,
+        "bucket": "Direct buyer/RFQ candidate",
+        "preview": "Hi everyone, I’m currently looking for a Solana smart contract developer for a Web3 project. Looking for someo"
+      }
+    ],
+    "ambiguous": [
+      {
+        "message_id": 270199,
+        "discovery_score": 3.85,
+        "buyer_direction": "RECRUITER",
+        "trigger": "v4_project_procurement",
+        "families": [
+          "DIRECT_PROJECT_REQUEST",
+          "CUSTOM_DEVELOPMENT_REQUEST",
+          "BUDGETED_REQUEST",
+          "EXCHANGE_INTEGRATION_REQUEST",
+          "MARKET_MAKING_PROJECT_REQUEST",
+          "SOLANA_DEX_PROJECT_REQUEST"
+        ],
+        "soft_direction": true,
+        "bucket": "Direct buyer/RFQ candidate",
+        "preview": "⚙️ Нужен разработчик Senior Backend Full-stack developer 📌 О компании и проекте: 🕯 Технологическая компания и "
+      },
+      {
+        "message_id": 1898,
+        "discovery_score": 3.0,
+        "buyer_direction": "RECRUITER",
+        "trigger": "v4_direct_project_domain",
+        "families": [
+          "DIRECT_PROJECT_REQUEST",
+          "SOLANA_DEX_PROJECT_REQUEST"
+        ],
+        "soft_direction": true,
+        "bucket": "Direct buyer/RFQ candidate",
+        "preview": "Hi everyone, I’m currently looking for a Solana smart contract developer for a Web3 project. Looking for someo"
+      },
+      {
+        "message_id": 2194,
+        "discovery_score": 3.0,
+        "buyer_direction": "RECRUITER",
+        "trigger": "v4_direct_project_domain",
+        "families": [
+          "DIRECT_PROJECT_REQUEST",
+          "SOLANA_DEX_PROJECT_REQUEST"
+        ],
+        "soft_direction": true,
+        "bucket": "Direct buyer/RFQ candidate",
+        "preview": "Hi everyone, I’m currently looking for a Solana smart contract developer for a Web3 project. Looking for someo"
+      }
+    ]
+  },
+  "sdk_ab_run": false,
+  "runtime_sec": 31.25,
+  "explain_prefilter": [
+    "Limit  (cost=1000.75..98008.26 rows=100 width=12) (actual time=44.398..49.536 rows=100 loops=1)",
+    "  Buffers: shared hit=58240",
+    "  ->  Gather Merge  (cost=1000.75..2270976.41 rows=2340 width=12) (actual time=44.397..49.529 rows=100 loops=1)",
+    "        Workers Planned: 2",
+    "        Workers Launched: 2",
+    "        Buffers: shared hit=58240",
+    "        ->  Nested Loop  (cost=0.73..2269706.30 rows=975 width=12) (actual time=1.311..24.815 rows=68 loops=3)",
+    "              Buffers: shared hit=58240",
+    "              ->  Parallel Index Scan Backward using ix_messages_date on messages m  (cost=0.43..1067668.38 rows=3596495 width=100) (actual time=0.023..3.446 rows=5146 loops=3)",
+    "                    Buffers: shared hit=11842",
+    "              ->  Index Scan using ix_message_scores_message_id on message_scores s  (cost=0.29..0.32 rows=1 width=20) (actual time=0.004..0.004 rows=0 loops=15438)",
+    "                    Index Cond: (message_id = m.id)",
+    "                    Filter: ((scored_at >= '2026-09-18 11:36:45.811372+00'::timestamp with time zone) AND ((tier)::text = 'LOW'::text) AND (((commercial_score > '0'::double precision) AND (technical_score > '0'::double precision)) OR (m.text ~* 'trading bot|bybit|binance api'::text)))",
+    "                    Rows Removed by Filter: 1",
+    "                    Buffers: shared hit=46398",
+    "Planning:",
+    "  Buffers: shared hit=205",
+    "Planning Time: 2.902 ms",
+    "Execution Time: 49.618 ms"
+  ],
+  "isolation_note": "no SDK; no CRM; ctx_v1 remains default; scoring.yaml untouched",
+  "decision": "C",
+  "decision_rationale": "Clean population <10 after removing LaborX marketplace contamination. Next: expand buyer-oriented communities before SDK.",
+  "delta_vs_v3": {
+    "candidate_delta": -8,
+    "contamination_delta_pp": 0.0
+  },
+  "corpus_forensics": {
+    "messages_7d": 116723,
+    "laborx_freelance_opportunity_7d": 47,
+    "strict_buyer_rfq_hits_non_laborx_7d": 0,
+    "ownership_repair_hits_7d": 1,
+    "note": "Genuine first-person buyer RFQs are nearly absent in current enabled communities; volume is exchange chat + job boards."
+  },
+  "ai_confirmed_diagnostic_note": "All 4 production AI_CONFIRMED source messages are LaborX-style Freelance Opportunity marketplace listings. disc_v4 intentionally hard-vetoes gig_marketplace/job_aggregator templates.",
+  "community_expansion_candidates_bounded": [
+    {
+      "community": "Crypto freelance/RFQ boards",
+      "url": "https://t.me/cryptojobslist",
+      "reason": "Higher RFQ density than exchange groups",
+      "expected_signal": "project_procurement",
+      "caution": "employment posts present; rely on disc_v4 vetoes"
+    },
+    {
+      "community": "Algotrading / quant contractor rooms",
+      "url": "evaluate public mirrors",
+      "reason": "strategy automation + repair language",
+      "expected_signal": "strategy_automation / bot_repair"
+    },
+    {
+      "community": "Solana/DEX developer rooms",
+      "url": "TBD developer rooms not price chat",
+      "reason": "DEX project coverage gap outside LaborX",
+      "expected_signal": "solana_dex / custom_development"
+    },
+    {
+      "community": "Bybit API Discussion-style",
+      "url": "existing",
+      "reason": "only non-zero buyer_signal_density among large sources",
+      "expected_signal": "exchange_integration / repair"
+    }
+  ],
+  "v4_rules_summary": {
+    "version": "disc_v4",
+    "paths": [
+      "A direct+domain",
+      "B repair+ownership/direct+domain",
+      "C automation+buyer+domain",
+      "D project_procurement+scope+domain",
+      "E budget/timeline+ownership/direct+domain"
+    ],
+    "hard_vetoes_kept": [
+      "job_seeker",
+      "job_aggregator",
+      "gig_marketplace",
+      "provider",
+      "news",
+      "marketing",
+      "corporate_employment",
+      "support_without_buyer_evidence"
+    ],
+    "scoring_yaml": "untouched"
+  },
+  "updated_at": "2026-09-25T11:38:30.375574+00:00"
+}

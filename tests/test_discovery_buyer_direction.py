@@ -113,10 +113,10 @@ def test_v2_still_fires_on_corporate_hiring():
         "FalconX is looking for a Senior Trading Systems Developer."
     )
     v2 = evaluate_discovery(scorer, text, version=DISCOVERY_VERSION_V2)
-    v3 = evaluate_discovery(scorer, text, version=DISCOVERY_VERSION)
-    # v3 must be stricter on employer posts
+    v4 = evaluate_discovery(scorer, text, version=DISCOVERY_VERSION)
+    # v3/v4 must be stricter on employer posts
     if v2.eligible:
-        assert not v3.eligible
+        assert not v4.eligible
 
 
 def test_ambiguity_buyer_passes():

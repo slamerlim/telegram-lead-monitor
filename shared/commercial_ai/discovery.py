@@ -1,6 +1,7 @@
 """HIGH-recall commercial discovery from LOW-tier messages (YAML patterns only).
 
-disc_v3 adds buyer_direction + non-buyer vetoes. Does NOT alter LeadScorer.score().
+disc_v3/v4 add buyer_direction + non-buyer vetoes. Does NOT alter LeadScorer.score().
+disc_v4 expands positive buyer-signal conjunctions without weakening hard vetoes.
 """
 
 from __future__ import annotations
@@ -11,8 +12,10 @@ import re
 from dataclasses import dataclass, field
 from typing import Any, Literal
 
-DISCOVERY_VERSION = "disc_v3"
+DISCOVERY_VERSION = "disc_v4"
 DISCOVERY_VERSION_V2 = "disc_v2"
+DISCOVERY_VERSION_V3 = "disc_v3"
+DISCOVERY_VERSION_V4 = "disc_v4"
 
 BuyerDirection = Literal[
     "BUYER",
@@ -82,7 +85,21 @@ _EMPLOYER_RX = re.compile(
     r")",
     re.IGNORECASE,
 )
-# Job-description salary / board boilerplate — overrides weak "to build" JD language.
+# Hard corporate JD (v4): salary/board/is-hiring — not bare full-time alone.
+_CORPORATE_JD_HARD_RX = re.compile(
+    r"(?:"
+    r"\bis\s+hiring\b|"
+    r"\bwe(?:'re|\s+are)\s+hiring\b|"
+    r"\$\d{2,3},\d{3}\s*[-–—]\s*\$?\d{2,3},\d{3}|"
+    r"\bjobstash\b|"
+    r"\bwant your message here\b|"
+    r"\bsponsoring\b.{0,40}\bjob\b|"
+    r"\bapply\s+(?:now|here|below)\b|"
+    r"\bcareer(?:s)?\s+page\b"
+    r")",
+    re.IGNORECASE,
+)
+# Legacy v3 demotion set (includes bare full-time).
 _CORPORATE_JD_RX = re.compile(
     r"(?:"
     r"\bis\s+hiring\b|"
@@ -92,6 +109,110 @@ _CORPORATE_JD_RX = re.compile(
     r"\bsponsoring\b.{0,40}\bjob\b|"
     r"\bfull[- ]time\b|"
     r"\bremote\s+(?:role|position|software engineer)\b"
+    r")",
+    re.IGNORECASE,
+)
+
+# disc_v4 positive buyer-signal families
+_DIRECT_REQUEST_RX = re.compile(
+    r"(?:"
+    r"\blooking\s+for\s+(?:someone|a\s+developer|a\s+freelancer|a\s+contractor|an?\s+engineer)\b|"
+    r"\bneed\s+someone\s+(?:to|who)\b|"
+    r"\bneed\s+(?:a\s+)?(?:developer|engineer|freelancer|contractor)\b|"
+    r"\bcan\s+anyone\s+(?:build|develop|fix|implement|automate|code)\b|"
+    r"\bwho\s+can\s+(?:build|develop|fix|implement|automate|code)\b|"
+    r"\bsearching\s+for\s+(?:a\s+)?(?:developer|freelancer|contractor)\b|"
+    r"\bищу\s+(?:разработчик|программист|фрилансер|подрядчик)\w*\b|"
+    r"\bнужен\s+(?:разработчик|программист|фрилансер|подрядчик)\w*\b|"
+    r"\bтребуется\s+(?:разработчик|программист)\w*\b|"
+    r"\bкто\s+(?:может|сможет)\s+(?:разработать|починить|сделать|автоматизировать)\b|"
+    r"\bнужна\s+автоматизаци\w*\b"
+    r")",
+    re.IGNORECASE,
+)
+_OWNERSHIP_RX = re.compile(
+    r"(?:"
+    r"\b(?:my|our)\s+(?:bot|strategy|trading\s+system|system|exchange\s+integration|api)\b|"
+    r"\b(?:existing|current|broken)\s+(?:bot|strategy|system|infrastructure)\b|"
+    r"\bмо[яй]\s+(?:бот|стратеги\w*|систем\w*)\b|"
+    r"\bнаш[ае]?\s+(?:бот|стратеги\w*|систем\w*)\b|"
+    r"\bтекущ\w*\s+бот\b"
+    r")",
+    re.IGNORECASE,
+)
+_REPAIR_CONJ_RX = re.compile(
+    r"(?:"
+    r"\b(?:broken|bug|not\s+working|doesn'?t\s+work|malfunction|failed|error|fix|repair)\b"
+    r".{0,80}\b(?:bot|strategy|trading|exchange|api|execution|bybit|binance|okx)\b|"
+    r"\b(?:bot|strategy|trading|api)\b.{0,80}\b(?:broken|bug|not\s+working|fix|repair)\b|"
+    r"\bпочинить\b.{0,60}\b(?:бот|стратеги|api|бирж)\w*\b|"
+    r"\b(?:бот|стратеги)\w*.{0,60}\bпочинить\b"
+    r")",
+    re.IGNORECASE,
+)
+_AUTOMATION_RX = re.compile(
+    r"(?:"
+    r"\bautomate\s+(?:my|our|this|the)\s+(?:strategy|trading|process|workflow)\b|"
+    r"\b(?:turn|convert)\s+(?:my|our|this)\s+strategy\s+into\s+(?:a\s+)?bot\b|"
+    r"\bimplement\s+(?:my|our|this|the)\s+strategy\b|"
+    r"\bcode\s+this\s+strategy\b|"
+    r"\bbuild\s+(?:an?\s+)?execution\s+system\b|"
+    r"\bавтоматизировать\s+(?:стратеги|торгов)\w*\b|"
+    r"\bреализовать\s+стратеги\w*\b"
+    r")",
+    re.IGNORECASE,
+)
+_PROCUREMENT_RX = re.compile(
+    r"(?:"
+    r"\b(?:budget|quote|rfp|rfq|fixed[- ]price|hourly|deadline|timeline|"
+    r"contractor|freelancer|commission|deliverable|milestone|scope)\b|"
+    r"\b(?:бюджет|стоимость|сроки|оплата|подрядчик|фриланс|проект)\w*\b"
+    r")",
+    re.IGNORECASE,
+)
+_PROJECT_PROCUREMENT_RX = re.compile(
+    r"(?:"
+    r"\bclient\s+(?:needs|is\s+looking\s+for|looking\s+for)\b.{0,100}"
+    r"\b(?:contractor|freelancer|developer|engineer)\b|"
+    r"\blooking\s+for\s+(?:a\s+)?(?:contractor|freelancer)\s+(?:to|for)\b|"
+    r"\b(?:i|we)\s+(?:need|are\s+looking\s+for)\b.{0,80}"
+    r"\b(?:contractor|freelancer|developer)\b.{0,80}"
+    r"\b(?:budget|fixed[- ]price|project)\b|"
+    r"\bнужен\s+(?:подрядчик|фрилансер|разработчик)\b.{0,60}\b(?:бюджет|проект|бот)\b"
+    r")",
+    re.IGNORECASE,
+)
+_DOMAIN_LOOSE_RX = re.compile(
+    r"\b(?:bybit|binance|okx|futures|websocket|trading\s+bot|trading\s+strategy|"
+    r"arbitrage|copy\s+trad|market\s+mak|solana|dex|quant|pybit|exchange\s*api|"
+    r"execution\s+engine|grid\s+bot)\b",
+    re.IGNORECASE,
+)
+
+# Freelance marketplace / LaborX-style listings (not first-person buyers).
+_GIG_MARKETPLACE_RX = re.compile(
+    r"(?:"
+    r"🌟\s*freelance\s+opportunity\b|"
+    r"\bfreelance\s+opportunity\s*:|"
+    r"\bnew\s+project\s+on\s+laborx\b|"
+    r"\blaborx\b|"
+    r"\bgig\s+of\s+the\s+day\b|"
+    r"\bwant\s+your\s+message\s+here\b|"
+    r"🤝\s*with\s*:|"
+    r"\bwith:\s*[A-Z][a-z]+\s+[A-Z]"  # LaborX "With: First Last"
+    r")",
+    re.IGNORECASE,
+)
+
+# Product/support "FIX API" / exchange announcements — not buyer repair RFQs.
+_REPAIR_FALSE_POSITIVE_RX = re.compile(
+    r"(?:"
+    r"\bfix\s+api\b|"
+    r"\bpleased\s+to\s+announce\b|"
+    r"\bnew\s+feature\b|"
+    r"\bbreaking\s*:|"
+    r"\benglish-only\s+chat\b|"
+    r"\berror\s+message\s+provided\b"
     r")",
     re.IGNORECASE,
 )
@@ -108,10 +229,13 @@ _PROJECT_SCOPE_RX = re.compile(
     r"\b(?:починить|кастом|нужен\s+разработчик|ищу\s+разработчика)\b|"
     r"\bclient\s+needs\b.{0,80}\b(?:build|develop|implement|contractor)\b|"
     r"\blooking\s+for\s+(?:a\s+)?(?:freelancer|contractor)\s+(?:to|for)\b|"
-    # Require first-person RFQ, not "Company is looking for an engineer to build…"
     r"\b(?:i|we)\s+(?:need|are\s+looking\s+for|looking\s+for)\b.{0,80}"
     r"\b(?:developer|engineer|freelancer|contractor|someone)\b.{0,80}"
-    r"\b(?:to\s+)?(?:build|develop|repair|fix|implement|automate)\b"
+    r"\b(?:to\s+)?(?:build|develop|repair|fix|implement|automate)\b|"
+    r"\blooking\s+for\s+(?:a\s+)?(?:developer|engineer)\s+(?:to|for)\s+"
+    r"(?:build|develop|implement|automate|repair|fix)\b|"
+    r"\blooking\s+for\s+(?:a\s+)?(?:python|ml|ai|quant)\s+"
+    r"(?:developer|engineer)\s+for\s+(?:a\s+)?(?:trading|bot|strategy|project)\b"
     r")",
     re.IGNORECASE,
 )
@@ -127,7 +251,11 @@ _PROVIDER_EXTRA_RX = re.compile(
     r"\bportfolio\b.{0,40}\b(?:dm|hire|available)\b|"
     r"\bdo\s+you\s+need\s+(?:a\s+)?developer\b|"
     r"\bgig\s+of\s+the\s+day\b|"
-    r"\bhire:\s*https?://"
+    r"\bhire:\s*https?://|"
+    r"\b(?:message|dm|pm)\s+me\b.{0,80}\b(?:bot|signal|trade|copy)\b|"
+    r"\bwant\s+to\s+know\s+how\s+(?:the\s+)?bot\s+works\b|"
+    r"\bdm\s+for\s+more\s+details\b|"
+    r"\bfeel\s+free\s+to\s+(?:dm|message|reach\s+out)\b.{0,60}\b(?:developer|build|cbot)\b"
     r")",
     re.IGNORECASE,
 )
@@ -214,6 +342,13 @@ class DiscoveryFeatures:
     discovery_score: float = 0.0
     veto_categories: list[str] = field(default_factory=list)
     discovery_version: str = DISCOVERY_VERSION
+    buyer_signal_families: list[str] = field(default_factory=list)
+    project_procurement_signal: bool = False
+    direct_request_signal: bool = False
+    ownership_signal: bool = False
+    automation_signal: bool = False
+    hard_veto: bool = False
+    soft_direction: bool = False
 
     def to_signals_dict(self) -> dict[str, Any]:
         return {
@@ -250,6 +385,13 @@ class DiscoveryFeatures:
             "discovery_score": self.discovery_score,
             "veto_categories": self.veto_categories,
             "discovery_version": self.discovery_version,
+            "buyer_signal_families": self.buyer_signal_families,
+            "project_procurement_signal": self.project_procurement_signal,
+            "direct_request_signal": self.direct_request_signal,
+            "ownership_signal": self.ownership_signal,
+            "automation_signal": self.automation_signal,
+            "hard_veto": self.hard_veto,
+            "soft_direction": self.soft_direction,
         }
 
 
@@ -330,81 +472,200 @@ def classify_buyer_direction(
     feats.recruiter_signal = bool(recruiter_hits)
     feats.employment_signal = bool(_EMPLOYER_RX.search(clean))
     corporate_jd = bool(_CORPORATE_JD_RX.search(clean))
-    raw_project = bool(_PROJECT_SCOPE_RX.search(clean)) or bool(
-        feats.repair_patterns or feats.implementation_patterns
+    corporate_jd_hard = bool(_CORPORATE_JD_HARD_RX.search(clean))
+
+    feats.direct_request_signal = bool(_DIRECT_REQUEST_RX.search(clean))
+    feats.ownership_signal = bool(_OWNERSHIP_RX.search(clean))
+    feats.automation_signal = bool(_AUTOMATION_RX.search(clean))
+    gig_marketplace = bool(_GIG_MARKETPLACE_RX.search(clean))
+    feats.project_procurement_signal = (not gig_marketplace) and (
+        bool(_PROJECT_PROCUREMENT_RX.search(clean))
+        or (
+            bool(_PROCUREMENT_RX.search(clean))
+            and (feats.direct_request_signal or feats.ownership_signal)
+        )
     )
-    # JD boilerplate ("is hiring … to build …") is not project RFQ scope.
-    feats.project_scope = bool(raw_project and not corporate_jd)
+    repair_conj = bool(_REPAIR_CONJ_RX.search(clean)) and not bool(
+        _REPAIR_FALSE_POSITIVE_RX.search(clean)
+    )
+    yaml_repair = bool(feats.repair_patterns) and (
+        feats.ownership_signal or feats.direct_request_signal or repair_conj
+    )
+
+    raw_project = (
+        bool(_PROJECT_SCOPE_RX.search(clean))
+        or yaml_repair
+        or bool(feats.implementation_patterns)
+        or feats.direct_request_signal
+        or feats.ownership_signal
+        or feats.automation_signal
+        or feats.project_procurement_signal
+        or (repair_conj and (feats.ownership_signal or feats.direct_request_signal))
+    )
+    # Hard JD boilerplate demotes project scope; soft full-time alone does not when
+    # ownership/direct/procurement evidence exists (v4 recall path).
+    if corporate_jd_hard or gig_marketplace:
+        feats.project_scope = False
+    elif corporate_jd and not (
+        feats.ownership_signal
+        or feats.direct_request_signal
+        or feats.project_procurement_signal
+    ):
+        feats.project_scope = False
+    else:
+        feats.project_scope = bool(raw_project)
+
     feats.aggregator_signal = bool(
         scorer._is_job_aggregation(clean) or scorer._is_multi_job_aggregation(clean)
-    )
+    ) or gig_marketplace
     feats.support_signal = bool(scorer._is_support_like(clean)) or bool(_SUPPORT_RX.search(clean))
     feats.marketing_signal = bool(scorer._is_marketing_broadcast(clean)) or bool(
         _PRODUCT_PROMO_RX.search(clean)
     )
     feats.news_signal = bool(scorer._is_news_digest(clean)) or bool(_EDITORIAL_RX.search(clean))
-    feats.repair_signal = bool(feats.repair_patterns)
-    feats.budget_signal = feats.budget_language
-    feats.timeline_signal = feats.timeline_language
+    feats.repair_signal = (repair_conj or yaml_repair) and not gig_marketplace
+    feats.budget_signal = feats.budget_language or bool(
+        re.search(r"\b(?:budget|бюджет|quote|стоимость)\b", clean, re.I)
+    )
+    if feats.budget_signal:
+        feats.budget_language = True
+    feats.timeline_signal = feats.timeline_language or bool(
+        re.search(r"\b(?:deadline|timeline|сроки|asap|urgent)\b", clean, re.I)
+    )
 
-    # Priority: non-buyer roles first when clear.
+    families: list[str] = []
+    if feats.direct_request_signal:
+        families.append("DIRECT_PROJECT_REQUEST")
+    if feats.ownership_signal:
+        families.append("SPECIFIC_DELIVERABLE_REQUEST")
+    if feats.repair_signal:
+        families.append("BOT_REPAIR_REQUEST")
+    if feats.automation_signal or feats.implementation_patterns:
+        families.append("STRATEGY_AUTOMATION_REQUEST")
+    if feats.project_procurement_signal:
+        families.append("CUSTOM_DEVELOPMENT_REQUEST")
+    if feats.budget_signal:
+        families.append("BUDGETED_REQUEST")
+    if feats.timeline_signal:
+        families.append("TIMELINED_REQUEST")
+    if _DOMAIN_LOOSE_RX.search(clean):
+        if re.search(r"\b(?:bybit|binance|okx|pybit|exchange\s*api)\b", clean, re.I):
+            families.append("EXCHANGE_INTEGRATION_REQUEST")
+        if re.search(r"\b(?:trading\s+bot|grid\s+bot)\b", clean, re.I):
+            families.append("BOT_PURCHASE_REQUEST")
+        if re.search(r"\barbitrage\b", clean, re.I):
+            families.append("ARBITRAGE_PROJECT_REQUEST")
+        if re.search(r"\bcopy\s+trad", clean, re.I):
+            families.append("COPY_TRADING_PROJECT_REQUEST")
+        if re.search(r"\bmarket\s+mak", clean, re.I):
+            families.append("MARKET_MAKING_PROJECT_REQUEST")
+        if re.search(r"\b(?:solana|dex)\b", clean, re.I):
+            families.append("SOLANA_DEX_PROJECT_REQUEST")
+        if re.search(r"\bquant\b", clean, re.I):
+            families.append("QUANT_CONTRACT_REQUEST")
+        if re.search(r"\b(?:ml|machine\s+learning|ai\s+engineer)\b", clean, re.I):
+            families.append("ML_AI_CONTRACT_REQUEST")
+        if re.search(r"\btrading\s+system\b", clean, re.I):
+            families.append("TRADING_SYSTEM_REQUEST")
+    feats.buyer_signal_families = list(dict.fromkeys(families))
+
+    # Soft direction: project procurement may coexist with recruiter-like wording.
+    strong_buyer_evidence = bool(
+        feats.ownership_signal
+        or feats.repair_signal
+        or feats.automation_signal
+        or (feats.direct_request_signal and (feats.budget_signal or feats.project_scope))
+        or feats.project_procurement_signal
+    ) and not feats.aggregator_signal
+    feats.soft_direction = strong_buyer_evidence and (
+        feats.recruiter_signal or feats.employment_signal
+    ) and not corporate_jd_hard and not feats.aggregator_signal
+
+    # Priority: hard non-buyer roles first.
     if feats.aggregator_signal:
         return "RECRUITER" if feats.recruiter_signal else "EMPLOYER"
-    if feats.seeker_signal and not feats.project_scope:
+    if feats.seeker_signal and not strong_buyer_evidence:
         return "SEEKER"
-    # Strong provider self-promo always wins over weak RFQ-like wording.
     if feats.provider_signal and (
         bool(_PROVIDER_EXTRA_RX.search(clean))
         or "gig of the day" in clean.lower()
         or "hire me" in clean.lower()
     ):
         return "PROVIDER"
-    if feats.provider_signal and not (
-        feats.project_scope and (feats.hiring_patterns or feats.commercial_patterns)
-    ):
+    if feats.provider_signal and not strong_buyer_evidence:
         return "PROVIDER"
-    if (feats.employment_signal or corporate_jd) and not feats.project_scope:
+    if corporate_jd_hard and not strong_buyer_evidence:
         return "EMPLOYER"
-    if feats.recruiter_signal and feats.project_scope:
-        return "RECRUITER"  # project recruitment — may stay eligible
-    if feats.recruiter_signal and not feats.project_scope:
+    if (feats.employment_signal or corporate_jd) and not strong_buyer_evidence and not feats.project_scope:
+        return "EMPLOYER"
+    if strong_buyer_evidence and feats.recruiter_signal:
         return "RECRUITER"
-    if feats.project_scope or (
+    if feats.recruiter_signal and feats.project_scope:
+        return "RECRUITER"
+    if feats.recruiter_signal and not feats.project_scope and not strong_buyer_evidence:
+        return "RECRUITER"
+    if strong_buyer_evidence or feats.project_scope:
+        return "BUYER"
+    if (
         (feats.hiring_patterns or feats.commercial_patterns or feats.repair_patterns)
-        and (feats.domain_categories or feats.technical_project_terms)
-        and not feats.employment_signal
-        and not corporate_jd
+        and (feats.domain_categories or feats.technical_project_terms or _DOMAIN_LOOSE_RX.search(clean))
+        and not corporate_jd_hard
     ):
         return "BUYER"
-    if feats.hiring_patterns and feats.budget_language and not feats.employment_signal and not corporate_jd:
+    if feats.hiring_patterns and feats.budget_language and not corporate_jd_hard:
         return "BUYER"
     return "UNKNOWN"
 
 
-def _apply_vetoes(feats: DiscoveryFeatures) -> None:
+def _apply_vetoes(feats: DiscoveryFeatures, *, soft: bool = False) -> None:
+    """Apply non-buyer vetoes. soft=True (disc_v4) allows project-procurement overrides."""
     vetoes: list[str] = []
     if feats.hard_exclude:
         vetoes.extend(feats.exclude_reasons)
     if feats.aggregator_signal:
         vetoes.append("job_aggregator")
-    if feats.seeker_signal and not feats.project_scope:
-        vetoes.append("job_seeker")
+    # Clear resume/seeker: hard veto unless soft mode has ownership+project evidence.
+    if feats.seeker_signal:
+        seeker_override = soft and (
+            (feats.ownership_signal and feats.project_scope)
+            or (feats.project_procurement_signal and feats.ownership_signal)
+        )
+        if not seeker_override:
+            vetoes.append("job_seeker")
     if feats.provider_signal and feats.buyer_direction == "PROVIDER":
         vetoes.append("service_provider")
-    if feats.employment_signal and not feats.project_scope:
-        vetoes.append("corporate_employment")
     if feats.news_signal:
         vetoes.append("news_digest")
     if feats.marketing_signal:
         vetoes.append("marketing_broadcast")
     if feats.support_signal and not (
-        feats.repair_signal or feats.project_scope or feats.commercial_patterns
+        (feats.repair_signal and feats.ownership_signal)
+        or (feats.direct_request_signal and (feats.ownership_signal or feats.budget_signal))
     ):
         vetoes.append("support_question")
-    # Generic recruiter without project scope
-    if feats.buyer_direction == "RECRUITER" and not feats.project_scope:
-        vetoes.append("generic_recruiter")
+
+    # Employment / recruiter: hard vs soft
+    if soft:
+        # Hard corporate JD without project evidence
+        if feats.buyer_direction == "EMPLOYER" and not feats.soft_direction:
+            vetoes.append("corporate_employment")
+        elif feats.employment_signal and not feats.project_scope and not feats.soft_direction:
+            vetoes.append("corporate_employment")
+        if (
+            feats.buyer_direction == "RECRUITER"
+            and not feats.project_scope
+            and not feats.project_procurement_signal
+            and not feats.soft_direction
+        ):
+            vetoes.append("generic_recruiter")
+    else:
+        if feats.employment_signal and not feats.project_scope:
+            vetoes.append("corporate_employment")
+        if feats.buyer_direction == "RECRUITER" and not feats.project_scope:
+            vetoes.append("generic_recruiter")
+
     feats.veto_categories = list(dict.fromkeys(vetoes))
+    feats.hard_veto = bool(feats.veto_categories)
 
 
 def _eligible_v2(
@@ -484,7 +745,7 @@ def _eligible_v3(
     has_domain_loose: bool,
 ) -> None:
     """Buyer-side discovery: keep RFQs, veto corporate jobs / seekers / providers."""
-    _apply_vetoes(feats)
+    _apply_vetoes(feats, soft=False)
     if feats.veto_categories:
         feats.eligible = False
         feats.trigger_type = None
@@ -568,6 +829,121 @@ def _eligible_v3(
         dscore += 0.25
     if feats.repair_signal:
         dscore += 0.2
+    dscore += min(0.5, feats.buyer_persistence_signal)
+    feats.trigger_type = trigger
+    feats.trigger_score = score
+    feats.discovery_score = round(dscore, 3)
+    feats.eligible = True
+
+
+def _eligible_v4(
+    feats: DiscoveryFeatures,
+    *,
+    purchase: list,
+    repair: list,
+    custom: list,
+    hire: list,
+    impl: list,
+    buyer_intent: list,
+    contract: list,
+    domain: list,
+    tech: list,
+    tech_hits: list,
+    has_domain_loose: bool,
+    clean: str,
+) -> None:
+    """Expand buyer recall via conjunctions; keep hard non-buyer vetoes."""
+    _apply_vetoes(feats, soft=True)
+    if feats.veto_categories:
+        feats.eligible = False
+        feats.trigger_type = None
+        feats.trigger_score = 0.0
+        feats.discovery_score = 0.0
+        return
+
+    has_domain_cat = bool(domain)
+    has_tech = bool(tech or tech_hits)
+    has_domain_kw = bool(_DOMAIN_LOOSE_RX.search(clean)) or has_domain_loose
+    has_domain = has_domain_cat or has_domain_kw or (feats.project_scope and has_tech)
+
+    explicit_commercial = bool(purchase or repair or custom or hire or impl)
+    soft_commercial = bool(buyer_intent or contract)
+    direct = feats.direct_request_signal or soft_commercial or explicit_commercial
+
+    # Paths A–E (any one suffices).
+    path_a = direct and has_domain and (
+        feats.project_scope
+        or feats.ownership_signal
+        or feats.direct_request_signal
+        or (explicit_commercial and feats.budget_signal)
+    )
+    path_b = (
+        feats.repair_signal
+        and (has_domain or has_tech)
+        and (feats.ownership_signal or feats.direct_request_signal)
+    )
+    path_c = (feats.automation_signal or bool(impl)) and has_domain and (
+        feats.ownership_signal or feats.direct_request_signal or feats.project_scope
+    )
+    path_d = (
+        feats.project_procurement_signal
+        and (feats.project_scope or feats.ownership_signal or feats.direct_request_signal)
+        and has_domain
+        and not feats.aggregator_signal
+    )
+    path_e = (
+        (feats.budget_signal or feats.timeline_signal)
+        and has_domain
+        and (feats.direct_request_signal or feats.ownership_signal)
+        and not feats.aggregator_signal
+    )
+
+    if not (path_a or path_b or path_c or path_d or path_e):
+        feats.eligible = False
+        feats.trigger_type = None
+        feats.trigger_score = 0.0
+        feats.discovery_score = 0.0
+        return
+
+    # Soft direction: SEEKER/PROVIDER/EMPLOYER still blocked unless soft_direction override.
+    if feats.buyer_direction in ("SEEKER", "PROVIDER") and not feats.soft_direction:
+        feats.eligible = False
+        feats.veto_categories.append(f"direction_{feats.buyer_direction.lower()}")
+        feats.veto_categories = list(dict.fromkeys(feats.veto_categories))
+        feats.hard_veto = True
+        return
+    if feats.buyer_direction == "EMPLOYER" and not feats.soft_direction:
+        feats.eligible = False
+        feats.veto_categories.append("direction_employer")
+        feats.veto_categories = list(dict.fromkeys(feats.veto_categories))
+        feats.hard_veto = True
+        return
+
+    if path_b:
+        trigger, score = "v4_repair_domain", 3.3
+    elif path_c:
+        trigger, score = "v4_automation_domain", 3.2
+    elif path_d:
+        trigger, score = "v4_project_procurement", 3.1
+    elif path_e:
+        trigger, score = "v4_budget_deliverable", 3.0
+    elif path_a:
+        trigger, score = "v4_direct_project_domain", 2.9
+    else:
+        trigger, score = "v4_buyer_weak", 1.5
+
+    dscore = score
+    if feats.budget_signal:
+        dscore += 0.3
+    if feats.timeline_signal:
+        dscore += 0.15
+    if feats.ownership_signal:
+        dscore += 0.25
+    if feats.repair_signal:
+        dscore += 0.2
+    if feats.project_procurement_signal:
+        dscore += 0.15
+    dscore += 0.05 * min(6, len(feats.buyer_signal_families))
     dscore += min(0.5, feats.buyer_persistence_signal)
     feats.trigger_type = trigger
     feats.trigger_score = score
@@ -668,13 +1044,22 @@ def evaluate_discovery(
         _eligible_v2(feats, **common)
         return feats
 
-    # disc_v3 (default)
-    if feats.hard_exclude and not feats.project_scope:
-        # Still record direction for audits
-        _apply_vetoes(feats)
+    if ver == DISCOVERY_VERSION_V3:
+        if feats.hard_exclude and not feats.project_scope:
+            _apply_vetoes(feats, soft=False)
+            feats.eligible = False
+            return feats
+        _eligible_v3(feats, **common)
+        return feats
+
+    # disc_v4 (default)
+    if feats.hard_exclude and not (
+        feats.project_scope or feats.soft_direction or feats.repair_signal
+    ):
+        _apply_vetoes(feats, soft=True)
         feats.eligible = False
         return feats
-    _eligible_v3(feats, **common)
+    _eligible_v4(feats, clean=clean, **common)
     return feats
 
 

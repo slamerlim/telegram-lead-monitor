@@ -1,0 +1,66 @@
+# Commercial discovery v4 recall audit (95)
+generated_at: 2026-09-25T11:37:17.063657+00:00
+examined: 2500  msgs_7d=116723  low_7d=123191
+
+## disc_v3 baseline
+candidates=12  density=4.8/1000  contamination=0.0%
+dirs={'BUYER': 9, 'RECRUITER': 3}
+vetoes_top={'corporate_employment': 529, 'job_aggregator': 454, 'generic_recruiter': 443, 'support_question': 323, 'job_seeker': 69, 'marketing_broadcast': 39, 'service_provider': 17, 'news_digest': 4}
+
+## disc_v4
+candidates=4  density=1.6/1000  contamination=0.0%
+dirs={'BUYER': 1, 'RECRUITER': 3}
+triggers={'v4_budget_deliverable': 1, 'v4_project_procurement': 1, 'v4_direct_project_domain': 2}
+families={'DIRECT_PROJECT_REQUEST': 3, 'SOLANA_DEX_PROJECT_REQUEST': 3, 'SPECIFIC_DELIVERABLE_REQUEST': 1, 'TIMELINED_REQUEST': 1, 'CUSTOM_DEVELOPMENT_REQUEST': 1, 'BUDGETED_REQUEST': 1, 'EXCHANGE_INTEGRATION_REQUEST': 1, 'MARKET_MAKING_PROJECT_REQUEST': 1}
+recovered_from_v3=1  lost_vs_v3=9
+vetoes_top={'corporate_employment': 537, 'job_aggregator': 454, 'generic_recruiter': 443, 'support_question': 323, 'job_seeker': 69, 'marketing_broadcast': 39, 'service_provider': 17, 'news_digest': 4}
+
+## decision
+C: Population <10; investigate community/source coverage.
+
+## community top by buyer_signal_density
+  Bybit API Discussion                     msgs=  153 v3=  0 v4=  1 buyer_dens=6.536
+  Bitget English Official                  msgs=22536 v3=  0 v4=  0 buyer_dens=0.0
+  Bybit English                            msgs=12373 v3=  2 v4=  0 buyer_dens=0.0
+  WEEX English Official                    msgs=12006 v3=  0 v4=  0 buyer_dens=0.0
+  OKX English                              msgs=11923 v3=  0 v4=  0 buyer_dens=0.0
+  WEEX English 2nd Group                   msgs= 8221 v3=  0 v4=  0 buyer_dens=0.0
+  Crypto Bulls Community                   msgs= 5000 v3=  0 v4=  0 buyer_dens=0.0
+  KCEX English                             msgs= 4336 v3=  1 v4=  0 buyer_dens=0.0
+  XT Futures                               msgs= 3659 v3=  0 v4=  0 buyer_dens=0.0
+  KuCoin Exchange                          msgs= 3638 v3=  1 v4=  0 buyer_dens=0.0
+  KuCoin Exchange 2nd Group                msgs= 3006 v3=  0 v4=  0 buyer_dens=0.0
+  HTX English                              msgs= 2956 v3=  0 v4=  0 buyer_dens=0.0
+  Binance English                          msgs= 2829 v3=  0 v4=  0 buyer_dens=0.0
+  LBank Official Group                     msgs= 2605 v3=  0 v4=  0 buyer_dens=0.0
+  XT Exchange Official                     msgs= 2532 v3=  0 v4=  0 buyer_dens=0.0
+
+## retrieval coverage diagnostic
+  human_labels: n=200 v3=0 v4=0
+  AI_CONFIRMED: n=4 v3=0 v4=0
+
+runtime_sec=31.25
+NO OUTREACH / NO SDK in this script
+
+## corpus forensics (7d)
+laborx_freelance_opportunity≈47
+strict_buyer_rfq_non_laborx≈0
+ownership_repair≈1
+→ buyer language is scarce in current sources; exchange official groups dominate volume with ~0 buyer density.
+
+## AI_CONFIRMED diagnostic
+All 4 AI_CONFIRMED leads are LaborX "Freelance Opportunity" posts.
+disc_v4 hard-vetoes these marketplace templates (intentional quality choice).
+Not treated as ground truth.
+
+## community expansion (bounded — do NOT mass-subscribe)
+1. Crypto freelance/RFQ boards (with disc_v4 vetoes) — project_procurement
+2. Algotrading/quant contractor rooms — strategy automation / repair
+3. Solana/DEX developer rooms (not price chat) — DEX project requests
+4. Deepen Bybit API Discussion-style sources — only positive density so far
+
+## locks verified in this audit
+scoring.yaml untouched; ctx_v1 default; no SDK; no CRM; no outreach
+
+## decision
+C — expand communities/sources before message-only SDK
