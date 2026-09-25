@@ -1,0 +1,896 @@
+{
+  "generated_at": "2026-09-25T18:14:58.594387+00:00",
+  "head": "06f1256",
+  "runtime_sec": 9.4,
+  "read_only": true,
+  "wrote_candidates": false,
+  "code_change_this_cycle": true,
+  "code_change_justified": "H2 dry-run measurement script (no enable path)",
+  "cycle": 4,
+  "hypothesis": "H2",
+  "parent_evidence": "103",
+  "decision": "READY_FOR_AUTH_ENABLE",
+  "recommendation": "HOLD_PENDING_AUTH",
+  "decision_rationale": "H2 dry-run clean: 10/10 LOW survivors would create PENDING disc_v6 candidates; worker would build episodes (no blind/AI_CONFIRMED skips); contam=0.0%; disc_v6 dups=0; prior any-version rows=4 (non-blocking — unique is seed+version); rate headroom=120/h; empiric UB ~0.0179/h ~0.43/d. Still HOLD: do NOT flip commercial_discovery_enabled without explicit 'enable now'. HIGH survivors 6/6 + FO probes 4/4 remain CRM path (H1 optional).",
+  "settings": {
+    "commercial_discovery_enabled": false,
+    "commercial_discovery_version": "disc_v6",
+    "code_default_DISCOVERY_VERSION": "disc_v6",
+    "commercial_discovery_max_candidates_per_hour": 120,
+    "commercial_episode_shadow_enabled": false
+  },
+  "standing_denominator": {
+    "name": "refined_frozen",
+    "pool_n": 102,
+    "disc_v6_eligible": 16,
+    "contam_all_pct": 0.0,
+    "low_enqueue_set_n": 10,
+    "high_documented_n": 6,
+    "other_n": 0
+  },
+  "shadow_enqueue_dryrun": {
+    "mode": "counterfactual_flag_on_no_writes",
+    "disc_version": "disc_v6",
+    "would_create_status": "PENDING",
+    "would_create_n": 10,
+    "would_survive_worker_n": 10,
+    "skip_reason_counts": {
+      "worker:none_episode_built": 10
+    },
+    "rate_limit": {
+      "max_per_hour": 120,
+      "existing_candidates_last_hour": 0,
+      "headroom": 120,
+      "simulated_burst_creates": 10,
+      "would_hit_cap": false
+    },
+    "duplicates": {
+      "existing_total_candidates": 60,
+      "existing_by_version_status": [
+        {
+          "discovery_version": "disc_v1",
+          "status": "EPISODE_BUILT",
+          "n": 30
+        },
+        {
+          "discovery_version": "disc_v2",
+          "status": "EPISODE_BUILT",
+          "n": 30
+        }
+      ],
+      "low10_with_disc_v6_row": 0,
+      "low10_with_any_prior_version": 4,
+      "note": "Analyzer unique key is (seed_message_id, discovery_version). Prior disc_v1/v2 rows do NOT block disc_v6 create."
+    },
+    "contamination_low10_pct": 0.0,
+    "low_rows": [
+      {
+        "message_id": 196,
+        "community": "Web3 Jobs | LaborX",
+        "community_username": "LaborXWeb3Jobs",
+        "community_id": 2,
+        "author_id": 2,
+        "tier": "LOW",
+        "v6_eligible": true,
+        "v6_carve": true,
+        "trigger": "v6_budget_deliverable",
+        "direction": "RECRUITER",
+        "first_loss": "RETRIEVED",
+        "bucket": "Direct buyer/RFQ candidate",
+        "feat_fp": "61567ced6daa9a0d",
+        "is_blind": false,
+        "is_ai_confirmed": false,
+        "existing_disc_v6": 0,
+        "existing_any_versions": "disc_v2:EPISODE_BUILT",
+        "preview": "🌟 Freelance Opportunity: Create a trading bot for 2,500 PEPE. 💰 Budget: $15 🤝 With: Quetta Audy",
+        "counterfactual_flag_on": {
+          "would_create": true,
+          "analyzer_skip_reasons": [
+            "would_create_pending"
+          ],
+          "over_rate": false,
+          "would_write_row": {
+            "seed_message_id": 196,
+            "community_id": 2,
+            "author_id": 2,
+            "discovery_version": "disc_v6",
+            "source": "analyzer",
+            "trigger_type": "v6_budget_deliverable",
+            "trigger_score": 3.0,
+            "scorer_tier": "LOW",
+            "topic_fingerprint": "trading_bot",
+            "status": "PENDING",
+            "signals_json_sha256": "804da26aec894f31"
+          }
+        },
+        "actual_flag_off": {
+          "would_create": false,
+          "analyzer_skip_reasons": [
+            "flag_disabled"
+          ],
+          "over_rate": false,
+          "would_write_row": null
+        },
+        "worker_if_created": {
+          "would_process": true,
+          "final_status": "EPISODE_BUILT",
+          "skip_reason": null,
+          "would_build_episode": true,
+          "would_shadow_enqueue": false
+        },
+        "would_create_disc_v6": true,
+        "would_survive_worker": true
+      },
+      {
+        "message_id": 22763,
+        "community": "Web3 Jobs | LaborX",
+        "community_username": "LaborXWeb3Jobs",
+        "community_id": 2,
+        "author_id": 2,
+        "tier": "LOW",
+        "v6_eligible": true,
+        "v6_carve": true,
+        "trigger": "v6_budget_deliverable",
+        "direction": "RECRUITER",
+        "first_loss": "RETRIEVED",
+        "bucket": "Direct buyer/RFQ candidate",
+        "feat_fp": "61567ced6daa9a0d",
+        "is_blind": false,
+        "is_ai_confirmed": false,
+        "existing_disc_v6": 0,
+        "existing_any_versions": "disc_v1:EPISODE_BUILT",
+        "preview": "🌟 Freelance Opportunity: Senior Solana MEV / Flash Loan Arbitrage Bot Developer 💰 Budget: $100 🤝 With: Obukohwo David",
+        "counterfactual_flag_on": {
+          "would_create": true,
+          "analyzer_skip_reasons": [
+            "would_create_pending"
+          ],
+          "over_rate": false,
+          "would_write_row": {
+            "seed_message_id": 22763,
+            "community_id": 2,
+            "author_id": 2,
+            "discovery_version": "disc_v6",
+            "source": "analyzer",
+            "trigger_type": "v6_budget_deliverable",
+            "trigger_score": 3.0,
+            "scorer_tier": "LOW",
+            "topic_fingerprint": "arbitrage|solana_dex",
+            "status": "PENDING",
+            "signals_json_sha256": "349dde1155e3dc47"
+          }
+        },
+        "actual_flag_off": {
+          "would_create": false,
+          "analyzer_skip_reasons": [
+            "flag_disabled"
+          ],
+          "over_rate": false,
+          "would_write_row": null
+        },
+        "worker_if_created": {
+          "would_process": true,
+          "final_status": "EPISODE_BUILT",
+          "skip_reason": null,
+          "would_build_episode": true,
+          "would_shadow_enqueue": false
+        },
+        "would_create_disc_v6": true,
+        "would_survive_worker": true
+      },
+      {
+        "message_id": 23747,
+        "community": "Web3 Jobs | LaborX",
+        "community_username": "LaborXWeb3Jobs",
+        "community_id": 2,
+        "author_id": 2,
+        "tier": "LOW",
+        "v6_eligible": true,
+        "v6_carve": true,
+        "trigger": "v6_budget_deliverable",
+        "direction": "RECRUITER",
+        "first_loss": "RETRIEVED",
+        "bucket": "Direct buyer/RFQ candidate",
+        "feat_fp": "61567ced6daa9a0d",
+        "is_blind": false,
+        "is_ai_confirmed": false,
+        "existing_disc_v6": 0,
+        "existing_any_versions": null,
+        "preview": "🌟 Freelance Opportunity: Sales Closer Needed to Sell High-Performance Trading Bot 💰 Budget: $100 🤝 With: EARNEST MWAURA",
+        "counterfactual_flag_on": {
+          "would_create": true,
+          "analyzer_skip_reasons": [
+            "would_create_pending"
+          ],
+          "over_rate": false,
+          "would_write_row": {
+            "seed_message_id": 23747,
+            "community_id": 2,
+            "author_id": 2,
+            "discovery_version": "disc_v6",
+            "source": "analyzer",
+            "trigger_type": "v6_budget_deliverable",
+            "trigger_score": 3.0,
+            "scorer_tier": "LOW",
+            "topic_fingerprint": "trading_bot",
+            "status": "PENDING",
+            "signals_json_sha256": "804da26aec894f31"
+          }
+        },
+        "actual_flag_off": {
+          "would_create": false,
+          "analyzer_skip_reasons": [
+            "flag_disabled"
+          ],
+          "over_rate": false,
+          "would_write_row": null
+        },
+        "worker_if_created": {
+          "would_process": true,
+          "final_status": "EPISODE_BUILT",
+          "skip_reason": null,
+          "would_build_episode": true,
+          "would_shadow_enqueue": false
+        },
+        "would_create_disc_v6": true,
+        "would_survive_worker": true
+      },
+      {
+        "message_id": 24114,
+        "community": "Web3 Jobs | LaborX",
+        "community_username": "LaborXWeb3Jobs",
+        "community_id": 2,
+        "author_id": 2,
+        "tier": "LOW",
+        "v6_eligible": true,
+        "v6_carve": true,
+        "trigger": "v6_budget_deliverable",
+        "direction": "RECRUITER",
+        "first_loss": "RETRIEVED",
+        "bucket": "Direct buyer/RFQ candidate",
+        "feat_fp": "61567ced6daa9a0d",
+        "is_blind": false,
+        "is_ai_confirmed": false,
+        "existing_disc_v6": 0,
+        "existing_any_versions": "disc_v1:EPISODE_BUILT",
+        "preview": "🌟 Freelance Opportunity: Improve Safety for a TypeScript Polymarket Copy-Trading Bot 💰 Budget: $4000 🤝 With: dub",
+        "counterfactual_flag_on": {
+          "would_create": true,
+          "analyzer_skip_reasons": [
+            "would_create_pending"
+          ],
+          "over_rate": false,
+          "would_write_row": {
+            "seed_message_id": 24114,
+            "community_id": 2,
+            "author_id": 2,
+            "discovery_version": "disc_v6",
+            "source": "analyzer",
+            "trigger_type": "v6_budget_deliverable",
+            "trigger_score": 3.0,
+            "scorer_tier": "LOW",
+            "topic_fingerprint": "copy_trading|trading_bot",
+            "status": "PENDING",
+            "signals_json_sha256": "751e1d3df7150dfe"
+          }
+        },
+        "actual_flag_off": {
+          "would_create": false,
+          "analyzer_skip_reasons": [
+            "flag_disabled"
+          ],
+          "over_rate": false,
+          "would_write_row": null
+        },
+        "worker_if_created": {
+          "would_process": true,
+          "final_status": "EPISODE_BUILT",
+          "skip_reason": null,
+          "would_build_episode": true,
+          "would_shadow_enqueue": false
+        },
+        "would_create_disc_v6": true,
+        "would_survive_worker": true
+      },
+      {
+        "message_id": 24977,
+        "community": "Web3 Jobs | LaborX",
+        "community_username": "LaborXWeb3Jobs",
+        "community_id": 2,
+        "author_id": 2,
+        "tier": "LOW",
+        "v6_eligible": true,
+        "v6_carve": true,
+        "trigger": "v6_budget_deliverable",
+        "direction": "RECRUITER",
+        "first_loss": "RETRIEVED",
+        "bucket": "Direct buyer/RFQ candidate",
+        "feat_fp": "61567ced6daa9a0d",
+        "is_blind": false,
+        "is_ai_confirmed": false,
+        "existing_disc_v6": 0,
+        "existing_any_versions": null,
+        "preview": "🌟 Freelance Opportunity: Crypto Arbitrage Bot Developer for Prediction Markets 💰 Budget: $200 🤝 With: Deniz Akguner",
+        "counterfactual_flag_on": {
+          "would_create": true,
+          "analyzer_skip_reasons": [
+            "would_create_pending"
+          ],
+          "over_rate": false,
+          "would_write_row": {
+            "seed_message_id": 24977,
+            "community_id": 2,
+            "author_id": 2,
+            "discovery_version": "disc_v6",
+            "source": "analyzer",
+            "trigger_type": "v6_budget_deliverable",
+            "trigger_score": 3.0,
+            "scorer_tier": "LOW",
+            "topic_fingerprint": "arbitrage",
+            "status": "PENDING",
+            "signals_json_sha256": "16d1c7d68daf9de9"
+          }
+        },
+        "actual_flag_off": {
+          "would_create": false,
+          "analyzer_skip_reasons": [
+            "flag_disabled"
+          ],
+          "over_rate": false,
+          "would_write_row": null
+        },
+        "worker_if_created": {
+          "would_process": true,
+          "final_status": "EPISODE_BUILT",
+          "skip_reason": null,
+          "would_build_episode": true,
+          "would_shadow_enqueue": false
+        },
+        "would_create_disc_v6": true,
+        "would_survive_worker": true
+      },
+      {
+        "message_id": 26575,
+        "community": "Web3 Jobs | LaborX",
+        "community_username": "LaborXWeb3Jobs",
+        "community_id": 2,
+        "author_id": 2,
+        "tier": "LOW",
+        "v6_eligible": true,
+        "v6_carve": true,
+        "trigger": "v6_budget_deliverable",
+        "direction": "RECRUITER",
+        "first_loss": "RETRIEVED",
+        "bucket": "Direct buyer/RFQ candidate",
+        "feat_fp": "61567ced6daa9a0d",
+        "is_blind": false,
+        "is_ai_confirmed": false,
+        "existing_disc_v6": 0,
+        "existing_any_versions": null,
+        "preview": "🌟 Freelance Opportunity: Forex and stocks trading bot 💰 Budget: $500 🤝 With: Sid Khan",
+        "counterfactual_flag_on": {
+          "would_create": true,
+          "analyzer_skip_reasons": [
+            "would_create_pending"
+          ],
+          "over_rate": false,
+          "would_write_row": {
+            "seed_message_id": 26575,
+            "community_id": 2,
+            "author_id": 2,
+            "discovery_version": "disc_v6",
+            "source": "analyzer",
+            "trigger_type": "v6_budget_deliverable",
+            "trigger_score": 3.0,
+            "scorer_tier": "LOW",
+            "topic_fingerprint": "trading_bot",
+            "status": "PENDING",
+            "signals_json_sha256": "804da26aec894f31"
+          }
+        },
+        "actual_flag_off": {
+          "would_create": false,
+          "analyzer_skip_reasons": [
+            "flag_disabled"
+          ],
+          "over_rate": false,
+          "would_write_row": null
+        },
+        "worker_if_created": {
+          "would_process": true,
+          "final_status": "EPISODE_BUILT",
+          "skip_reason": null,
+          "would_build_episode": true,
+          "would_shadow_enqueue": false
+        },
+        "would_create_disc_v6": true,
+        "would_survive_worker": true
+      },
+      {
+        "message_id": 27317,
+        "community": "Web3 Jobs | LaborX",
+        "community_username": "LaborXWeb3Jobs",
+        "community_id": 2,
+        "author_id": 2,
+        "tier": "LOW",
+        "v6_eligible": true,
+        "v6_carve": true,
+        "trigger": "v6_budget_deliverable",
+        "direction": "RECRUITER",
+        "first_loss": "RETRIEVED",
+        "bucket": "Direct buyer/RFQ candidate",
+        "feat_fp": "61567ced6daa9a0d",
+        "is_blind": false,
+        "is_ai_confirmed": false,
+        "existing_disc_v6": 0,
+        "existing_any_versions": null,
+        "preview": "🌟 Freelance Opportunity: Assistance in developing a trading bot in ETH/SOL networks 💰 Budget: $1500 🤝 With: Rick Willson",
+        "counterfactual_flag_on": {
+          "would_create": true,
+          "analyzer_skip_reasons": [
+            "would_create_pending"
+          ],
+          "over_rate": false,
+          "would_write_row": {
+            "seed_message_id": 27317,
+            "community_id": 2,
+            "author_id": 2,
+            "discovery_version": "disc_v6",
+            "source": "analyzer",
+            "trigger_type": "v6_budget_deliverable",
+            "trigger_score": 3.0,
+            "scorer_tier": "LOW",
+            "topic_fingerprint": "trading_bot",
+            "status": "PENDING",
+            "signals_json_sha256": "804da26aec894f31"
+          }
+        },
+        "actual_flag_off": {
+          "would_create": false,
+          "analyzer_skip_reasons": [
+            "flag_disabled"
+          ],
+          "over_rate": false,
+          "would_write_row": null
+        },
+        "worker_if_created": {
+          "would_process": true,
+          "final_status": "EPISODE_BUILT",
+          "skip_reason": null,
+          "would_build_episode": true,
+          "would_shadow_enqueue": false
+        },
+        "would_create_disc_v6": true,
+        "would_survive_worker": true
+      },
+      {
+        "message_id": 269028,
+        "community": "Blockchain Jobs",
+        "community_username": "blockchain_job",
+        "community_id": 26,
+        "author_id": 6845,
+        "tier": "LOW",
+        "v6_eligible": true,
+        "v6_carve": false,
+        "trigger": "v6_budget_deliverable",
+        "direction": "RECRUITER",
+        "first_loss": "RETRIEVED",
+        "bucket": "Direct buyer/RFQ candidate",
+        "feat_fp": "e56a29ea2e05994c",
+        "is_blind": false,
+        "is_ai_confirmed": false,
+        "existing_disc_v6": 0,
+        "existing_any_versions": null,
+        "preview": "#vacancy #remote #web3 #operations 🔥 Operations Lead at Statemind (Remote) We are a leading blockchain security audit company (partners with",
+        "counterfactual_flag_on": {
+          "would_create": true,
+          "analyzer_skip_reasons": [
+            "would_create_pending"
+          ],
+          "over_rate": false,
+          "would_write_row": {
+            "seed_message_id": 269028,
+            "community_id": 26,
+            "author_id": 6845,
+            "discovery_version": "disc_v6",
+            "source": "analyzer",
+            "trigger_type": "v6_budget_deliverable",
+            "trigger_score": 3.0,
+            "scorer_tier": "LOW",
+            "topic_fingerprint": "none",
+            "status": "PENDING",
+            "signals_json_sha256": "e44bfa1bc7f5e7a6"
+          }
+        },
+        "actual_flag_off": {
+          "would_create": false,
+          "analyzer_skip_reasons": [
+            "flag_disabled"
+          ],
+          "over_rate": false,
+          "would_write_row": null
+        },
+        "worker_if_created": {
+          "would_process": true,
+          "final_status": "EPISODE_BUILT",
+          "skip_reason": null,
+          "would_build_episode": true,
+          "would_shadow_enqueue": false
+        },
+        "would_create_disc_v6": true,
+        "would_survive_worker": true
+      },
+      {
+        "message_id": 270199,
+        "community": "Работа в крипте, IT, AI | Web3 | Вакансии | Резюме бесплатно!",
+        "community_username": "rabotaweb3",
+        "community_id": 32,
+        "author_id": 6850,
+        "tier": "LOW",
+        "v6_eligible": true,
+        "v6_carve": false,
+        "trigger": "v6_project_procurement",
+        "direction": "RECRUITER",
+        "first_loss": "RETRIEVED",
+        "bucket": "Direct buyer/RFQ candidate",
+        "feat_fp": "6ccba97ed31d7ff6",
+        "is_blind": false,
+        "is_ai_confirmed": false,
+        "existing_disc_v6": 0,
+        "existing_any_versions": "disc_v2:EPISODE_BUILT",
+        "preview": "⚙️ Нужен разработчик Senior Backend Full-stack developer 📌 О компании и проекте: 🕯 Технологическая компания и liquidity provider в крипто ин",
+        "counterfactual_flag_on": {
+          "would_create": true,
+          "analyzer_skip_reasons": [
+            "would_create_pending"
+          ],
+          "over_rate": false,
+          "would_write_row": {
+            "seed_message_id": 270199,
+            "community_id": 32,
+            "author_id": 6850,
+            "discovery_version": "disc_v6",
+            "source": "analyzer",
+            "trigger_type": "v6_project_procurement",
+            "trigger_score": 3.1,
+            "scorer_tier": "LOW",
+            "topic_fingerprint": "exchange_api|market_making|solana_dex",
+            "status": "PENDING",
+            "signals_json_sha256": "6b9e0b4dce5f914b"
+          }
+        },
+        "actual_flag_off": {
+          "would_create": false,
+          "analyzer_skip_reasons": [
+            "flag_disabled"
+          ],
+          "over_rate": false,
+          "would_write_row": null
+        },
+        "worker_if_created": {
+          "would_process": true,
+          "final_status": "EPISODE_BUILT",
+          "skip_reason": null,
+          "would_build_episode": true,
+          "would_shadow_enqueue": false
+        },
+        "would_create_disc_v6": true,
+        "would_survive_worker": true
+      },
+      {
+        "message_id": 270490,
+        "community": "DeJob Global—Web3 Jobs📮",
+        "community_username": "DeJob_Global",
+        "community_id": 35,
+        "author_id": 6853,
+        "tier": "LOW",
+        "v6_eligible": true,
+        "v6_carve": false,
+        "trigger": "v6_budget_deliverable",
+        "direction": "RECRUITER",
+        "first_loss": "RETRIEVED",
+        "bucket": "Direct buyer/RFQ candidate",
+        "feat_fp": "e56a29ea2e05994c",
+        "is_blind": false,
+        "is_ai_confirmed": false,
+        "existing_disc_v6": 0,
+        "existing_any_versions": null,
+        "preview": "#Recruitment 🏡 Wormhole #Infra #Cross·Chain 🐇 Introduction: https://wormhole.com/ A decentralized, universal message-passing protocol. 🛵 #Fu",
+        "counterfactual_flag_on": {
+          "would_create": true,
+          "analyzer_skip_reasons": [
+            "would_create_pending"
+          ],
+          "over_rate": false,
+          "would_write_row": {
+            "seed_message_id": 270490,
+            "community_id": 35,
+            "author_id": 6853,
+            "discovery_version": "disc_v6",
+            "source": "analyzer",
+            "trigger_type": "v6_budget_deliverable",
+            "trigger_score": 3.0,
+            "scorer_tier": "LOW",
+            "topic_fingerprint": "market_making|solana_dex",
+            "status": "PENDING",
+            "signals_json_sha256": "fcc60e070374abc0"
+          }
+        },
+        "actual_flag_off": {
+          "would_create": false,
+          "analyzer_skip_reasons": [
+            "flag_disabled"
+          ],
+          "over_rate": false,
+          "would_write_row": null
+        },
+        "worker_if_created": {
+          "would_process": true,
+          "final_status": "EPISODE_BUILT",
+          "skip_reason": null,
+          "would_build_episode": true,
+          "would_shadow_enqueue": false
+        },
+        "would_create_disc_v6": true,
+        "would_survive_worker": true
+      }
+    ],
+    "high_rows_documented": [
+      {
+        "message_id": 22713,
+        "community": "Web3 Jobs | LaborX",
+        "community_username": "LaborXWeb3Jobs",
+        "community_id": 2,
+        "author_id": 2,
+        "tier": "HIGH",
+        "v6_eligible": true,
+        "v6_carve": true,
+        "trigger": "v6_budget_deliverable",
+        "direction": "RECRUITER",
+        "first_loss": "RETRIEVED",
+        "bucket": "Direct buyer/RFQ candidate",
+        "feat_fp": "61567ced6daa9a0d",
+        "is_blind": false,
+        "is_ai_confirmed": true,
+        "existing_disc_v6": 0,
+        "existing_any_versions": null,
+        "preview": "🌟 Freelance Opportunity: Crypto Trading Bot Developer 💰 Budget: $200 🤝 With: Yohans Hayla",
+        "analyzer_outcome": "skip_tier_not_low",
+        "would_create_disc_v6": false,
+        "note": "Production analyzer requires tier==LOW; HIGH FO/RFQ stay on CRM/commercial_ai path. Documented only — H1 is optional bridge."
+      },
+      {
+        "message_id": 24048,
+        "community": "Web3 Jobs | LaborX",
+        "community_username": "LaborXWeb3Jobs",
+        "community_id": 2,
+        "author_id": 2,
+        "tier": "HIGH",
+        "v6_eligible": true,
+        "v6_carve": true,
+        "trigger": "v6_repair_domain",
+        "direction": "RECRUITER",
+        "first_loss": "RETRIEVED",
+        "bucket": "Direct buyer/RFQ candidate",
+        "feat_fp": "87a04ed8c289d5c5",
+        "is_blind": true,
+        "is_ai_confirmed": false,
+        "existing_disc_v6": 0,
+        "existing_any_versions": null,
+        "preview": "🌟 Freelance Opportunity: Need Developer to Fix Polymarket Trading Bot (Urgent) 💰 Budget: $1500 🤝 With: Maxu",
+        "analyzer_outcome": "skip_tier_not_low",
+        "would_create_disc_v6": false,
+        "note": "Production analyzer requires tier==LOW; HIGH FO/RFQ stay on CRM/commercial_ai path. Documented only — H1 is optional bridge."
+      },
+      {
+        "message_id": 24091,
+        "community": "Web3 Jobs | LaborX",
+        "community_username": "LaborXWeb3Jobs",
+        "community_id": 2,
+        "author_id": 2,
+        "tier": "HIGH",
+        "v6_eligible": true,
+        "v6_carve": true,
+        "trigger": "v6_repair_domain",
+        "direction": "RECRUITER",
+        "first_loss": "RETRIEVED",
+        "bucket": "Direct buyer/RFQ candidate",
+        "feat_fp": "87a04ed8c289d5c5",
+        "is_blind": true,
+        "is_ai_confirmed": false,
+        "existing_disc_v6": 0,
+        "existing_any_versions": null,
+        "preview": "🌟 Freelance Opportunity: Need Developer to Fix Polymarket Trading Bot (Urgent) 💰 Budget: $500 🤝 With: Thomas Ken",
+        "analyzer_outcome": "skip_tier_not_low",
+        "would_create_disc_v6": false,
+        "note": "Production analyzer requires tier==LOW; HIGH FO/RFQ stay on CRM/commercial_ai path. Documented only — H1 is optional bridge."
+      },
+      {
+        "message_id": 25400,
+        "community": "Web3 Jobs | LaborX",
+        "community_username": "LaborXWeb3Jobs",
+        "community_id": 2,
+        "author_id": 2,
+        "tier": "HIGH",
+        "v6_eligible": true,
+        "v6_carve": true,
+        "trigger": "v6_budget_deliverable",
+        "direction": "RECRUITER",
+        "first_loss": "RETRIEVED",
+        "bucket": "Direct buyer/RFQ candidate",
+        "feat_fp": "61567ced6daa9a0d",
+        "is_blind": false,
+        "is_ai_confirmed": true,
+        "existing_disc_v6": 0,
+        "existing_any_versions": null,
+        "preview": "🌟 Freelance Opportunity: Python Crypto Trading Bot Developer (GUI + Dashboard) 💰 Budget: $800 🤝 With: Harry Bennett",
+        "analyzer_outcome": "skip_tier_not_low",
+        "would_create_disc_v6": false,
+        "note": "Production analyzer requires tier==LOW; HIGH FO/RFQ stay on CRM/commercial_ai path. Documented only — H1 is optional bridge."
+      },
+      {
+        "message_id": 25570,
+        "community": "Web3 Jobs | LaborX",
+        "community_username": "LaborXWeb3Jobs",
+        "community_id": 2,
+        "author_id": 2,
+        "tier": "HIGH",
+        "v6_eligible": true,
+        "v6_carve": true,
+        "trigger": "v6_budget_deliverable",
+        "direction": "RECRUITER",
+        "first_loss": "RETRIEVED",
+        "bucket": "Direct buyer/RFQ candidate",
+        "feat_fp": "61567ced6daa9a0d",
+        "is_blind": false,
+        "is_ai_confirmed": true,
+        "existing_disc_v6": 0,
+        "existing_any_versions": null,
+        "preview": "🌟 Freelance Opportunity: Quick Fix Needed for Python Trading Bot 💰 Budget: $320 🤝 With: david lil",
+        "analyzer_outcome": "skip_tier_not_low",
+        "would_create_disc_v6": false,
+        "note": "Production analyzer requires tier==LOW; HIGH FO/RFQ stay on CRM/commercial_ai path. Documented only — H1 is optional bridge."
+      },
+      {
+        "message_id": 25571,
+        "community": "Web3 Jobs | LaborX",
+        "community_username": "LaborXWeb3Jobs",
+        "community_id": 2,
+        "author_id": 2,
+        "tier": "HIGH",
+        "v6_eligible": true,
+        "v6_carve": true,
+        "trigger": "v6_budget_deliverable",
+        "direction": "RECRUITER",
+        "first_loss": "RETRIEVED",
+        "bucket": "Direct buyer/RFQ candidate",
+        "feat_fp": "61567ced6daa9a0d",
+        "is_blind": false,
+        "is_ai_confirmed": true,
+        "existing_disc_v6": 0,
+        "existing_any_versions": null,
+        "preview": "🌟 Freelance Opportunity: Quick Fix Needed for Python Trading Bot 💰 Budget: $50 🤝 With: Ryan Peterson",
+        "analyzer_outcome": "skip_tier_not_low",
+        "would_create_disc_v6": false,
+        "note": "Production analyzer requires tier==LOW; HIGH FO/RFQ stay on CRM/commercial_ai path. Documented only — H1 is optional bridge."
+      }
+    ],
+    "other_rows": [],
+    "fo_probes_documented": [
+      {
+        "lead_id": 1137,
+        "message_id": 25570,
+        "tier": "HIGH",
+        "v6_eligible": true,
+        "v6_carve": true,
+        "would_create_disc_v6": false,
+        "reason": "tier_not_low_and_ai_confirmed_crm_path",
+        "preview": "🌟 Freelance Opportunity: Quick Fix Needed for Python Trading Bot 💰 Budget: $320 🤝 With: david lil"
+      },
+      {
+        "lead_id": 1138,
+        "message_id": 25571,
+        "tier": "HIGH",
+        "v6_eligible": true,
+        "v6_carve": true,
+        "would_create_disc_v6": false,
+        "reason": "tier_not_low_and_ai_confirmed_crm_path",
+        "preview": "🌟 Freelance Opportunity: Quick Fix Needed for Python Trading Bot 💰 Budget: $50 🤝 With: Ryan Peterson"
+      },
+      {
+        "lead_id": 1139,
+        "message_id": 22713,
+        "tier": "HIGH",
+        "v6_eligible": true,
+        "v6_carve": true,
+        "would_create_disc_v6": false,
+        "reason": "tier_not_low_and_ai_confirmed_crm_path",
+        "preview": "🌟 Freelance Opportunity: Crypto Trading Bot Developer 💰 Budget: $200 🤝 With: Yohans Hayla"
+      },
+      {
+        "lead_id": 1140,
+        "message_id": 25400,
+        "tier": "HIGH",
+        "v6_eligible": true,
+        "v6_carve": true,
+        "would_create_disc_v6": false,
+        "reason": "tier_not_low_and_ai_confirmed_crm_path",
+        "preview": "🌟 Freelance Opportunity: Python Crypto Trading Bot Developer (GUI + Dashboard) 💰 Budget: $800 🤝 With: Harry Bennett"
+      }
+    ],
+    "actual_flag_off_would_create": 0
+  },
+  "expected_volume_if_enabled": {
+    "settings_cap_per_hour": 120,
+    "empiric_recent_low_sample_n": 5000,
+    "empiric_recent_low_v6_eligible": 3,
+    "empiric_per_hour": 0.0179,
+    "empiric_per_day": 0.43,
+    "upper_bound_per_hour": 0.0179,
+    "upper_bound_per_day": 0.43,
+    "refined_audit_low_elig_per_day_360d": 0.0278,
+    "live_candidates_created_1h": 0,
+    "live_candidates_created_24h": 0,
+    "live_candidates_created_7d": 60,
+    "dryrun_burst_would_create_now": 10
+  },
+  "runtime_verify": {
+    "health": {
+      "status": "ok",
+      "postgres": "ok",
+      "redis": "ok"
+    },
+    "gates": {
+      "ai_validated_messages": 94,
+      "ai_validated_true": 0,
+      "ai_validated_false": 94,
+      "ml_training_enabled": false,
+      "expect": "94/0/94",
+      "ok": true
+    }
+  },
+  "isolation": {
+    "human_labels": 1524,
+    "ai_confirmed": 4,
+    "scores": 133718,
+    "messages": 8630149,
+    "disc_candidates": 60
+  },
+  "blocking_bugs": [],
+  "acceptance": {
+    "standing_denominator": "refined_frozen",
+    "refined_pool_n": 102,
+    "refined_v6_eligible": 16,
+    "low_survivors": 10,
+    "high_survivors_documented": 6,
+    "would_create_disc_v6": 10,
+    "would_survive_worker": 10,
+    "contam_low10_pct": 0.0,
+    "contam_all_survivors_pct": 0.0,
+    "disc_v6_dup_among_low10": 0,
+    "prior_any_version_among_low10": 4,
+    "actual_flag_off_creates": 0,
+    "flag_off": true,
+    "shadow_off": true,
+    "isolation_ok": true,
+    "gates_94_0_94": true,
+    "health_ok": true,
+    "no_production_writes": true,
+    "recommendation": "HOLD_PENDING_AUTH",
+    "decision": "READY_FOR_AUTH_ENABLE"
+  },
+  "acceptance_pass": true,
+  "next_hypothesis": {
+    "if_ready_for_auth": "Wait for explicit human authorization ('enable now') before flipping COMMERCIAL_DISCOVERY_ENABLED; then deploy analyzer + discovery worker and verify candidate rate vs cap + isolation snapshot.",
+    "if_hold_needs_fix": "Fix listed blocking_bugs; re-run H2 dry-run.",
+    "h1_deferred": "HIGH-tier FO bridge remains optional product decision; H2 did not find a LOW-path blocking bug that requires H1."
+  },
+  "locks": {
+    "no_flag_flip": true,
+    "no_scoring_loosen": true,
+    "no_global_veto_removal": true,
+    "no_0007_ml_sdk_outreach_human_labels_mutation": true,
+    "no_candidate_writes": true,
+    "no_shadow_enable": true
+  }
+}

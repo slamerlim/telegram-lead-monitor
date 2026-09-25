@@ -1,0 +1,83 @@
+Evidence 104: disc_v6 shadow enqueue dry-run Cycle 4 (H2)
+generated_at=2026-09-25T18:14:58.594387+00:00 head=06f1256
+runtime_sec=9.4 read_only=true wrote_candidates=false
+decision=READY_FOR_AUTH_ENABLE recommendation=HOLD_PENDING_AUTH acceptance_pass=True
+
+=== 0. PARENT / LOCKS ===
+  parent=Evidence 103 HOLD_PENDING_AUTH (checklist 10/10; flag OFF)
+  commercial_discovery_enabled=False
+  commercial_episode_shadow_enabled=False
+  version=disc_v6 code_default=disc_v6
+  NO flag flip / NO shadow enable / NO candidate writes / NO scoring loosen
+
+=== 1. STANDING DENOMINATOR = refined_frozen ===
+  pool_n=102 v6_eligible=16 contam_all=0.0%
+  LOW dry-run set=10 HIGH documented=6 other=0
+
+=== 2. SHADOW ENQUEUE DRY-RUN (counterfactual flag ON, no writes) ===
+  would_create PENDING disc_v6=10/10
+  would_survive_worker (EPISODE_BUILT)=10/10
+  skip_reasons={'worker:none_episode_built': 10}
+  rate_limit headroom=120 (existing_1h=0 cap=120)
+  disc_v6_dups_among_low10=0 prior_any_version=4
+  existing candidates total=60 by_ver=[{'discovery_version': 'disc_v1', 'status': 'EPISODE_BUILT', 'n': 30}, {'discovery_version': 'disc_v2', 'status': 'EPISODE_BUILT', 'n': 30}]
+  actual_flag_off_would_create=0 (expect 0)
+  contam_low10=0.0%
+  LOW id=196 create=True worker=EPISODE_BUILT prior=disc_v2:EPISODE_BUILT trig=v6_budget_deliverable | 🌟 Freelance Opportunity: Create a trading bot for 2,500 PEPE. 💰 Budget: $15 🤝 Wi
+  LOW id=22763 create=True worker=EPISODE_BUILT prior=disc_v1:EPISODE_BUILT trig=v6_budget_deliverable | 🌟 Freelance Opportunity: Senior Solana MEV / Flash Loan Arbitrage Bot Developer 
+  LOW id=23747 create=True worker=EPISODE_BUILT prior=None trig=v6_budget_deliverable | 🌟 Freelance Opportunity: Sales Closer Needed to Sell High-Performance Trading Bo
+  LOW id=24114 create=True worker=EPISODE_BUILT prior=disc_v1:EPISODE_BUILT trig=v6_budget_deliverable | 🌟 Freelance Opportunity: Improve Safety for a TypeScript Polymarket Copy-Trading
+  LOW id=24977 create=True worker=EPISODE_BUILT prior=None trig=v6_budget_deliverable | 🌟 Freelance Opportunity: Crypto Arbitrage Bot Developer for Prediction Markets 💰
+  LOW id=26575 create=True worker=EPISODE_BUILT prior=None trig=v6_budget_deliverable | 🌟 Freelance Opportunity: Forex and stocks trading bot 💰 Budget: $500 🤝 With: Sid
+  LOW id=27317 create=True worker=EPISODE_BUILT prior=None trig=v6_budget_deliverable | 🌟 Freelance Opportunity: Assistance in developing a trading bot in ETH/SOL netwo
+  LOW id=269028 create=True worker=EPISODE_BUILT prior=None trig=v6_budget_deliverable | #vacancy #remote #web3 #operations 🔥 Operations Lead at Statemind (Remote) We ar
+  LOW id=270199 create=True worker=EPISODE_BUILT prior=disc_v2:EPISODE_BUILT trig=v6_project_procurement | ⚙️ Нужен разработчик Senior Backend Full-stack developer 📌 О компании и проекте:
+  LOW id=270490 create=True worker=EPISODE_BUILT prior=None trig=v6_budget_deliverable | #Recruitment 🏡 Wormhole #Infra #Cross·Chain 🐇 Introduction: https://wormhole.com
+
+=== 3. HIGH SURVIVORS DOCUMENTED (no enqueue; H1 deferred) ===
+  n=6 analyzer_outcome=skip_tier_not_low
+  HIGH id=22713 ai_conf=True carve=True trig=v6_budget_deliverable | 🌟 Freelance Opportunity: Crypto Trading Bot Developer 💰 Budget: $200 🤝 With: Yoh
+  HIGH id=24048 ai_conf=False carve=True trig=v6_repair_domain | 🌟 Freelance Opportunity: Need Developer to Fix Polymarket Trading Bot (Urgent) 💰
+  HIGH id=24091 ai_conf=False carve=True trig=v6_repair_domain | 🌟 Freelance Opportunity: Need Developer to Fix Polymarket Trading Bot (Urgent) 💰
+  HIGH id=25400 ai_conf=True carve=True trig=v6_budget_deliverable | 🌟 Freelance Opportunity: Python Crypto Trading Bot Developer (GUI + Dashboard) 💰
+  HIGH id=25570 ai_conf=True carve=True trig=v6_budget_deliverable | 🌟 Freelance Opportunity: Quick Fix Needed for Python Trading Bot 💰 Budget: $320 
+  HIGH id=25571 ai_conf=True carve=True trig=v6_budget_deliverable | 🌟 Freelance Opportunity: Quick Fix Needed for Python Trading Bot 💰 Budget: $50 🤝
+  FO probes:
+    lead=1137 msg=25570 tier=HIGH create=False | 🌟 Freelance Opportunity: Quick Fix Needed for Python Trading Bot 💰 Bud
+    lead=1138 msg=25571 tier=HIGH create=False | 🌟 Freelance Opportunity: Quick Fix Needed for Python Trading Bot 💰 Bud
+    lead=1139 msg=22713 tier=HIGH create=False | 🌟 Freelance Opportunity: Crypto Trading Bot Developer 💰 Budget: $200 🤝
+    lead=1140 msg=25400 tier=HIGH create=False | 🌟 Freelance Opportunity: Python Crypto Trading Bot Developer (GUI + Da
+
+=== 4. EXPECTED VOLUME IF ENABLED ===
+  settings_cap=120/h
+  empiric recent LOW: elig=3/5000 → ~0.0179/h ~0.43/d
+  upper_bound ~0.0179/h ~0.43/d
+  refined_audit LOW density ~0.0278/d over 360d
+  dryrun burst would_create_now=10
+  live candidates while flag OFF: 1h=0 24h=0 7d=60
+
+=== 5. RUNTIME VERIFY ===
+  health={'status': 'ok', 'postgres': 'ok', 'redis': 'ok'}
+  gates messages/true/false=94/0/94 ml=False ok=True
+
+=== 6. ISOLATION ===
+  human_labels=1524 AI_CONFIRMED=4 scores=133718 messages=8630149 disc_candidates=60
+  isolation_ok=True (expect 1524/4)
+
+=== 7. BLOCKING BUGS ===
+  none
+
+=== 8. ACCEPTANCE / DECISION ===
+  acceptance={"standing_denominator": "refined_frozen", "refined_pool_n": 102, "refined_v6_eligible": 16, "low_survivors": 10, "high_survivors_documented": 6, "would_create_disc_v6": 10, "would_survive_worker": 10, "contam_low10_pct": 0.0, "contam_all_survivors_pct": 0.0, "disc_v6_dup_among_low10": 0, "prior_any_version_among_low10": 4, "actual_flag_off_creates": 0, "flag_off": true, "shadow_off": true, "isolation_ok": true, "gates_94_0_94": true, "health_ok": true, "no_production_writes": true, "recommendation": "HOLD_PENDING_AUTH", "decision": "READY_FOR_AUTH_ENABLE"}
+  acceptance_pass=True
+  decision=READY_FOR_AUTH_ENABLE recommendation=HOLD_PENDING_AUTH
+  rationale=H2 dry-run clean: 10/10 LOW survivors would create PENDING disc_v6 candidates; worker would build episodes (no blind/AI_CONFIRMED skips); contam=0.0%; disc_v6 dups=0; prior any-version rows=4 (non-blocking — unique is seed+version); rate headroom=120/h; empiric UB ~0.0179/h ~0.43/d. Still HOLD: do NOT flip commercial_discovery_enabled without explicit 'enable now'. HIGH survivors 6/6 + FO probes 4/4 remain CRM path (H1 optional).
+
+=== 9. NEXT ===
+  if_ready: Wait for explicit human authorization ('enable now') before flipping COMMERCIAL_DISCOVERY_ENABLED; then deploy analyzer + discovery worker and verify candidate rate vs cap + isolation snapshot.
+  h1_deferred: HIGH-tier FO bridge remains optional product decision; H2 did not find a LOW-path blocking bug that requires H1.
+
+=== 10. BUSINESS ===
+  NO OUTREACH / NO ML GO / FLAG REMAINS OFF / NO THRESHOLD LOOSEN / NO WRITES
+  READY_FOR_AUTH_ENABLE means measurement-ready only — still requires explicit enable
+
