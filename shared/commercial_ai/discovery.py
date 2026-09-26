@@ -1133,10 +1133,20 @@ def _eligible_v4(
         or feats.direct_request_signal
         or (explicit_commercial and feats.budget_signal)
     )
+    # Path B: do NOT use bare ownership — "my bot is not working" sets both
+    # repair_signal and ownership_signal, so supportish texts enqueue as
+    # v6_repair_domain (Evidence 107/108 seed 8635958). Require RFQ / hire /
+    # budget / paid-fix / FO carve (not ownership alone).
     path_b = (
         feats.repair_signal
         and (has_domain or has_tech)
-        and (feats.ownership_signal or feats.direct_request_signal)
+        and (
+            feats.direct_request_signal
+            or bool(hire)
+            or feats.budget_signal
+            or feats.true_budget_signal
+            or feats.gig_project_carve
+        )
     )
     # Path C: do NOT use bare project_scope — classify_buyer_direction sets
     # project_scope whenever automation_signal fires, so automate+domain alone
@@ -1273,10 +1283,18 @@ def _eligible_v5(
         or feats.direct_request_signal
         or (explicit_commercial and budget_ok)
     )
+    # Same non-circular path_b conjunct as v4/v6 (Evidence 109): drop bare
+    # ownership so supportish "my bot is not working" cannot unlock alone.
     path_b = (
         feats.repair_signal
         and (has_domain or has_tech)
-        and (feats.ownership_signal or feats.direct_request_signal)
+        and (
+            feats.direct_request_signal
+            or bool(hire)
+            or budget_ok
+            or feats.true_budget_signal
+            or feats.gig_project_carve
+        )
     )
     # Same non-circular path_c conjunct as v4/v6 (Evidence 108).
     path_c = (feats.automation_signal or bool(impl)) and has_domain and (

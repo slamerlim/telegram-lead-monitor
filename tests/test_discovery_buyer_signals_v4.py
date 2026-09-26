@@ -316,6 +316,59 @@ def test_path_c_tighten_does_not_break_fo_carve():
     assert "CARVE" in v6.matched_paths
 
 
+# Live Contam Evidence 107 / Cycle 3 (Evidence 109): supportish path_b.
+_SUPPORTISH_BOT = (
+    "Boss can you help me with my position and point my bot is not working"
+)
+
+
+def test_path_b_blocks_supportish_my_bot_not_working_without_buyer_conjunct():
+    """Bare ownership+repair ('my bot is not working') must NOT unlock path_b."""
+    scorer = _scorer()
+    for version in (DISCOVERY_VERSION_V4, DISCOVERY_VERSION_V6):
+        feats = evaluate_discovery(scorer, _SUPPORTISH_BOT, version=version)
+        assert not feats.eligible, version
+        assert feats.repair_signal
+        assert feats.ownership_signal  # circular with repair — must not unlock path_b alone
+        assert not feats.direct_request_signal
+        assert not feats.budget_signal
+        assert not feats.true_budget_signal
+        assert not feats.hiring_patterns
+        bare = evaluate_discovery(scorer, "My bot is not working", version=version)
+        assert not bare.eligible, version
+
+
+def test_path_b_keeps_genuine_ownership_repair_rfq():
+    scorer = _scorer()
+    texts = [
+        "Looking for a Python developer to fix our existing exchange integration "
+        "on Bybit — current system has order bugs, paid project.",
+        "Looking for someone to fix my bot on Bybit — it's broken, paid project",
+        "Need a developer to repair my trading bot, budget $800",
+        "Can anyone fix my broken strategy on OKX? I can pay",
+        "My bot is broken, need a developer to fix it on Bybit",
+    ]
+    for text in texts:
+        feats = evaluate_discovery(scorer, text, version=DISCOVERY_VERSION_V6)
+        assert feats.eligible, text
+        assert "B" in feats.matched_paths or "A" in feats.matched_paths or "E" in feats.matched_paths
+
+
+def test_path_b_tighten_does_not_break_fo_carve_or_path_c():
+    """path_b conjunct must not reopen path_c promo or break FO LaborX carve."""
+    scorer = _scorer()
+    promo = evaluate_discovery(scorer, _EA_PROMO, version=DISCOVERY_VERSION_V6)
+    assert not promo.eligible
+    fo = (
+        "🌟 Freelance Opportunity: Quick Fix Needed for Python Trading Bot "
+        "💰 Budget: $320 🤝 With: david lil"
+    )
+    v6 = evaluate_discovery(scorer, fo, version=DISCOVERY_VERSION_V6)
+    assert v6.eligible
+    assert v6.gig_project_carve
+    assert "CARVE" in v6.matched_paths
+
+
 def test_v4_can_recover_beyond_v3_on_soft_project():
     """Ambiguous looking-for + domain + ownership should prefer v4 soft path."""
     scorer = _scorer()
