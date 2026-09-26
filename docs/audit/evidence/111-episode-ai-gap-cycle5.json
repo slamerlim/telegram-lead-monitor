@@ -1,0 +1,269 @@
+{
+  "evidence_id": 111,
+  "title": "disc_v6 post-enable Cycle 5 episode→AI gap + live snapshot",
+  "experiment_id": "POST_ENABLE_CYCLE5_EPISODE_AI_GAP",
+  "generated_at": "2026-09-26T07:07:30Z",
+  "head": "aa29349",
+  "head_full": "aa2934991b5c6a7aa0b92e27c863d07cacba1525",
+  "parent": "Evidence 110 OBSERVE",
+  "decision": "OBSERVE",
+  "failure_class": "EXPECTED_LOW_RATE",
+  "gap_class": "INTENTIONAL_SHADOW_OFF",
+  "read_only": true,
+  "code_change_scope": "none",
+  "hypothesis": {
+    "id": "H1",
+    "statement": "The 0 DECISION reviews on 6 EPISODE_BUILT is either (a) intentional (contam not qualified / shadow / gate), (b) commercial-AI worker/queue lag/failure, or (c) missing handoff wiring."
+  },
+  "runtime": {
+    "path_b_deploy_at": "2026-09-26T06:53:16Z",
+    "e110_at": "2026-09-26T07:03:30Z",
+    "enable_at": "2026-09-25T19:27:00+00:00",
+    "measure_at": "2026-09-26T07:06:02Z",
+    "services_up": true,
+    "settings": {
+      "commercial_discovery_enabled": true,
+      "commercial_discovery_version": "disc_v6",
+      "commercial_episode_shadow_enabled": false,
+      "commercial_ai_enabled": true,
+      "commercial_ai_backend": "sdk"
+    },
+    "health": {"status": "ok", "postgres": "ok", "redis": "ok"},
+    "gates": {
+      "ai_validated_messages": 94,
+      "ai_validated_true": 0,
+      "ai_validated_false": 94,
+      "ml_training_enabled": false,
+      "ai_validation_gate_ready": false
+    },
+    "isolation": {
+      "human_labels": 1524,
+      "ai_confirmed": 4,
+      "disc_candidates": 66,
+      "disc_v6_candidates": 6,
+      "episodes_total": 66,
+      "cai_decision_total": 126,
+      "cai_decision_with_episode": 0,
+      "cai_opinion_with_episode": 0
+    },
+    "isolation_ok": true
+  },
+  "redis": {
+    "telegram:commercial_discovery": {
+      "xlen": 6,
+      "pending": 0,
+      "consumers": 1,
+      "consumer_name": "disc-1",
+      "lag": 0,
+      "group": "commercial-discovery-workers",
+      "entries_read": 6
+    },
+    "telegram:commercial_ai_review": {
+      "xlen": 8,
+      "pending": 0,
+      "consumers": 1,
+      "consumer_name": "cai-1",
+      "lag": 0,
+      "group": "commercial-ai-workers"
+    },
+    "telegram:messages": {
+      "group": "analyzer-workers",
+      "pending": 0,
+      "lag": 0
+    },
+    "telegram:commercial_episode_shadow": {
+      "xlen": 120,
+      "lag": 120,
+      "consumers": 0,
+      "last_delivered_id": "0-0",
+      "note": "shadow OFF — lag expected"
+    },
+    "dlq": {
+      "discovery": 0,
+      "ai_review": 0,
+      "episode_shadow": 0
+    },
+    "blind_xack": false
+  },
+  "disc_v6_candidates": [
+    {
+      "id": 61,
+      "seed_message_id": 8633878,
+      "trigger_type": "v6_automation_domain",
+      "status": "EPISODE_BUILT",
+      "episode_id": 61,
+      "episode_status": "BUILT",
+      "n_messages": 1,
+      "discovered_at": "2026-09-25T23:34:57.844302+00:00",
+      "qual_prior": "promo_marketing"
+    },
+    {
+      "id": 62,
+      "seed_message_id": 8634685,
+      "trigger_type": "v6_automation_domain",
+      "status": "EPISODE_BUILT",
+      "episode_id": 62,
+      "episode_status": "BUILT",
+      "n_messages": 1,
+      "discovered_at": "2026-09-26T01:20:06.065944+00:00",
+      "qual_prior": "promo_marketing"
+    },
+    {
+      "id": 63,
+      "seed_message_id": 8634773,
+      "trigger_type": "v6_automation_domain",
+      "status": "EPISODE_BUILT",
+      "episode_id": 63,
+      "episode_status": "BUILT",
+      "n_messages": 1,
+      "discovered_at": "2026-09-26T01:35:08.297011+00:00",
+      "qual_prior": "promo_marketing"
+    },
+    {
+      "id": 64,
+      "seed_message_id": 8634775,
+      "trigger_type": "v6_automation_domain",
+      "status": "EPISODE_BUILT",
+      "episode_id": 64,
+      "episode_status": "BUILT",
+      "n_messages": 1,
+      "discovered_at": "2026-09-26T01:35:08.323481+00:00",
+      "qual_prior": "promo_marketing"
+    },
+    {
+      "id": 65,
+      "seed_message_id": 8635024,
+      "trigger_type": "v6_automation_domain",
+      "status": "EPISODE_BUILT",
+      "episode_id": 65,
+      "episode_status": "BUILT",
+      "n_messages": 1,
+      "discovered_at": "2026-09-26T02:05:10.056410+00:00",
+      "qual_prior": "promo_marketing"
+    },
+    {
+      "id": 66,
+      "seed_message_id": 8635958,
+      "trigger_type": "v6_repair_domain",
+      "status": "EPISODE_BUILT",
+      "episode_id": 66,
+      "episode_status": "BUILT",
+      "n_messages": 1,
+      "discovered_at": "2026-09-26T03:04:52.153994+00:00",
+      "qual_prior": "supportish"
+    }
+  ],
+  "commercial_ai_linkage": {
+    "reviews_for_disc_v6_seeds_or_episodes": 0,
+    "decision_with_episode_id_ever": 0,
+    "opinion_with_episode_id_ever": 0,
+    "reviews_since_enable": 0,
+    "reviews_since_path_b": 0,
+    "last_cai_at": "2026-09-24T15:39:52.922374+00:00"
+  },
+  "code_path": {
+    "discovery_builds_episode": "services/commercial_discovery/app/main.py:146-150",
+    "shadow_gate": "services/commercial_discovery/app/main.py:152-153",
+    "shadow_enqueue": "services/commercial_discovery/app/main.py:155-167",
+    "shadow_worker_idle": "services/commercial_episode_shadow/app/main.py:90-91,283-284",
+    "commercial_ai_is_lead_path": "services/commercial_ai/app/main.py:106-123; analyzer:262-278",
+    "commercial_ai_skips_low": true,
+    "discovery_never_publishes_to_ai_review_stream": true
+  },
+  "worker_errors": {
+    "commercial_discovery_worker": "none observed",
+    "commercial_ai_worker": "none observed",
+    "commercial_episode_shadow_worker": "idle shadow=false (expected)"
+  },
+  "windows": {
+    "since_path_b_deploy": {
+      "since": "2026-09-26T06:53:16Z",
+      "hours_approx": 0.21,
+      "messages": 461,
+      "message_scores": 461,
+      "candidates_new": 0,
+      "disc_v6_new": 0,
+      "rate_per_hour": 0.0,
+      "expected_count_at_0_018_per_h": 0.004,
+      "classification": "EXPECTED_LOW_RATE",
+      "traffic_note": "collector producing traffic (not quiet); still 0 NEW under path_b+c"
+    },
+    "since_e110": {
+      "since": "2026-09-26T07:03:30Z",
+      "hours_approx": 0.04,
+      "messages": 72,
+      "message_scores": 72,
+      "disc_v6_new": 0
+    },
+    "since_path_c_evidence": {
+      "since": "2026-09-26T06:41:22Z",
+      "hours_approx": 0.41,
+      "messages": 1000,
+      "message_scores": 1000,
+      "disc_v6_new": 0,
+      "classification": "EXPECTED_LOW_RATE"
+    },
+    "since_enable_context": {
+      "since": "2026-09-25T19:27:00+00:00",
+      "hours_approx": 11.65,
+      "messages": 13666,
+      "disc_v6": 6,
+      "classification": "CONTAMINATED_HISTORICAL_RETAINED"
+    },
+    "last_1h_context": {
+      "messages": 2320,
+      "message_scores": 2320,
+      "candidates": 0
+    }
+  },
+  "attribution": {
+    "gap": "INTENTIONAL_SHADOW_OFF",
+    "gap_option": "a",
+    "primary_live": "EXPECTED_LOW_RATE",
+    "factors": [
+      "shadow_enabled_false_early_return_after_EPISODE_BUILT",
+      "shadow_stream_lag_120_consumers_0_expected",
+      "zero_episode_linked_cai_rows_ever",
+      "commercial_ai_stream_is_lead_non_LOW_only",
+      "redis_discovery_ai_lag_0_not_queue_failure",
+      "zero_new_disc_v6_with_461_scored_post_path_b"
+    ],
+    "not": [
+      "PIPELINE_FAILURE",
+      "WORKER_QUEUE_LAG",
+      "MISSING_HANDOFF_WIRING_BUG",
+      "path_b_c_reopen_needed",
+      "shadow_enable_this_cycle"
+    ]
+  },
+  "decision_rationale": "Code+runtime prove EPISODE_BUILT→DECISION is gated on commercial_episode_shadow_enabled=false; gap is intentional/deferred, not queue failure or missing wiring. Live rate remains EXPECTED_LOW_RATE with recovered traffic and 0 NEW disc_v6. No correctness fix; observe.",
+  "next_hypothesis": {
+    "id": "H1",
+    "statement": "Continue live observe to ≥2–4h post path_b (or first NEW disc_v6). With non-trivial scored traffic already (461 in ~0.21h) and 0 NEW, if still zero after large denominator attribute RESIDUAL_SCARCITY over collector duty-cycle; if NEW appears, classify clean RFQ vs residual contam on untouched path (not path_b/c)."
+  },
+  "business": {
+    "outreach": false,
+    "ml_go": false,
+    "threshold_loosen": false,
+    "fo_carve_untouched": true,
+    "path_b_c_reopened": false,
+    "shadow_enabled_unchanged": true,
+    "discovery_semantic_change": false
+  },
+  "locks_honored": {
+    "no_path_b_c_reopen": true,
+    "no_fo_carve_change": true,
+    "no_threshold_loosen": true,
+    "no_global_veto_removal": true,
+    "no_human_labels_mutation": true,
+    "no_ai_confirmed_mutation": true,
+    "no_blind_xack": true,
+    "no_docker_down_v": true,
+    "no_wipe_historical_disc_v6": true,
+    "no_shadow_enable": true
+  },
+  "files_touched": [
+    "docs/audit/evidence/111-episode-ai-gap-cycle5.txt",
+    "docs/audit/evidence/111-episode-ai-gap-cycle5.json"
+  ]
+}

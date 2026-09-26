@@ -1,0 +1,133 @@
+Evidence 111: disc_v6 post-enable Cycle 5 episode→AI gap + live snapshot
+generated_at=2026-09-26T07:07:30Z head=aa29349 parent=Evidence 110 OBSERVE
+experiment_id=POST_ENABLE_CYCLE5_EPISODE_AI_GAP
+decision=OBSERVE
+failure_class=EXPECTED_LOW_RATE
+gap_class=INTENTIONAL_SHADOW_OFF
+read_only=true code_change=none
+
+=== 0. PARENT / LOCKS ===
+  parent=Evidence 110 OBSERVE (EXPECTED_LOW_RATE; episode→AI gap noted)
+  NO path_b/c reopen / NO FO carve change / NO threshold loosen / NO global veto removal
+  NO human_labels / AI_CONFIRMED mutation / NO ML GO / NO outreach
+  NO docker compose down -v / NO wipe of historical disc_v6 rows / NO blind XACK
+  NO COMMERCIAL_EPISODE_SHADOW_ENABLED flip this cycle (deferred by design)
+
+=== 1. HYPOTHESIS (ONE) ===
+  H1: The 0 DECISION reviews on 6 EPISODE_BUILT is either
+    (a) intentional (contam not qualified / shadow / gate),
+    (b) commercial-AI worker/queue lag/failure, or
+    (c) missing handoff wiring.
+  Attribute with evidence; fix only if correctness/observability failure.
+
+=== 2. RUNTIME CONFIRM ===
+  HEAD=aa2934991b5c6a7aa0b92e27c863d07cacba1525 (Evidence 110 commit on main)
+  path_b deploy marker: 2026-09-26T06:53:16Z
+  measure_at≈2026-09-26T07:06:02Z (~0.21h since path_b; ~0.04h since E110)
+  services: all Up (postgres/redis healthy; discovery-worker Up ~12m; ai-worker Up 18h;
+    episode-shadow Up 39h idle; analyzer Up ~12m)
+  settings (runtime container):
+    commercial_discovery_enabled=True
+    commercial_discovery_version=disc_v6
+    commercial_episode_shadow_enabled=False
+    commercial_ai_enabled=True backend=sdk
+  health={"status":"ok","postgres":"ok","redis":"ok"}
+  gates: ai_validated_messages=94 true=0 false=94 ml_training_enabled=false
+    ai_validation_gate_ready=false
+  isolation: human_labels=1524 AI_CONFIRMED=4 disc_candidates=66 disc_v6=6
+  isolation_ok=true (1524/4 unchanged)
+
+=== 3. REDIS (no blind XACK) ===
+  telegram:commercial_discovery:
+    XLEN=6 pending=0 consumers=1(disc-1) lag=0 group=commercial-discovery-workers
+    entries-read=6 last-delivered-id=1790391892154-0
+  telegram:commercial_ai_review:
+    XLEN=8 pending=0 consumers=1(cai-1) lag=0 group=commercial-ai-workers
+  telegram:messages:
+    analyzer-workers lag=0 pending=0 (caught up)
+  telegram:commercial_episode_shadow:
+    XLEN=120 lag=120 consumers=0 last-delivered-id=0-0
+    NOTE: shadow OFF — lag + zero consumers EXPECTED (not PIPELINE_FAILURE)
+  DLQs: discovery/ai/shadow all XLEN=0
+
+=== 4. DB: 6 disc_v6 candidates + AI linkage ===
+  All 6 retained historical (created 2026-09-25 23:34 → 2026-09-26 03:04 UTC):
+    id=61 seed=8633878 trigger=v6_automation_domain status=EPISODE_BUILT episode=61 n_msg=1
+    id=62 seed=8634685 trigger=v6_automation_domain status=EPISODE_BUILT episode=62 n_msg=1
+    id=63 seed=8634773 trigger=v6_automation_domain status=EPISODE_BUILT episode=63 n_msg=1
+    id=64 seed=8634775 trigger=v6_automation_domain status=EPISODE_BUILT episode=64 n_msg=1
+    id=65 seed=8635024 trigger=v6_automation_domain status=EPISODE_BUILT episode=65 n_msg=1
+    id=66 seed=8635958 trigger=v6_repair_domain     status=EPISODE_BUILT episode=66 n_msg=1
+  commercial_ai_reviews for those seeds OR episode_ids: 0 rows
+  commercial_ai_reviews WHERE episode_id IS NOT NULL: DECISION=0 OPINION=0 (ever)
+  cai since enable / since path_b: 0; last_cai=2026-09-24T15:39:52Z (pre-enable)
+
+=== 5. CODE PATH TRACE (EPISODE_BUILT → DECISION) ===
+  A) analyzer (LOW + disc eligible) → XADD telegram:commercial_discovery
+     services/analyzer/app/main.py ~191–261
+  B) commercial-discovery-worker process_discovery:
+     build episode → cand.status=EPISODE_BUILT → commit
+     THEN:
+       if not settings.commercial_episode_shadow_enabled: return   # <-- GATE
+       else XADD telegram:commercial_episode_shadow arms A/B
+     services/commercial_discovery/app/main.py:152–167
+  C) commercial-episode-shadow-worker:
+     if not commercial_episode_shadow_enabled: idle return
+     else SDK opinions → record_episode_shadow_decision (DECISION w/ episode_id)
+     services/commercial_episode_shadow/app/main.py:90–91, 283–284
+     live log: "COMMERCIAL_EPISODE_SHADOW_ENABLED=false — worker idle"
+  D) commercial-ai-worker (telegram:commercial_ai_review):
+     lead_id path only; skips LOW; trigger=analyzer_upsert for non-LOW NEW leads
+     services/commercial_ai/app/main.py:106–123; analyzer ~262–278
+     NEVER consumes discovery/episode payloads
+  Skip conditions for contam/promo under shadow OFF: N/A — never enqueued to AI.
+  Under shadow ON, shadow worker would still skip blind_sample / existing AI_CONFIRMED
+  and rate-limit; contam qualification is NOT a separate discovery→AI gate today.
+
+=== 6. WORKER LOGS ===
+  commercial-discovery-worker: no error/exception/retry lines in recent tail
+  commercial-ai-worker: started group=commercial-ai-workers backend=sdk; no episode errors
+  commercial-episode-shadow-worker: idle (shadow=false) — expected
+  No retries on episode ids 61–66 / seeds 8633878…8635958
+
+=== 7. LIVE SNAPSHOT (parallel; not passive-only) ===
+  A) since path_b deploy 06:53:16Z → 07:06Z (~0.21h):
+     msg=461 score=461 cand_new=0 disc_v6_new=0 rate/h=0
+     class=EXPECTED_LOW_RATE (expected_count≈0.018*0.21≈0.004 ≪ 1)
+     NOTE: traffic recovered vs E110 quiet window — collector producing msgs;
+     still zero NEW enqueue under path_b+c → scarcity signal strengthening
+  B) since E110 07:03:30Z → 07:06Z (~0.04h):
+     msg=72 score=72 disc_v6_new=0
+  C) since path_c marker 06:41:22Z → 07:06Z (~0.41h):
+     msg=1000 score=1000 disc_v6_new=0 class=EXPECTED_LOW_RATE
+  D) last_1h: msg=2320 score=2320 cand_new=0
+  E) since enable (context): msg=13666; disc_v6 still=6 historical retained CONTAMINATED
+
+=== 8. ATTRIBUTION ===
+  Gap verdict: (a) INTENTIONAL_SHADOW_OFF — by design / deferred.
+  Evidence:
+    - runtime shadow_enabled=False (default + unset env)
+    - discovery worker early-return after EPISODE_BUILT (main.py:152–153)
+    - shadow stream lag=120 consumers=0 expected
+    - 0 episode-linked CAI rows ever; AI stream is lead/non-LOW only
+    - redis discovery/AI lag=0 pending=0 — NOT (b) queue lag/failure
+    - handoff wiring to shadow EXISTS but gated — NOT (c) missing wiring bug
+  Live rate: EXPECTED_LOW_RATE continues; 0 NEW disc_v6 with 461 scored post-path_b.
+  Not a correctness bug → NO code fix / NO path change / NO shadow enable this cycle.
+
+=== 9. DECISION ===
+  OBSERVE — document gap as intentional (shadow deferred); continue live observe.
+  Evidence-only commit; no service deploy.
+
+=== 10. NEXT HYPOTHESIS (ONE) ===
+  H1: With non-trivial scored traffic post path_b (461 in ~13m) and still 0 NEW disc_v6,
+  continue live observe to ≥2–4h total post path_b (or first NEW candidate). If still
+  zero after large scored denominator, attribute RESIDUAL_SCARCITY (true low eligible
+  rate under path_b+c) over collector duty-cycle. If a NEW candidate appears, classify
+  quality (clean RFQ/buyer vs residual contam on an untouched path — not path_b/c).
+
+=== 11. BUSINESS ===
+  outreach=false ml_go=false threshold_loosen=false fo_carve_untouched=true
+  discovery_semantic_change=false path_b_c_reopened=false shadow_enabled_unchanged=true
+
+JSON: docs/audit/evidence/111-episode-ai-gap-cycle5.json
