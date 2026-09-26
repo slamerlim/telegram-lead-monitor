@@ -1,0 +1,102 @@
+Evidence 112: disc_v6 post-enable Cycle 6 residual scarcity vs discovery loss
+generated_at=2026-09-26T07:13:10.445016+00:00 head=cca546463452 parent=Evidence 111 OBSERVE
+experiment_id=POST_ENABLE_CYCLE6_RESIDUAL_SCARCITY
+decision=OBSERVE
+classification=RESIDUAL_SCARCITY
+read_only=true code_change=none
+
+=== 0. PARENT / LOCKS ===
+  parent=Evidence 111 OBSERVE (INTENTIONAL_SHADOW_OFF; EXPECTED_LOW_RATE)
+  NO path_b/c reopen / NO FO carve change / NO threshold loosen / NO veto removal
+  NO human_labels / AI_CONFIRMED mutation / NO ML GO / NO outreach
+  NO docker compose down -v / NO wipe / NO shadow enable / NO community expansion
+
+=== 1. HYPOTHESIS (ONE) ===
+  H1: Under current disc_v6 (post path_b+c), genuine commercial yield in
+  frozen commercial∧domain / refined_frozen is scarce enough that ~0 NEW
+  in hundreds–thousands of scored live msgs is expected (RESIDUAL_SCARCITY),
+  not a new semantic loss path.
+
+=== 2. RUNTIME CONFIRM ===
+  HEAD=cca546463452a255c89bcf808abf065efe414271
+  path_b deploy marker: 2026-09-26T06:53:16+00:00
+  measure_at≈2026-09-26T07:13:10.445016+00:00 (~0.332h since path_b)
+  settings: enabled=True version=disc_v6 cap=120/h shadow=False
+  health={'status': 'ok', 'postgres': 'ok', 'redis': 'ok'}
+  gates: ai_validated_messages=94 true=0 false=94 ml=False ready=False
+  isolation: human_labels=1524 AI_CONFIRMED=4 disc_candidates=66 disc_v6=6
+  isolation_ok=True (expect 1524/4)
+
+=== 3. REDIS (no blind XACK) ===
+  telegram:commercial_discovery: XLEN=6 pending=0 consumers=1 lag=0
+  telegram:commercial_ai_review: XLEN=8 pending=0 consumers=1 lag=0
+  telegram:commercial_episode_shadow: XLEN=120 pending=0 consumers=0 lag=120
+  NOTE: episode_shadow lag + consumers=0 expected (shadow OFF)
+
+=== 4. LIVE SNAPSHOT ===
+  A) since path_b 2026-09-26T06:53:16+00:00 (~0.332h):
+     msg=645 score=645 cand_new=0 disc_v6_new=0 rate/h=0.0
+     class=EXPECTED_LOW_RATE expected_count≈0.006
+  B) since path_c 2026-09-26T06:41:22+00:00 (~0.53h):
+     msg=1221 score=1221 disc_v6_new=0 class=EXPECTED_LOW_RATE
+  C) last_1h: msg=2405 score=2405 cand=0
+  D) since enable: msg=13755 disc_v6=6 (6 historical CONTAMINATED retained)
+
+=== 5. FROZEN POPULATION FUNNEL (current disc_v6) ===
+  legacy commercial∧domain: n=1303 elig=32 LOW=26 rate=2.46% contam=0.0%
+    stages: {'pool': 1303, 'after_hard_exclude_pass': 1061, 'after_veto_pass': 649, 'after_path_or_direction': 32, 'eligible_candidate': 32, 'low_enqueueable': 26, 'pct_retained_eligible': 2.46, 'pct_retained_low_enqueue': 2.0, 'pct_removed_to_eligible': 97.54}
+    first_loss: {'NO_PATH_MATCH': 617, 'VETO_support_question': 314, 'HARD_EXCLUDE_EARLY': 242, 'VETO_corporate_employment': 35, 'RETRIEVED': 32, 'VETO_job_aggregator': 29, 'VETO_news_digest': 16, 'VETO_service_provider': 15, 'VETO_job_seeker': 2, 'VETO_generic_recruiter': 1}
+    triggers: {'v6_budget_deliverable': 13, 'v6_direct_project_domain': 10, 'v6_project_procurement': 7, 'v6_repair_domain': 2}
+    near_miss_buyerish_nopath: 0
+  refined_frozen: n=102 elig=16 LOW=10 rate=15.69% contam=0.0%
+    stages: {'pool': 102, 'after_hard_exclude_pass': 100, 'after_veto_pass': 28, 'after_path_or_direction': 16, 'eligible_candidate': 16, 'low_enqueueable': 10, 'pct_retained_eligible': 15.69, 'pct_retained_low_enqueue': 9.8, 'pct_removed_to_eligible': 84.31}
+    first_loss: {'VETO_job_aggregator': 26, 'VETO_corporate_employment': 25, 'RETRIEVED': 16, 'VETO_support_question': 15, 'NO_PATH_MATCH': 12, 'VETO_service_provider': 4, 'VETO_job_seeker': 2, 'HARD_EXCLUDE_EARLY': 2}
+    triggers: {'v6_budget_deliverable': 13, 'v6_repair_domain': 2, 'v6_project_procurement': 1}
+    near_miss_buyerish_nopath: 0
+    dominant_rejection (excl RETRIEVED): VETO_job_aggregator
+  FO probes: 4/4 eligible+carve
+
+=== 6. RECENT WINDOWS (current code) ===
+  recent_scored since path_b (lim=2500): n=645 elig=0 LOW_enq=0 near_miss=0
+    first_loss: {'NO_PATH_MATCH': 605, 'VETO_support_question': 26, 'VETO_service_provider': 11, 'HARD_EXCLUDE_EARLY': 2, 'VETO_corporate_employment': 1}
+  recent_low 7d (lim=5000): n=5000 elig=0 near_miss=0
+    first_loss: {'NO_PATH_MATCH': 4717, 'VETO_support_question': 162, 'VETO_service_provider': 109, 'HARD_EXCLUDE_EARLY': 11, 'VETO_corporate_employment': 1}
+
+=== 7. DENSITY → IMPLIED RATE vs LIVE ===
+  standing empiric UB: 0.018/h (E103/104; 3/5000 LOW/7d)
+  pre-fix contam live: ~0.54/h (E107)
+  refined_frozen LOW density: 10 over ~360.6d → ~0.0277/d ~0.00115/h
+  recent_low current-code empiric: 0/5000 → ~0.0/h ~0.0/d
+  live score rate post path_b: ~1944.0/h; p_LOW_eligible≈0.000000 → implied≈0.0/h
+  live observed post path_b: 0.0/h (0 NEW; expected_count≈0.006)
+  compare: live ≪ pre-fix 0.54/h contam; consistent with UB 0.018/h null
+
+=== 8. NEAR-MISS / TRUE-BUYER SAMPLES ===
+  refined_frozen buyerish NO_PATH near-misses: 0 (no residual true-buyer semantic miss in standing denom)
+  recent_scored buyerish NO_PATH near-misses: 0
+  refined survivors (sample):
+    id=270490 tier=LOW trig=v6_budget_deliverable carve=False | #Recruitment 🏡 Wormhole #Infra #Cross·Chain 🐇 Introduction: https://wormhole.com/ A decentralized, u
+    id=196 tier=LOW trig=v6_budget_deliverable carve=True | 🌟 Freelance Opportunity: Create a trading bot for 2,500 PEPE. 💰 Budget: $15 🤝 With: Quetta Audy
+    id=22713 tier=HIGH trig=v6_budget_deliverable carve=True | 🌟 Freelance Opportunity: Crypto Trading Bot Developer 💰 Budget: $200 🤝 With: Yohans Hayla
+    id=22763 tier=LOW trig=v6_budget_deliverable carve=True | 🌟 Freelance Opportunity: Senior Solana MEV / Flash Loan Arbitrage Bot Developer 💰 Budget: $100 🤝 Wit
+    id=23747 tier=LOW trig=v6_budget_deliverable carve=True | 🌟 Freelance Opportunity: Sales Closer Needed to Sell High-Performance Trading Bot 💰 Budget: $100 🤝 W
+
+=== 9. ATTRIBUTION / CLASSIFICATION ===
+  classification=RESIDUAL_SCARCITY
+  loss_stage=None
+  rationale=Frozen refined survivors remain material with 0% contam and 0 buyerish NO_PATH near-misses under current path_b+c code; live scored=645 over 0.332h with 0 NEW is consistent with empiric UB ~0.018/h (expected≈0.006) and refined LOW density ~0.00115/h.
+  Not PIPELINE_FAILURE: redis lag=0 discovery/AI; workers Up; isolation ok.
+  Not LOW_LIVE_TRAFFIC: post-path_b scored traffic recovered (see §4).
+  Shadow remains INTENTIONAL_OFF (E111) — out of scope this cycle.
+
+=== 10. DECISION ===
+  OBSERVE — evidence-only; no path/carve/threshold/shadow change.
+
+=== 11. NEXT HYPOTHESIS (ONE) ===
+  H1: Continue live observe to first NEW disc_v6 candidate OR ≥4–8h post path_b (expected_count at standing UB 0.018/h still <1 until ~55h; current-code recent LOW empiric is 0/5000 → effective rate may be ≪0.018/h). First NEW quality check (clean RFQ vs residual contam on untouched path) is the strongest next measurement. Do NOT enable shadow or reopen path_b/c without explicit authorization + evidence.
+
+=== 12. BUSINESS ===
+  outreach=false ml_go=false threshold_loosen=false fo_carve_untouched=true
+  discovery_semantic_change=false path_b_c_reopened=false shadow_unchanged=true
+
+JSON: docs/audit/evidence/112-disc-v6-residual-scarcity-cycle6.json

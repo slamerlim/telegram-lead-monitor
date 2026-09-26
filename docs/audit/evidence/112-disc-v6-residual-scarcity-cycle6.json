@@ -1,0 +1,982 @@
+{
+  "evidence_id": 112,
+  "experiment_id": "POST_ENABLE_CYCLE6_RESIDUAL_SCARCITY",
+  "generated_at": "2026-09-26T07:13:10.445016+00:00",
+  "runtime_sec": 17.33,
+  "parent": "Evidence 111 OBSERVE (INTENTIONAL_SHADOW_OFF)",
+  "decision": "OBSERVE",
+  "classification": "RESIDUAL_SCARCITY",
+  "loss_stage_if_discovery_loss": null,
+  "decision_rationale": "Frozen refined survivors remain material with 0% contam and 0 buyerish NO_PATH near-misses under current path_b+c code; live scored=645 over 0.332h with 0 NEW is consistent with empiric UB ~0.018/h (expected≈0.006) and refined LOW density ~0.00115/h.",
+  "read_only": true,
+  "code_change": "none",
+  "hypothesis": "Under current disc_v6 (post path_b+c), genuine commercial yield in frozen commercial∧domain / refined_frozen is scarce enough that ~0 NEW in hundreds–thousands of scored live msgs is expected (RESIDUAL_SCARCITY), not a new semantic loss path.",
+  "runtime": {
+    "head": "cca546463452a255c89bcf808abf065efe414271",
+    "head_short": "cca546463452",
+    "code_default_DISCOVERY_VERSION": "disc_v6",
+    "settings": {
+      "commercial_discovery_enabled": true,
+      "commercial_discovery_version": "disc_v6",
+      "commercial_discovery_max_candidates_per_hour": 120,
+      "commercial_episode_shadow_enabled": false,
+      "commercial_ai_enabled": true,
+      "commercial_ai_backend": "sdk"
+    },
+    "health": {
+      "status": "ok",
+      "postgres": "ok",
+      "redis": "ok"
+    },
+    "gates": {
+      "ai_validated_messages": 94,
+      "ai_validated_true": 0,
+      "ai_validated_false": 94,
+      "ml_training_enabled": false,
+      "ai_validation_gate_ready": false
+    },
+    "api_base": "http://api:8010",
+    "isolation": {
+      "human_labels": 1524,
+      "ai_confirmed": 4,
+      "message_scores": 148525,
+      "messages": 8644956,
+      "disc_candidates": 66,
+      "disc_v6_candidates": 6
+    },
+    "isolation_ok": true,
+    "redis": {
+      "ok": true,
+      "streams": {
+        "commercial_discovery": {
+          "xlen": 6,
+          "pending": 0,
+          "consumers": 1,
+          "lag": 0,
+          "last_delivered_id": "1790391892154-0"
+        },
+        "commercial_ai_review": {
+          "xlen": 8,
+          "pending": 0,
+          "consumers": 1,
+          "lag": 0,
+          "last_delivered_id": "1790237845019-0"
+        },
+        "commercial_episode_shadow": {
+          "xlen": 120,
+          "pending": 0,
+          "consumers": 0,
+          "lag": 120,
+          "last_delivered_id": "0-0"
+        }
+      },
+      "via": "redis-py"
+    },
+    "disc_v6_live_rows": [
+      {
+        "id": 61,
+        "seed": 8633878,
+        "trigger": "v6_automation_domain",
+        "status": "EPISODE_BUILT",
+        "created_at": "2026-09-25T23:34:57.844305+00:00"
+      },
+      {
+        "id": 62,
+        "seed": 8634685,
+        "trigger": "v6_automation_domain",
+        "status": "EPISODE_BUILT",
+        "created_at": "2026-09-26T01:20:06.065947+00:00"
+      },
+      {
+        "id": 63,
+        "seed": 8634773,
+        "trigger": "v6_automation_domain",
+        "status": "EPISODE_BUILT",
+        "created_at": "2026-09-26T01:35:08.297014+00:00"
+      },
+      {
+        "id": 64,
+        "seed": 8634775,
+        "trigger": "v6_automation_domain",
+        "status": "EPISODE_BUILT",
+        "created_at": "2026-09-26T01:35:08.323484+00:00"
+      },
+      {
+        "id": 65,
+        "seed": 8635024,
+        "trigger": "v6_automation_domain",
+        "status": "EPISODE_BUILT",
+        "created_at": "2026-09-26T02:05:10.056413+00:00"
+      },
+      {
+        "id": 66,
+        "seed": 8635958,
+        "trigger": "v6_repair_domain",
+        "status": "EPISODE_BUILT",
+        "created_at": "2026-09-26T03:04:52.153998+00:00"
+      }
+    ]
+  },
+  "live_windows": {
+    "since_path_b": {
+      "since": "2026-09-26T06:53:16+00:00",
+      "hours": 0.332,
+      "msg": 645,
+      "score": 645,
+      "cand": 0,
+      "disc_v6": 0,
+      "rate_per_hour": 0.0,
+      "class": "EXPECTED_LOW_RATE",
+      "expected_count_at_ub": 0.006
+    },
+    "since_path_c": {
+      "since": "2026-09-26T06:41:22+00:00",
+      "hours": 0.53,
+      "msg": 1221,
+      "score": 1221,
+      "cand": 0,
+      "disc_v6": 0,
+      "rate_per_hour": 0.0,
+      "class": "EXPECTED_LOW_RATE",
+      "expected_count_at_ub": 0.0095
+    },
+    "since_enable": {
+      "since": "2026-09-25T19:27:00+00:00",
+      "hours": 11.77,
+      "msg": 13755,
+      "score": 13755,
+      "cand": 6,
+      "disc_v6": 6,
+      "note": "includes 6 historical contaminated retained rows (pre path_b+c)"
+    },
+    "last_1h": {
+      "msg": 2405,
+      "score": 2405,
+      "cand": 0,
+      "disc_v6": 0
+    }
+  },
+  "populations": {
+    "legacy_commercial_and_domain": {
+      "since": "2025-09-30T17:54:03.414786+00:00",
+      "funnel": {
+        "name": "legacy_commercial_and_domain",
+        "pool_n": 1303,
+        "stages": {
+          "pool": 1303,
+          "after_hard_exclude_pass": 1061,
+          "after_veto_pass": 649,
+          "after_path_or_direction": 32,
+          "eligible_candidate": 32,
+          "low_enqueueable": 26,
+          "pct_retained_eligible": 2.46,
+          "pct_retained_low_enqueue": 2.0,
+          "pct_removed_to_eligible": 97.54
+        },
+        "first_loss": {
+          "NO_PATH_MATCH": 617,
+          "VETO_support_question": 314,
+          "HARD_EXCLUDE_EARLY": 242,
+          "VETO_corporate_employment": 35,
+          "RETRIEVED": 32,
+          "VETO_job_aggregator": 29,
+          "VETO_news_digest": 16,
+          "VETO_service_provider": 15,
+          "VETO_job_seeker": 2,
+          "VETO_generic_recruiter": 1
+        },
+        "loss_family": {
+          "hard_veto": 654,
+          "semantic_miss": 617,
+          "survivor": 32
+        },
+        "eligible": 32,
+        "eligible_LOW": 26,
+        "eligible_pct": 2.46,
+        "carve_true_count": 13,
+        "path_hits_among_eligible": {
+          "A": 28,
+          "E": 17,
+          "CARVE": 13,
+          "D": 9,
+          "B": 2
+        },
+        "eligible_triggers": {
+          "v6_budget_deliverable": 13,
+          "v6_direct_project_domain": 10,
+          "v6_project_procurement": 7,
+          "v6_repair_domain": 2
+        },
+        "contamination_pct": 0.0,
+        "near_miss_buyerish_nopath": 0
+      },
+      "samples": {
+        "survivors": [
+          {
+            "message_id": 392304,
+            "tier": "LOW",
+            "trigger": "v6_direct_project_domain",
+            "paths": [
+              "A"
+            ],
+            "carve": false,
+            "community": "Binance English",
+            "preview": "I need someone to teach me how to make money on binance",
+            "would_enqueue_low": true
+          },
+          {
+            "message_id": 4765361,
+            "tier": "LOW",
+            "trigger": "v6_project_procurement",
+            "paths": [
+              "A",
+              "D"
+            ],
+            "carve": false,
+            "community": "MEXC English (Official)",
+            "preview": "Fee wall used to be real for me every trade I closed a chunk was already gone before I even saw green. Started trading stocks on MEXC and it's just... not a thi",
+            "would_enqueue_low": true
+          },
+          {
+            "message_id": 4768282,
+            "tier": "LOW",
+            "trigger": "v6_project_procurement",
+            "paths": [
+              "A",
+              "D"
+            ],
+            "carve": false,
+            "community": "MEXC English (Official)",
+            "preview": "The best way to break the Fee Wall is to remove the wall from the start. With zero-commission stock trading on MEXC, I can focus on my strategy instead of unnec",
+            "would_enqueue_low": true
+          },
+          {
+            "message_id": 270490,
+            "tier": "LOW",
+            "trigger": "v6_budget_deliverable",
+            "paths": [
+              "A",
+              "E"
+            ],
+            "carve": false,
+            "community": "DeJob Global—Web3 Jobs📮",
+            "preview": "#Recruitment 🏡 Wormhole #Infra #Cross·Chain 🐇 Introduction: https://wormhole.com/ A decentralized, universal message-passing protocol. 🛵 #FullTime #Remote 📚 #Ju",
+            "would_enqueue_low": true
+          },
+          {
+            "message_id": 678746,
+            "tier": "LOW",
+            "trigger": "v6_direct_project_domain",
+            "paths": [
+              "A"
+            ],
+            "carve": false,
+            "community": "Bybit English",
+            "preview": "I need someone to tech me more about bybit",
+            "would_enqueue_low": true
+          },
+          {
+            "message_id": 196,
+            "tier": "LOW",
+            "trigger": "v6_budget_deliverable",
+            "paths": [
+              "A",
+              "E",
+              "CARVE"
+            ],
+            "carve": true,
+            "community": "Web3 Jobs | LaborX",
+            "preview": "🌟 Freelance Opportunity: Create a trading bot for 2,500 PEPE. 💰 Budget: $15 🤝 With: Quetta Audy",
+            "would_enqueue_low": true
+          },
+          {
+            "message_id": 3635841,
+            "tier": "LOW",
+            "trigger": "v6_project_procurement",
+            "paths": [
+              "D",
+              "E"
+            ],
+            "carve": false,
+            "community": "Bitget English Official",
+            "preview": "My strategy is to capture sustained upside moves when price escapes a well-defined 20-bar range with confirmed institutional participation. Entry requires two c",
+            "would_enqueue_low": true
+          },
+          {
+            "message_id": 414031,
+            "tier": "LOW",
+            "trigger": "v6_direct_project_domain",
+            "paths": [
+              "A"
+            ],
+            "carve": false,
+            "community": "Binance English",
+            "preview": "Greetings members I need someone to help me in swapping waxp to USD earning strategy",
+            "would_enqueue_low": true
+          }
+        ],
+        "near_miss_buyerish": [],
+        "no_path": [
+          {
+            "message_id": 8627991,
+            "community": "WEEX English 2nd Group",
+            "preview": "🚫 Tennessee has banned Kalshi, Polymarket, and Crypto..com from offering sports betting to its residents. The state regulator announced that such actions are il",
+            "repair": false,
+            "automation": false,
+            "ownership": false,
+            "direct": false,
+            "hire": false,
+            "budget": false
+          },
+          {
+            "message_id": 8622288,
+            "community": "Bybit English",
+            "preview": "#BybitChat AI capex still looks sustainable but I don’t think the market can keep rewarding unlimited spending forever. Nvidia s earnings have become a major si",
+            "repair": false,
+            "automation": false,
+            "ownership": false,
+            "direct": false,
+            "hire": false,
+            "budget": false
+          },
+          {
+            "message_id": 8605487,
+            "community": "MQL5 Algo Trading",
+            "preview": "This article proposes a reusable MQL5 Expert Advisor template that separates strategy rules from platform plumbing. Instead of mixing signals, execution, and ri",
+            "repair": false,
+            "automation": false,
+            "ownership": false,
+            "direct": false,
+            "hire": false,
+            "budget": false
+          },
+          {
+            "message_id": 8589995,
+            "community": "Bybit English",
+            "preview": "Kalshi: The U.S. Commodity Futures Trading Commission (CFTC) is not conducting any investigation into its trading activities.",
+            "repair": false,
+            "automation": false,
+            "ownership": false,
+            "direct": false,
+            "hire": false,
+            "budget": false
+          },
+          {
+            "message_id": 8542685,
+            "community": "Bybit English",
+            "preview": "The U.S. Commodity Futures Trading Commission (CFTC) warns against risky \"male\" contracts in prediction markets",
+            "repair": false,
+            "automation": false,
+            "ownership": false,
+            "direct": false,
+            "hire": false,
+            "budget": false
+          },
+          {
+            "message_id": 8542686,
+            "community": "Bybit English",
+            "preview": "The U.S. Commodity Futures Trading Commission (CFTC) warns against risky \"male\" contracts in prediction markets.",
+            "repair": false,
+            "automation": false,
+            "ownership": false,
+            "direct": false,
+            "hire": false,
+            "budget": false
+          },
+          {
+            "message_id": 8542689,
+            "community": "Bybit English",
+            "preview": "The U.S. Commodity Futures Trading Commission (CFTC) warns against risky \"male\" contracts in prediction markets.",
+            "repair": false,
+            "automation": false,
+            "ownership": false,
+            "direct": false,
+            "hire": false,
+            "budget": false
+          },
+          {
+            "message_id": 8535615,
+            "community": "Bitget English Official",
+            "preview": "🚨 CFTC Issues Guidance on Prediction Market Risks The Commodity Futures Trading Commission has warned regulated entities that \"mention markets\"—contracts based ",
+            "repair": false,
+            "automation": false,
+            "ownership": false,
+            "direct": false,
+            "hire": false,
+            "budget": false
+          }
+        ],
+        "veto_hard": [
+          {
+            "message_id": 8643136,
+            "first_loss": "VETO_service_provider",
+            "community": "Bybit English",
+            "preview": "My affiliate commission payment has not been made. I have already reported the issue regarding the BD, opened a support ticket, and contacted the relevant teams"
+          },
+          {
+            "message_id": 8633532,
+            "first_loss": "VETO_support_question",
+            "community": "OKX English",
+            "preview": "'Crypto Mom' Hester Peirce Announces Official Resignation SEC Commissioner Hester Peirce, widely known as “Crypto Mom” for her influential role in shaping U.S. "
+          },
+          {
+            "message_id": 8632527,
+            "first_loss": "VETO_support_question",
+            "community": "OKX English",
+            "preview": "Hester Peirce, known as ‘Crypto Mom’, departs SEC effective October 2 Peirce's departure from the SEC may stall crypto-friendly regulatory progress, risking dea"
+          },
+          {
+            "message_id": 8632144,
+            "first_loss": "VETO_support_question",
+            "community": "OKX English",
+            "preview": "Ex-CFTC leader to leave Blockchain Association after CLARITY vote fails Former CFTC Commissioner Summer Mersinger joined the Blockchain Association in 2025 afte"
+          },
+          {
+            "message_id": 8618788,
+            "first_loss": "VETO_support_question",
+            "community": "THORChain Community",
+            "preview": "Quick recap of THORChain Podcast #237 for anyone who didn’t have 2h40 to spare 😄 • Houdini / STO Houdini private swaps are completely optional and do NOT go thr"
+          }
+        ]
+      }
+    },
+    "refined_frozen": {
+      "since": "2025-09-30T17:54:03.414786+00:00",
+      "funnel": {
+        "name": "refined_frozen",
+        "pool_n": 102,
+        "stages": {
+          "pool": 102,
+          "after_hard_exclude_pass": 100,
+          "after_veto_pass": 28,
+          "after_path_or_direction": 16,
+          "eligible_candidate": 16,
+          "low_enqueueable": 10,
+          "pct_retained_eligible": 15.69,
+          "pct_retained_low_enqueue": 9.8,
+          "pct_removed_to_eligible": 84.31
+        },
+        "first_loss": {
+          "VETO_job_aggregator": 26,
+          "VETO_corporate_employment": 25,
+          "RETRIEVED": 16,
+          "VETO_support_question": 15,
+          "NO_PATH_MATCH": 12,
+          "VETO_service_provider": 4,
+          "VETO_job_seeker": 2,
+          "HARD_EXCLUDE_EARLY": 2
+        },
+        "loss_family": {
+          "hard_veto": 74,
+          "survivor": 16,
+          "semantic_miss": 12
+        },
+        "eligible": 16,
+        "eligible_LOW": 10,
+        "eligible_pct": 15.69,
+        "carve_true_count": 13,
+        "path_hits_among_eligible": {
+          "A": 16,
+          "E": 16,
+          "CARVE": 13,
+          "D": 3,
+          "B": 2
+        },
+        "eligible_triggers": {
+          "v6_budget_deliverable": 13,
+          "v6_repair_domain": 2,
+          "v6_project_procurement": 1
+        },
+        "contamination_pct": 0.0,
+        "near_miss_buyerish_nopath": 0
+      },
+      "samples": {
+        "survivors": [
+          {
+            "message_id": 270490,
+            "tier": "LOW",
+            "trigger": "v6_budget_deliverable",
+            "paths": [
+              "A",
+              "E"
+            ],
+            "carve": false,
+            "community": "DeJob Global—Web3 Jobs📮",
+            "preview": "#Recruitment 🏡 Wormhole #Infra #Cross·Chain 🐇 Introduction: https://wormhole.com/ A decentralized, universal message-passing protocol. 🛵 #FullTime #Remote 📚 #Ju",
+            "would_enqueue_low": true
+          },
+          {
+            "message_id": 196,
+            "tier": "LOW",
+            "trigger": "v6_budget_deliverable",
+            "paths": [
+              "A",
+              "E",
+              "CARVE"
+            ],
+            "carve": true,
+            "community": "Web3 Jobs | LaborX",
+            "preview": "🌟 Freelance Opportunity: Create a trading bot for 2,500 PEPE. 💰 Budget: $15 🤝 With: Quetta Audy",
+            "would_enqueue_low": true
+          },
+          {
+            "message_id": 22713,
+            "tier": "HIGH",
+            "trigger": "v6_budget_deliverable",
+            "paths": [
+              "A",
+              "E",
+              "CARVE"
+            ],
+            "carve": true,
+            "community": "Web3 Jobs | LaborX",
+            "preview": "🌟 Freelance Opportunity: Crypto Trading Bot Developer 💰 Budget: $200 🤝 With: Yohans Hayla",
+            "would_enqueue_low": false
+          },
+          {
+            "message_id": 22763,
+            "tier": "LOW",
+            "trigger": "v6_budget_deliverable",
+            "paths": [
+              "A",
+              "E",
+              "CARVE"
+            ],
+            "carve": true,
+            "community": "Web3 Jobs | LaborX",
+            "preview": "🌟 Freelance Opportunity: Senior Solana MEV / Flash Loan Arbitrage Bot Developer 💰 Budget: $100 🤝 With: Obukohwo David",
+            "would_enqueue_low": true
+          },
+          {
+            "message_id": 23747,
+            "tier": "LOW",
+            "trigger": "v6_budget_deliverable",
+            "paths": [
+              "A",
+              "E",
+              "CARVE"
+            ],
+            "carve": true,
+            "community": "Web3 Jobs | LaborX",
+            "preview": "🌟 Freelance Opportunity: Sales Closer Needed to Sell High-Performance Trading Bot 💰 Budget: $100 🤝 With: EARNEST MWAURA",
+            "would_enqueue_low": true
+          },
+          {
+            "message_id": 24048,
+            "tier": "HIGH",
+            "trigger": "v6_repair_domain",
+            "paths": [
+              "A",
+              "B",
+              "D",
+              "E",
+              "CARVE"
+            ],
+            "carve": true,
+            "community": "Web3 Jobs | LaborX",
+            "preview": "🌟 Freelance Opportunity: Need Developer to Fix Polymarket Trading Bot (Urgent) 💰 Budget: $1500 🤝 With: Maxu",
+            "would_enqueue_low": false
+          },
+          {
+            "message_id": 24091,
+            "tier": "HIGH",
+            "trigger": "v6_repair_domain",
+            "paths": [
+              "A",
+              "B",
+              "D",
+              "E",
+              "CARVE"
+            ],
+            "carve": true,
+            "community": "Web3 Jobs | LaborX",
+            "preview": "🌟 Freelance Opportunity: Need Developer to Fix Polymarket Trading Bot (Urgent) 💰 Budget: $500 🤝 With: Thomas Ken",
+            "would_enqueue_low": false
+          },
+          {
+            "message_id": 24114,
+            "tier": "LOW",
+            "trigger": "v6_budget_deliverable",
+            "paths": [
+              "A",
+              "E",
+              "CARVE"
+            ],
+            "carve": true,
+            "community": "Web3 Jobs | LaborX",
+            "preview": "🌟 Freelance Opportunity: Improve Safety for a TypeScript Polymarket Copy-Trading Bot 💰 Budget: $4000 🤝 With: dub",
+            "would_enqueue_low": true
+          }
+        ],
+        "near_miss_buyerish": [],
+        "no_path": [
+          {
+            "message_id": 383234,
+            "community": "cTrader Algorithmic Trading",
+            "preview": "Another clean GOLD session closed in profit. Profit: $567.75 Commission: -$1.20 Net result: $566.55 Focused execution, disciplined risk management, and letting ",
+            "repair": false,
+            "automation": false,
+            "ownership": false,
+            "direct": false,
+            "hire": false,
+            "budget": true
+          },
+          {
+            "message_id": 389224,
+            "community": "MQL5 Algo Trading",
+            "preview": "Part 2 connects dynamic risk-budget computation to position sizing via WParamCalibrator. The calibrator converts risk_budget_pct into a sigmoid w parameter, the",
+            "repair": false,
+            "automation": false,
+            "ownership": false,
+            "direct": false,
+            "hire": false,
+            "budget": true
+          },
+          {
+            "message_id": 383618,
+            "community": "cTrader Algorithmic Trading",
+            "preview": "Another session, another solid performance. 💰📈 ✅ Profit: $480.05 ✅ 5 winning trades ✅ Total volume: 0.50 lots ✅ Commission: $2.00 ✅ Net balance: $478.05 Consist",
+            "repair": false,
+            "automation": false,
+            "ownership": false,
+            "direct": false,
+            "hire": false,
+            "budget": true
+          },
+          {
+            "message_id": 389337,
+            "community": "MQL5 Algo Trading",
+            "preview": "Running one EA per symbol hides portfolio risk: correlated pairs can stack exposure, turning multiple “safe” trades into one concentrated drawdown. The article ",
+            "repair": false,
+            "automation": false,
+            "ownership": false,
+            "direct": false,
+            "hire": true,
+            "budget": true
+          },
+          {
+            "message_id": 5691596,
+            "community": "Phemex Global",
+            "preview": "Wang represents the elite cohort of technical founders who built the unglamorous data plumbing everyone else depends on. Now that Mark Zuckerberg has given him ",
+            "repair": false,
+            "automation": false,
+            "ownership": false,
+            "direct": false,
+            "hire": false,
+            "budget": true
+          },
+          {
+            "message_id": 389826,
+            "community": "MQL5 Algo Trading",
+            "preview": "This article replaces gap-focused trailing logic (Skip-List + Hopfield) with a two-stage trailing stop built for smoother, continuous trends: Reservoir Sampling",
+            "repair": false,
+            "automation": false,
+            "ownership": false,
+            "direct": false,
+            "hire": false,
+            "budget": true
+          },
+          {
+            "message_id": 390144,
+            "community": "MQL5 Algo Trading",
+            "preview": "Most retail EAs still size positions with fixed lots or static percent risk. That approach ignores regime changes: when volatility expands, a constant stop dist",
+            "repair": false,
+            "automation": false,
+            "ownership": false,
+            "direct": false,
+            "hire": false,
+            "budget": true
+          },
+          {
+            "message_id": 271767,
+            "community": "0xilluminati - WEB3 JOBS (HIRING / LOOKING)",
+            "preview": "Seeking or Hiring: 🔥SEEKING🔥 My Website + Twitter + LinkedIn profile : https://www.linkedin.com/in/motxxa/ My Experience (in bullets) : Crypto-native marketing ",
+            "repair": false,
+            "automation": false,
+            "ownership": false,
+            "direct": false,
+            "hire": false,
+            "budget": true
+          }
+        ],
+        "veto_hard": [
+          {
+            "message_id": 8618788,
+            "first_loss": "VETO_support_question",
+            "community": "THORChain Community",
+            "preview": "Quick recap of THORChain Podcast #237 for anyone who didn’t have 2h40 to spare 😄 • Houdini / STO Houdini private swaps are completely optional and do NOT go thr"
+          },
+          {
+            "message_id": 8593743,
+            "first_loss": "VETO_support_question",
+            "community": "THORChain Community",
+            "preview": "as for Marketing, I am sure the vast majority of people are behind Kenton anyone in business, who has done mail-in flyers or SEO on websites knows how difficult"
+          },
+          {
+            "message_id": 8560440,
+            "first_loss": "VETO_job_aggregator",
+            "community": "Web3 Jobs | LaborX",
+            "preview": "🌟 Freelance Opportunity: Platforms to Buy Verified Bybit Accounts LocalUsaShop 💰 Budget: $156 🤝 With: Top Website for Buy Verified Stripe Accounts In 2026"
+          },
+          {
+            "message_id": 8488757,
+            "first_loss": "VETO_job_aggregator",
+            "community": "JobStash.xyz - Crypto Native, Web3 and AI Jobs",
+            "preview": "Ping Identity Corporation is hiring a remote Senior Director of Marketing Operations Ping Identity is looking for a Senior Director of Marketing Operations to l"
+          },
+          {
+            "message_id": 8791,
+            "first_loss": "VETO_corporate_employment",
+            "community": "CryptoJobsList | Chat",
+            "preview": "💗 A useful way to understand what you should build next in your career is to look at jobs you’re not ready for yet. Find roles one level above where you are now"
+          }
+        ]
+      }
+    },
+    "recent_scored_since_path_b": {
+      "limit": 2500,
+      "funnel": {
+        "name": "recent_scored_since_path_b",
+        "pool_n": 645,
+        "stages": {
+          "pool": 645,
+          "after_hard_exclude_pass": 643,
+          "after_veto_pass": 605,
+          "after_path_or_direction": 0,
+          "eligible_candidate": 0,
+          "low_enqueueable": 0,
+          "pct_retained_eligible": 0.0,
+          "pct_retained_low_enqueue": 0.0,
+          "pct_removed_to_eligible": 100.0
+        },
+        "first_loss": {
+          "NO_PATH_MATCH": 605,
+          "VETO_support_question": 26,
+          "VETO_service_provider": 11,
+          "HARD_EXCLUDE_EARLY": 2,
+          "VETO_corporate_employment": 1
+        },
+        "loss_family": {
+          "semantic_miss": 605,
+          "hard_veto": 40
+        },
+        "eligible": 0,
+        "eligible_LOW": 0,
+        "eligible_pct": 0.0,
+        "carve_true_count": 0,
+        "path_hits_among_eligible": {},
+        "eligible_triggers": {},
+        "contamination_pct": 0.0,
+        "near_miss_buyerish_nopath": 0
+      },
+      "samples": {
+        "survivors": [],
+        "near_miss_buyerish": [],
+        "no_path": [
+          {
+            "message_id": 8644960,
+            "community": "MEXC Announcements",
+            "preview": "Voting Result and Listing Arrangement for Dust Swap (DUST) Kickstarter #New_Listings",
+            "repair": false,
+            "automation": false,
+            "ownership": false,
+            "direct": false,
+            "hire": false,
+            "budget": false
+          },
+          {
+            "message_id": 8644959,
+            "community": "XT Exchange Official",
+            "preview": "Bitcoin?",
+            "repair": false,
+            "automation": false,
+            "ownership": false,
+            "direct": false,
+            "hire": false,
+            "budget": false
+          },
+          {
+            "message_id": 8644958,
+            "community": "XT Exchange Official",
+            "preview": "Hlw everyone",
+            "repair": false,
+            "automation": false,
+            "ownership": false,
+            "direct": false,
+            "hire": false,
+            "budget": false
+          },
+          {
+            "message_id": 8644957,
+            "community": "XT Exchange Official",
+            "preview": "Sol",
+            "repair": false,
+            "automation": false,
+            "ownership": false,
+            "direct": false,
+            "hire": false,
+            "budget": false
+          },
+          {
+            "message_id": 8644956,
+            "community": "XT Exchange Official",
+            "preview": "SOL/USDT 💰 Price: 120.38 USDT 💰 Change(24H): +3.53%🟢 ⬆️ High(24H): $122.90 ⬇️ Low(24H): $115.90 📊 Volume(24H): $161697431.16717",
+            "repair": false,
+            "automation": false,
+            "ownership": false,
+            "direct": false,
+            "hire": false,
+            "budget": true
+          }
+        ]
+      }
+    },
+    "recent_low_7d": {
+      "limit": 5000,
+      "funnel": {
+        "name": "recent_low_7d_sample",
+        "pool_n": 5000,
+        "stages": {
+          "pool": 5000,
+          "after_hard_exclude_pass": 4989,
+          "after_veto_pass": 4717,
+          "after_path_or_direction": 0,
+          "eligible_candidate": 0,
+          "low_enqueueable": 0,
+          "pct_retained_eligible": 0.0,
+          "pct_retained_low_enqueue": 0.0,
+          "pct_removed_to_eligible": 100.0
+        },
+        "first_loss": {
+          "NO_PATH_MATCH": 4717,
+          "VETO_support_question": 162,
+          "VETO_service_provider": 109,
+          "HARD_EXCLUDE_EARLY": 11,
+          "VETO_corporate_employment": 1
+        },
+        "loss_family": {
+          "semantic_miss": 4717,
+          "hard_veto": 283
+        },
+        "eligible": 0,
+        "eligible_LOW": 0,
+        "eligible_pct": 0.0,
+        "carve_true_count": 0,
+        "path_hits_among_eligible": {},
+        "eligible_triggers": {},
+        "contamination_pct": 0.0,
+        "near_miss_buyerish_nopath": 0
+      }
+    }
+  },
+  "fo_probes": {
+    "recovered_carve": "4/4",
+    "rows": [
+      {
+        "lead_id": 1137,
+        "message_id": 25570,
+        "eligible": true,
+        "carve": true,
+        "trigger": "v6_budget_deliverable",
+        "tier": "HIGH"
+      },
+      {
+        "lead_id": 1138,
+        "message_id": 25571,
+        "eligible": true,
+        "carve": true,
+        "trigger": "v6_budget_deliverable",
+        "tier": "HIGH"
+      },
+      {
+        "lead_id": 1139,
+        "message_id": 22713,
+        "eligible": true,
+        "carve": true,
+        "trigger": "v6_budget_deliverable",
+        "tier": "HIGH"
+      },
+      {
+        "lead_id": 1140,
+        "message_id": 25400,
+        "eligible": true,
+        "carve": true,
+        "trigger": "v6_budget_deliverable",
+        "tier": "HIGH"
+      }
+    ]
+  },
+  "density": {
+    "empiric_ub_per_hour_standing": 0.018,
+    "pre_fix_contam_rate_per_hour": 0.54,
+    "refined_frozen": {
+      "pool_n": 102,
+      "eligible": 16,
+      "eligible_LOW": 10,
+      "audit_days": 360.55,
+      "implied_low_per_day": 0.0277,
+      "implied_low_per_hour": 0.00115,
+      "implied_any_per_day": 0.0444,
+      "implied_any_per_hour": 0.00185
+    },
+    "recent_low_7d_current_code": {
+      "sample_n": 5000,
+      "eligible": 0,
+      "eligible_LOW": 0,
+      "empiric_per_hour": 0.0,
+      "empiric_per_day": 0.0,
+      "first_loss": {
+        "NO_PATH_MATCH": 4717,
+        "VETO_support_question": 162,
+        "VETO_service_provider": 109,
+        "HARD_EXCLUDE_EARLY": 11,
+        "VETO_corporate_employment": 1
+      },
+      "near_miss_buyerish": 0
+    },
+    "recent_scored_since_path_b": {
+      "sample_n": 645,
+      "eligible": 0,
+      "eligible_LOW": 0,
+      "p_low_enqueue": 0.0,
+      "live_score_per_hour": 1944.0,
+      "implied_cand_per_hour": 0.0,
+      "first_loss": {
+        "NO_PATH_MATCH": 605,
+        "VETO_support_question": 26,
+        "VETO_service_provider": 11,
+        "HARD_EXCLUDE_EARLY": 2,
+        "VETO_corporate_employment": 1
+      },
+      "near_miss_buyerish": 0
+    },
+    "compare": {
+      "live_post_path_b_rate_per_hour": 0.0,
+      "vs_empiric_ub": "below_or_at_zero",
+      "vs_pre_fix_0_54": "far_below_contam_rate",
+      "expected_count_path_b_window": 0.006,
+      "poisson_note": "With UB 0.018/h, expected count remains ≪1 until ~55h; zero NEW in sub-hour / few-hour windows is the null."
+    }
+  },
+  "dominant_rejection_refined": "VETO_job_aggregator",
+  "next_hypothesis": "Continue live observe to first NEW disc_v6 candidate OR ≥4–8h post path_b (expected_count at standing UB 0.018/h still <1 until ~55h; current-code recent LOW empiric is 0/5000 → effective rate may be ≪0.018/h). First NEW quality check (clean RFQ vs residual contam on untouched path) is the strongest next measurement. Do NOT enable shadow or reopen path_b/c without explicit authorization + evidence.",
+  "business": {
+    "outreach": false,
+    "ml_go": false,
+    "threshold_loosen": false,
+    "path_b_c_reopened": false,
+    "shadow_enabled_unchanged": true,
+    "fo_carve_untouched": true,
+    "discovery_semantic_change": false,
+    "label_mutation": false
+  },
+  "locks_honored": [
+    "no path/carve/threshold/veto/shadow enable",
+    "no wipe",
+    "no ML GO",
+    "no label mutation",
+    "no .env",
+    "no community expansion",
+    "no Optuna/SHAP/LLM"
+  ]
+}
