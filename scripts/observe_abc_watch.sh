@@ -107,7 +107,10 @@ evaluate_once() {
     return 10
   fi
 
-  printf '%s\n' "OBSERVE_OK {\"at\":\"${NOW}\",\"new\":${NEW},\"hl\":${HL},\"ac\":${AC},\"msg_1h\":${MSG1H},\"score_1h\":${SCORE1H},\"xlen\":${XLEN},\"pending\":${PENDING},\"lag\":${LAG},\"consumers\":${CONSUMERS}}"
+  # Quiet path: only --once prints OBSERVE_OK; the loop stays silent.
+  if [[ "${ONCE:-0}" -eq 1 ]]; then
+    printf '%s\n' "OBSERVE_OK {\"at\":\"${NOW}\",\"new\":${NEW},\"hl\":${HL},\"ac\":${AC},\"msg_1h\":${MSG1H},\"score_1h\":${SCORE1H},\"xlen\":${XLEN},\"pending\":${PENDING},\"lag\":${LAG},\"consumers\":${CONSUMERS}}"
+  fi
   return 0
 }
 
