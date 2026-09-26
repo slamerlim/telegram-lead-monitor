@@ -11,7 +11,8 @@
 |--------|--------|
 | Enable (env-only) | `2026-09-25T19:27:00Z` (Evidence 106) |
 | path_b deploy | `2026-09-26T06:53:16Z` (Evidence 109) |
-| Earliest timed remesure | `2026-09-26T10:53:16Z` (≥4h post–path_b) |
+| Earliest timed remesure | `2026-09-26T10:53:16Z` (≥4h post–path_b) — **done** Evidence 117 |
+| Cycle 11 remesure | `2026-09-26T10:58Z` — RESIDUAL_SCARCITY; NEW=0 / scores=7649 / ~4.1h |
 | Isolation expect | `human_labels=1524`, `AI_CONFIRMED=4` |
 | Standing rate UB | `≈0.018/h` (E103/104 empiric LOW) |
 | Discovery version | `disc_v6`, cap `120/h`, enabled `true` |
@@ -68,13 +69,14 @@ Note: since-enable aggregate still includes 6 historical CONTAMINATED rows; prim
 
 ## Standing classification (until resume)
 
-- **RESIDUAL_SCARCITY** — 0 NEW / ~2k scored post path_b (empiric ≪ 0.018/h)
+- **RESIDUAL_SCARCITY** — Evidence 117: 0 NEW / 7649 scored / ~4.1h post–path_b (rate 0 vs UB 0.018/h; expected≈0.07)
 - **EXPECTED_IDLE** — 900s scheduler waves (Evidence 114)
 - **INTENTIONAL_SHADOW_OFF** — episode→AI handoff gated (Evidence 111)
 - **Invite-expired** — community 132 NOISE (Evidence 115)
+- Retained 6 pre–path_b disc_v6 rows remain CONTAMINATED historically — verifier primary window is NEW-since-path_b (E117 observability fix)
 
 ## Next hypothesis
 
-**Cycle 11:** Timed remesure after ≥4h post–path_b **or** first NEW disc_v6 — classify rate/quality under frozen path_b+c; escalate only on PIPELINE/REDIS/WORKER/QUERY or isolation drift.
+**Cycle 12+:** Resume on **first NEW disc_v6** (quality-classify; do not reopen path_b/c) or PIPELINE/REDIS/WORKER/QUERY/isolation drift. Do not busy remesure. Do not enable shadow without auth.
 
 First-iteration is **CLOSED**. Continuous observe remains **ACTIVE** (not “finished forever”).

@@ -94,6 +94,13 @@ def test_classify_short_zero_is_expected_low_rate() -> None:
     )
 
 
+def test_classify_long_zero_with_scores_is_residual_scarcity() -> None:
+    assert (
+        classify_rate(hours=4.0, cand_count=0, score_count=7000)
+        == FailureClass.RESIDUAL_SCARCITY
+    )
+
+
 def test_classify_contaminated_above_threshold() -> None:
     assert (
         classify_rate(hours=11.0, cand_count=6, contamination_pct=100.0)
@@ -108,10 +115,10 @@ def test_classify_above_expected_clean() -> None:
     )
 
 
-def test_classify_near_expected() -> None:
+def test_classify_near_expected_is_new_activity() -> None:
     assert (
         classify_rate(hours=24.0, cand_count=1, contamination_pct=0.0)
-        == FailureClass.EXPECTED_LOW_RATE
+        == FailureClass.NEW_ACTIVITY
     )
 
 
@@ -130,6 +137,16 @@ def test_prioritize_contaminated_over_above_expected() -> None:
     assert (
         prioritize_failure(
             FailureClass.ABOVE_EXPECTED,
+            FailureClass.CONTAMINATED,
+        )
+        == FailureClass.CONTAMINATED
+    )
+
+
+def test_prioritize_residual_below_contaminated() -> None:
+    assert (
+        prioritize_failure(
+            FailureClass.RESIDUAL_SCARCITY,
             FailureClass.CONTAMINATED,
         )
         == FailureClass.CONTAMINATED

@@ -7,8 +7,11 @@ blind-XACK Redis.
 
 Failure classes (explicit; mutually prioritized):
   DB_FAILURE, REDIS_FAILURE, QUERY_FAILURE, WORKER_FAILURE, PIPELINE_FAILURE,
-  NO_DATA, EXPECTED_LOW_RATE — plus OK / ABOVE_EXPECTED / CONTAMINATED for
-  rate/quality when infra is healthy.
+  NO_DATA, CONTAMINATED, ABOVE_EXPECTED, RESIDUAL_SCARCITY, EXPECTED_LOW_RATE,
+  NEW_ACTIVITY, OK — for rate/quality when infra is healthy.
+
+Primary live rate window (post path_b/c freeze) is NEW-since-path_b, not
+since-enable. Retained pre-path_b disc_v6 rows must not drive CONTAMINATED.
 
 Hard rule: score inventory uses message_scores (never a table named scores).
 """
@@ -59,6 +62,8 @@ from scripts.audit_disc_v6_refined_population_cycle2 import (  # noqa: E402
 
 EV_DEFAULT = "107"
 ENABLE_AT_DEFAULT = "2026-09-25T19:27:00+00:00"
+# Evidence 109 path_b deploy — primary post-fix measurement window.
+PATH_B_AT_DEFAULT = "2026-09-26T06:53:16+00:00"
 # Evidence 104 empiric UB for disc_v6-eligible among recent LOW traffic.
 EXPECTED_RATE_PER_HOUR = 0.018
 # Poisson-ish short-window tolerance: treat zero as EXPECTED_LOW_RATE when
@@ -144,6 +149,8 @@ class FailureClass(str, Enum):
     OK = "OK"
     NO_DATA = "NO_DATA"
     EXPECTED_LOW_RATE = "EXPECTED_LOW_RATE"
+    RESIDUAL_SCARCITY = "RESIDUAL_SCARCITY"
+    NEW_ACTIVITY = "NEW_ACTIVITY"
     ABOVE_EXPECTED = "ABOVE_EXPECTED"
     CONTAMINATED = "CONTAMINATED"
     QUERY_FAILURE = "QUERY_FAILURE"
@@ -175,26 +182,32 @@ def classify_rate(
     expected_count_threshold: float = EXPECTED_COUNT_THRESHOLD,
     contamination_pct: float | None = None,
     contam_threshold_pct: float = 50.0,
+    score_count: int | None = None,
 ) -> FailureClass:
     """Classify observed candidate rate vs empiric low-rate baseline.
 
-    Short zeros while expected count < threshold → EXPECTED_LOW_RATE (not success,
-    not failure). High contamination among live eligibles → CONTAMINATED.
+    Short zeros while expected count < threshold → EXPECTED_LOW_RATE.
+    Long zeros with scored denominator → RESIDUAL_SCARCITY.
+    High contamination among *window* eligibles → CONTAMINATED.
     """
     if hours <= 0:
         return FailureClass.NO_DATA
     expected = expected_per_hour * hours
-    if cand_count == 0 and expected < expected_count_threshold:
-        return FailureClass.EXPECTED_LOW_RATE
-    if cand_count == 0 and expected >= expected_count_threshold:
-        # Enough wall time that zero is suspicious vs empiric UB — still may be
-        # poisson; treat as EXPECTED_LOW_RATE until pipeline signals disagree.
+    if cand_count == 0:
+        # Long scored windows (e.g. ≥4h post–path_b remesure) → RESIDUAL_SCARCITY
+        # even when expected_count under Poisson threshold of 1.
+        if score_count is not None and score_count > 0 and hours >= 4.0:
+            return FailureClass.RESIDUAL_SCARCITY
+        if expected < expected_count_threshold:
+            return FailureClass.EXPECTED_LOW_RATE
+        if score_count is not None and score_count > 0:
+            return FailureClass.RESIDUAL_SCARCITY
         return FailureClass.EXPECTED_LOW_RATE
     if contamination_pct is not None and contamination_pct >= contam_threshold_pct:
         return FailureClass.CONTAMINATED
     if cand_count > max(expected_count_threshold, expected * 3):
         return FailureClass.ABOVE_EXPECTED
-    return FailureClass.EXPECTED_LOW_RATE
+    return FailureClass.NEW_ACTIVITY
 
 
 def prioritize_failure(*classes: FailureClass) -> FailureClass:
@@ -208,7 +221,9 @@ def prioritize_failure(*classes: FailureClass) -> FailureClass:
         FailureClass.NO_DATA,
         FailureClass.CONTAMINATED,
         FailureClass.ABOVE_EXPECTED,
+        FailureClass.RESIDUAL_SCARCITY,
         FailureClass.EXPECTED_LOW_RATE,
+        FailureClass.NEW_ACTIVITY,
         FailureClass.OK,
     ]
     present = set(classes)
@@ -431,10 +446,13 @@ async def run_baseline(
     enable_at: datetime,
     evidence_id: str,
     write_evidence: bool,
+    path_b_at: datetime | None = None,
 ) -> dict[str, Any]:
     t0 = time.time()
     classes: list[FailureClass] = []
     notes: list[str] = []
+    if path_b_at is None:
+        path_b_at = datetime.fromisoformat(PATH_B_AT_DEFAULT.replace("Z", "+00:00"))
 
     # Validate verifier SQL itself.
     try:
@@ -457,9 +475,12 @@ async def run_baseline(
 
     iso: dict[str, Any] = {}
     windows: dict[str, Any] = {}
+    windows_path_b: dict[str, Any] = {}
     by_ver: list[dict[str, Any]] = []
     live_cands: list[dict[str, Any]] = []
+    live_cands_path_b: list[dict[str, Any]] = []
     live_eval: list[dict[str, Any]] = []
+    live_eval_path_b: list[dict[str, Any]] = []
     replay: dict[str, Any] = {}
     probes_out: list[dict[str, Any]] = []
 
@@ -490,6 +511,15 @@ async def run_baseline(
                 .mappings()
                 .one()
             )
+            windows_path_b = dict(
+                (
+                    await session.execute(
+                        sql_text(WINDOWS_SQL), {"since": path_b_at}
+                    )
+                )
+                .mappings()
+                .one()
+            )
             by_ver = [
                 dict(r)
                 for r in (
@@ -506,7 +536,22 @@ async def run_baseline(
                 .mappings()
                 .all()
             ]
-            seed_ids = [int(c["seed_message_id"]) for c in live_cands]
+            live_cands_path_b = [
+                dict(r)
+                for r in (
+                    await session.execute(
+                        sql_text(LIVE_CANDS_SQL), {"since": path_b_at}
+                    )
+                )
+                .mappings()
+                .all()
+            ]
+            seed_ids = sorted(
+                {
+                    int(c["seed_message_id"])
+                    for c in (live_cands + live_cands_path_b)
+                }
+            )
             seed_rows: list[dict[str, Any]] = []
             if seed_ids:
                 seed_rows = [
@@ -556,55 +601,79 @@ async def run_baseline(
         }
 
     # Live seed evaluation + contamination.
+    # Primary quality window = NEW since path_b; since-enable retained hist is secondary.
     seed_by_id = {int(r["id"]): r for r in seed_rows}
-    live_elig_cands: list[tuple] = []
-    for c in live_cands:
-        sid = int(c["seed_message_id"])
-        row = seed_by_id.get(sid) or {}
-        text = row.get("text") or ""
-        f6 = evaluate_discovery(scorer, text, version=DISCOVERY_VERSION_V6)
-        f4 = evaluate_discovery(scorer, text, version=DISCOVERY_VERSION_V4)
-        bucket = population_bucket(f6)
-        item = {
-            "candidate_id": c["id"],
-            "seed_message_id": sid,
-            "community_id": c.get("community_id"),
-            "community_name": row.get("community_name"),
-            "author_id": c.get("author_id"),
-            "trigger_type": c.get("trigger_type"),
-            "status": c.get("status"),
-            "scorer_tier": c.get("scorer_tier"),
-            "score": row.get("score"),
-            "lead_type": row.get("lead_type"),
-            "v6_eligible": bool(f6.eligible),
-            "v6_first_loss": first_loss(f6),
-            "v6_trigger": f6.trigger_type,
-            "v6_direction": f6.buyer_direction,
-            "v6_bucket": bucket,
-            "v6_automation": bool(f6.automation_signal),
-            "v6_marketing": bool(f6.marketing_signal),
-            "v6_provider": bool(f6.provider_signal),
-            "v4_eligible": bool(f4.eligible),
-            "v4_first_loss": first_loss(f4),
-            "v4_trigger": f4.trigger_type,
-            "preview": _preview(text),
-        }
-        live_eval.append(item)
-        if f6.eligible:
-            live_elig_cands.append((sid, text, f6, bucket))
 
-    audit_contam = contamination(live_elig_cands) if live_elig_cands else None
-    qual_contam = qualitative_live_contamination(live_eval)
+    def _eval_cands(cands: list[dict[str, Any]]) -> tuple[list[dict[str, Any]], list[tuple]]:
+        out: list[dict[str, Any]] = []
+        elig: list[tuple] = []
+        for c in cands:
+            sid = int(c["seed_message_id"])
+            row = seed_by_id.get(sid) or {}
+            text = row.get("text") or ""
+            f6 = evaluate_discovery(scorer, text, version=DISCOVERY_VERSION_V6)
+            f4 = evaluate_discovery(scorer, text, version=DISCOVERY_VERSION_V4)
+            bucket = population_bucket(f6)
+            item = {
+                "candidate_id": c["id"],
+                "seed_message_id": sid,
+                "community_id": c.get("community_id"),
+                "community_name": row.get("community_name"),
+                "author_id": c.get("author_id"),
+                "trigger_type": c.get("trigger_type"),
+                "status": c.get("status"),
+                "scorer_tier": c.get("scorer_tier"),
+                "score": row.get("score"),
+                "lead_type": row.get("lead_type"),
+                "v6_eligible": bool(f6.eligible),
+                "v6_first_loss": first_loss(f6),
+                "v6_trigger": f6.trigger_type,
+                "v6_direction": f6.buyer_direction,
+                "v6_bucket": bucket,
+                "v6_automation": bool(f6.automation_signal),
+                "v6_marketing": bool(f6.marketing_signal),
+                "v6_provider": bool(f6.provider_signal),
+                "v4_eligible": bool(f4.eligible),
+                "v4_first_loss": first_loss(f4),
+                "v4_trigger": f4.trigger_type,
+                "preview": _preview(text),
+                "created_at": c.get("created_at"),
+            }
+            out.append(item)
+            if f6.eligible:
+                elig.append((sid, text, f6, bucket))
+        return out, elig
+
+    live_eval, live_elig_cands = _eval_cands(live_cands)
+    live_eval_path_b, live_elig_path_b = _eval_cands(live_cands_path_b)
+
+    audit_contam_enable = contamination(live_elig_cands) if live_elig_cands else None
+    qual_contam_enable = qualitative_live_contamination(live_eval)
+    audit_contam = contamination(live_elig_path_b) if live_elig_path_b else None
+    qual_contam = qualitative_live_contamination(live_eval_path_b)
     # Prefer qualitative when audit undercounts false-BUYER promo/support.
     live_contam = audit_contam
-    if qual_contam.get("pct") is not None and (
-        audit_contam is None or float(qual_contam["pct"]) > float(audit_contam or 0)
-    ):
-        live_contam = float(qual_contam["pct"])
-        notes.append(
-            f"qualitative_contam_override audit={audit_contam} "
-            f"qual={qual_contam['pct']} reasons={qual_contam.get('reason_counts')}"
+    if (
+        qual_contam
+        and qual_contam.get("pct") is not None
+        and (
+            audit_contam is None
+            or float(qual_contam.get("pct") or 0) > float(audit_contam or 0)
         )
+    ):
+        live_contam = float(qual_contam.get("pct") or 0)
+        notes.append(
+            "qualitative_contam_override "
+            f"audit={audit_contam} qual={qual_contam.get('pct')} "
+            f"reasons={qual_contam.get('reason_counts')}"
+        )
+    # Retained since-enable contam for context only (must not drive primary class).
+    retained_contam = audit_contam_enable
+    if qual_contam_enable and (
+        audit_contam_enable is None
+        or float(qual_contam_enable.get("pct") or 0) > float(audit_contam_enable or 0)
+    ):
+        retained_contam = float(qual_contam_enable.get("pct") or 0)
 
     # Replay populations.
     refined_rx = re.compile(REFINED_COMMERCIAL, re.I)
@@ -674,8 +743,11 @@ async def run_baseline(
         )
 
     now = datetime.now(timezone.utc)
-    hours = max(0.0, (now - enable_at).total_seconds() / 3600.0)
-    cand_since = int(windows.get("disc_v6_since") or 0)
+    hours_enable = max(0.0, (now - enable_at).total_seconds() / 3600.0)
+    hours = max(0.0, (now - path_b_at).total_seconds() / 3600.0)
+    cand_since_enable = int(windows.get("disc_v6_since") or 0)
+    cand_since = int(windows_path_b.get("disc_v6_since") or 0)
+    score_since_path_b = int(windows_path_b.get("score_since") or 0)
     rate_per_hour = round(cand_since / hours, 4) if hours > 0 else None
 
     # Isolation
@@ -683,13 +755,21 @@ async def run_baseline(
         iso.get("ai_confirmed") or 0
     ) == 4
 
-    # Infra / pipeline classes
-    if int(windows.get("score_since") or 0) == 0 and int(windows.get("msg_since") or 0) == 0:
+    # Infra / pipeline classes — use path_b window for score/msg stall.
+    if (
+        int(windows_path_b.get("score_since") or 0) == 0
+        and int(windows_path_b.get("msg_since") or 0) == 0
+    ):
         classes.append(FailureClass.NO_DATA)
-        notes.append("NO_DATA: no messages/scores since enable")
-    elif int(windows.get("score_since") or 0) == 0 and int(windows.get("msg_since") or 0) > 0:
+        notes.append("NO_DATA: no messages/scores since path_b")
+    elif (
+        int(windows_path_b.get("score_since") or 0) == 0
+        and int(windows_path_b.get("msg_since") or 0) > 0
+    ):
         classes.append(FailureClass.PIPELINE_FAILURE)
-        notes.append("PIPELINE_FAILURE: messages ingested but no message_scores since enable")
+        notes.append(
+            "PIPELINE_FAILURE: messages ingested but no message_scores since path_b"
+        )
 
     if settings.commercial_discovery_enabled:
         if redis_stats.get("ok") and int(redis_stats.get("consumers") or 0) == 0:
@@ -702,9 +782,8 @@ async def run_baseline(
         # Cross-check redis entries vs DB (do not equate XPENDING=0 with health).
         xlen = int(redis_stats.get("xlen") or 0)
         if cand_since > 0 and xlen == 0 and xpending == 0:
-            # Stream may trim; only flag if DB has recent PENDING not consumed.
             pending_db = sum(
-                1 for c in live_cands if c.get("status") == "PENDING"
+                1 for c in live_cands_path_b if c.get("status") == "PENDING"
             )
             if pending_db > 0:
                 classes.append(FailureClass.PIPELINE_FAILURE)
@@ -713,20 +792,29 @@ async def run_baseline(
                 )
         stuck = [
             c
-            for c in live_cands
+            for c in live_cands_path_b
             if c.get("status") == "PENDING"
+            and c.get("created_at") is not None
             and (now - c["created_at"]).total_seconds() > 600
         ]
         if stuck:
             classes.append(FailureClass.WORKER_FAILURE)
             notes.append(f"WORKER_FAILURE: {len(stuck)} PENDING >10m")
 
+    # Primary rate = NEW since path_b (do not let retained hist drive CONTAMINATED).
     rate_class = classify_rate(
         hours=hours,
         cand_count=cand_since,
-        contamination_pct=live_contam,
+        contamination_pct=live_contam if cand_since > 0 else None,
+        score_count=score_since_path_b,
     )
     classes.append(rate_class)
+    if cand_since_enable > 0 and cand_since == 0:
+        notes.append(
+            f"retained_hist_disc_v6_since_enable={cand_since_enable} "
+            f"retained_contam%={retained_contam} "
+            "(not primary; path_b NEW=0)"
+        )
 
     if not settings.commercial_discovery_enabled:
         notes.append("flag_off: commercial_discovery_enabled=False")
@@ -736,13 +824,19 @@ async def run_baseline(
     # First meaningful loss / limitation for this cycle.
     if primary == FailureClass.CONTAMINATED:
         limitation = (
-            "LIVE_CONTAMINATION: disc_v6 path (esp. v6_automation_domain) enqueued "
-            "non-buyer marketing/support spam; rate ABOVE empiric UB but quality bad"
+            "LIVE_CONTAMINATION: NEW-since-path_b disc_v6 enqueued non-buyer spam"
         )
     elif primary == FailureClass.ABOVE_EXPECTED:
         limitation = "VOLUME_ABOVE_EMPIRIC_UB — inspect triggers/communities before path changes"
+    elif primary == FailureClass.RESIDUAL_SCARCITY:
+        limitation = (
+            "RESIDUAL_SCARCITY — 0 NEW disc_v6 since path_b with scored denominator; "
+            "consistent with empiric UB ~0.018/h under frozen path_b+c"
+        )
     elif primary == FailureClass.EXPECTED_LOW_RATE:
         limitation = "EXPECTED_LOW_RATE — short/low zeros are not success or failure"
+    elif primary == FailureClass.NEW_ACTIVITY:
+        limitation = "NEW_ACTIVITY — post-path_b candidates present; quality-check before path change"
     else:
         limitation = primary.value
 
@@ -756,14 +850,16 @@ async def run_baseline(
 
     summary = {
         "evidence_id": int(evidence_id) if str(evidence_id).isdigit() else evidence_id,
-        "title": "disc_v6 post-enable Cycle 1 baseline",
+        "title": "disc_v6 post-enable / OBSERVE remesure",
         "generated_at": now.isoformat(),
         "head": _git_head(),
-        "parent": "Evidence 106 ENABLED",
+        "parent": "Evidence 106 ENABLED; path_b E109; OBSERVE E116",
         "read_only": True,
         "code_change_scope": "verifier_observability_only",
         "enable_at": enable_at.isoformat(),
-        "hours_since_enable": round(hours, 3),
+        "path_b_at": path_b_at.isoformat(),
+        "hours_since_enable": round(hours_enable, 3),
+        "hours_since_path_b": round(hours, 3),
         "settings": {
             "commercial_discovery_enabled": bool(
                 settings.commercial_discovery_enabled
@@ -785,22 +881,28 @@ async def run_baseline(
         "isolation": iso,
         "isolation_ok": isolation_ok,
         "windows": windows,
+        "windows_path_b": windows_path_b,
         "candidates_by_version_status": by_ver,
         "redis": redis_stats,
         "redis_xpending_not_health": (
             "XPENDING=0 is necessary but not sufficient; cross-check DB writes + consumers"
         ),
         "live_rate": {
-            "disc_v6_since_enable": cand_since,
+            "primary_window": "since_path_b",
+            "disc_v6_since_path_b": cand_since,
+            "disc_v6_since_enable": cand_since_enable,
+            "scores_since_path_b": score_since_path_b,
             "per_hour": rate_per_hour,
             "expected_per_hour_ub": EXPECTED_RATE_PER_HOUR,
             "expected_count": round(EXPECTED_RATE_PER_HOUR * hours, 4),
             "classification": rate_class.value,
             "live_contamination_pct": live_contam,
+            "retained_hist_contamination_pct": retained_contam,
             "audit_contamination_pct": audit_contam,
             "qualitative_contamination": qual_contam,
         },
-        "live_candidates": live_eval,
+        "live_candidates": live_eval_path_b,
+        "live_candidates_retained_since_enable": live_eval,
         "replay": replay,
         "fo_probes": probes_out,
         "failure_class": primary.value,
@@ -808,11 +910,9 @@ async def run_baseline(
         "limitation_class": limitation,
         "historical_first_loss_refined_v6": historical_first_loss,
         "next_hypothesis": (
-            "H1: Tighten v6_automation_domain / path_c so first-person "
-            "'automate my trading' EA marketing (provider/promo) does not "
-            "enqueue; require buyer RFQ / hire / budget / ownership conjuncts "
-            "beyond bare automate+domain. Measure on live seeds 8633878-family "
-            "before any path change."
+            "Continue OBSERVE: next resume on first NEW disc_v6 (quality-classify "
+            "without path reopen) or PIPELINE/REDIS/WORKER/QUERY/isolation drift. "
+            "Do not reopen path_b/c or enable shadow without auth + new loss evidence."
         ),
         "notes": notes,
         "runtime_sec": round(time.time() - t0, 2),
@@ -833,8 +933,12 @@ async def run_baseline(
     }
 
     if write_evidence:
-        out_json = ROOT / f"docs/audit/evidence/{evidence_id}-disc-v6-post-enable-baseline-cycle1.json"
-        out_txt = ROOT / f"docs/audit/evidence/{evidence_id}-disc-v6-post-enable-baseline-cycle1.txt"
+        out_json = ROOT / f"docs/audit/evidence/{evidence_id}-disc-v6-observe-remeasure.json"
+        out_txt = ROOT / f"docs/audit/evidence/{evidence_id}-disc-v6-observe-remeasure.txt"
+        # Keep Evidence 107 filename for id=107 baseline compatibility.
+        if str(evidence_id) == "107":
+            out_json = ROOT / "docs/audit/evidence/107-disc-v6-post-enable-baseline-cycle1.json"
+            out_txt = ROOT / "docs/audit/evidence/107-disc-v6-post-enable-baseline-cycle1.txt"
         out_json.parent.mkdir(parents=True, exist_ok=True)
         # JSON-serialize datetimes
         def _ser(o: Any) -> Any:
@@ -860,10 +964,11 @@ def _format_txt(s: dict[str, Any]) -> str:
     live = s.get("live_rate") or {}
     iso = s.get("isolation") or {}
     win = s.get("windows") or {}
+    win_b = s.get("windows_path_b") or {}
     st = s.get("settings") or {}
     redis = s.get("redis") or {}
     lines = [
-        f"Evidence {s.get('evidence_id')}: disc_v6 post-enable Cycle 1 baseline",
+        f"Evidence {s.get('evidence_id')}: {s.get('title')}",
         f"generated_at={s.get('generated_at')} head={s.get('head')}",
         f"runtime_sec={s.get('runtime_sec')} read_only=true",
         f"failure_class={s.get('failure_class')} rate_class={live.get('classification')}",
@@ -890,22 +995,31 @@ def _format_txt(s: dict[str, Any]) -> str:
         "",
         "=== 4. WINDOWS ===",
         f"  since_enable hours={s.get('hours_since_enable')} enable_at={s.get('enable_at')}",
-        f"  msg/score/cand since={win.get('msg_since')}/{win.get('score_since')}/{win.get('cand_since')} "
-        f"disc_v6_since={win.get('disc_v6_since')}",
+        f"  msg/score/cand since_enable={win.get('msg_since')}/{win.get('score_since')}/{win.get('cand_since')} "
+        f"disc_v6_since_enable={win.get('disc_v6_since')}",
+        f"  since_path_b hours={s.get('hours_since_path_b')} path_b_at={s.get('path_b_at')}",
+        f"  msg/score/cand since_path_b={win_b.get('msg_since')}/{win_b.get('score_since')}/{win_b.get('cand_since')} "
+        f"disc_v6_NEW={win_b.get('disc_v6_since')}",
         f"  1h msg/score/cand={win.get('msg_1h')}/{win.get('score_1h')}/{win.get('cand_1h')}",
         f"  6h msg/score/cand={win.get('msg_6h')}/{win.get('score_6h')}/{win.get('cand_6h')}",
         f"  24h msg/score/cand={win.get('msg_24h')}/{win.get('score_24h')}/{win.get('cand_24h')}",
         f"  by_ver={s.get('candidates_by_version_status')}",
         "",
-        "=== 5. LIVE RATE vs EXPECTED_LOW_RATE ===",
-        f"  disc_v6_since={live.get('disc_v6_since_enable')} rate/h={live.get('per_hour')} "
-        f"expected_ub/h={live.get('expected_per_hour_ub')} expected_count={live.get('expected_count')}",
-        f"  classification={live.get('classification')} live_contam%={live.get('live_contamination_pct')}",
-        "  NOTE: short zero windows are EXPECTED_LOW_RATE — not success or failure.",
+        "=== 5. LIVE RATE (PRIMARY=since_path_b) ===",
+        f"  disc_v6_NEW={live.get('disc_v6_since_path_b')} scores={live.get('scores_since_path_b')} "
+        f"rate/h={live.get('per_hour')} expected_ub/h={live.get('expected_per_hour_ub')} "
+        f"expected_count={live.get('expected_count')}",
+        f"  classification={live.get('classification')} new_contam%={live.get('live_contamination_pct')} "
+        f"retained_hist_contam%={live.get('retained_hist_contamination_pct')}",
+        f"  disc_v6_since_enable(retained)={live.get('disc_v6_since_enable')}",
+        "  NOTE: short zeros are EXPECTED_LOW_RATE; long zeros with scores are RESIDUAL_SCARCITY.",
         "",
-        "=== 6. LIVE CANDIDATES ===",
+        "=== 6. LIVE CANDIDATES (NEW since path_b) ===",
     ]
-    for item in s.get("live_candidates") or []:
+    new_cands = s.get("live_candidates") or []
+    if not new_cands:
+        lines.append("  (none)")
+    for item in new_cands:
         lines.append(
             f"  id={item.get('candidate_id')} seed={item.get('seed_message_id')} "
             f"trig={item.get('trigger_type')} status={item.get('status')} "
@@ -933,7 +1047,7 @@ def _format_txt(s: dict[str, Any]) -> str:
         f"  limitation={s.get('limitation_class')}",
         f"  historical_first_loss_refined_v6={s.get('historical_first_loss_refined_v6')}",
         "",
-        "=== 9. NEXT HYPOTHESIS (no path change this cycle) ===",
+        "=== 9. NEXT HYPOTHESIS ===",
         f"  {s.get('next_hypothesis')}",
         "",
         "=== 10. BUSINESS ===",
@@ -950,14 +1064,17 @@ def _format_txt(s: dict[str, Any]) -> str:
 async def _amain() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--enable-at", default=ENABLE_AT_DEFAULT)
+    parser.add_argument("--path-b-at", default=PATH_B_AT_DEFAULT)
     parser.add_argument("--evidence-id", default=EV_DEFAULT)
     parser.add_argument("--write-evidence", action="store_true", default=True)
     parser.add_argument("--no-write-evidence", action="store_true")
     args = parser.parse_args()
     enable_at = datetime.fromisoformat(args.enable_at.replace("Z", "+00:00"))
+    path_b_at = datetime.fromisoformat(args.path_b_at.replace("Z", "+00:00"))
     write = not args.no_write_evidence
     summary = await run_baseline(
         enable_at=enable_at,
+        path_b_at=path_b_at,
         evidence_id=str(args.evidence_id),
         write_evidence=write,
     )

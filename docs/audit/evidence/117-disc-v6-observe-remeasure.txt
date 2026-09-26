@@ -1,0 +1,70 @@
+Evidence 117: Cycle 11 OBSERVE remesure (Trigger B ≥4h post–path_b)
+experiment_id=OBSERVE_CYCLE11_PATH_B_REMEASURE
+decision=OBSERVE / RESIDUAL_SCARCITY
+path_freeze=path_b+path_c
+shadow=OFF
+code_change=verifier observability (path_b primary window; RESIDUAL_SCARCITY class)
+deploy=analyzer rebuild after commit (script COPY)
+
+Evidence 117: disc_v6 post-enable / OBSERVE remesure
+generated_at=2026-09-26T10:58:59.008871+00:00 head=unknown
+runtime_sec=24.45 read_only=true
+failure_class=RESIDUAL_SCARCITY rate_class=RESIDUAL_SCARCITY
+
+=== 0. PARENT / LOCKS ===
+  parent=Evidence 106 ENABLED; path_b E109; OBSERVE E116
+  enabled=True version=disc_v6 cap=120 shadow=False
+  NO disc_v6 path/carve change / NO threshold loosen / NO label mutation / NO blind XACK
+
+=== 1. HEALTH / GATES ===
+  health={'status': 'ok', 'postgres': 'ok', 'redis': 'ok'}
+  gates={'ai_validated_messages': 94, 'ai_validated_true': 0, 'ai_validated_false': 94, 'ml_training_enabled': False, 'ai_validation_gate_ready': False}
+
+=== 2. REDIS (not equating XPENDING=0 with health) ===
+  {'ok': True, 'xlen': 6, 'xpending': 0, 'consumers': 1, 'via': 'redis-py'}
+  note=XPENDING=0 is necessary but not sufficient; cross-check DB writes + consumers
+
+=== 3. ISOLATION ===
+  human_labels=1524 AI_CONFIRMED=4 message_scores=155529 messages=8651960 disc_candidates=66 disc_v6=6
+  isolation_ok=True (expect 1524/4)
+
+=== 4. WINDOWS ===
+  since_enable hours=15.533 enable_at=2026-09-25T19:27:00+00:00
+  msg/score/cand since_enable=20759/20759/6 disc_v6_since_enable=6
+  since_path_b hours=4.095 path_b_at=2026-09-26T06:53:16+00:00
+  msg/score/cand since_path_b=7649/7649/0 disc_v6_NEW=0
+  1h msg/score/cand=1057/1057/0
+  6h msg/score/cand=12024/12024/0
+  24h msg/score/cand=31831/33086/6
+  by_ver=[{'discovery_version': 'disc_v1', 'status': 'EPISODE_BUILT', 'n': 30}, {'discovery_version': 'disc_v2', 'status': 'EPISODE_BUILT', 'n': 30}, {'discovery_version': 'disc_v6', 'status': 'EPISODE_BUILT', 'n': 6}]
+
+=== 5. LIVE RATE (PRIMARY=since_path_b) ===
+  disc_v6_NEW=0 scores=7649 rate/h=0.0 expected_ub/h=0.018 expected_count=0.0737
+  classification=RESIDUAL_SCARCITY new_contam%=None retained_hist_contam%=100.0
+  disc_v6_since_enable(retained)=6
+  NOTE: short zeros are EXPECTED_LOW_RATE; long zeros with scores are RESIDUAL_SCARCITY.
+
+=== 6. LIVE CANDIDATES (NEW since path_b) ===
+  (none)
+
+=== 7. DETERMINISTIC REPLAY ===
+  legacy_commercial_domain: pool legacy/refined via helpers; v4 elig=19 contam=0.0 v6 elig=32 contam=0.0
+    v6 first_loss={'NO_PATH_MATCH': 617, 'VETO_support_question': 315, 'HARD_EXCLUDE_EARLY': 242, 'VETO_corporate_employment': 35, 'RETRIEVED': 32, 'VETO_job_aggregator': 29, 'VETO_news_digest': 16, 'VETO_service_provider': 15, 'VETO_job_seeker': 2, 'VETO_generic_recruiter': 1}
+    v6 triggers={'v6_budget_deliverable': 13, 'v6_direct_project_domain': 10, 'v6_project_procurement': 7, 'v6_repair_domain': 2} tiers={'LOW': 26, 'HIGH': 6, 'other': 0}
+  refined_frozen: pool legacy/refined via helpers; v4 elig=3 contam=0.0 v6 elig=16 contam=0.0
+    v6 first_loss={'VETO_job_aggregator': 26, 'VETO_corporate_employment': 25, 'RETRIEVED': 16, 'VETO_support_question': 15, 'NO_PATH_MATCH': 12, 'VETO_service_provider': 4, 'VETO_job_seeker': 2, 'HARD_EXCLUDE_EARLY': 2}
+    v6 triggers={'v6_budget_deliverable': 13, 'v6_repair_domain': 2, 'v6_project_procurement': 1} tiers={'LOW': 10, 'HIGH': 6, 'other': 0}
+
+=== 8. FAILURE / LIMITATION ===
+  failure_class=RESIDUAL_SCARCITY
+  seen=['RESIDUAL_SCARCITY']
+  limitation=RESIDUAL_SCARCITY — 0 NEW disc_v6 since path_b with scored denominator; consistent with empiric UB ~0.018/h under frozen path_b+c
+  historical_first_loss_refined_v6=VETO_job_aggregator
+
+=== 9. NEXT HYPOTHESIS ===
+  Continue OBSERVE: next resume on first NEW disc_v6 (quality-classify without path reopen) or PIPELINE/REDIS/WORKER/QUERY/isolation drift. Do not reopen path_b/c or enable shadow without auth + new loss evidence.
+
+=== 10. BUSINESS ===
+  {'outreach': False, 'ml_go': False, 'threshold_loosen': False, 'discovery_semantic_change': False}
+  notes=['api_base=http://api:8010', 'scores_table_absent=True (correct; use message_scores)', 'retained_hist_disc_v6_since_enable=6 retained_contam%=100.0 (not primary; path_b NEW=0)']
+
