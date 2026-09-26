@@ -62,6 +62,9 @@ Event-only loop (wake on A/B/C only — not a remesure):
 INTERVAL_SEC=5400 ./scripts/observe_abc_watch.sh
 # stdout wake line: AGENT_LOOP_WAKE_observe_abc {...}
 # Trigger B also covers score stall: msg_1h>=20 with score_1h==0
+
+# Smoke (healthy idle must print OBSERVE_OK, exit 0 — not a wake):
+./scripts/observe_abc_watch.sh --once
 ```
 
 Full verifier (on Trigger A/B only — not idle remesure):

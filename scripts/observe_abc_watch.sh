@@ -5,12 +5,19 @@
 #
 # Usage (host, repo root):
 #   INTERVAL_SEC=5400 ./scripts/observe_abc_watch.sh
+#   ./scripts/observe_abc_watch.sh --once   # single check; exit 0 quiet / 10 on wake
 #
 # Wake line (stdout): AGENT_LOOP_WAKE_observe_abc {...json...}
+# Quiet once line:    OBSERVE_OK {...json...}
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT"
+
+ONCE=0
+if [[ "${1:-}" == "--once" ]]; then
+  ONCE=1
+fi
 
 INTERVAL_SEC="${INTERVAL_SEC:-5400}"
 PATH_B_AT="${PATH_B_AT:-2026-09-26T06:53:16Z}"
@@ -36,14 +43,12 @@ redis_group_field() {
   # XINFO GROUPS prints alternating keys/values; pull one field for first group.
   local field="$1"
   docker compose exec -T redis redis-cli XINFO GROUPS "$STREAM" 2>/dev/null \
-    | awk -v f="$field" 'BEGIN{found=0} $0==f{getline; print; exit}' \
+    | awk -v f="$field" '$0==f{getline; print; exit}' \
     | tr -d '\r'
 }
 
-echo "observe_abc_watch start interval=${INTERVAL_SEC}s path_b=${PATH_B_AT} expect=${EXPECT_HL}/${EXPECT_AC}" >&2
-
-while true; do
-  sleep "$INTERVAL_SEC"
+evaluate_once() {
+  local NOW TRIG HEALTH ROW HL AC NEW MSG1H SCORE1H XLEN CONSUMERS PENDING LAG
   NOW="$(date -u -Iseconds)"
   TRIG=""
 
@@ -99,5 +104,31 @@ while true; do
 
   if [[ -n "$TRIG" ]]; then
     printf '%s\n' "AGENT_LOOP_WAKE_observe_abc {\"at\":\"${NOW}\",\"triggers\":\"${TRIG}\",\"new\":${NEW},\"hl\":${HL},\"ac\":${AC},\"msg_1h\":${MSG1H},\"score_1h\":${SCORE1H},\"xlen\":${XLEN},\"pending\":${PENDING},\"lag\":${LAG},\"consumers\":${CONSUMERS},\"prompt\":\"OBSERVE trigger. Repo ${ROOT}. Follow docs/ops/COMMERCIAL_DISCOVERY_OBSERVE_RUNBOOK.md. A=freeze+quality NEW (no path reopen). B=correctness/observability. C=halt isolation. Evidence+commit-push if justified.\"}"
+    return 10
+  fi
+
+  printf '%s\n' "OBSERVE_OK {\"at\":\"${NOW}\",\"new\":${NEW},\"hl\":${HL},\"ac\":${AC},\"msg_1h\":${MSG1H},\"score_1h\":${SCORE1H},\"xlen\":${XLEN},\"pending\":${PENDING},\"lag\":${LAG},\"consumers\":${CONSUMERS}}"
+  return 0
+}
+
+if [[ "$ONCE" -eq 1 ]]; then
+  set +e
+  evaluate_once
+  rc=$?
+  set -e
+  exit "$rc"
+fi
+
+echo "observe_abc_watch start interval=${INTERVAL_SEC}s path_b=${PATH_B_AT} expect=${EXPECT_HL}/${EXPECT_AC}" >&2
+
+while true; do
+  sleep "$INTERVAL_SEC"
+  set +e
+  evaluate_once
+  rc=$?
+  set -e
+  # Loop continues whether quiet (0) or wake printed (10).
+  if [[ "$rc" -ne 0 && "$rc" -ne 10 ]]; then
+    echo "observe_abc_watch: unexpected evaluate_once exit ${rc}" >&2
   fi
 done
