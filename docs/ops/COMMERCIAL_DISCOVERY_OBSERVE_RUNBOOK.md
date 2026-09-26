@@ -82,6 +82,13 @@ Note: since-enable aggregate still includes 6 historical CONTAMINATED rows; prim
 - **Invite-expired** — community 132 NOISE (Evidence 115)
 - Retained 6 pre–path_b disc_v6 rows remain CONTAMINATED historically — verifier primary window is NEW-since-path_b (E117 observability fix)
 
+## Offline prep (allowed while OBSERVE; dormant from production)
+
+```bash
+# Read-only inventory — does not enable ML/Optuna/SHAP/LLM or alter discovery
+python3 scripts/offline_ml_dataset_readiness_inventory.py
+```
+
 ## Next hypothesis
 
 Resume only on **(A)** first NEW disc_v6 (quality-classify; do not reopen path_b/c), **(B)** pipeline/Redis/worker/query failure, or **(C)** isolation drift. Do not busy remesure. Do not enable shadow without auth.
