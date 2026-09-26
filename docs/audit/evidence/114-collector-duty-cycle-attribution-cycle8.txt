@@ -1,0 +1,106 @@
+Evidence 114: collector duty-cycle attribution / POST-ENABLE CYCLE 8
+generated_at=2026-09-26T07:24:37+00:00 head=1a2dbe9a8fd503d8d58527feae0f1d0a8cfd1746 parent=Evidence 113 OBSERVE
+experiment_id=POST_ENABLE_CYCLE8_COLLECTOR_DUTY_CYCLE
+decision=OBSERVE
+classification=EXPECTED_IDLE
+read_only=true code_change=none
+deploy=not_needed
+
+=== 0. PARENT / LOCKS ===
+  parent=Evidence 113 OBSERVE (RESIDUAL_SCARCITY; binding bottleneck hypothesized = collector duty-cycle)
+  NO path_b/c reopen / NO FO carve/threshold/veto/shadow enable
+  NO human_labels / AI_CONFIRMED mutation / NO ML GO / NO wipe / NO community expansion
+  NO Optuna/SHAP/LLM
+
+=== 1. HYPOTHESIS (ONE) ===
+  H1: Post–E112 zero scored traffic is explained by normal collector/scheduler
+  duty-cycle (flood-wait, scan interval, healthy idle) rather than collector
+  failure, Redis lag, or scoring stall.
+
+=== 2. RUNTIME CONFIRM ===
+  HEAD=1a2dbe9a8fd503d8d58527feae0f1d0a8cfd1746 (same as E113 commit tip)
+  path_b deploy marker: 2026-09-26T06:53:16+00:00
+  E112 marker: 2026-09-26T07:13:10+00:00
+  E113 marker: 2026-09-26T07:19:53+00:00
+  measure_at≈2026-09-26T07:24:37+00:00
+  analyzer settings: enabled=True version=disc_v6 cap=120/h shadow=False ai=True backend=sdk
+  scheduler_interval_seconds=900 (15m) scheduler_scan_days=2 flood_wait_buffer=5s
+  health={'status':'ok','postgres':'ok','redis':'ok'}
+  gates: ai_validated_messages=94 true=0 false=94 ml_training_enabled=false ready=false
+  isolation: human_labels=1524 AI_CONFIRMED=4 message_scores=149269 messages=8645700
+           disc_candidates=66 disc_v6=6
+  isolation_ok=True (expect 1524/4)
+
+=== 3. SERVICE STATUS (no restart loops) ===
+  collector: Up 43h (stable; 0 collector_started in last 2h)
+  scheduler: Up 3d (stable; interval-driven enqueue, quiet logs expected)
+  analyzer: Up 31m (restarted at path_b ~06:53; healthy progress)
+  commercial-discovery-worker: Up 31m
+  commercial-ai-worker: Up 18h
+  postgres/redis: healthy 11d
+  collector errors 2h: 8 community_scan_failed — all expired invite links
+    (community_id=132 pattern); not systemic failure
+
+=== 4. REDIS (no blind XACK) ===
+  telegram:messages: XLEN=100002 pending=0 consumers=1 lag=0 group=analyzer-workers
+  telegram:scan_requests: XLEN=52185 pending=0 consumers=1 lag=0 group=collector-workers
+  telegram:commercial_discovery: XLEN=6 pending=0 consumers=1 lag=0
+  telegram:commercial_ai_review: XLEN=8 pending=0 consumers=1 lag=0
+  telegram:commercial_episode_shadow: XLEN=120 pending=0 consumers=0 lag=120
+    NOTE: episode_shadow lag + consumers=0 expected (shadow OFF intentional)
+
+=== 5. SCHEDULER / SCAN WAVE CORRELATION ===
+  Config: scheduler_interval_seconds=900 → full-fleet enqueue every ~15 minutes.
+  Observed scan request waves (136 enabled communities) last 6h:
+    … 06:34, 06:49, 07:04/07:05 (split 64+72), 07:20 — cadence ≈15m.
+  Last wave requested_at≈2026-09-26T07:20:01Z; finished_at≈07:21:06Z;
+    136/136 communities scanned in last 20m; inflight=0; failed_3h=0.
+  Flood-wait (last 2h): 16 Sleeping-for lines, 12–18s on GetHistoryRequest —
+    occurs INSIDE active scan waves only; does not create multi-minute quiet.
+
+=== 6. INGEST / SCORE TIMELINE (quiet attribution) ===
+  last_msg_created≈2026-09-26T07:21:05.990Z (~3m before measure)
+  last_scored≈2026-09-26T07:21:05.997Z (~3m before measure)
+  Per-minute scored_at 07:00–07:25:
+    07:00–07:04: 0
+    07:05–07:06: 645  ← wave after 07:04/07:05 enqueue
+    07:07–07:19: 0   ← EXPECTED inter-scan idle (~13 min)
+    07:20–07:21: 744 ← next 15m wave (E113 sat at 07:19:53 inside this idle)
+    07:22–07:25: 0   ← post-wave idle again
+  E112 (07:13:10) and E113 (07:19:53) both landed inside the 07:07–07:19 quiet.
+  After next wave, score_since_e112=744 (quiet resolved; not a stall).
+
+=== 7. LIVE SNAPSHOT ===
+  A) since path_b 06:53:16 (~0.523h): msg=1389 score=1389 cand_new=0 disc_v6_new=0
+  B) since E112 07:13:10 (~0.191h): msg=744 score=744 disc_v6_new=0
+  C) since E113 07:19:53 (~0.079h): msg=744 score=744 disc_v6_new=0
+  D) NEW disc_v6 since path_b: still 0 (last disc_v6=2026-09-26T03:04:52Z historical)
+  Analyzer progress: 250@07:05:12 → 500@07:05:31 → 750–1250@07:20 (bursts; errors=0)
+
+=== 8. CLASSIFICATION ===
+  classification=EXPECTED_IDLE
+  ruled_out:
+    COLLECTOR_FAILURE — Up 43h, no restart loop, lag=0 on scan_requests,
+      full 136-community waves completing, only expired-invite errors
+    ANALYZER_STALL — lag=0 on telegram:messages, progress bursts align with
+      ingest, score_since_e112=744 after wave
+    REDIS_FAILURE — primary streams lag=0 pending=0; redis health ok
+  rationale: Zero scored traffic between E112 and E113 matches the configured
+    900s scheduler duty-cycle idle between scan waves, not a correctness failure.
+    Flood-waits (≤18s) are normal Telethon backoff inside waves.
+
+=== 9. DECISION ===
+  OBSERVE — evidence-only; no code/config fix (not a correctness failure).
+  Paths frozen; shadow remains INTENTIONAL_OFF.
+
+=== 10. NEXT HYPOTHESIS (ONE) ===
+  H1: With inter-scan quiet attributed as EXPECTED_IDLE, continue OBSERVE for
+  NEW disc_v6 after ≥2 further full scheduler cycles (≥~30m wall + non-zero
+  incremental scored) or ≥4h cumulative post–path_b scored traffic; scarcity
+  claim (0 NEW / 1389 scored; empiric ≪0.018/h) remains the binding product
+  question — do NOT reopen path_b/c or enable shadow without explicit auth.
+
+=== 11. BUSINESS ===
+  outreach=false ml_go=false threshold_loosen=false fo_carve_untouched=true
+  discovery_semantic_change=false path_b_c_reopened=false shadow_unchanged=true
+  secrets_untouched=true wipe=false

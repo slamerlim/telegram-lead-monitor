@@ -1,0 +1,210 @@
+{
+  "evidence_id": 114,
+  "experiment_id": "POST_ENABLE_CYCLE8_COLLECTOR_DUTY_CYCLE",
+  "generated_at": "2026-09-26T07:24:37+00:00",
+  "parent": "Evidence 113 OBSERVE (RESIDUAL_SCARCITY)",
+  "decision": "OBSERVE",
+  "classification": "EXPECTED_IDLE",
+  "loss_stage_if_discovery_loss": null,
+  "decision_rationale": "Post-E112 zero scored traffic matched the configured 900s scheduler inter-scan idle (07:07-07:19), not collector/Redis/analyzer failure. Next wave at 07:20 scored 744; lag=0 throughout. Flood-waits 12-18s only inside waves.",
+  "read_only": true,
+  "code_change": "none",
+  "deploy": "not_needed",
+  "hypothesis": "Post-E112 zero scored traffic is explained by normal collector/scheduler duty-cycle (flood-wait, scan interval, healthy idle) rather than collector failure, Redis lag, or scoring stall.",
+  "runtime": {
+    "head": "1a2dbe9a8fd503d8d58527feae0f1d0a8cfd1746",
+    "head_short": "1a2dbe9a8fd5",
+    "path_b_deploy": "2026-09-26T06:53:16+00:00",
+    "e112_at": "2026-09-26T07:13:10+00:00",
+    "e113_at": "2026-09-26T07:19:53+00:00",
+    "measure_at": "2026-09-26T07:24:37+00:00",
+    "settings": {
+      "commercial_discovery_enabled": true,
+      "commercial_discovery_version": "disc_v6",
+      "commercial_discovery_max_candidates_per_hour": 120,
+      "commercial_episode_shadow_enabled": false,
+      "commercial_ai_enabled": true,
+      "commercial_ai_backend": "sdk",
+      "scheduler_interval_seconds": 900,
+      "scheduler_scan_days": 2,
+      "collector_flood_wait_buffer_seconds": 5
+    },
+    "settings_source": "analyzer container get_settings()",
+    "health": {
+      "status": "ok",
+      "postgres": "ok",
+      "redis": "ok"
+    },
+    "gates": {
+      "ai_validated_messages": 94,
+      "ai_validated_true": 0,
+      "ai_validated_false": 94,
+      "ml_training_enabled": false,
+      "ai_validation_gate_ready": false
+    },
+    "isolation": {
+      "human_labels": 1524,
+      "ai_confirmed": 4,
+      "message_scores": 149269,
+      "messages": 8645700,
+      "disc_candidates": 66,
+      "disc_v6_candidates": 6
+    },
+    "isolation_ok": true,
+    "workers": {
+      "collector": "Up 43h",
+      "scheduler": "Up 3d",
+      "analyzer": "Up 31m",
+      "commercial_discovery_worker": "Up 31m",
+      "commercial_ai_worker": "Up 18h",
+      "commercial_episode_shadow_worker": "Up 39h",
+      "postgres": "Up 11d healthy",
+      "redis": "Up 11d healthy",
+      "collector_restarts_2h": 0
+    },
+    "redis": {
+      "ok": true,
+      "streams": {
+        "telegram:messages": {
+          "xlen": 100002,
+          "pending": 0,
+          "consumers": 1,
+          "lag": 0,
+          "last_delivered_id": "1790407265986-0",
+          "group": "analyzer-workers"
+        },
+        "telegram:scan_requests": {
+          "xlen": 52185,
+          "pending": 0,
+          "consumers": 1,
+          "lag": 0,
+          "last_delivered_id": "1790407201861-0",
+          "group": "collector-workers"
+        },
+        "telegram:commercial_discovery": {
+          "xlen": 6,
+          "pending": 0,
+          "consumers": 1,
+          "lag": 0,
+          "last_delivered_id": "1790391892154-0",
+          "group": "commercial-discovery-workers"
+        },
+        "telegram:commercial_ai_review": {
+          "xlen": 8,
+          "pending": 0,
+          "consumers": 1,
+          "lag": 0,
+          "last_delivered_id": "1790237845019-0",
+          "group": "commercial-ai-workers"
+        },
+        "telegram:commercial_episode_shadow": {
+          "xlen": 120,
+          "pending": 0,
+          "consumers": 0,
+          "lag": 120,
+          "last_delivered_id": "0-0",
+          "group": "commercial-episode-shadow-workers",
+          "note": "INTENTIONAL_OFF"
+        }
+      }
+    }
+  },
+  "duty_cycle": {
+    "scheduler_interval_seconds": 900,
+    "enabled_communities": 136,
+    "scan_waves_recent": [
+      "2026-09-26T06:34",
+      "2026-09-26T06:49",
+      "2026-09-26T07:04/07:05",
+      "2026-09-26T07:20"
+    ],
+    "last_wave": {
+      "requested_at": "2026-09-26T07:20:01.859781+00:00",
+      "last_finished_at": "2026-09-26T07:21:06.780967+00:00",
+      "communities_scanned_20m": 136,
+      "inflight": 0,
+      "failed_3h": 0
+    },
+    "flood_wait_2h": {
+      "count": 16,
+      "seconds_range": [12, 18],
+      "scope": "inside_active_scan_waves_only"
+    },
+    "collector_errors_2h": {
+      "community_scan_failed": 8,
+      "dominant": "expired_invite_CheckChatInviteRequest"
+    },
+    "quiet_window": {
+      "start": "2026-09-26T07:07:00+00:00",
+      "end": "2026-09-26T07:19:00+00:00",
+      "duration_min": 13,
+      "scored": 0,
+      "contains_e112": true,
+      "contains_e113": true,
+      "cause": "scheduler_inter_scan_idle"
+    },
+    "score_minute_buckets_0700_0725": {
+      "07:00-07:04": 0,
+      "07:05": 590,
+      "07:06": 55,
+      "07:07-07:19": 0,
+      "07:20": 678,
+      "07:21": 66,
+      "07:22-07:25": 0
+    },
+    "last_msg_created": "2026-09-26T07:21:05.990189+00:00",
+    "last_scored": "2026-09-26T07:21:05.99662+00:00"
+  },
+  "live_windows": {
+    "since_path_b": {
+      "since": "2026-09-26T06:53:16+00:00",
+      "hours": 0.523,
+      "msg": 1389,
+      "score": 1389,
+      "cand": 0,
+      "disc_v6": 0,
+      "rate_per_hour": 0.0
+    },
+    "since_e112": {
+      "since": "2026-09-26T07:13:10+00:00",
+      "hours": 0.191,
+      "msg": 744,
+      "score": 744,
+      "cand": 0,
+      "disc_v6": 0
+    },
+    "since_e113": {
+      "since": "2026-09-26T07:19:53+00:00",
+      "hours": 0.079,
+      "msg": 744,
+      "score": 744,
+      "cand": 0,
+      "disc_v6": 0
+    },
+    "last_disc_v6": "2026-09-26T03:04:52.153998+00:00",
+    "new_disc_v6_since_path_b": 0
+  },
+  "ruled_out": {
+    "COLLECTOR_FAILURE": "Up 43h; no restart; scan_requests lag=0; 136/136 communities last wave; failed_3h=0",
+    "ANALYZER_STALL": "messages lag=0; progress bursts at 07:05 and 07:20; score_since_e112=744",
+    "REDIS_FAILURE": "health ok; primary streams lag=0 pending=0"
+  },
+  "classification_detail": {
+    "label": "EXPECTED_IDLE",
+    "vs_collector_failure": false,
+    "vs_analyzer_stall": false,
+    "vs_redis_failure": false
+  },
+  "next_hypothesis": "With inter-scan quiet attributed as EXPECTED_IDLE, continue OBSERVE for NEW disc_v6 after >=2 further full scheduler cycles (>=~30m wall + non-zero incremental scored) or >=4h cumulative post-path_b scored traffic; scarcity claim (0 NEW / 1389 scored; empiric <<0.018/h) remains the binding product question — do NOT reopen path_b/c or enable shadow without explicit auth.",
+  "business": {
+    "outreach": false,
+    "ml_go": false,
+    "threshold_loosen": false,
+    "fo_carve_untouched": true,
+    "discovery_semantic_change": false,
+    "path_b_c_reopened": false,
+    "shadow_unchanged": true,
+    "secrets_untouched": true,
+    "wipe": false
+  }
+}
