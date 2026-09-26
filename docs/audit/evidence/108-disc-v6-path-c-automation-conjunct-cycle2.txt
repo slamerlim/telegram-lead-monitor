@@ -1,0 +1,86 @@
+Evidence 108: disc_v6 path_c automation conjunct Cycle 2 (H1)
+generated_at=2026-09-26T06:41:22Z parent=Evidence 107 CONTAMINATED
+experiment_id=POST_ENABLE_CYCLE2_PATH_C
+decision=SHIP
+read_only=false code_change=path_c conjunct in _eligible_v4/_eligible_v5
+
+=== 0. PARENT / LOCKS ===
+  parent=Evidence 107 failure_class=CONTAMINATED (5/6 EA promo via v6_automation_domain)
+  NO threshold loosen / NO global veto removal / NO FO carve change
+  NO human_labels / AI_CONFIRMED mutation / NO ML GO / NO outreach
+  NO docker compose down -v / NO community expansion
+
+=== 1. HYPOTHESIS (H1) ===
+  Tighten path_c / v6_automation_domain so first-person "automate my trading"
+  EA promo does not enqueue without real buyer RFQ/hire/budget/ownership conjuncts.
+
+=== 2. ROOT CAUSE ===
+  path_c was (automation|impl) ∧ domain ∧ (ownership|direct|project_scope).
+  classify_buyer_direction sets project_scope whenever automation_signal fires,
+  so path_c collapsed to automate+domain. Live promo:
+    "helps automate my trading" → automation_signal=True, project_scope=True,
+    has_domain via forex target domain, no hire/direct/budget/ownership.
+  Bucket incorrectly "Direct buyer/RFQ candidate"; direction BUYER.
+
+=== 3. CHANGE (minimal) ===
+  path_c conjunct := direct_request ∨ ownership ∨ budget_signal ∨ hire
+  (drop bare project_scope; keep FO carve / paths A/B/D/E untouched)
+  Mirrored in disc_v5 path_c and loss-attribution helper.
+
+=== 4. FROZEN POPULATIONS ===
+  live_promo_seeds: 8633878,8634685,8634773,8634775,8635024 (+ support 8635958 path_b)
+  FO LaborX probes (Evidence 99): 4/4 FO templates
+  legacy commercial∧domain: n=1303 (E101 since)
+  refined_frozen: n=106 (exchange communities excluded)
+
+=== 5. BEFORE vs AFTER ===
+  LIVE promo (5 EA near-dups):
+    BEFORE: 5/5 eligible trigger=v6_automation_domain paths=['C']
+    AFTER:  5/5 NOT eligible
+  LIVE support 8635958 (path_b, out of H1 scope):
+    BEFORE/AFTER: eligible v6_repair_domain (unchanged)
+  FO probes: 4/4 still eligible + gig_project_carve + CARVE (unchanged)
+  Genuine automation RFQs (8 templates with hire/direct/budget): 8/8 still eligible
+  legacy pool: eligible 32→32 carve 13→13 path_c_only 0→0
+  refined pool: eligible 16→16 carve 13→13 path_c_only 0→0
+  Contam audit buckets on frozen survivors remain Direct buyer/RFQ (no new promo)
+
+=== 6. RECOVERY / CONTAMINATION GATES ===
+  recovery_fo_probes=4/4 PASS
+  recovery_genuine_automation_rfq=8/8 PASS
+  recovery_frozen_legacy_elig=32/32 PASS
+  recovery_frozen_refined_elig=16/16 PASS
+  contamination_live_promo_blocked=5/5 PASS
+  fo_carve_interaction=unchanged PASS (no carve edit)
+
+=== 7. TESTS ===
+  pytest tests/test_discovery_buyer_signals_v4.py \
+         tests/test_discovery_laborx_veto_carve_v6.py \
+         tests/test_discovery_buyer_signals_v5.py
+  → 52 passed
+
+=== 8. DEPLOY / RUNTIME ===
+  docker compose build analyzer commercial-discovery-worker
+  docker compose up -d --force-recreate --no-deps analyzer commercial-discovery-worker
+  health={"status":"ok","postgres":"ok","redis":"ok"}
+  gates=94/0/94 ml_training_enabled=false
+  isolation: human_labels=1524 AI_CONFIRMED=4 disc_v6_candidates=6 (historical rows kept)
+  redis: XLEN=6 XPENDING=0
+  analyzer settings: enabled=True version=disc_v6 cap=120 shadow=False
+  deployed eval: PROMO elig=False; FO elig=True carve=True; GEN elig=True paths include C
+  note: existing EPISODE_BUILT rows not deleted (no wipe); new enqueue uses tightened path_c
+
+=== 9. DECISION ===
+  SHIP — recovery preserved on FO + frozen pools + genuine RFQs; live EA promo 5/5 blocked.
+  Supportish path_b (1/6) deferred to next hypothesis (not path_c).
+
+=== 10. NEXT HYPOTHESIS (ONE) ===
+  H1: Tighten path_b / v6_repair_domain so vague support-style "my bot is not working"
+  without RFQ/hire/budget/paid-fix conjunct does not enqueue (seed 8635958 family),
+  while true ownership+repair buyer RFQs and FO repair carve remain recovered.
+
+=== 11. BUSINESS ===
+  outreach=false ml_go=false threshold_loosen=false fo_carve_untouched=true
+  discovery_semantic_change=path_c_conjunct_only
+
+JSON: docs/audit/evidence/108-disc-v6-path-c-automation-conjunct-cycle2.json

@@ -1138,8 +1138,15 @@ def _eligible_v4(
         and (has_domain or has_tech)
         and (feats.ownership_signal or feats.direct_request_signal)
     )
+    # Path C: do NOT use bare project_scope — classify_buyer_direction sets
+    # project_scope whenever automation_signal fires, so automate+domain alone
+    # would always pass (EA marketing: "helps automate my trading"). Require a
+    # non-circular buyer conjunct (RFQ / hire / budget / ownership).
     path_c = (feats.automation_signal or bool(impl)) and has_domain and (
-        feats.ownership_signal or feats.direct_request_signal or feats.project_scope
+        feats.direct_request_signal
+        or feats.ownership_signal
+        or feats.budget_signal
+        or bool(hire)
     )
     path_d = (
         feats.project_procurement_signal
@@ -1271,8 +1278,12 @@ def _eligible_v5(
         and (has_domain or has_tech)
         and (feats.ownership_signal or feats.direct_request_signal)
     )
+    # Same non-circular path_c conjunct as v4/v6 (Evidence 108).
     path_c = (feats.automation_signal or bool(impl)) and has_domain and (
-        feats.ownership_signal or feats.direct_request_signal or feats.project_scope
+        feats.direct_request_signal
+        or feats.ownership_signal
+        or budget_ok
+        or bool(hire)
     )
     path_d = (
         feats.project_procurement_signal

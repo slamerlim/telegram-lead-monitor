@@ -261,6 +261,60 @@ def test_fix_api_announcement_not_repair_candidate():
     assert not feats.eligible
 
 
+# Live Contam Evidence 107 / Cycle 2 (Evidence 108): Forex EA marketing.
+_EA_PROMO = (
+    "Honestly, I've been enjoying my experience with Forex High Way EA so far. "
+    "What I really like is how it helps automate my trading instead of having me "
+    "watch the charts all day. Of course, Forex trading still comes with risk, but "
+    "having an EA that fits into my trading approach has made things much more "
+    "convenient for me. I'm just sharing my own experience with the group. If you're "
+    "interested and want to know how it works, message me and I'll share the full "
+    "details with you."
+)
+
+
+def test_path_c_blocks_ea_automation_marketing_without_buyer_conjunct():
+    """automate my trading + domain alone must NOT pass path_c (circular project_scope)."""
+    scorer = _scorer()
+    for version in (DISCOVERY_VERSION_V4, DISCOVERY_VERSION_V6):
+        feats = evaluate_discovery(scorer, _EA_PROMO, version=version)
+        assert not feats.eligible, version
+        assert feats.automation_signal
+        assert feats.project_scope  # circular with automation — must not unlock path_c
+        assert not feats.direct_request_signal
+        assert not feats.ownership_signal
+        assert not feats.budget_signal
+        assert not feats.hiring_patterns
+
+
+def test_path_c_keeps_genuine_automation_rfq_with_hire_or_direct():
+    scorer = _scorer()
+    texts = [
+        "Looking for contractor to automate my trading process on OKX into a bot",
+        "Need a developer to automate my trading strategy on Bybit",
+        "Can anyone automate my trading strategy on Binance? I can pay",
+        "Looking for someone to automate my Binance strategy into a trading bot, budget $2k",
+    ]
+    for text in texts:
+        feats = evaluate_discovery(scorer, text, version=DISCOVERY_VERSION_V6)
+        assert feats.eligible, text
+        assert "C" in feats.matched_paths or "A" in feats.matched_paths or "E" in feats.matched_paths
+
+
+def test_path_c_tighten_does_not_break_fo_carve():
+    """FO LaborX carve (Evidence 99) must remain recovered under disc_v6."""
+    scorer = _scorer()
+    fo = (
+        "🌟 Freelance Opportunity: Quick Fix Needed for Python Trading Bot "
+        "💰 Budget: $320 🤝 With: david lil"
+    )
+    v4 = evaluate_discovery(scorer, fo, version=DISCOVERY_VERSION_V4)
+    v6 = evaluate_discovery(scorer, fo, version=DISCOVERY_VERSION_V6)
+    assert not v4.eligible
+    assert v6.eligible
+    assert v6.gig_project_carve
+    assert "CARVE" in v6.matched_paths
+
 
 def test_v4_can_recover_beyond_v3_on_soft_project():
     """Ambiguous looking-for + domain + ownership should prefer v4 soft path."""

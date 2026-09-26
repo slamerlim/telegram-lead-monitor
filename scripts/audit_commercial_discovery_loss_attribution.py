@@ -171,7 +171,12 @@ def _paths_v4(f) -> dict:
     path_c = bool(
         (f.automation_signal or bool(f.implementation_patterns))
         and bool(f.domain_categories)
-        and (ownership or direct or scope)
+        and (
+            ownership
+            or direct
+            or f.budget_signal
+            or bool(f.hiring_patterns)
+        )
     )
     path_d = bool(
         f.project_procurement_signal

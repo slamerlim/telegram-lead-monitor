@@ -1,0 +1,120 @@
+{
+  "evidence_id": 108,
+  "title": "disc_v6 path_c automation conjunct Cycle 2 (H1)",
+  "experiment_id": "POST_ENABLE_CYCLE2_PATH_C",
+  "generated_at": "2026-09-26T06:41:22Z",
+  "parent": "Evidence 107 CONTAMINATED",
+  "decision": "SHIP",
+  "read_only": false,
+  "code_change_scope": "path_c conjunct in _eligible_v4/_eligible_v5 + loss-attribution mirror + tests",
+  "hypothesis": {
+    "id": "H1",
+    "statement": "Tighten path_c / v6_automation_domain so first-person 'automate my trading' EA marketing does not enqueue without RFQ/hire/budget/ownership conjuncts."
+  },
+  "root_cause": {
+    "summary": "path_c used project_scope which is set whenever automation_signal fires, collapsing path_c to automate+domain",
+    "live_example_seed_ids": [8633878, 8634685, 8634773, 8634775, 8635024],
+    "signals_on_promo": {
+      "automation_signal": true,
+      "project_scope": true,
+      "direct_request_signal": false,
+      "ownership_signal": false,
+      "budget_signal": false,
+      "hiring_patterns": [],
+      "trigger_before": "v6_automation_domain",
+      "matched_paths_before": ["C"]
+    }
+  },
+  "change": {
+    "path_c_before": "(automation|impl) AND domain AND (ownership OR direct OR project_scope)",
+    "path_c_after": "(automation|impl) AND domain AND (direct OR ownership OR budget_signal OR hire)",
+    "fo_carve_changed": false,
+    "scoring_yaml_changed": false,
+    "global_veto_removed": false
+  },
+  "populations": {
+    "live_promo_seeds": [8633878, 8634685, 8634773, 8634775, 8635024],
+    "live_support_seed": 8635958,
+    "fo_probes": 4,
+    "legacy_commercial_domain_n": 1303,
+    "refined_frozen_n": 106,
+    "e101_since": "2025-09-30T17:54:03.414786+00:00"
+  },
+  "before_after": {
+    "live_promo_eligible": {"before": 5, "after": 0},
+    "live_support_path_b_eligible": {"before": 1, "after": 1},
+    "fo_probes_eligible": {"before": 4, "after": 4},
+    "genuine_automation_rfq_templates": {"before": 8, "after": 8},
+    "legacy_pool": {
+      "before": {"eligible": 32, "carve": 13, "path_c_only": 0},
+      "after": {"eligible": 32, "carve": 13, "path_c_only": 0}
+    },
+    "refined_pool": {
+      "before": {"eligible": 16, "carve": 13, "path_c_only": 0},
+      "after": {"eligible": 16, "carve": 13, "path_c_only": 0}
+    }
+  },
+  "gates": {
+    "recovery_fo_probes": "4/4 PASS",
+    "recovery_genuine_automation_rfq": "8/8 PASS",
+    "recovery_frozen_legacy": "32/32 PASS",
+    "recovery_frozen_refined": "16/16 PASS",
+    "contamination_live_promo_blocked": "5/5 PASS",
+    "fo_carve_interaction_unchanged": "PASS"
+  },
+  "tests": {
+    "command": "pytest tests/test_discovery_buyer_signals_v4.py tests/test_discovery_laborx_veto_carve_v6.py tests/test_discovery_buyer_signals_v5.py -q",
+    "passed": 52,
+    "failed": 0
+  },
+  "runtime_verify": {
+    "health": {"status": "ok", "postgres": "ok", "redis": "ok"},
+    "gates": {
+      "ai_validated_messages": 94,
+      "ai_validated_true": 0,
+      "ai_validated_false": 94,
+      "ml_training_enabled": false
+    },
+    "isolation": {
+      "human_labels": 1524,
+      "ai_confirmed": 4,
+      "disc_candidates": 66,
+      "disc_v6_candidates": 6
+    },
+    "isolation_ok": true,
+    "redis": {"xlen": 6, "xpending": 0},
+    "settings": {
+      "commercial_discovery_enabled": true,
+      "commercial_discovery_version": "disc_v6",
+      "commercial_discovery_max_candidates_per_hour": 120,
+      "commercial_episode_shadow_enabled": false
+    },
+    "deployed_analyzer_eval": {
+      "promo_eligible": false,
+      "fo_eligible": true,
+      "fo_carve": true,
+      "genuine_automation_eligible": true
+    },
+    "services_recreated": ["analyzer", "commercial-discovery-worker"],
+    "note": "Historical EPISODE_BUILT disc_v6 rows retained; new enqueue uses tightened path_c"
+  },
+  "decision_rationale": "Recovery preserved on FO 4/4, frozen legacy/refined elig unchanged, genuine RFQs 8/8; live EA promo contamination 5/5 blocked. Smallest justified path_c conjunct change.",
+  "next_hypothesis": {
+    "id": "H1",
+    "statement": "Tighten path_b / v6_repair_domain so vague support-style 'my bot is not working' without RFQ/hire/budget/paid-fix conjunct does not enqueue (seed 8635958 family), while true ownership+repair buyer RFQs and FO repair carve remain recovered."
+  },
+  "business": {
+    "outreach": false,
+    "ml_go": false,
+    "threshold_loosen": false,
+    "fo_carve_untouched": true,
+    "discovery_semantic_change": "path_c_conjunct_only"
+  },
+  "files_touched": [
+    "shared/commercial_ai/discovery.py",
+    "scripts/audit_commercial_discovery_loss_attribution.py",
+    "tests/test_discovery_buyer_signals_v4.py",
+    "docs/audit/evidence/108-disc-v6-path-c-automation-conjunct-cycle2.txt",
+    "docs/audit/evidence/108-disc-v6-path-c-automation-conjunct-cycle2.json"
+  ]
+}
