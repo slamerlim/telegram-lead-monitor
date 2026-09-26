@@ -26,6 +26,11 @@ Timed ≥4h remesure is **complete** (Evidence 117). Do **not** invent another t
 
 **Action:** Freeze sample → quality-classify (buyer/project vs contamination). Do **not** reopen path_b/c. One candidate is one observation.
 
+```bash
+# Read-only freeze helper (dormant until Trigger A)
+python3 scripts/freeze_classify_new_disc_v6.py --out /tmp/trigger_a_freeze.json
+```
+
 ### (B) PIPELINE / REDIS / WORKER / QUERY failure
 Examples: `/health` not ok; discovery/AI/`telegram:messages` lag or pending growth with consumers down; scores stall while messages ingest; verifier `QUERY_FAILURE` / `PIPELINE_FAILURE`; worker crash loops.
 
