@@ -7,7 +7,7 @@ code_change=verifier observability (path_b primary window; RESIDUAL_SCARCITY cla
 deploy=analyzer rebuild after commit (script COPY)
 
 Evidence 117: disc_v6 post-enable / OBSERVE remesure
-generated_at=2026-09-26T10:58:59.008871+00:00 head=unknown
+generated_at=2026-09-26T10:58:59.008871+00:00 head=2aad9c4
 runtime_sec=24.45 read_only=true
 failure_class=RESIDUAL_SCARCITY rate_class=RESIDUAL_SCARCITY
 

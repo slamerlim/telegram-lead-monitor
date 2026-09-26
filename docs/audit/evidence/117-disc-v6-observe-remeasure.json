@@ -2,7 +2,7 @@
   "evidence_id": 117,
   "title": "disc_v6 post-enable / OBSERVE remesure",
   "generated_at": "2026-09-26T10:58:59.008871+00:00",
-  "head": "unknown",
+  "head": "2aad9c4",
   "parent": "Evidence 106 ENABLED; path_b E109; OBSERVE E116",
   "read_only": true,
   "code_change_scope": "verifier_observability_only",
