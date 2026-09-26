@@ -1,0 +1,102 @@
+Evidence 113: disc_v6 post-enable Cycle 7 live remeasure / first NEW
+generated_at=2026-09-26T07:19:53.845323+00:00 head=ab7e53114ad2 parent=Evidence 112 OBSERVE
+experiment_id=POST_ENABLE_CYCLE7_LIVE_REMEASURE
+decision=OBSERVE
+classification=RESIDUAL_SCARCITY
+scarcity_confidence=moderate_via_recent_low_zero
+read_only=true code_change=none
+
+=== 0. PARENT / LOCKS ===
+  parent=Evidence 112 OBSERVE (RESIDUAL_SCARCITY)
+  NO path_b/c reopen / NO FO carve change / NO threshold loosen / NO veto removal
+  NO human_labels / AI_CONFIRMED mutation / NO ML GO / NO outreach
+  NO docker compose down -v / NO wipe / NO shadow enable / NO community expansion
+
+=== 1. HYPOTHESIS (ONE) ===
+  H1: With more post–path_b scored traffic, either (1) first NEW disc_v6
+  → quality-classify clean RFQ vs residual contam on untouched path; or
+  (2) still 0 NEW after large denom → strengthen RESIDUAL_SCARCITY ≪0.018/h.
+
+=== 2. RUNTIME CONFIRM ===
+  HEAD=ab7e53114ad29baacb6b74f85387e78addf6e18a
+  path_b deploy marker: 2026-09-26T06:53:16+00:00
+  E112 marker: 2026-09-26T07:13:10+00:00
+  measure_at≈2026-09-26T07:19:53.845323+00:00 (~0.444h since path_b; ~0.112h since E112)
+  settings: enabled=True version=disc_v6 cap=120/h shadow=False
+  health={'status': 'ok', 'postgres': 'ok', 'redis': 'ok'}
+  gates: ai_validated_messages=94 true=0 false=94 ml=False ready=False
+  isolation: human_labels=1524 AI_CONFIRMED=4 disc_candidates=66 disc_v6=6
+  isolation_ok=True (expect 1524/4)
+
+=== 3. REDIS (no blind XACK) ===
+  telegram:commercial_discovery: XLEN=6 pending=0 consumers=1 lag=0
+  telegram:commercial_ai_review: XLEN=8 pending=0 consumers=1 lag=0
+  telegram:commercial_episode_shadow: XLEN=120 pending=0 consumers=0 lag=120
+  NOTE: episode_shadow lag + consumers=0 expected (shadow OFF)
+
+=== 4. LIVE SNAPSHOT ===
+  A) since path_b 2026-09-26T06:53:16+00:00 (~0.444h):
+     msg=645 score=645 cand_new=0 disc_v6_new=0 rate/h=0.0
+     class=EXPECTED_LOW_RATE expected_count≈0.008
+  B) since E112 2026-09-26T07:13:10+00:00 (~0.112h):
+     msg=0 score=0 disc_v6_new=0 class=EXPECTED_LOW_RATE
+  C) last_1h: msg=2405 score=2405 cand=0 disc_v6=0 (may include pre-path_b historical disc_v6)
+  D) last_6h: msg=10287 score=10287 cand=5 disc_v6=5 (includes pre-path_b contaminated disc_v6; not NEW-post-fix)
+  E) since enable: msg=13755 disc_v6=6 (6 historical CONTAMINATED retained)
+
+=== 5. NEW disc_v6 SINCE path_b (qualitative) ===
+  NEW count=0 — no qualitative samples; scarcity path active.
+
+=== 6. FROZEN POPULATION FUNNEL (current disc_v6) ===
+  legacy commercial∧domain: n=1303 elig=32 LOW=26 rate=2.46% contam=0.0%
+    first_loss: {'NO_PATH_MATCH': 617, 'VETO_support_question': 314, 'HARD_EXCLUDE_EARLY': 242, 'VETO_corporate_employment': 35, 'RETRIEVED': 32, 'VETO_job_aggregator': 29, 'VETO_news_digest': 16, 'VETO_service_provider': 15, 'VETO_job_seeker': 2, 'VETO_generic_recruiter': 1}
+    near_miss_buyerish_nopath: 0
+  refined_frozen: n=102 elig=16 LOW=10 rate=15.69% contam=0.0%
+    first_loss: {'VETO_job_aggregator': 26, 'VETO_corporate_employment': 25, 'RETRIEVED': 16, 'VETO_support_question': 15, 'NO_PATH_MATCH': 12, 'VETO_service_provider': 4, 'VETO_job_seeker': 2, 'HARD_EXCLUDE_EARLY': 2}
+    near_miss_buyerish_nopath: 0
+    dominant_rejection (excl RETRIEVED): VETO_job_aggregator
+  FO probes: 4/4 eligible+carve
+
+=== 7. RECENT WINDOWS (current code) ===
+  recent_scored since path_b (lim=2500): n=645 elig=0 LOW_enq=0 near_miss=0
+    first_loss: {'NO_PATH_MATCH': 605, 'VETO_support_question': 26, 'VETO_service_provider': 11, 'HARD_EXCLUDE_EARLY': 2, 'VETO_corporate_employment': 1}
+  recent_low 7d (lim=5000): n=5000 elig=0 near_miss=0
+    first_loss: {'NO_PATH_MATCH': 4717, 'VETO_support_question': 162, 'VETO_service_provider': 109, 'HARD_EXCLUDE_EARLY': 11, 'VETO_corporate_employment': 1}
+
+=== 8. DENSITY / SCARCITY CONFIDENCE ===
+  standing empiric UB: 0.018/h (E103/104; 3/5000 LOW/7d)
+  pre-fix contam live: ~0.54/h (E107)
+  refined_frozen LOW density: 10 over ~360.6d → ~0.0277/d ~0.00115/h
+  recent_low current-code empiric: 0/5000 → ~0.0/h ~0.0/d
+  live score rate post path_b: ~1453.21/h; p_LOW_eligible≈0.000000 → implied≈0.0/h
+  live observed post path_b: 0.0/h (NEW=0; expected_count≈0.008)
+  scarcity_confidence.level=moderate_via_recent_low_zero
+    - expected_count_at_UB=0.0080 still ≪1 (need ~56h for E[N]≈1 under standing UB)
+    - current-code recent_LOW elig=0/5000 → empiric ~0/h ≪0.018/h
+    - no incremental scored traffic since E112 — collector duty-cycle limits incremental observation this cycle
+
+=== 9. OPTIONAL SMOKE ===
+  path blocks all_pass=True
+    promo_path_c: eligible=False want=False pass=True paths=[] trig=None
+    support_path_b: eligible=False want=False pass=True paths=[] trig=None
+    support_bare: eligible=False want=False pass=True paths=[] trig=None
+  FO probes: 4/4 pass=True
+
+=== 10. ATTRIBUTION / CLASSIFICATION ===
+  classification=RESIDUAL_SCARCITY
+  loss_stage=None
+  rationale=Still 0 NEW disc_v6 since path_b (0.444h, scored=645; since E112 scored=0). Standing UB expected_count≈0.008; current-code recent_LOW elig=0/5000 → ~0.0/h. Scarcity confidence=moderate_via_recent_low_zero. Incremental collector quiet since E112. Not PIPELINE_FAILURE (redis lag=0; workers Up; isolation ok).
+  Not PIPELINE_FAILURE: redis lag=0 discovery/AI; workers Up; isolation ok.
+  Shadow remains INTENTIONAL_OFF (E111) — out of scope this cycle.
+
+=== 11. DECISION ===
+  OBSERVE — evidence-only; no path/carve/threshold/shadow change.
+
+=== 12. NEXT HYPOTHESIS (ONE) ===
+  H1: Collector duty-cycle (inter-scan quiet / flood-wait) is the binding constraint on incremental post–path_b observation — not a new semantic loss path. Next: wait for next collector burst OR ≥4–8h wall-clock with non-zero incremental scored since E112, then remeasure NEW rate vs standing UB 0.018/h and 0/5000 recent LOW. Do NOT enable shadow or reopen path_b/c without explicit auth.
+
+=== 13. BUSINESS ===
+  outreach=false ml_go=false threshold_loosen=false fo_carve_untouched=true
+  discovery_semantic_change=false path_b_c_reopened=false shadow_unchanged=true
+
+JSON: docs/audit/evidence/113-disc-v6-live-remeasure-cycle7.json
