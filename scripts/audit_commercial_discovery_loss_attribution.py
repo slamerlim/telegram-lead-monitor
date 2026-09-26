@@ -167,17 +167,22 @@ def _paths_v4(f) -> dict:
         and (f.domain_categories or f.technical_project_terms)
         and (scope or ownership or f.direct_request_signal or (bool(f.commercial_patterns) and f.budget_signal))
     )
-    # Mirror path_b conjunct (Evidence 109): RFQ/hire/budget/paid-fix/carve,
-    # not bare ownership (supportish "my bot is not working").
+    # Mirror path_b conjunct (Evidence 109): direct OR (ownership ∧
+    # hire/budget/paid-fix/carve) — not bare ownership, not budget alone.
     path_b = bool(
         f.repair_signal
         and (has_domain or has_tech)
         and (
             direct
-            or bool(f.hiring_patterns)
-            or f.budget_signal
-            or getattr(f, "true_budget_signal", False)
-            or getattr(f, "gig_project_carve", False)
+            or (
+                ownership
+                and (
+                    bool(f.hiring_patterns)
+                    or f.budget_signal
+                    or getattr(f, "true_budget_signal", False)
+                    or getattr(f, "gig_project_carve", False)
+                )
+            )
         )
     )
     path_c = bool(

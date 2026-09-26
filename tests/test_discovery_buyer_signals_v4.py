@@ -338,6 +338,21 @@ def test_path_b_blocks_supportish_my_bot_not_working_without_buyer_conjunct():
         assert not bare.eligible, version
 
 
+def test_path_b_blocks_budgetish_noise_without_ownership_or_direct():
+    """hire/budget alone must not unlock path_b (P2P Fixed Price / news false paths)."""
+    scorer = _scorer()
+    texts = [
+        # P2P API "Fixed Price" + issue language (true_budget FP) without RFQ.
+        "Hi everyone, I'm an active P2P merchant and I'm experiencing a Silent Drop "
+        "issue with the P2P API when I update my Fixed Price ad on Bybit.",
+        # Ownership + repair without commercial conjunct (supportish).
+        "My bot is broken and not working on the exchange",
+    ]
+    for text in texts:
+        feats = evaluate_discovery(scorer, text, version=DISCOVERY_VERSION_V6)
+        assert not feats.eligible, text
+
+
 def test_path_b_keeps_genuine_ownership_repair_rfq():
     scorer = _scorer()
     texts = [

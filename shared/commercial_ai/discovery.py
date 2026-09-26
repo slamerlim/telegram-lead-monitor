@@ -1135,17 +1135,24 @@ def _eligible_v4(
     )
     # Path B: do NOT use bare ownership — "my bot is not working" sets both
     # repair_signal and ownership_signal, so supportish texts enqueue as
-    # v6_repair_domain (Evidence 107/108 seed 8635958). Require RFQ / hire /
-    # budget / paid-fix / FO carve (not ownership alone).
+    # v6_repair_domain (Evidence 107/108 seed 8635958). Require RFQ direct
+    # OR ownership plus hire/budget/paid-fix/FO carve (Evidence 109).
+    # Do not unlock on hire/budget alone without ownership/direct — that
+    # recovered P2P "Fixed Price" API noise and news digests as path_b-only.
     path_b = (
         feats.repair_signal
         and (has_domain or has_tech)
         and (
             feats.direct_request_signal
-            or bool(hire)
-            or feats.budget_signal
-            or feats.true_budget_signal
-            or feats.gig_project_carve
+            or (
+                feats.ownership_signal
+                and (
+                    bool(hire)
+                    or feats.budget_signal
+                    or feats.true_budget_signal
+                    or feats.gig_project_carve
+                )
+            )
         )
     )
     # Path C: do NOT use bare project_scope — classify_buyer_direction sets
@@ -1283,17 +1290,23 @@ def _eligible_v5(
         or feats.direct_request_signal
         or (explicit_commercial and budget_ok)
     )
-    # Same non-circular path_b conjunct as v4/v6 (Evidence 109): drop bare
-    # ownership so supportish "my bot is not working" cannot unlock alone.
+    # Same non-circular path_b conjunct as v4/v6 (Evidence 109): direct OR
+    # (ownership ∧ hire/budget/paid-fix/carve) — not bare ownership, and not
+    # hire/budget alone without ownership/direct.
     path_b = (
         feats.repair_signal
         and (has_domain or has_tech)
         and (
             feats.direct_request_signal
-            or bool(hire)
-            or budget_ok
-            or feats.true_budget_signal
-            or feats.gig_project_carve
+            or (
+                feats.ownership_signal
+                and (
+                    bool(hire)
+                    or budget_ok
+                    or feats.true_budget_signal
+                    or feats.gig_project_carve
+                )
+            )
         )
     )
     # Same non-circular path_c conjunct as v4/v6 (Evidence 108).
