@@ -1,0 +1,235 @@
+{
+  "evidence_id": 116,
+  "experiment_id": "POST_ENABLE_CYCLE10_FIRST_ITER_CLOSURE",
+  "generated_at": "2026-09-26T07:45:00+00:00",
+  "parent": "Evidence 115 OBSERVE (RESIDUAL_SCARCITY; invite-expired=NOISE)",
+  "decision": "FIRST_ITERATION_CLOSED",
+  "continuous_mode": "OBSERVE_ACTIVE",
+  "classification": "RESIDUAL_SCARCITY",
+  "secondary_classes": [
+    "EXPECTED_IDLE",
+    "INTENTIONAL_SHADOW_OFF",
+    "INVITE_EXPIRED_NOISE",
+    "HISTORICAL_CONTAMINATED_RETAINED"
+  ],
+  "hypothesis": "First-iteration deliverables are satisfied with durable evidence; correct next mode is OBSERVE with explicit resume triggers — not further path semantics or busy remesure before ≥4h/first NEW.",
+  "hypothesis_result": "CONFIRMED",
+  "read_only": true,
+  "code_change": "none",
+  "deploy": "not_needed",
+  "matrix_verdict": "ALL_PASS",
+  "requirements_matrix": [
+    {
+      "id": "R1",
+      "requirement": "Inspect Evidence 106 + 101–105 / D→B activation trail",
+      "status": "PASS",
+      "evidence_paths": [
+        "docs/audit/evidence/101-disc-v6-post-db-remaining-bottleneck.txt",
+        "docs/audit/evidence/102-disc-v6-refined-population-cycle2.txt",
+        "docs/audit/evidence/103-disc-v6-activation-readiness-cycle3.txt",
+        "docs/audit/evidence/104-disc-v6-shadow-enqueue-dryrun-cycle4.txt",
+        "docs/audit/evidence/105-disc-v6-high-tier-bridge-cycle5.txt",
+        "docs/audit/evidence/106-disc-v6-commercial-discovery-enable.txt"
+      ],
+      "notes": "D→B: E101–103 HOLD → E104 READY_FOR_AUTH → E105 HIGH=CRM HOLD → E106 ENABLE env-only"
+    },
+    {
+      "id": "R2",
+      "requirement": "Verify live config/services/Redis/DB/commercial-AI",
+      "status": "PASS",
+      "evidence_paths": [
+        "docs/audit/evidence/107-disc-v6-post-enable-baseline-cycle1.txt",
+        "docs/audit/evidence/110-disc-v6-post-enable-rate-quality-cycle4.txt",
+        "docs/audit/evidence/111-episode-ai-gap-cycle5.txt",
+        "docs/audit/evidence/114-collector-duty-cycle-attribution-cycle8.txt",
+        "docs/audit/evidence/115-post-wave-remeasure-invite-expired-cycle9.txt",
+        "docs/audit/evidence/116-first-iteration-closure-observe-cycle10.txt"
+      ],
+      "notes": "Cycle 10 spot-check: health ok; enabled/disc_v6/shadow=False/cap=120; isolation 1524/4; redis lag=0; CAI episode_id=0"
+    },
+    {
+      "id": "R3",
+      "requirement": "Fix verification tooling (message_scores; failure classes)",
+      "status": "PASS",
+      "evidence_paths": [
+        "scripts/verify_commercial_discovery_post_enable.py",
+        "docs/audit/evidence/107-disc-v6-post-enable-baseline-cycle1.txt"
+      ],
+      "notes": "Commit 6220975; hard rule message_scores; FailureClass includes EXPECTED_LOW_RATE/PIPELINE_FAILURE/QUERY_FAILURE/CONTAMINATED; Cycle 10: verifier adequate — no further tooling ship"
+    },
+    {
+      "id": "R4",
+      "requirement": "Bounded live baseline + frozen disc_v6 replay + first-loss attribution",
+      "status": "PASS",
+      "evidence_paths": [
+        "docs/audit/evidence/107-disc-v6-post-enable-baseline-cycle1.txt",
+        "docs/audit/evidence/108-disc-v6-path-c-automation-conjunct-cycle2.txt",
+        "docs/audit/evidence/109-disc-v6-path-b-repair-conjunct-cycle3.txt",
+        "docs/audit/evidence/112-disc-v6-residual-scarcity-cycle6.txt"
+      ],
+      "notes": "E107 CONTAMINATED baseline; E108/109 frozen 32/16 recovery; E112 first-loss + density"
+    },
+    {
+      "id": "R5",
+      "requirement": "Classify limitation (scarcity/traffic/discovery/scoring/veto/AI/queue/observability)",
+      "status": "PASS",
+      "evidence_paths": [
+        "docs/audit/evidence/107-disc-v6-post-enable-baseline-cycle1.txt",
+        "docs/audit/evidence/111-episode-ai-gap-cycle5.txt",
+        "docs/audit/evidence/112-disc-v6-residual-scarcity-cycle6.txt",
+        "docs/audit/evidence/114-collector-duty-cycle-attribution-cycle8.txt",
+        "docs/audit/evidence/115-post-wave-remeasure-invite-expired-cycle9.txt"
+      ],
+      "notes": "CONTAMINATED→fixed; RESIDUAL_SCARCITY; EXPECTED_IDLE; INTENTIONAL_SHADOW_OFF; invite NOISE; not PIPELINE/REDIS/WORKER/QUERY"
+    },
+    {
+      "id": "R6",
+      "requirement": "Smallest justified changes only when warranted (document SHIP vs HOLD)",
+      "status": "PASS",
+      "evidence_paths": [
+        "docs/audit/evidence/105-disc-v6-high-tier-bridge-cycle5.txt",
+        "docs/audit/evidence/108-disc-v6-path-c-automation-conjunct-cycle2.txt",
+        "docs/audit/evidence/109-disc-v6-path-b-repair-conjunct-cycle3.txt",
+        "docs/audit/evidence/110-disc-v6-post-enable-rate-quality-cycle4.txt"
+      ],
+      "notes": "SHIP path_c+path_b only; HOLD HIGH bridge/shadow/expansion; E110+ OBSERVE no further path ship"
+    }
+  ],
+  "shipped_vs_hold": {
+    "shipped": [
+      {
+        "item": "disc_v6 commercial discovery enable (env-only)",
+        "evidence": 106,
+        "commit": "2c4ae75"
+      },
+      {
+        "item": "verify_commercial_discovery_post_enable.py (message_scores + failure classes)",
+        "evidence": 107,
+        "commit": "6220975"
+      },
+      {
+        "item": "path_c automation conjunct (block EA promo without buyer conjuncts)",
+        "evidence": 108,
+        "commit": "6c541e3"
+      },
+      {
+        "item": "path_b repair conjunct (block supportish; false-widen corrected)",
+        "evidence": 109,
+        "commits": ["e737356", "29097a1"]
+      }
+    ],
+    "hold": [
+      "HIGH-tier FO bridge Option B (E105 VALIDATED_HIGH_STAYS_CRM)",
+      "COMMERCIAL_EPISODE_SHADOW_ENABLED (E111 INTENTIONAL_SHADOW_OFF)",
+      "community expansion / invite refresh (E115 NOISE)",
+      "threshold loosen / global veto removal / FO carve edit",
+      "ML GO / outreach / human_labels or AI_CONFIRMED mutation",
+      "further path_b/c semantics without new loss evidence"
+    ]
+  },
+  "runtime": {
+    "measure_at": "2026-09-26T07:44:02+00:00",
+    "path_b_deploy": "2026-09-26T06:53:16+00:00",
+    "hours_since_path_b": 0.847,
+    "gate_4h_reached": false,
+    "resume_earliest_4h": "2026-09-26T10:53:16+00:00",
+    "enable_at": "2026-09-25T19:27:00+00:00",
+    "settings": {
+      "commercial_discovery_enabled": true,
+      "commercial_discovery_version": "disc_v6",
+      "commercial_discovery_max_candidates_per_hour": 120,
+      "commercial_episode_shadow_enabled": false,
+      "commercial_ai_enabled": true,
+      "commercial_ai_backend": "sdk"
+    },
+    "health": {"status": "ok", "postgres": "ok", "redis": "ok"},
+    "gates": {
+      "ai_validated_messages": 94,
+      "ai_validated_true": 0,
+      "ai_validated_false": 94,
+      "ml_training_enabled": false,
+      "ai_validation_gate_ready": false
+    },
+    "isolation": {
+      "human_labels": 1524,
+      "ai_confirmed": 4,
+      "message_scores": 149892,
+      "messages": 8646323,
+      "disc_candidates": 66,
+      "disc_v6_candidates": 6
+    },
+    "isolation_ok": true,
+    "disc_v6_new_since_path_b": 0,
+    "msg_since_path_b": 2012,
+    "score_since_path_b": 2012,
+    "last_disc_v6": "2026-09-26T03:04:52.153998+00:00",
+    "last_scored": "2026-09-26T07:36:08.383634+00:00",
+    "redis": {
+      "telegram:commercial_discovery": {"lag": 0, "pending": 0, "consumers": 1, "xlen": 6},
+      "telegram:commercial_ai_review": {"lag": 0, "pending": 0, "consumers": 1, "xlen": 8},
+      "telegram:messages": {"lag": 0, "pending": 0, "consumers": 1},
+      "telegram:commercial_episode_shadow": {"lag": 120, "pending": 0, "consumers": 0, "note": "INTENTIONAL_OFF"}
+    },
+    "commercial_ai_reviews_with_episode_id": 0,
+    "shadow_worker_log": "COMMERCIAL_EPISODE_SHADOW_ENABLED=false — worker idle"
+  },
+  "observe_runbook": {
+    "path": "docs/ops/COMMERCIAL_DISCOVERY_OBSERVE_RUNBOOK.md",
+    "resume_triggers": [
+      {
+        "id": "a",
+        "trigger": "first NEW disc_v6 (created_at >= path_b deploy)",
+        "action": "quality-classify RFQ/buyer vs residual contam on untouched path; do not reopen path_b/c"
+      },
+      {
+        "id": "b",
+        "trigger": "≥4h post–path_b scored window (wall >= 2026-09-26T10:53:16Z)",
+        "action": "timed remesure NEW rate vs standing UB 0.018/h and scarcity claim"
+      },
+      {
+        "id": "c",
+        "trigger": "PIPELINE/REDIS/WORKER/QUERY failure",
+        "action": "investigate/fix smallest correctness gap; not path semantics"
+      },
+      {
+        "id": "d",
+        "trigger": "isolation drift (human_labels!=1524 or AI_CONFIRMED!=4)",
+        "action": "halt discovery changes; restore isolation evidence before any resume"
+      }
+    ],
+    "do_not": [
+      "reopen path_b/c",
+      "enable shadow without auth",
+      "expand communities without new loss evidence",
+      "busy remesure before (a) or (b)",
+      "threshold loosen / global veto removal / ML GO / outreach / wipe"
+    ]
+  },
+  "next_hypothesis": {
+    "id": "H1",
+    "cycle": 11,
+    "text": "Timed remesure after ≥4h post–path_b (≈2026-09-26T10:53:16Z) OR immediately on first NEW disc_v6 — classify rate/quality under frozen path_b+c; escalate only on PIPELINE/REDIS/WORKER/QUERY or isolation drift."
+  },
+  "business": {
+    "outreach": false,
+    "ml_go": false,
+    "threshold_loosen": false,
+    "fo_carve_untouched": true,
+    "discovery_semantic_change": false,
+    "path_b_c_reopened": false,
+    "shadow_unchanged": true,
+    "secrets_untouched": true,
+    "wipe": false,
+    "community_expansion": false,
+    "first_iteration": "CLOSED",
+    "continuous_observe": "ACTIVE"
+  },
+  "related_commits": {
+    "enable_evidence": "2c4ae75",
+    "verifier": "6220975",
+    "path_c": "6c541e3",
+    "path_b_attempt": "e737356",
+    "path_b_final": "29097a1",
+    "e115": "d141b7c"
+  }
+}

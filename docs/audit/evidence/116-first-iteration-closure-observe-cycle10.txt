@@ -1,0 +1,137 @@
+Evidence 116: first-iteration closure + OBSERVE runbook / POST-ENABLE CYCLE 10
+generated_at=2026-09-26T07:45:00Z head=d141b7c (pre-commit tip=E115; this evidence commit follows)
+parent=Evidence 115 OBSERVE (RESIDUAL_SCARCITY; invite-expired=NOISE)
+experiment_id=POST_ENABLE_CYCLE10_FIRST_ITER_CLOSURE
+decision=FIRST_ITERATION_CLOSED / CONTINUOUS_OBSERVE_ACTIVE
+classification=RESIDUAL_SCARCITY (standing) + EXPECTED_IDLE (collector) + INTENTIONAL_SHADOW_OFF
+read_only=true code_change=none deploy=not_needed
+hypothesis_result=CONFIRMED
+
+=== 0. PARENT / LOCKS ===
+  parent=Evidence 115 OBSERVE; paths frozen after E108 path_c + E109 path_b SHIP
+  NO path_b/c reopen / NO FO carve/threshold/veto/shadow enable
+  NO human_labels / AI_CONFIRMED mutation / NO ML GO / NO outreach / NO wipe
+  NO Optuna/SHAP/LLM / NO community expansion / NO invite autofix
+  NO busy remesure before ≥4h post–path_b OR first NEW disc_v6
+
+=== 1. HYPOTHESIS (ONE) ===
+  H1: First-iteration deliverables are satisfied with durable evidence;
+  correct next mode is OBSERVE with explicit resume triggers — not further
+  path semantics or busy remesure before ≥4h / first NEW.
+
+=== 2. REQUIREMENTS MATRIX (goal objective first-iteration) ===
+  R1 Inspect E106 + E101–105 / D→B activation trail
+      PASS  E101–105 measurement → E104 READY_FOR_AUTH → E105 HIGH=CRM HOLD
+            → E106 ENABLE (env-only). Paths: docs/audit/evidence/101–106*
+  R2 Verify live config/services/Redis/DB/commercial-AI
+      PASS  Cycle 10 spot-check §3–4; prior E107–115 runtime sections
+  R3 Fix verification tooling (message_scores; failure classes)
+      PASS  scripts/verify_commercial_discovery_post_enable.py (commit 6220975 /
+            E107); hard rule message_scores; failure classes include
+            EXPECTED_LOW_RATE / PIPELINE_FAILURE / QUERY_FAILURE / CONTAMINATED
+  R4 Bounded live baseline + frozen disc_v6 replay + first-loss attribution
+      PASS  E107 baseline (contam live); E108/109 frozen recovery gates;
+            E110–115 post-fix windows; E112 first-loss frozen+recent
+  R5 Classify limitation (scarcity/traffic/discovery/scoring/veto/AI/queue/obs)
+      PASS  LIVE_CONTAMINATION→fixed (E107→E109); post-fix RESIDUAL_SCARCITY
+            (E112–115); EXPECTED_IDLE collector (E114); INTENTIONAL_SHADOW_OFF
+            (E111); invite-expired NOISE (E115); not PIPELINE/REDIS/WORKER/QUERY
+  R6 Smallest justified changes only when warranted (SHIP vs HOLD)
+      PASS  SHIP: path_c E108 (6c541e3), path_b E109 (e737356+29097a1)
+            HOLD/OBSERVE: E105 HIGH bridge, E110–115 no further path change;
+            shadow remains OFF without auth
+
+  matrix_verdict=ALL_PASS → no implementation this cycle; closure + OBSERVE
+
+=== 3. LIVE SPOT-CHECK (Cycle 10; measure_at≈2026-09-26T07:44:02Z) ===
+  health={"status":"ok","postgres":"ok","redis":"ok"}
+  gates: ai_validated=94/0/94 ml_training_enabled=false ready=false
+  settings (analyzer+discovery-worker get_settings):
+    enabled=True version=disc_v6 cap=120/h shadow=False ai=True backend=sdk
+  isolation: human_labels=1524 AI_CONFIRMED=4 message_scores=149892
+            messages=8646323 disc_candidates=66 disc_v6=6
+  isolation_ok=True (expect 1524/4)
+  disc_v6 NEW since path_b 2026-09-26T06:53:16Z: 0
+  msg/score since path_b: 2012/2012 (unchanged vs E115 wave; inter-scan idle)
+  last_disc_v6=2026-09-26T03:04:52Z (historical CONTAMINATED retained)
+  last_scored/msg≈2026-09-26T07:36:08Z
+  hours_since_path_b≈0.847; gate_4h_reached=False
+  resume_earliest_4h=2026-09-26T10:53:16Z
+  Redis: discovery lag=0 pending=0 consumers=1 xlen=6
+         ai_review lag=0 pending=0 consumers=1
+         messages lag=0 pending=0
+         episode_shadow lag=120 consumers=0 INTENTIONAL_OFF
+  shadow log: "COMMERCIAL_EPISODE_SHADOW_ENABLED=false — worker idle"
+  commercial_ai_reviews with episode_id: 0 (handoff gated; E111)
+
+=== 4. SHIPPED vs HOLD (first-iteration ledger) ===
+  SHIPPED:
+    - disc_v6 enable env-only (E106; COMMERCIAL_DISCOVERY_ENABLED=true; not committed)
+    - verifier message_scores + failure classes (E107 / 6220975)
+    - path_c automation conjunct (E108 / 6c541e3) — blocks EA promo family
+    - path_b repair conjunct corrected (E109 / 29097a1) — blocks supportish;
+      false-widen attempt rolled forward before done
+  HOLD / DEFERRED (do not reopen without auth + new loss evidence):
+    - HIGH-tier FO bridge Option B (E105 VALIDATED_HIGH_STAYS_CRM)
+    - COMMERCIAL_EPISODE_SHADOW_ENABLED (E111 INTENTIONAL_SHADOW_OFF)
+    - community expansion / invite refresh (E115 NOISE)
+    - threshold loosen / global veto removal / FO carve edit / ML GO / outreach
+    - further path_b/c semantics
+
+=== 5. LIMITATION STANDING CLASSIFICATION ===
+  primary=RESIDUAL_SCARCITY under path_b+c (0 NEW / ~2k scored post path_b;
+    empiric ≪ standing UB 0.018/h; recent_low current-code 0/5000)
+  collector=EXPECTED_IDLE (900s scheduler waves; E114)
+  shadow=INTENTIONAL_SHADOW_OFF (not PIPELINE_FAILURE)
+  invite_expired=NOISE (cid=132 never productive)
+  historical_6_disc_v6=CONTAMINATED retained (pre-fix; not NEW)
+
+=== 6. DECISION ===
+  FIRST_ITERATION_CLOSED — continuous goal first-iteration requirements ALL_PASS.
+  CONTINUOUS_OBSERVE_ACTIVE — do NOT call the continuous goal "finished forever".
+  No path reopen. No shadow enable. No service deploy this cycle (evidence + ops only).
+
+=== 7. OBSERVE RUNBOOK (resume triggers) ===
+  See also: docs/ops/COMMERCIAL_DISCOVERY_OBSERVE_RUNBOOK.md
+
+  RESUME Cycle 11+ when ANY of:
+    (a) first NEW disc_v6 candidate created_at >= path_b deploy 2026-09-26T06:53:16Z
+        → quality-classify clean RFQ/buyer vs residual contam on UNTOUCHED path
+          (not path_b/c); freeze sample before any semantic change
+    (b) ≥4h post–path_b scored window (wall ≥ 2026-09-26T10:53:16Z) with
+        non-zero cumulative scored since path_b — timed remesure NEW rate vs
+        standing UB 0.018/h and current-code scarcity claim
+    (c) PIPELINE / REDIS / WORKER / QUERY failure signals:
+        health≠ok; redis discovery/AI/messages lag or pending growth with
+        consumers down; message_scores stall while messages ingest;
+        verifier QUERY_FAILURE / PIPELINE_FAILURE
+    (d) isolation drift: human_labels≠1524 OR AI_CONFIRMED≠4
+
+  DO NOT while OBSERVE:
+    - reopen path_b or path_c semantics
+    - enable COMMERCIAL_EPISODE_SHADOW without explicit authorization
+    - expand communities / autofix invites without new loss evidence
+    - busy remesure loops before (a) or (b)
+    - loosen scoring.yaml / remove global vetoes / claim ML GO / outreach
+    - mutate human_labels or AI_CONFIRMED from validation/discovery paths
+    - docker compose down -v / wipe candidates / blind XACK
+
+  Cheap watch (optional; no false PIPELINE_FAILURE):
+    curl -sS http://127.0.0.1:8010/health
+    SQL: disc_v6 NEW since path_b; isolation 1524/4; score_since_path_b
+    redis-cli XINFO GROUPS on commercial_discovery / messages (lag/pending)
+    Full verifier only on resume (a)/(b)/(c) — not every idle minute.
+
+=== 8. NEXT HYPOTHESIS (ONE) ===
+  H1 (Cycle 11): Timed remesure after ≥4h post–path_b (≈2026-09-26T10:53:16Z)
+  OR immediately on first NEW disc_v6 — classify rate/quality under frozen
+  path_b+c; escalate only on PIPELINE/REDIS/WORKER/QUERY or isolation drift.
+
+=== 9. BUSINESS ===
+  outreach=false ml_go=false threshold_loosen=false fo_carve_untouched=true
+  discovery_semantic_change=false path_b_c_reopened=false shadow_unchanged=true
+  secrets_untouched=true wipe=false community_expansion=false
+  first_iteration=CLOSED continuous_observe=ACTIVE
+
+JSON: docs/audit/evidence/116-first-iteration-closure-observe-cycle10.json
+Runbook: docs/ops/COMMERCIAL_DISCOVERY_OBSERVE_RUNBOOK.md
