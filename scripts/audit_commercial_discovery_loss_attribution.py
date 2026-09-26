@@ -356,7 +356,7 @@ async def main() -> int:
                       (SELECT COUNT(*) FROM leads WHERE status='AI_CONFIRMED') AS ai_confirmed,
                       (SELECT COUNT(*) FROM commercial_discovery_candidates) AS disc_candidates,
                       (SELECT COUNT(*) FROM commercial_episodes) AS episodes,
-                      (SELECT COUNT(*) FROM message_scores) AS scores,
+                      (SELECT COUNT(*) FROM message_scores) AS message_scores,
                       (SELECT COUNT(*) FROM messages) AS messages
                     """
                 )
@@ -368,7 +368,7 @@ async def main() -> int:
                 "ai_confirmed": int(inv[1]),
                 "disc_candidates": int(inv[2]),
                 "episodes": int(inv[3]),
-                "scores": int(inv[4]),
+                "message_scores": int(inv[4]),
                 "messages": int(inv[5]),
             },
             "live_settings": {

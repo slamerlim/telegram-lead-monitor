@@ -1,0 +1,420 @@
+{
+  "evidence_id": 107,
+  "title": "disc_v6 post-enable Cycle 1 baseline",
+  "generated_at": "2026-09-26T06:32:32.145416+00:00",
+  "head": "2c4ae75",
+  "parent": "Evidence 106 ENABLED",
+  "read_only": true,
+  "code_change_scope": "verifier_observability_only",
+  "enable_at": "2026-09-25T19:27:00+00:00",
+  "hours_since_enable": 11.092,
+  "settings": {
+    "commercial_discovery_enabled": true,
+    "commercial_discovery_version": "disc_v6",
+    "max_candidates_per_hour": 120,
+    "commercial_episode_shadow_enabled": false
+  },
+  "health": {
+    "status": "ok",
+    "postgres": "ok",
+    "redis": "ok"
+  },
+  "gates": {
+    "ai_validated_messages": 94,
+    "ai_validated_true": 0,
+    "ai_validated_false": 94,
+    "ml_training_enabled": false,
+    "ai_validation_gate_ready": false
+  },
+  "isolation": {
+    "human_labels": 1524,
+    "ai_confirmed": 4,
+    "message_scores": 146671,
+    "messages": 8643102,
+    "disc_candidates": 66,
+    "disc_v6_candidates": 6
+  },
+  "isolation_ok": true,
+  "windows": {
+    "msg_since": 11901,
+    "score_since": 11901,
+    "cand_since": 6,
+    "disc_v6_since": 6,
+    "msg_1h": 2228,
+    "score_1h": 2228,
+    "cand_1h": 0,
+    "msg_6h": 8816,
+    "score_6h": 8816,
+    "cand_6h": 5,
+    "msg_24h": 31410,
+    "score_24h": 32665,
+    "cand_24h": 6
+  },
+  "candidates_by_version_status": [
+    {
+      "discovery_version": "disc_v1",
+      "status": "EPISODE_BUILT",
+      "n": 30
+    },
+    {
+      "discovery_version": "disc_v2",
+      "status": "EPISODE_BUILT",
+      "n": 30
+    },
+    {
+      "discovery_version": "disc_v6",
+      "status": "EPISODE_BUILT",
+      "n": 6
+    }
+  ],
+  "redis": {
+    "ok": true,
+    "xlen": 6,
+    "xpending": 0,
+    "consumers": 1,
+    "via": "redis-py"
+  },
+  "redis_xpending_not_health": "XPENDING=0 is necessary but not sufficient; cross-check DB writes + consumers",
+  "live_rate": {
+    "disc_v6_since_enable": 6,
+    "per_hour": 0.5409,
+    "expected_per_hour_ub": 0.018,
+    "expected_count": 0.1997,
+    "classification": "CONTAMINATED",
+    "live_contamination_pct": 100.0,
+    "audit_contamination_pct": 0.0,
+    "qualitative_contamination": {
+      "n": 6,
+      "promo_or_support_n": 6,
+      "near_dup_n": 5,
+      "pct": 100.0,
+      "reason_counts": {
+        "promo_marketing": 5,
+        "near_dup_automation": 5,
+        "zero_score_automation": 5,
+        "supportish": 1
+      }
+    }
+  },
+  "live_candidates": [
+    {
+      "candidate_id": 61,
+      "seed_message_id": 8633878,
+      "community_id": 47,
+      "community_name": "cTrader Algorithmic Trading",
+      "author_id": 19310,
+      "trigger_type": "v6_automation_domain",
+      "status": "EPISODE_BUILT",
+      "scorer_tier": "LOW",
+      "score": 0.0,
+      "lead_type": "NOISE",
+      "v6_eligible": true,
+      "v6_first_loss": "RETRIEVED",
+      "v6_trigger": "v6_automation_domain",
+      "v6_direction": "BUYER",
+      "v6_bucket": "Direct buyer/RFQ candidate",
+      "v6_automation": true,
+      "v6_marketing": false,
+      "v6_provider": false,
+      "v4_eligible": true,
+      "v4_first_loss": "RETRIEVED",
+      "v4_trigger": "v4_automation_domain",
+      "preview": "Honestly, I\u2019ve been enjoying my experience with Forex High Way EA so far. What I really like is how it helps automate my trading instead of "
+    },
+    {
+      "candidate_id": 62,
+      "seed_message_id": 8634685,
+      "community_id": 47,
+      "community_name": "cTrader Algorithmic Trading",
+      "author_id": 19310,
+      "trigger_type": "v6_automation_domain",
+      "status": "EPISODE_BUILT",
+      "scorer_tier": "LOW",
+      "score": 0.0,
+      "lead_type": "NOISE",
+      "v6_eligible": true,
+      "v6_first_loss": "RETRIEVED",
+      "v6_trigger": "v6_automation_domain",
+      "v6_direction": "BUYER",
+      "v6_bucket": "Direct buyer/RFQ candidate",
+      "v6_automation": true,
+      "v6_marketing": false,
+      "v6_provider": false,
+      "v4_eligible": true,
+      "v4_first_loss": "RETRIEVED",
+      "v4_trigger": "v4_automation_domain",
+      "preview": "Honestly, I\u2019ve been enjoying my experience with Forex High Way EA so far. What I really like is how it helps automate my trading instead of "
+    },
+    {
+      "candidate_id": 63,
+      "seed_message_id": 8634773,
+      "community_id": 47,
+      "community_name": "cTrader Algorithmic Trading",
+      "author_id": 19310,
+      "trigger_type": "v6_automation_domain",
+      "status": "EPISODE_BUILT",
+      "scorer_tier": "LOW",
+      "score": 0.0,
+      "lead_type": "NOISE",
+      "v6_eligible": true,
+      "v6_first_loss": "RETRIEVED",
+      "v6_trigger": "v6_automation_domain",
+      "v6_direction": "BUYER",
+      "v6_bucket": "Direct buyer/RFQ candidate",
+      "v6_automation": true,
+      "v6_marketing": false,
+      "v6_provider": false,
+      "v4_eligible": true,
+      "v4_first_loss": "RETRIEVED",
+      "v4_trigger": "v4_automation_domain",
+      "preview": "Honestly, I\u2019ve been enjoying my experience with Forex High Way EA so far. What I really like is how it helps automate my trading instead of "
+    },
+    {
+      "candidate_id": 64,
+      "seed_message_id": 8634775,
+      "community_id": 47,
+      "community_name": "cTrader Algorithmic Trading",
+      "author_id": 19310,
+      "trigger_type": "v6_automation_domain",
+      "status": "EPISODE_BUILT",
+      "scorer_tier": "LOW",
+      "score": 0.0,
+      "lead_type": "NOISE",
+      "v6_eligible": true,
+      "v6_first_loss": "RETRIEVED",
+      "v6_trigger": "v6_automation_domain",
+      "v6_direction": "BUYER",
+      "v6_bucket": "Direct buyer/RFQ candidate",
+      "v6_automation": true,
+      "v6_marketing": false,
+      "v6_provider": false,
+      "v4_eligible": true,
+      "v4_first_loss": "RETRIEVED",
+      "v4_trigger": "v4_automation_domain",
+      "preview": "Honestly, I\u2019ve been enjoying my experience with Forex High Way EA so far. What I really like is how it helps automate my trading instead of "
+    },
+    {
+      "candidate_id": 65,
+      "seed_message_id": 8635024,
+      "community_id": 47,
+      "community_name": "cTrader Algorithmic Trading",
+      "author_id": 19310,
+      "trigger_type": "v6_automation_domain",
+      "status": "EPISODE_BUILT",
+      "scorer_tier": "LOW",
+      "score": 0.0,
+      "lead_type": "NOISE",
+      "v6_eligible": true,
+      "v6_first_loss": "RETRIEVED",
+      "v6_trigger": "v6_automation_domain",
+      "v6_direction": "BUYER",
+      "v6_bucket": "Direct buyer/RFQ candidate",
+      "v6_automation": true,
+      "v6_marketing": false,
+      "v6_provider": false,
+      "v4_eligible": true,
+      "v4_first_loss": "RETRIEVED",
+      "v4_trigger": "v4_automation_domain",
+      "preview": "Honestly, I\u2019ve been enjoying my experience with Forex High Way EA so far. What I really like is how it helps automate my trading instead of "
+    },
+    {
+      "candidate_id": 66,
+      "seed_message_id": 8635958,
+      "community_id": 97,
+      "community_name": "WEEX English 2nd Group",
+      "author_id": 163360,
+      "trigger_type": "v6_repair_domain",
+      "status": "EPISODE_BUILT",
+      "scorer_tier": "LOW",
+      "score": 18.0,
+      "lead_type": "TECHNICAL_QUESTION",
+      "v6_eligible": true,
+      "v6_first_loss": "RETRIEVED",
+      "v6_trigger": "v6_repair_domain",
+      "v6_direction": "BUYER",
+      "v6_bucket": "Direct buyer/RFQ candidate",
+      "v6_automation": false,
+      "v6_marketing": false,
+      "v6_provider": false,
+      "v4_eligible": true,
+      "v4_first_loss": "RETRIEVED",
+      "v4_trigger": "v4_repair_domain",
+      "preview": "Boss can you help me with my position and point my bot is not working"
+    }
+  ],
+  "replay": {
+    "legacy_commercial_domain": {
+      "disc_v4": {
+        "pool_n": 1302,
+        "eligible": 19,
+        "contamination_pct": 0.0,
+        "first_loss": {
+          "NO_PATH_MATCH": 617,
+          "VETO_support_question": 314,
+          "HARD_EXCLUDE_EARLY": 242,
+          "VETO_job_aggregator": 42,
+          "VETO_corporate_employment": 35,
+          "RETRIEVED": 19,
+          "VETO_news_digest": 16,
+          "VETO_service_provider": 14,
+          "VETO_job_seeker": 2,
+          "VETO_generic_recruiter": 1
+        },
+        "triggers": {
+          "v4_direct_project_domain": 10,
+          "v4_project_procurement": 7,
+          "v4_budget_deliverable": 2
+        },
+        "eligible_by_tier": {
+          "LOW": 19,
+          "HIGH": 0,
+          "other": 0
+        }
+      },
+      "disc_v6": {
+        "pool_n": 1302,
+        "eligible": 32,
+        "contamination_pct": 0.0,
+        "first_loss": {
+          "NO_PATH_MATCH": 617,
+          "VETO_support_question": 314,
+          "HARD_EXCLUDE_EARLY": 242,
+          "VETO_corporate_employment": 35,
+          "RETRIEVED": 32,
+          "VETO_job_aggregator": 29,
+          "VETO_news_digest": 16,
+          "VETO_service_provider": 14,
+          "VETO_job_seeker": 2,
+          "VETO_generic_recruiter": 1
+        },
+        "triggers": {
+          "v6_budget_deliverable": 13,
+          "v6_direct_project_domain": 10,
+          "v6_project_procurement": 7,
+          "v6_repair_domain": 2
+        },
+        "eligible_by_tier": {
+          "LOW": 26,
+          "HIGH": 6,
+          "other": 0
+        }
+      }
+    },
+    "refined_frozen": {
+      "disc_v4": {
+        "pool_n": 102,
+        "eligible": 3,
+        "contamination_pct": 0.0,
+        "first_loss": {
+          "VETO_job_aggregator": 39,
+          "VETO_corporate_employment": 25,
+          "VETO_support_question": 15,
+          "NO_PATH_MATCH": 12,
+          "VETO_service_provider": 4,
+          "RETRIEVED": 3,
+          "VETO_job_seeker": 2,
+          "HARD_EXCLUDE_EARLY": 2
+        },
+        "triggers": {
+          "v4_budget_deliverable": 2,
+          "v4_project_procurement": 1
+        },
+        "eligible_by_tier": {
+          "LOW": 3,
+          "HIGH": 0,
+          "other": 0
+        }
+      },
+      "disc_v6": {
+        "pool_n": 102,
+        "eligible": 16,
+        "contamination_pct": 0.0,
+        "first_loss": {
+          "VETO_job_aggregator": 26,
+          "VETO_corporate_employment": 25,
+          "RETRIEVED": 16,
+          "VETO_support_question": 15,
+          "NO_PATH_MATCH": 12,
+          "VETO_service_provider": 4,
+          "VETO_job_seeker": 2,
+          "HARD_EXCLUDE_EARLY": 2
+        },
+        "triggers": {
+          "v6_budget_deliverable": 13,
+          "v6_repair_domain": 2,
+          "v6_project_procurement": 1
+        },
+        "eligible_by_tier": {
+          "LOW": 10,
+          "HIGH": 6,
+          "other": 0
+        }
+      }
+    }
+  },
+  "fo_probes": [
+    {
+      "lead_id": 1137,
+      "message_id": 25570,
+      "lead_tier": "HIGH",
+      "v6_eligible": true,
+      "v6_trigger": "v6_budget_deliverable",
+      "v4_eligible": false,
+      "preview": "\ud83c\udf1f Freelance Opportunity: Quick Fix Needed for Python Trading Bot \ud83d\udcb0 Budget: $320 \ud83e\udd1d With: david lil"
+    },
+    {
+      "lead_id": 1138,
+      "message_id": 25571,
+      "lead_tier": "HIGH",
+      "v6_eligible": true,
+      "v6_trigger": "v6_budget_deliverable",
+      "v4_eligible": false,
+      "preview": "\ud83c\udf1f Freelance Opportunity: Quick Fix Needed for Python Trading Bot \ud83d\udcb0 Budget: $50 \ud83e\udd1d With: Ryan Peterson"
+    },
+    {
+      "lead_id": 1139,
+      "message_id": 22713,
+      "lead_tier": "HIGH",
+      "v6_eligible": true,
+      "v6_trigger": "v6_budget_deliverable",
+      "v4_eligible": false,
+      "preview": "\ud83c\udf1f Freelance Opportunity: Crypto Trading Bot Developer \ud83d\udcb0 Budget: $200 \ud83e\udd1d With: Yohans Hayla"
+    },
+    {
+      "lead_id": 1140,
+      "message_id": 25400,
+      "lead_tier": "HIGH",
+      "v6_eligible": true,
+      "v6_trigger": "v6_budget_deliverable",
+      "v4_eligible": false,
+      "preview": "\ud83c\udf1f Freelance Opportunity: Python Crypto Trading Bot Developer (GUI + Dashboard) \ud83d\udcb0 Budget: $800 \ud83e\udd1d With: Harry Bennett"
+    }
+  ],
+  "failure_class": "CONTAMINATED",
+  "failure_classes_seen": [
+    "CONTAMINATED"
+  ],
+  "limitation_class": "LIVE_CONTAMINATION: disc_v6 path (esp. v6_automation_domain) enqueued non-buyer marketing/support spam; rate ABOVE empiric UB but quality bad",
+  "historical_first_loss_refined_v6": "VETO_job_aggregator",
+  "next_hypothesis": "H1: Tighten v6_automation_domain / path_c so first-person 'automate my trading' EA marketing (provider/promo) does not enqueue; require buyer RFQ / hire / budget / ownership conjuncts beyond bare automate+domain. Measure on live seeds 8633878-family before any path change.",
+  "notes": [
+    "api_base=http://api:8010",
+    "scores_table_absent=True (correct; use message_scores)",
+    "qualitative_contam_override audit=0.0 qual=100.0 reasons={'promo_marketing': 5, 'near_dup_automation': 5, 'zero_score_automation': 5, 'supportish': 1}"
+  ],
+  "runtime_sec": 22.32,
+  "business": {
+    "outreach": false,
+    "ml_go": false,
+    "threshold_loosen": false,
+    "discovery_semantic_change": false
+  },
+  "locks_honored": {
+    "no_disc_v6_path_change": true,
+    "no_threshold_loosen": true,
+    "no_human_labels_mutation": true,
+    "no_ai_confirmed_mutation": true,
+    "no_blind_xack": true,
+    "no_docker_down_v": true
+  }
+}

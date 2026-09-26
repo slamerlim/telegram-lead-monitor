@@ -97,7 +97,7 @@ ISO_SQL = """
 SELECT
   (SELECT COUNT(*) FROM human_labels) AS human_labels,
   (SELECT COUNT(*) FROM leads WHERE status = 'AI_CONFIRMED') AS ai_confirmed,
-  (SELECT COUNT(*) FROM message_scores) AS scores,
+  (SELECT COUNT(*) FROM message_scores) AS message_scores,
   (SELECT COUNT(*) FROM messages) AS messages
 """
 

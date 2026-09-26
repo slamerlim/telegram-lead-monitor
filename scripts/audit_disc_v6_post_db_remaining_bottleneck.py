@@ -82,7 +82,7 @@ ISO_SQL = """
 SELECT
   (SELECT COUNT(*) FROM human_labels) AS human_labels,
   (SELECT COUNT(*) FROM leads WHERE status = 'AI_CONFIRMED') AS ai_confirmed,
-  (SELECT COUNT(*) FROM message_scores) AS scores,
+  (SELECT COUNT(*) FROM message_scores) AS message_scores,
   (SELECT COUNT(*) FROM messages) AS messages,
   (SELECT COUNT(*) FROM commercial_discovery_candidates) AS disc_candidates
 """
@@ -724,7 +724,7 @@ async def main() -> int:
             "",
             "=== 8. ISOLATION / SETTINGS ===",
             f"  human_labels={iso['human_labels']} AI_CONFIRMED={iso['ai_confirmed']} "
-            f"scores={iso['scores']} messages={iso['messages']} "
+            f"message_scores={iso['message_scores']} messages={iso['messages']} "
             f"disc_candidates={iso['disc_candidates']}",
             f"  commercial_discovery_enabled={settings.commercial_discovery_enabled}",
             f"  commercial_discovery_version={settings.commercial_discovery_version}",

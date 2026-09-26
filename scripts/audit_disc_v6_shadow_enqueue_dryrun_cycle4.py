@@ -69,7 +69,7 @@ ISO_SQL = """
 SELECT
   (SELECT COUNT(*) FROM human_labels) AS human_labels,
   (SELECT COUNT(*) FROM leads WHERE status = 'AI_CONFIRMED') AS ai_confirmed,
-  (SELECT COUNT(*) FROM message_scores) AS scores,
+  (SELECT COUNT(*) FROM message_scores) AS message_scores,
   (SELECT COUNT(*) FROM messages) AS messages,
   (SELECT COUNT(*) FROM commercial_discovery_candidates) AS disc_candidates
 """
@@ -834,7 +834,7 @@ async def main_async(args: argparse.Namespace) -> int:
         "",
         "=== 6. ISOLATION ===",
         f"  human_labels={iso.get('human_labels')} AI_CONFIRMED={iso.get('ai_confirmed')} "
-        f"scores={iso.get('scores')} messages={iso.get('messages')} "
+        f"message_scores={iso.get('message_scores')} messages={iso.get('messages')} "
         f"disc_candidates={iso.get('disc_candidates')}",
         f"  isolation_ok={isolation_ok} (expect 1524/4)",
         "",

@@ -1049,7 +1049,7 @@ async def main_async(args: argparse.Namespace) -> int:
         "",
         "=== 8. ISOLATION ===",
         f"  human_labels={iso.get('human_labels')} AI_CONFIRMED={iso.get('ai_confirmed')} "
-        f"scores={iso.get('scores')} messages={iso.get('messages')} "
+        f"message_scores={iso.get('message_scores')} messages={iso.get('messages')} "
         f"disc_candidates={iso.get('disc_candidates')}",
         f"  isolation_ok={isolation_ok} (expect 1524/4)",
         "",

@@ -1,0 +1,64 @@
+Evidence 107: disc_v6 post-enable Cycle 1 baseline
+generated_at=2026-09-26T06:32:32.145416+00:00 head=2c4ae75
+runtime_sec=22.32 read_only=true
+failure_class=CONTAMINATED rate_class=CONTAMINATED
+
+=== 0. PARENT / LOCKS ===
+  parent=Evidence 106 ENABLED
+  enabled=True version=disc_v6 cap=120 shadow=False
+  NO disc_v6 path/carve change / NO threshold loosen / NO label mutation / NO blind XACK
+
+=== 1. HEALTH / GATES ===
+  health={'status': 'ok', 'postgres': 'ok', 'redis': 'ok'}
+  gates={'ai_validated_messages': 94, 'ai_validated_true': 0, 'ai_validated_false': 94, 'ml_training_enabled': False, 'ai_validation_gate_ready': False}
+
+=== 2. REDIS (not equating XPENDING=0 with health) ===
+  {'ok': True, 'xlen': 6, 'xpending': 0, 'consumers': 1, 'via': 'redis-py'}
+  note=XPENDING=0 is necessary but not sufficient; cross-check DB writes + consumers
+
+=== 3. ISOLATION ===
+  human_labels=1524 AI_CONFIRMED=4 message_scores=146671 messages=8643102 disc_candidates=66 disc_v6=6
+  isolation_ok=True (expect 1524/4)
+
+=== 4. WINDOWS ===
+  since_enable hours=11.092 enable_at=2026-09-25T19:27:00+00:00
+  msg/score/cand since=11901/11901/6 disc_v6_since=6
+  1h msg/score/cand=2228/2228/0
+  6h msg/score/cand=8816/8816/5
+  24h msg/score/cand=31410/32665/6
+  by_ver=[{'discovery_version': 'disc_v1', 'status': 'EPISODE_BUILT', 'n': 30}, {'discovery_version': 'disc_v2', 'status': 'EPISODE_BUILT', 'n': 30}, {'discovery_version': 'disc_v6', 'status': 'EPISODE_BUILT', 'n': 6}]
+
+=== 5. LIVE RATE vs EXPECTED_LOW_RATE ===
+  disc_v6_since=6 rate/h=0.5409 expected_ub/h=0.018 expected_count=0.1997
+  classification=CONTAMINATED live_contam%=100.0
+  NOTE: short zero windows are EXPECTED_LOW_RATE — not success or failure.
+
+=== 6. LIVE CANDIDATES ===
+  id=61 seed=8633878 trig=v6_automation_domain status=EPISODE_BUILT bucket=Direct buyer/RFQ candidate dir=BUYER comm=cTrader Algorithmic Trading | Honestly, I’ve been enjoying my experience with Forex High Way EA so far. What I really like is how it helps automate my trading instead of 
+  id=62 seed=8634685 trig=v6_automation_domain status=EPISODE_BUILT bucket=Direct buyer/RFQ candidate dir=BUYER comm=cTrader Algorithmic Trading | Honestly, I’ve been enjoying my experience with Forex High Way EA so far. What I really like is how it helps automate my trading instead of 
+  id=63 seed=8634773 trig=v6_automation_domain status=EPISODE_BUILT bucket=Direct buyer/RFQ candidate dir=BUYER comm=cTrader Algorithmic Trading | Honestly, I’ve been enjoying my experience with Forex High Way EA so far. What I really like is how it helps automate my trading instead of 
+  id=64 seed=8634775 trig=v6_automation_domain status=EPISODE_BUILT bucket=Direct buyer/RFQ candidate dir=BUYER comm=cTrader Algorithmic Trading | Honestly, I’ve been enjoying my experience with Forex High Way EA so far. What I really like is how it helps automate my trading instead of 
+  id=65 seed=8635024 trig=v6_automation_domain status=EPISODE_BUILT bucket=Direct buyer/RFQ candidate dir=BUYER comm=cTrader Algorithmic Trading | Honestly, I’ve been enjoying my experience with Forex High Way EA so far. What I really like is how it helps automate my trading instead of 
+  id=66 seed=8635958 trig=v6_repair_domain status=EPISODE_BUILT bucket=Direct buyer/RFQ candidate dir=BUYER comm=WEEX English 2nd Group | Boss can you help me with my position and point my bot is not working
+
+=== 7. DETERMINISTIC REPLAY ===
+  legacy_commercial_domain: pool legacy/refined via helpers; v4 elig=19 contam=0.0 v6 elig=32 contam=0.0
+    v6 first_loss={'NO_PATH_MATCH': 617, 'VETO_support_question': 314, 'HARD_EXCLUDE_EARLY': 242, 'VETO_corporate_employment': 35, 'RETRIEVED': 32, 'VETO_job_aggregator': 29, 'VETO_news_digest': 16, 'VETO_service_provider': 14, 'VETO_job_seeker': 2, 'VETO_generic_recruiter': 1}
+    v6 triggers={'v6_budget_deliverable': 13, 'v6_direct_project_domain': 10, 'v6_project_procurement': 7, 'v6_repair_domain': 2} tiers={'LOW': 26, 'HIGH': 6, 'other': 0}
+  refined_frozen: pool legacy/refined via helpers; v4 elig=3 contam=0.0 v6 elig=16 contam=0.0
+    v6 first_loss={'VETO_job_aggregator': 26, 'VETO_corporate_employment': 25, 'RETRIEVED': 16, 'VETO_support_question': 15, 'NO_PATH_MATCH': 12, 'VETO_service_provider': 4, 'VETO_job_seeker': 2, 'HARD_EXCLUDE_EARLY': 2}
+    v6 triggers={'v6_budget_deliverable': 13, 'v6_repair_domain': 2, 'v6_project_procurement': 1} tiers={'LOW': 10, 'HIGH': 6, 'other': 0}
+
+=== 8. FAILURE / LIMITATION ===
+  failure_class=CONTAMINATED
+  seen=['CONTAMINATED']
+  limitation=LIVE_CONTAMINATION: disc_v6 path (esp. v6_automation_domain) enqueued non-buyer marketing/support spam; rate ABOVE empiric UB but quality bad
+  historical_first_loss_refined_v6=VETO_job_aggregator
+
+=== 9. NEXT HYPOTHESIS (no path change this cycle) ===
+  H1: Tighten v6_automation_domain / path_c so first-person 'automate my trading' EA marketing (provider/promo) does not enqueue; require buyer RFQ / hire / budget / ownership conjuncts beyond bare automate+domain. Measure on live seeds 8633878-family before any path change.
+
+=== 10. BUSINESS ===
+  {'outreach': False, 'ml_go': False, 'threshold_loosen': False, 'discovery_semantic_change': False}
+  notes=['api_base=http://api:8010', 'scores_table_absent=True (correct; use message_scores)', "qualitative_contam_override audit=0.0 qual=100.0 reasons={'promo_marketing': 5, 'near_dup_automation': 5, 'zero_score_automation': 5, 'supportish': 1}"]
+
