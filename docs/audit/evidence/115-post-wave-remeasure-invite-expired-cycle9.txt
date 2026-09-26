@@ -1,0 +1,117 @@
+Evidence 115: post-wave remeasure + invite-expired / POST-ENABLE CYCLE 9
+generated_at=2026-09-26T07:39:34+00:00 head=19655791da635e2abd16608f381a03aba2877fa2 parent=Evidence 114 OBSERVE
+experiment_id=POST_ENABLE_CYCLE9_POST_WAVE_REMEASURE
+decision=OBSERVE
+classification=RESIDUAL_SCARCITY
+invite_expired_class=NOISE
+read_only=true code_change=none
+deploy=not_needed
+
+=== 0. PARENT / LOCKS ===
+  parent=Evidence 114 OBSERVE (EXPECTED_IDLE; next H1 = ≥1 further scheduler wave then NEW vs scarcity)
+  NO path_b/c reopen / NO FO carve/threshold/veto/shadow enable
+  NO human_labels / AI_CONFIRMED mutation / NO ML GO / NO wipe / NO community expansion
+  NO Optuna/SHAP/LLM / NO auto-fix invites
+
+=== 1. HYPOTHESIS (ONE) ===
+  H1: After ≥1 additional scheduler wave post-E114, NEW disc_v6 count vs
+  scarcity null still holds; optionally the E114 “8 invite-expired” scan errors
+  are either noise or a measurable coverage hole — attribute without expanding
+  communities.
+
+=== 2. RUNTIME CONFIRM ===
+  HEAD=19655791da635e2abd16608f381a03aba2877fa2 (Evidence 114 commit tip)
+  path_b deploy marker: 2026-09-26T06:53:16+00:00
+  E114 marker: 2026-09-26T07:24:37+00:00
+  measure_at≈2026-09-26T07:39:34+00:00 (~0.772h since path_b; ~0.249h since E114)
+  analyzer settings: enabled=True version=disc_v6 cap=120/h shadow=False ai=True backend=sdk
+  scheduler_interval_seconds=900 scheduler_scan_days=2 flood_wait_buffer=5s
+  health={'status':'ok','postgres':'ok','redis':'ok'}
+  gates: ai_validated_messages=94 true=0 false=94 ml_training_enabled=false ready=false
+  isolation: human_labels=1524 AI_CONFIRMED=4 message_scores=149892 messages=8646323
+           disc_candidates=66 disc_v6=6
+  isolation_ok=True (expect 1524/4)
+
+=== 3. SERVICE STATUS ===
+  collector: Up 43h (stable)
+  scheduler: Up 3d
+  analyzer: Up 46m
+  commercial-discovery-worker: Up 46m
+  commercial-ai-worker: Up 18h
+  commercial-episode-shadow-worker: Up 39h (idle; INTENTIONAL_OFF)
+  postgres/redis: healthy 11d
+
+=== 4. REDIS (no blind XACK) ===
+  telegram:messages: pending=0 consumers=1 lag=0 last_delivered=1790408168372-0
+  telegram:scan_requests: pending=0 consumers=1 lag=0 last_delivered=1790408103128-0
+  telegram:commercial_discovery: pending=0 consumers=1 lag=0 (xlen=6)
+  telegram:commercial_ai_review: pending=0 consumers=1 lag=0
+  telegram:commercial_episode_shadow: consumers=0 lag=120 INTENTIONAL_OFF
+
+=== 5. POST-E114 SCHEDULER WAVE (≥1 required) ===
+  Wave requested_at≈2026-09-26T07:35:01.975Z
+  Wave finished_at≈2026-09-26T07:36:09.326Z
+  communities: 136 finished / 0 inflight; messages_published_sum=623
+  Cadence vs prior waves: …07:05, 07:20, 07:35 — still ≈15m (EXPECTED_IDLE intact)
+  last_msg_created≈2026-09-26T07:36:08.382Z
+  last_scored≈2026-09-26T07:36:08.384Z
+  Per-minute scored_at 07:00–07:36:
+    07:05–07:06: 645
+    07:07–07:19: 0   (inter-scan idle; E114 attributed)
+    07:20–07:21: 744
+    07:22–07:34: 0
+    07:35–07:36: 623 ← first full wave after E114
+
+=== 6. LIVE WINDOWS ===
+  A) since path_b 06:53:16 (~0.772h): msg=2012 score=2012 cand_new=0 disc_v6_new=0
+     rate=0.0/h; standing_UB_expected_count≈0.0139; score_rate≈2607/h
+     class=RESIDUAL_SCARCITY (scarcity null holds)
+  B) since E114 07:24:37 (~0.249h): msg=623 score=623 cand=0 disc_v6_new=0
+     (denominator = post-E114 wave only; idle+wave)
+  C) since E112 07:13:10 (~0.440h): score=1367 disc_v6_new=0
+  D) NEW disc_v6 since path_b: still 0 (last disc_v6=2026-09-26T03:04:52Z historical)
+  E) Qualitative RFQ vs contam: n/a (0 NEW; untouched path)
+
+=== 7. INVITE-EXPIRED ATTRIBUTION ===
+  3h collector community_scan_failed: 12 events — ALL community_id=132
+    ref=https://t.me/joinchat/Cq5J7UNvzE7YY4EUouSfCw
+    error=InviteHashExpiredError via CheckChatInviteRequest
+  E114 “8 invite-expired” = same single community recurring each wave (not 8 communities)
+  Share of scan set: 1/136 enabled = 0.735%
+  Post-E114 wave: 1/136 completed_with_errors (cid=132 only)
+  Historical commercial productivity (DB):
+    messages_all=0 scores=0 disc_candidates=0 human_labels=0
+    created_at=2026-09-14; last_scanned_at=NULL; resolve_status=error
+    → never successfully joined / never produced traffic
+  Classification: NOISE
+    rationale: expired invite is a dead never-productive roster slot; removing or
+    refreshing it would not change NEW disc_v6 yield under current paths. Not a
+    coverage hole for commercial discovery. Do NOT auto-fix invite (lock).
+
+=== 8. OPTIONAL SMOKE ===
+  path_block_cases: promo_path_c / support_path_b / support_bare — all pass (eligible=False)
+  live seeds: 8633878 (promo) eligible=False; 8635958 (support) eligible=False
+  FO probes AI_CONFIRMED: 4/4 eligible+gig_project_carve (HIGH / v6_budget_deliverable)
+  all_path_blocks_pass=true fo_pass=true
+
+=== 9. CLASSIFICATION / DECISION ===
+  classification=RESIDUAL_SCARCITY
+  invite_expired_class=NOISE
+  hypothesis_result: CONFIRMED — scarcity null holds after ≥1 post-E114 wave
+    (0 NEW / 2012 scored over 0.772h; empiric ≪ standing UB 0.018/h)
+  Not PIPELINE_FAILURE (lag=0, wave complete, isolation ok, smoke pass)
+  Not COVERAGE_HOLE from invite-expired (0 historical msgs)
+  decision=OBSERVE — evidence-only; no code/config change
+  Paths frozen; shadow remains INTENTIONAL_OFF
+
+=== 10. NEXT HYPOTHESIS (ONE) ===
+  H1: With invite-expired ruled NOISE and post-wave scarcity null confirmed
+  (0 NEW / 2012 scored ≈0.772h), continue OBSERVE to ≥4h cumulative post–path_b
+  scored traffic OR first NEW disc_v6 for RFQ-vs-contam quality on an untouched
+  path — do NOT expand communities, refresh invites, reopen path_b/c, or enable
+  shadow without explicit auth.
+
+=== 11. BUSINESS ===
+  outreach=false ml_go=false threshold_loosen=false fo_carve_untouched=true
+  discovery_semantic_change=false path_b_c_reopened=false shadow_unchanged=true
+  secrets_untouched=true wipe=false community_expansion=false invite_autofix=false

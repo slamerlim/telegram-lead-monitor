@@ -1,0 +1,252 @@
+{
+  "evidence_id": 115,
+  "experiment_id": "POST_ENABLE_CYCLE9_POST_WAVE_REMEASURE",
+  "generated_at": "2026-09-26T07:39:34+00:00",
+  "parent": "Evidence 114 OBSERVE (EXPECTED_IDLE)",
+  "decision": "OBSERVE",
+  "classification": "RESIDUAL_SCARCITY",
+  "invite_expired_class": "NOISE",
+  "loss_stage_if_discovery_loss": null,
+  "decision_rationale": "First full scheduler wave after E114 (07:35-07:36) scored 623; cumulative since path_b scored=2012 / NEW disc_v6=0. Scarcity null holds (empiric 0/h << UB 0.018/h; expected_count@UB≈0.014). Invite-expired errors are a single never-productive community (132; 0 msgs ever) → NOISE not COVERAGE_HOLE. Smoke path_b/c + FO 4/4 pass.",
+  "read_only": true,
+  "code_change": "none",
+  "deploy": "not_needed",
+  "hypothesis": "After ≥1 additional scheduler wave post-E114, NEW disc_v6 count vs scarcity null still holds; optionally the E114 invite-expired scan errors are either noise or a measurable coverage hole — attribute without expanding communities.",
+  "hypothesis_result": "CONFIRMED",
+  "runtime": {
+    "head": "19655791da635e2abd16608f381a03aba2877fa2",
+    "head_short": "1965579",
+    "path_b_deploy": "2026-09-26T06:53:16+00:00",
+    "e112_at": "2026-09-26T07:13:10+00:00",
+    "e114_at": "2026-09-26T07:24:37+00:00",
+    "measure_at": "2026-09-26T07:39:34+00:00",
+    "settings": {
+      "commercial_discovery_enabled": true,
+      "commercial_discovery_version": "disc_v6",
+      "commercial_discovery_max_candidates_per_hour": 120,
+      "commercial_episode_shadow_enabled": false,
+      "commercial_ai_enabled": true,
+      "commercial_ai_backend": "sdk",
+      "scheduler_interval_seconds": 900,
+      "scheduler_scan_days": 2,
+      "collector_flood_wait_buffer_seconds": 5
+    },
+    "settings_source": "analyzer container get_settings()",
+    "health": {
+      "status": "ok",
+      "postgres": "ok",
+      "redis": "ok"
+    },
+    "gates": {
+      "ai_validated_messages": 94,
+      "ai_validated_true": 0,
+      "ai_validated_false": 94,
+      "ml_training_enabled": false,
+      "ai_validation_gate_ready": false
+    },
+    "isolation": {
+      "human_labels": 1524,
+      "ai_confirmed": 4,
+      "message_scores": 149892,
+      "messages": 8646323,
+      "disc_candidates": 66,
+      "disc_v6_candidates": 6
+    },
+    "isolation_ok": true,
+    "workers": {
+      "collector": "Up 43h",
+      "scheduler": "Up 3d",
+      "analyzer": "Up 46m",
+      "commercial_discovery_worker": "Up 46m",
+      "commercial_ai_worker": "Up 18h",
+      "commercial_episode_shadow_worker": "Up 39h",
+      "postgres": "Up 11d healthy",
+      "redis": "Up 11d healthy"
+    },
+    "redis": {
+      "ok": true,
+      "streams": {
+        "telegram:messages": {
+          "pending": 0,
+          "consumers": 1,
+          "lag": 0,
+          "last_delivered_id": "1790408168372-0",
+          "group": "analyzer-workers"
+        },
+        "telegram:scan_requests": {
+          "pending": 0,
+          "consumers": 1,
+          "lag": 0,
+          "last_delivered_id": "1790408103128-0",
+          "group": "collector-workers"
+        },
+        "telegram:commercial_discovery": {
+          "xlen": 6,
+          "pending": 0,
+          "consumers": 1,
+          "lag": 0,
+          "last_delivered_id": "1790391892154-0",
+          "group": "commercial-discovery-workers"
+        },
+        "telegram:commercial_ai_review": {
+          "xlen": 8,
+          "pending": 0,
+          "consumers": 1,
+          "lag": 0,
+          "last_delivered_id": "1790237845019-0",
+          "group": "commercial-ai-workers"
+        },
+        "telegram:commercial_episode_shadow": {
+          "xlen": 120,
+          "pending": 0,
+          "consumers": 0,
+          "lag": 120,
+          "last_delivered_id": "0-0",
+          "group": "commercial-episode-shadow-workers",
+          "note": "INTENTIONAL_OFF"
+        }
+      }
+    }
+  },
+  "post_e114_wave": {
+    "requested_at": "2026-09-26T07:35:01.975061+00:00",
+    "finished_at": "2026-09-26T07:36:09.325727+00:00",
+    "communities_finished": 136,
+    "inflight": 0,
+    "messages_published_sum": 623,
+    "invite_expired_errors": 1,
+    "waves_observed": ["07:05", "07:20", "07:35"],
+    "score_minute_buckets": {
+      "07:05-07:06": 645,
+      "07:07-07:19": 0,
+      "07:20-07:21": 744,
+      "07:22-07:34": 0,
+      "07:35-07:36": 623
+    },
+    "last_msg_created": "2026-09-26T07:36:08.382372+00:00",
+    "last_scored": "2026-09-26T07:36:08.383634+00:00"
+  },
+  "live_windows": {
+    "since_path_b": {
+      "since": "2026-09-26T06:53:16+00:00",
+      "hours": 0.772,
+      "msg": 2012,
+      "score": 2012,
+      "cand": 0,
+      "disc_v6": 0,
+      "rate_per_hour": 0.0,
+      "score_rate_per_hour": 2607.3,
+      "class": "RESIDUAL_SCARCITY",
+      "expected_count_at_ub_0_018": 0.0139
+    },
+    "since_e114": {
+      "since": "2026-09-26T07:24:37+00:00",
+      "hours": 0.249,
+      "msg": 623,
+      "score": 623,
+      "cand": 0,
+      "disc_v6": 0,
+      "rate_per_hour": 0.0,
+      "expected_count_at_ub_0_018": 0.0045
+    },
+    "since_e112": {
+      "since": "2026-09-26T07:13:10+00:00",
+      "hours": 0.44,
+      "score": 1367,
+      "disc_v6": 0
+    },
+    "last_disc_v6": "2026-09-26T03:04:52.153998+00:00",
+    "new_disc_v6_since_path_b": 0,
+    "qualitative_rfq_vs_contam": null
+  },
+  "invite_expired": {
+    "classification": "NOISE",
+    "e114_reported_scan_errors_2h": 8,
+    "events_3h": 12,
+    "distinct_communities": 1,
+    "communities": [
+      {
+        "community_id": 132,
+        "telegram_ref": "https://t.me/joinchat/Cq5J7UNvzE7YY4EUouSfCw",
+        "resolve_status": "error",
+        "enabled": true,
+        "created_at": "2026-09-14T18:13:44.54106+00:00",
+        "last_scanned_at": null,
+        "messages_all": 0,
+        "scores": 0,
+        "disc_candidates": 0,
+        "human_labels": 0,
+        "historically_commercial_productive": false
+      }
+    ],
+    "share_of_enabled_scan_set": 0.00735,
+    "enabled_communities": 136,
+    "post_e114_wave_errors": 1,
+    "auto_fix": false,
+    "rationale": "Single expired invite never joined and never produced messages; recurring per-wave error is roster noise, not a commercial coverage hole."
+  },
+  "smoke": {
+    "path_block_cases": [
+      {
+        "name": "promo_path_c",
+        "want_eligible": false,
+        "eligible": false,
+        "paths": [],
+        "trigger": null,
+        "vetoes": [],
+        "pass": true
+      },
+      {
+        "name": "support_path_b",
+        "want_eligible": false,
+        "eligible": false,
+        "paths": [],
+        "trigger": null,
+        "vetoes": [],
+        "pass": true,
+        "live_seed_id": 8635958
+      },
+      {
+        "name": "support_bare",
+        "want_eligible": false,
+        "eligible": false,
+        "paths": [],
+        "trigger": null,
+        "vetoes": [],
+        "pass": true
+      }
+    ],
+    "live_seeds": [
+      {"message_id": 8633878, "role": "promo_path_c", "eligible": false},
+      {"message_id": 8635958, "role": "support_path_b", "eligible": false}
+    ],
+    "all_path_blocks_pass": true,
+    "fo_probes": "4/4",
+    "fo_pass": true,
+    "fo_rows": [
+      {"lead_id": 1137, "message_id": 25570, "eligible": true, "carve": true, "trigger": "v6_budget_deliverable", "tier": "HIGH"},
+      {"lead_id": 1138, "message_id": 25571, "eligible": true, "carve": true, "trigger": "v6_budget_deliverable", "tier": "HIGH"},
+      {"lead_id": 1139, "message_id": 22713, "eligible": true, "carve": true, "trigger": "v6_budget_deliverable", "tier": "HIGH"},
+      {"lead_id": 1140, "message_id": 25400, "eligible": true, "carve": true, "trigger": "v6_budget_deliverable", "tier": "HIGH"}
+    ]
+  },
+  "ruled_out": {
+    "PIPELINE_FAILURE": "Redis lag=0; 136/136 wave complete; analyzer progress; isolation 1524/4",
+    "COVERAGE_HOLE_INVITE_EXPIRED": "cid=132 has 0 historical messages/scores/candidates",
+    "PATH_REGRESSION": "smoke path_b/c blocks + FO 4/4 pass"
+  },
+  "next_hypothesis": "With invite-expired ruled NOISE and post-wave scarcity null confirmed (0 NEW / 2012 scored ≈0.772h), continue OBSERVE to ≥4h cumulative post-path_b scored traffic OR first NEW disc_v6 for RFQ-vs-contam quality on an untouched path — do NOT expand communities, refresh invites, reopen path_b/c, or enable shadow without explicit auth.",
+  "business": {
+    "outreach": false,
+    "ml_go": false,
+    "threshold_loosen": false,
+    "fo_carve_untouched": true,
+    "discovery_semantic_change": false,
+    "path_b_c_reopened": false,
+    "shadow_unchanged": true,
+    "secrets_untouched": true,
+    "wipe": false,
+    "community_expansion": false,
+    "invite_autofix": false
+  }
+}
