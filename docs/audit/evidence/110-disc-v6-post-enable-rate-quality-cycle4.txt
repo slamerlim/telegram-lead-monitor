@@ -1,0 +1,98 @@
+Evidence 110: disc_v6 post-enable Cycle 4 live rate/quality remeasure
+generated_at=2026-09-26T07:03:30Z head=c1a7c63 parent=Evidence 109 SHIP
+experiment_id=POST_ENABLE_CYCLE4_REMEASURE
+decision=OBSERVE
+failure_class=EXPECTED_LOW_RATE
+read_only=true code_change=none
+
+=== 0. PARENT / LOCKS ===
+  parent=Evidence 109 SHIP (path_b conjunct; path_c already shipped in E108)
+  NO path_b/c reopen / NO FO carve change / NO threshold loosen / NO global veto removal
+  NO human_labels / AI_CONFIRMED mutation / NO ML GO / NO outreach
+  NO docker compose down -v / NO wipe of historical disc_v6 rows / NO blind XACK
+
+=== 1. HYPOTHESIS (H1 from Evidence 109 J) ===
+  After path_c+path_b ship, NEW disc_v6 enqueue over a fresh post-deploy window
+  should be EXPECTED_LOW_RATE or clean RFQ-only; if residual contamination appears,
+  attribute next path (do not reopen path_b/c).
+
+=== 2. RUNTIME CONFIRM ===
+  HEAD=c1a7c6329832e6cdc5a3945b55533f2a782d0125 (Evidence 109 commit on main)
+  path_b code deploy: analyzer + commercial-discovery-worker started=2026-09-26T06:53:16Z
+  services: all Up (postgres/redis healthy; analyzer+discovery-worker Up since path_b recreate)
+  settings: COMMERCIAL_DISCOVERY_ENABLED=true version=disc_v6 cap=120/h shadow=False
+  health={"status":"ok","postgres":"ok","redis":"ok"}
+  gates=94/0/94 ml_training_enabled=false ai_validation_gate_ready=false
+  isolation: human_labels=1524 AI_CONFIRMED=4 disc_v6_candidates=6 (historical retained)
+  isolation_ok=true
+
+=== 3. REDIS (cross-check DB; no blind XACK) ===
+  telegram:commercial_discovery: XLEN=6 pending=0 consumers=1 lag=0
+    group=commercial-discovery-workers consumer=disc-1
+    last payload seed=8635958 (historical path_b contam; retained)
+  telegram:commercial_ai_review: XLEN=8 pending=0 consumers=1 lag=0
+  telegram:messages: analyzer-workers lag=0 pending=0 (caught up; no new publishes)
+  telegram:commercial_episode_shadow: XLEN=120 lag=120 consumers=0 (shadow OFF — expected)
+  DB commercial_discovery_candidates disc_v6=6 EPISODE_BUILT matches XLEN=6
+
+=== 4. VERIFIER (scripts/verify_commercial_discovery_post_enable.py) ===
+  Ran in analyzer container: --enable-at 2026-09-25T19:27:00+00:00 --evidence-id 110 --no-write-evidence
+  message_scores used correctly; scores table absent=True (correct)
+  since_enable (~11.5h): disc_v6=6 rate/h≈0.52 failure_class=CONTAMINATED (100% qual contam)
+  NOTE: that CONTAMINATED label is the retained pre-fix 6 rows (E107/E108/E109), NOT new enqueue.
+  Cycle-4 primary class uses post-deploy / post-path_c windows below — not the since-enable aggregate.
+  No QUERY_FAILURE / schema bug → no verifier code ship this cycle.
+
+=== 5. BOUNDED LIVE WINDOWS ===
+  A) since Cycle 3 path_b deploy 2026-09-26T06:53:16Z → measure@07:03Z (~0.17h):
+     msg=0 score=0 cand_new=0 disc_v6_new=0 rate/h=0
+     class=EXPECTED_LOW_RATE (also LOW_TRAFFIC: collector inter-scan quiet after 06:51 burst;
+     flood-wait seen; scan_requests lag=0; analyzer lag=0 — not PIPELINE_FAILURE)
+  B) since Evidence 108 path_c ship marker 2026-09-26T06:41:22Z → 07:03Z (~0.37h):
+     msg=576 score=576 cand_new=0 disc_v6_new=0 rate/h=0
+     class=EXPECTED_LOW_RATE with non-trivial scored traffic under tightened paths
+  C) since enable 2026-09-25T19:27Z (context only):
+     msg=13110 score=13110 disc_v6=6 (all historical contam) — CONTAMINATED retained
+  1h context: msg=2409 score=2409 cand=0 (all traffic pre-dates path_b recreate quiet)
+
+=== 6. NEW CANDIDATES / QUALITATIVE ===
+  NEW disc_v6 since path_b deploy: 0 — nothing to audit for RFQ vs promo/support.
+  Historical retained (not wiped; intentional):
+    5× v6_automation_domain EA promo near-dups (path_c; blocked by E108 conjunct for NEW)
+    1× v6_repair_domain supportish 8635958 (path_b; blocked by E109 conjunct for NEW)
+  commercial-AI: 6 episodes BUILT; 0 DECISION rows with episode_id for these seeds
+    (AI stream last triggers=analyzer_upsert/sdk_shadow — not episode). Note as residual
+    episode→AI gap; does not classify discovery enqueue as PIPELINE_FAILURE this cycle.
+  worker errors/retries since enable: none observed in discovery/AI/analyzer discovery logs.
+
+=== 7. FROZEN REPLAY SMOKE (deployed analyzer; no redesign) ===
+  path_c promo (EA automate-my-trading): eligible=False PASS
+  path_b support 8635958 text: eligible=False PASS
+  bare "My bot is not working": eligible=False PASS
+  FO LaborX probes: 4/4 eligible + gig_project_carve=True PASS
+  genuine repair samples (2): eligible=True PASS
+  verifier deterministic replay: legacy v6 elig=32 contam=0; refined v6 elig=16 contam=0
+
+=== 8. ATTRIBUTION ===
+  Primary: EXPECTED_LOW_RATE after path_b+c — zero NEW enqueue with 576 scored msgs
+    in the post-path_c window; post-path_b window still quiet (collector inter-scan).
+  Not PIPELINE_FAILURE: redis lag=0, DB writes match XLEN for historical 6, workers Up.
+  Not residual discovery loss measurable yet: no NEW candidates to loss-attribute.
+  Not observability QUERY_FAILURE.
+  Since-enable CONTAMINATED is historical retention only — do not reopen path_b/c.
+
+=== 9. DECISION ===
+  OBSERVE — Cycle 4 remeasure supports EXPECTED_LOW_RATE post path_b+c; no path
+  semantic change; no deploy needed (evidence-only).
+
+=== 10. NEXT HYPOTHESIS (ONE) ===
+  H1: Extend live observation ≥2–4h (or until ≥1 NEW disc_v6 candidate) and classify
+  that first post-fix enqueue as clean RFQ/buyer vs residual contamination on an
+  untouched path (not path_b/c). If still zero after ample scored traffic, then
+  attribute residual discovery scarcity (true low eligible rate) vs collector duty-cycle.
+
+=== 11. BUSINESS ===
+  outreach=false ml_go=false threshold_loosen=false fo_carve_untouched=true
+  discovery_semantic_change=false path_b_c_reopened=false
+
+JSON: docs/audit/evidence/110-disc-v6-post-enable-rate-quality-cycle4.json

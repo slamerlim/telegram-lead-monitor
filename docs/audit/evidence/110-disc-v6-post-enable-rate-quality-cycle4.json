@@ -1,0 +1,231 @@
+{
+  "evidence_id": 110,
+  "title": "disc_v6 post-enable Cycle 4 live rate/quality remeasure",
+  "experiment_id": "POST_ENABLE_CYCLE4_REMEASURE",
+  "generated_at": "2026-09-26T07:03:30Z",
+  "head": "c1a7c63",
+  "head_full": "c1a7c6329832e6cdc5a3945b55533f2a782d0125",
+  "parent": "Evidence 109 SHIP",
+  "decision": "OBSERVE",
+  "failure_class": "EXPECTED_LOW_RATE",
+  "read_only": true,
+  "code_change_scope": "none",
+  "hypothesis": {
+    "id": "H1",
+    "statement": "After path_c+path_b ship, NEW disc_v6 enqueue over a fresh post-deploy window should be EXPECTED_LOW_RATE or clean RFQ-only; if residual contamination appears, attribute next path (not reopen path_b/c)."
+  },
+  "runtime": {
+    "path_b_deploy_at": "2026-09-26T06:53:16Z",
+    "path_c_evidence_at": "2026-09-26T06:41:22Z",
+    "enable_at": "2026-09-25T19:27:00+00:00",
+    "measure_at": "2026-09-26T07:03:11Z",
+    "services_up": true,
+    "settings": {
+      "commercial_discovery_enabled": true,
+      "commercial_discovery_version": "disc_v6",
+      "commercial_discovery_max_candidates_per_hour": 120,
+      "commercial_episode_shadow_enabled": false
+    },
+    "health": {"status": "ok", "postgres": "ok", "redis": "ok"},
+    "gates": {
+      "ai_validated_messages": 94,
+      "ai_validated_true": 0,
+      "ai_validated_false": 94,
+      "ml_training_enabled": false,
+      "ai_validation_gate_ready": false
+    },
+    "isolation": {
+      "human_labels": 1524,
+      "ai_confirmed": 4,
+      "disc_candidates": 66,
+      "disc_v6_candidates": 6
+    },
+    "isolation_ok": true
+  },
+  "redis": {
+    "telegram:commercial_discovery": {
+      "xlen": 6,
+      "pending": 0,
+      "consumers": 1,
+      "lag": 0,
+      "group": "commercial-discovery-workers"
+    },
+    "telegram:commercial_ai_review": {
+      "xlen": 8,
+      "pending": 0,
+      "consumers": 1,
+      "lag": 0
+    },
+    "telegram:messages": {
+      "group": "analyzer-workers",
+      "pending": 0,
+      "lag": 0
+    },
+    "telegram:commercial_episode_shadow": {
+      "xlen": 120,
+      "lag": 120,
+      "consumers": 0,
+      "note": "shadow OFF — lag expected"
+    },
+    "db_cross_check": "disc_v6 EPISODE_BUILT n=6 matches discovery XLEN=6",
+    "blind_xack": false
+  },
+  "verifier": {
+    "script": "scripts/verify_commercial_discovery_post_enable.py",
+    "ran_in": "docker compose run --rm --no-deps analyzer",
+    "enable_at": "2026-09-25T19:27:00+00:00",
+    "message_scores_ok": true,
+    "scores_table_absent": true,
+    "since_enable_failure_class": "CONTAMINATED",
+    "since_enable_note": "Historical retained 6 rows only; not Cycle-4 primary class",
+    "query_failure": false,
+    "code_fix_shipped": false
+  },
+  "windows": {
+    "since_path_b_deploy": {
+      "since": "2026-09-26T06:53:16Z",
+      "hours_approx": 0.17,
+      "messages": 0,
+      "message_scores": 0,
+      "candidates_new": 0,
+      "disc_v6_new": 0,
+      "rate_per_hour": 0.0,
+      "classification": "EXPECTED_LOW_RATE",
+      "traffic_note": "collector inter-scan quiet after 06:51 burst; flood-wait; scan_requests lag=0"
+    },
+    "since_path_c_evidence": {
+      "since": "2026-09-26T06:41:22Z",
+      "hours_approx": 0.37,
+      "messages": 576,
+      "message_scores": 576,
+      "candidates_new": 0,
+      "disc_v6_new": 0,
+      "rate_per_hour": 0.0,
+      "classification": "EXPECTED_LOW_RATE"
+    },
+    "since_enable_context": {
+      "since": "2026-09-25T19:27:00+00:00",
+      "hours_approx": 11.6,
+      "messages": 13110,
+      "message_scores": 13110,
+      "disc_v6": 6,
+      "classification": "CONTAMINATED_HISTORICAL_RETAINED"
+    },
+    "last_1h_context": {
+      "messages": 2409,
+      "message_scores": 2409,
+      "candidates": 0
+    }
+  },
+  "new_candidates": [],
+  "historical_disc_v6_retained": [
+    {
+      "id": 61,
+      "seed_message_id": 8633878,
+      "trigger_type": "v6_automation_domain",
+      "status": "EPISODE_BUILT",
+      "qual": "promo_marketing"
+    },
+    {
+      "id": 62,
+      "seed_message_id": 8634685,
+      "trigger_type": "v6_automation_domain",
+      "status": "EPISODE_BUILT",
+      "qual": "promo_marketing"
+    },
+    {
+      "id": 63,
+      "seed_message_id": 8634773,
+      "trigger_type": "v6_automation_domain",
+      "status": "EPISODE_BUILT",
+      "qual": "promo_marketing"
+    },
+    {
+      "id": 64,
+      "seed_message_id": 8634775,
+      "trigger_type": "v6_automation_domain",
+      "status": "EPISODE_BUILT",
+      "qual": "promo_marketing"
+    },
+    {
+      "id": 65,
+      "seed_message_id": 8635024,
+      "trigger_type": "v6_automation_domain",
+      "status": "EPISODE_BUILT",
+      "qual": "promo_marketing"
+    },
+    {
+      "id": 66,
+      "seed_message_id": 8635958,
+      "trigger_type": "v6_repair_domain",
+      "status": "EPISODE_BUILT",
+      "qual": "supportish"
+    }
+  ],
+  "commercial_ai": {
+    "episodes_built_for_disc_v6_seeds": 6,
+    "decision_reviews_for_those_episodes": 0,
+    "reviews_since_enable": 0,
+    "reviews_since_path_b_deploy": 0,
+    "note": "Residual episode→AI gap; AI stream last triggers analyzer_upsert/sdk_shadow. Not discovery enqueue PIPELINE_FAILURE."
+  },
+  "worker_errors": {
+    "commercial_discovery_worker": "none observed",
+    "commercial_ai_worker": "none observed",
+    "analyzer_discovery": "none observed"
+  },
+  "frozen_smoke": {
+    "path_c_promo_blocked": true,
+    "path_b_support_blocked": true,
+    "bare_my_bot_not_working_blocked": true,
+    "fo_probes": "4/4",
+    "fo_carve": true,
+    "genuine_repair_samples": "2/2",
+    "legacy_v6_eligible": 32,
+    "refined_v6_eligible": 16,
+    "legacy_v6_contam_pct": 0.0,
+    "refined_v6_contam_pct": 0.0
+  },
+  "attribution": {
+    "primary": "EXPECTED_LOW_RATE",
+    "factors": [
+      "zero_new_enqueue_with_576_scored_msgs_post_path_c",
+      "post_path_b_window_low_traffic_collector_inter_scan",
+      "historical_contam_retained_not_new",
+      "redis_lag_zero_workers_up_not_pipeline_failure"
+    ],
+    "not": [
+      "PIPELINE_FAILURE",
+      "QUERY_FAILURE",
+      "path_b_c_reopen_needed"
+    ]
+  },
+  "decision_rationale": "Post path_b+c windows show zero NEW disc_v6 with healthy redis/DB/workers; 576 scored messages after path_c ship with no enqueue supports EXPECTED_LOW_RATE. No correctness bug found; observe longer for first NEW candidate quality.",
+  "next_hypothesis": {
+    "id": "H1",
+    "statement": "Extend live observation ≥2–4h (or until ≥1 NEW disc_v6 candidate) and classify that first post-fix enqueue as clean RFQ/buyer vs residual contamination on an untouched path (not path_b/c). If still zero after ample scored traffic, attribute residual discovery scarcity vs collector duty-cycle."
+  },
+  "business": {
+    "outreach": false,
+    "ml_go": false,
+    "threshold_loosen": false,
+    "fo_carve_untouched": true,
+    "path_b_c_reopened": false,
+    "discovery_semantic_change": false
+  },
+  "locks_honored": {
+    "no_path_b_c_reopen": true,
+    "no_fo_carve_change": true,
+    "no_threshold_loosen": true,
+    "no_global_veto_removal": true,
+    "no_human_labels_mutation": true,
+    "no_ai_confirmed_mutation": true,
+    "no_blind_xack": true,
+    "no_docker_down_v": true,
+    "no_wipe_historical_disc_v6": true
+  },
+  "files_touched": [
+    "docs/audit/evidence/110-disc-v6-post-enable-rate-quality-cycle4.txt",
+    "docs/audit/evidence/110-disc-v6-post-enable-rate-quality-cycle4.json"
+  ]
+}
