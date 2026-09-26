@@ -3,6 +3,7 @@
   "title": "disc_v6 path_c automation conjunct Cycle 2 (H1)",
   "experiment_id": "POST_ENABLE_CYCLE2_PATH_C",
   "generated_at": "2026-09-26T06:41:22Z",
+  "head": "6c541e3eac923562885f06319023e31b433233b6",
   "parent": "Evidence 107 CONTAMINATED",
   "decision": "SHIP",
   "read_only": false,

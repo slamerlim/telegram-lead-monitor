@@ -1,5 +1,5 @@
 Evidence 108: disc_v6 path_c automation conjunct Cycle 2 (H1)
-generated_at=2026-09-26T06:41:22Z parent=Evidence 107 CONTAMINATED
+generated_at=2026-09-26T06:41:22Z head=6c541e3 parent=Evidence 107 CONTAMINATED
 experiment_id=POST_ENABLE_CYCLE2_PATH_C
 decision=SHIP
 read_only=false code_change=path_c conjunct in _eligible_v4/_eligible_v5
