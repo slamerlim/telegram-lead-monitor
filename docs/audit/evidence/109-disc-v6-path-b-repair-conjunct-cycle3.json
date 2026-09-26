@@ -1,0 +1,139 @@
+{
+  "evidence_id": 109,
+  "title": "disc_v6 path_b repair conjunct Cycle 3 (H1)",
+  "experiment_id": "POST_ENABLE_CYCLE3_PATH_B",
+  "generated_at": "2026-09-26T06:53:32Z",
+  "head": "29097a1",
+  "head_full": "29097a16f58f1cc989c7bf2f0ab3d4ba374a8b3d",
+  "prior_attempt_sha": "e7373563e9cf2870ba3ba3f10d4e2fb9eb8d0644",
+  "parent": "Evidence 108 SHIP",
+  "decision": "SHIP",
+  "read_only": false,
+  "code_change_scope": "path_b conjunct in _eligible_v4/_eligible_v5 + loss-attribution mirror + tests",
+  "hypothesis": {
+    "id": "H1",
+    "statement": "Tighten path_b / v6_repair_domain so vague support-style 'my bot is not working' without RFQ/hire/budget/paid-fix conjunct does not enqueue (seed 8635958 family), while true ownership+repair buyer RFQs and FO repair carve remain recovered."
+  },
+  "root_cause": {
+    "summary": "path_b used ownership OR direct; 'my bot is not working' sets both repair_signal and ownership_signal with tech hit, unlocking v6_repair_domain without RFQ/hire/budget",
+    "live_example_seed_ids": [8635958],
+    "signals_on_supportish": {
+      "repair_signal": true,
+      "ownership_signal": true,
+      "direct_request_signal": false,
+      "budget_signal": false,
+      "true_budget_signal": false,
+      "hiring_patterns": [],
+      "support_signal": false,
+      "trigger_before": "v6_repair_domain",
+      "matched_paths_before": ["B"]
+    }
+  },
+  "change": {
+    "path_b_before": "repair AND (domain OR tech) AND (ownership OR direct)",
+    "path_b_attempt1_rejected": "repair AND (domain OR tech) AND (direct OR hire OR budget OR true_budget OR carve)",
+    "path_b_after": "repair AND (domain OR tech) AND (direct OR (ownership AND (hire OR budget OR true_budget OR carve)))",
+    "attempt1_false_widen_ids": [37727, 4425825],
+    "attempt1_false_widen_note": "budget/true_budget alone unlocked P2P Fixed-Price API noise and a news digest; corrected in 29097a1",
+    "fo_carve_changed": false,
+    "path_c_changed": false,
+    "scoring_yaml_changed": false,
+    "global_veto_removed": false
+  },
+  "populations": {
+    "live_support_seed": 8635958,
+    "live_promo_seeds": [8633878, 8634685, 8634773, 8634775, 8635024],
+    "fo_probes": 4,
+    "genuine_repair_rfq_templates": 6,
+    "legacy_commercial_domain_n": 1303,
+    "refined_frozen_n": 102,
+    "e101_since": "2025-09-30T17:54:03.414786+00:00"
+  },
+  "before_after": {
+    "live_support_eligible": {"before": 1, "after": 0},
+    "live_promo_eligible": {"before": 0, "after": 0},
+    "fo_probes_eligible": {"before": 4, "after": 4},
+    "genuine_repair_rfq_templates": {"before": 6, "after": 6},
+    "false_widen_fp_eligible": {"before": 0, "after": 0},
+    "legacy_pool": {
+      "before": {"eligible": 32, "carve": 13, "path_b_any": 2},
+      "after": {"eligible": 32, "carve": 13, "path_b_any": 2}
+    },
+    "refined_pool": {
+      "before": {"eligible": 16, "carve": 13, "path_b_any": 2},
+      "after": {"eligible": 16, "carve": 13, "path_b_any": 2}
+    }
+  },
+  "gates": {
+    "recovery_fo_probes": "4/4 PASS",
+    "recovery_genuine_repair_rfq": "6/6 PASS",
+    "recovery_frozen_legacy": "32/32 PASS",
+    "recovery_frozen_refined": "16/16 PASS",
+    "contamination_live_support_blocked": "1/1 PASS",
+    "contamination_false_widen_blocked": "2/2 PASS",
+    "path_c_promo_still_blocked": "PASS",
+    "fo_carve_interaction_unchanged": "PASS"
+  },
+  "tests": {
+    "command": "pytest tests/test_discovery_buyer_signals_v4.py tests/test_discovery_laborx_veto_carve_v6.py tests/test_discovery_buyer_signals_v5.py -q",
+    "passed": 56,
+    "failed": 0
+  },
+  "runtime_verify": {
+    "health": {"status": "ok", "postgres": "ok", "redis": "ok"},
+    "gates": {
+      "ai_validated_messages": 94,
+      "ai_validated_true": 0,
+      "ai_validated_false": 94,
+      "ml_training_enabled": false
+    },
+    "isolation": {
+      "human_labels": 1524,
+      "ai_confirmed": 4,
+      "disc_candidates": 66,
+      "disc_v6_candidates": 6
+    },
+    "isolation_ok": true,
+    "redis": {
+      "stream": "telegram:commercial_discovery",
+      "xlen": 6,
+      "pending": 0,
+      "consumers": 1
+    },
+    "settings": {
+      "commercial_discovery_enabled": true,
+      "commercial_discovery_version": "disc_v6",
+      "commercial_discovery_max_candidates_per_hour": 120,
+      "commercial_episode_shadow_enabled": false
+    },
+    "deployed_analyzer_eval": {
+      "support_eligible": false,
+      "promo_eligible": false,
+      "fo_eligible": "4/4",
+      "fo_carve": true,
+      "genuine_repair_eligible": "6/6"
+    },
+    "services_recreated": ["analyzer", "commercial-discovery-worker"],
+    "note": "Historical EPISODE_BUILT disc_v6 rows retained; new enqueue uses tightened path_b"
+  },
+  "decision_rationale": "Supportish path_b blocked; FO 4/4, genuine repair RFQs 6/6, frozen legacy/refined elig unchanged at 32/16. Attempt-1 false widen corrected before SHIP.",
+  "next_hypothesis": {
+    "id": "H1",
+    "statement": "Post-enable Cycle 4 live rate/quality remeasure — after path_c+path_b ship, new disc_v6 enqueue over a fresh window should be EXPECTED_LOW_RATE or clean RFQ-only; if residual contamination appears, attribute next path (not reopen path_b/c)."
+  },
+  "business": {
+    "outreach": false,
+    "ml_go": false,
+    "threshold_loosen": false,
+    "fo_carve_untouched": true,
+    "path_c_untouched": true,
+    "discovery_semantic_change": "path_b_conjunct_only"
+  },
+  "files_touched": [
+    "shared/commercial_ai/discovery.py",
+    "scripts/audit_commercial_discovery_loss_attribution.py",
+    "tests/test_discovery_buyer_signals_v4.py",
+    "docs/audit/evidence/109-disc-v6-path-b-repair-conjunct-cycle3.txt",
+    "docs/audit/evidence/109-disc-v6-path-b-repair-conjunct-cycle3.json"
+  ]
+}

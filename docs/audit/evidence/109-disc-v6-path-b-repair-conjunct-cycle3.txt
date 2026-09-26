@@ -1,0 +1,101 @@
+Evidence 109: disc_v6 path_b repair conjunct Cycle 3 (H1)
+generated_at=2026-09-26T06:53:32Z head=29097a1 parent=Evidence 108 SHIP
+experiment_id=POST_ENABLE_CYCLE3_PATH_B
+decision=SHIP
+read_only=false code_change=path_b conjunct in _eligible_v4/_eligible_v5
+
+=== 0. PARENT / LOCKS ===
+  parent=Evidence 108 SHIP (path_c conjunct); residual supportish path_b seed 8635958
+  NO threshold loosen / NO global veto removal / NO FO carve change / NO path_c reopen
+  NO human_labels / AI_CONFIRMED mutation / NO ML GO / NO outreach
+  NO docker compose down -v / NO community expansion
+
+=== 1. HYPOTHESIS (H1 from Evidence 108 J) ===
+  Tighten path_b / v6_repair_domain so vague support-style "my bot is not working"
+  (seed 8635958) does not enqueue without RFQ/hire/budget/paid-fix conjuncts,
+  while true ownership+repair RFQs and FO repair carve stay recovered.
+
+=== 2. ROOT CAUSE ===
+  path_b was repair ∧ (domain|tech) ∧ (ownership ∨ direct).
+  Seed 8635958 "Boss can you help me with my position and point my bot is not working":
+    repair_signal=True (bot…not working), ownership_signal=True ("my bot"),
+    direct/hire/budget=False, domain=[], tech=technical_problem "not working".
+  Bare ownership+repair unlocked v6_repair_domain; support_signal was False so
+  support_question veto never fired.
+  Near-dups exist (7613678/7637927/7642696 same text); "My bot is not working" also path_b.
+
+=== 3. CHANGE (minimal; corrected after false widen) ===
+  Attempt 1 (e737356): path_b := repair ∧ (domain|tech) ∧ (direct ∨ hire ∨ budget ∨
+    true_budget ∨ carve). Blocked supportish but ALSO unlocked 2 frozen FPs via
+    budget/true_budget alone (P2P "Fixed Price" API issue id=37727; news digest
+    id=4425825) — legacy elig 32→34. Rolled forward with tighter conjunct.
+  Final (29097a1): path_b := repair ∧ (domain|tech) ∧ (
+      direct_request
+      ∨ (ownership ∧ (hire ∨ budget_signal ∨ true_budget_signal ∨ gig_project_carve))
+    )
+  Mirrored in disc_v5 path_b and loss-attribution helper.
+  path_c / FO LaborX carve untouched.
+
+=== 4. FROZEN POPULATIONS ===
+  live_support_seed: 8635958 (+ bare "My bot is not working")
+  live_promo_seeds: 8633878-family (path_c regression — must stay blocked)
+  FO LaborX probes (Evidence 99): 4/4 templates
+  genuine ownership+repair RFQs: 6 templates
+  legacy commercial∧domain: n=1303 (E101 since)
+  refined_frozen: n=102 (exchange communities excluded; was 106 at E108)
+
+=== 5. BEFORE vs AFTER (final conjunct) ===
+  LIVE support 8635958:
+    BEFORE: eligible v6_repair_domain paths=['B']
+    AFTER:  NOT eligible
+  Bare "My bot is not working": BEFORE elig → AFTER not
+  LIVE promo (path_c): BEFORE/AFTER not eligible (unchanged)
+  FO probes: 4/4 still eligible + gig_project_carve (unchanged)
+  Genuine repair RFQs: 6/6 still eligible
+  False-widen FPs (37727, 4425825): NOT eligible under final conjunct
+  legacy pool: eligible 32→32 carve 13→13 path_b_any 2→2
+  refined pool: eligible 16→16 carve 13→13 path_b_any 2→2
+  Contam audit: frozen survivors still Direct buyer/RFQ / FO carve (no supportish)
+
+=== 6. RECOVERY / CONTAMINATION GATES ===
+  recovery_fo_probes=4/4 PASS
+  recovery_genuine_repair_rfq=6/6 PASS
+  recovery_frozen_legacy_elig=32/32 PASS
+  recovery_frozen_refined_elig=16/16 PASS
+  contamination_live_support_blocked=1/1 PASS
+  contamination_false_widen_blocked=2/2 PASS
+  path_c_promo_still_blocked=PASS
+  fo_carve_interaction=unchanged PASS
+
+=== 7. TESTS ===
+  pytest tests/test_discovery_buyer_signals_v4.py \
+         tests/test_discovery_laborx_veto_carve_v6.py \
+         tests/test_discovery_buyer_signals_v5.py
+  → 56 passed
+
+=== 8. DEPLOY / RUNTIME ===
+  commits: e737356 (first tighten) + 29097a1 (correct false widen)
+  docker compose build analyzer commercial-discovery-worker
+  docker compose up -d --force-recreate --no-deps analyzer commercial-discovery-worker
+  health={"status":"ok","postgres":"ok","redis":"ok"}
+  gates=94/0/94 ml_training_enabled=false
+  isolation: human_labels=1524 AI_CONFIRMED=4 disc_v6_candidates=6 (historical retained)
+  redis: XLEN telegram:commercial_discovery=6 pending=0 consumers=1
+  analyzer settings: enabled=True version=disc_v6 cap=120 shadow=False
+  deployed eval: SUPPORT elig=False; PROMO elig=False; FO 4/4 carve=True; GEN 6/6
+  note: existing EPISODE_BUILT rows not deleted (no wipe); new enqueue uses tightened path_b
+
+=== 9. DECISION ===
+  SHIP — supportish path_b blocked; FO 4/4 + genuine repair RFQs + frozen 32/16 preserved;
+  false-widen from attempt 1 corrected before declaring done.
+
+=== 10. NEXT HYPOTHESIS (ONE) ===
+  H1: Post-enable Cycle 4 live rate/quality remeasure — after path_c+path_b ship, new
+  disc_v6 enqueue over a fresh window should be EXPECTED_LOW_RATE or clean RFQ-only;
+  if residual contamination appears, attribute next path (not reopen path_b/c).
+
+=== 11. BUSINESS ===
+  outreach=false ml_go=false threshold_loosen=false fo_carve_untouched=true
+  discovery_semantic_change=path_b_conjunct_only (path_c preserved)
+
+JSON: docs/audit/evidence/109-disc-v6-path-b-repair-conjunct-cycle3.json
