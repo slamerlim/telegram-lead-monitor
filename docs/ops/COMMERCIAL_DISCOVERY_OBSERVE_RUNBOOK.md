@@ -48,10 +48,20 @@ Examples: `/health` not ok; discovery/AI/`telegram:messages` lag or pending grow
 
 ## Cheap watch (idle)
 
+One-shot:
+
 ```bash
 curl -sS http://127.0.0.1:8010/health
 # SQL (non-destructive): isolation 1524/4; disc_v6 NEW since path_b; score_since_path_b
 # Redis: XINFO GROUPS telegram:commercial_discovery / telegram:messages (lag/pending)
+```
+
+Event-only loop (wake on A/B/C only — not a remesure):
+
+```bash
+INTERVAL_SEC=5400 ./scripts/observe_abc_watch.sh
+# stdout wake line: AGENT_LOOP_WAKE_observe_abc {...}
+# Trigger B also covers score stall: msg_1h>=20 with score_1h==0
 ```
 
 Full verifier (on Trigger A/B only — not idle remesure):
