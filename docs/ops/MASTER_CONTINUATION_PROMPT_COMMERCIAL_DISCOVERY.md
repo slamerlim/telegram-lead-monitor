@@ -4,7 +4,7 @@
 ╔══════════════════════════════════════════════════════════════════════════════╗
 ║ STATUS (2026-09-27) — AUTHORITATIVE BANNER — PASTE-READY                       ║
 ║                                                                                ║
-║ HEAD            = (set after E126 commit) Evidence 126 community-mix attribution ║
+║ HEAD            = b012e6f (Evidence 126 T0 community-mix attribution)           ║
 ║ MODE            = CONTINUOUS OBSERVE + sourcing T0 active (Evidence 121)       ║
 ║ LIVE CLASS      = RESIDUAL_SCARCITY (disc_v6 NEW=0) + residual enabled intake  ║
 ║ E126 MIX        = msgs/scores/disc_v6 since T0 = 2793/2793/0 (~3.90h)          ║
@@ -133,7 +133,7 @@ NEXT=(1) owner auth → apply E124 Steps A–F  OR  (2) Trigger A/B/C from durab
 | AI roster | `config/ai_validators.yaml` | modes A/B/C/D |
 | Gate logic | `shared/validation/gate.py` | `ml_training_enabled` hard-false; ≥100 msgs / ≥30 TRUE |
 
-**On-disk reconcile (HEAD set after E126 commit):** Evidence 117–126 artifacts and OBSERVE/WP scripts **exist** under `docs/audit/evidence/` and `scripts/` (including `offline_ml_dataset_readiness_inventory.py`). Plan ABC exists at `docs/ops/PLAN_ABC_WP2C_SOURCING_MODE2_2026-09-27.md`. If a checkout lacks them, restore from `origin/main` before inventing replacements.
+**On-disk reconcile (HEAD `b012e6f`):** Evidence 117–126 artifacts and OBSERVE/WP scripts **exist** under `docs/audit/evidence/` and `scripts/` (including `offline_ml_dataset_readiness_inventory.py`). Plan ABC exists at `docs/ops/PLAN_ABC_WP2C_SOURCING_MODE2_2026-09-27.md`. If a checkout lacks them, restore from `origin/main` before inventing replacements.
 
 **OBSERVE / offline tooling (shipped)**
 
