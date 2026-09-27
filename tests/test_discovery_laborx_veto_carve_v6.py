@@ -162,3 +162,15 @@ def test_v6_vetoes_mexc_fomo_my_strategy_advice():
     v6 = evaluate_discovery(scorer, text, version=DISCOVERY_VERSION_V6)
     assert not v6.ownership_signal
     assert not v6.eligible
+
+
+def test_v6_bare_my_our_project_is_not_ownership():
+    """Regression: bare 'project' must not widen ownership into frozen path_b/c."""
+    scorer = _scorer()
+    for text in (
+        "Our project deadline is next Friday for the grid bot rollout on binance",
+        "my project uses the exchange api, spent $500 on infra this month",
+        "We have an existing project that needs a quant engineer",
+    ):
+        v6 = evaluate_discovery(scorer, text, version=DISCOVERY_VERSION_V6)
+        assert not v6.ownership_signal, text

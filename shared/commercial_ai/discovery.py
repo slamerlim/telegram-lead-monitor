@@ -165,9 +165,11 @@ _DIRECT_REQUEST_V5_RX = re.compile(
 _OWNERSHIP_RX = re.compile(
     r"(?:"
     # Bare "my strategy" (trading advice / FOMO) is NOT ownership — Evidence 119c mid=4780480.
-    # Require trading-strategy / bot / system / api / project assets.
-    r"\b(?:my|our)\s+(?:bot|trading\s+strategy|trading\s+system|system|exchange\s+integration|api|project)\b|"
-    r"\b(?:existing|current|broken)\s+(?:bot|strategy|system|infrastructure|project)\b|"
+    # Require trading-strategy / bot / system / api assets. Do NOT add bare "project" —
+    # ownership_signal feeds frozen path_b/path_c; "my/our project" is everyday vocab
+    # in algo/dev rooms and would silently widen those conjuncts.
+    r"\b(?:my|our)\s+(?:bot|trading\s+strategy|trading\s+system|system|exchange\s+integration|api)\b|"
+    r"\b(?:existing|current|broken)\s+(?:bot|strategy|system|infrastructure)\b|"
     r"\bмо[яй]\s+(?:бот|стратеги\w*|систем\w*)\b|"
     r"\bнаш[ае]?\s+(?:бот|стратеги\w*|систем\w*)\b|"
     r"\bтекущ\w*\s+бот\b"
