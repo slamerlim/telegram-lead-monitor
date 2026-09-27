@@ -4,7 +4,7 @@ decision=OBSERVE / UPSTREAM_LOSS@G3
 path_freeze=path_b+path_c
 shadow=OFF ml_training_enabled=false
 code_change=read-only audit script only (no discovery semantics)
-generated_at=2026-09-27T09:10:40.736503+00:00 head=51b53c2
+generated_at=2026-09-27T09:10:40.736503+00:00 head=ce6b0c0
 runtime_sec=16.72 read_only=true
 
 === 0. PRE-REGISTERED ===
