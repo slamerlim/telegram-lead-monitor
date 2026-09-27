@@ -70,6 +70,7 @@ INTERVAL_SEC=5400 ./scripts/observe_abc_watch.sh
 
 # Smoke (healthy idle must print OBSERVE_OK, exit 0 — not a wake):
 ./scripts/observe_abc_watch.sh --once
+# T0 metrics (msgs/scores/disc_v6_since_t0): default Evidence 121; override with SOURCING_T0_AT=...
 ```
 
 Full verifier (on Trigger A/B only — not idle remesure):

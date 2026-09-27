@@ -21,6 +21,8 @@ fi
 
 INTERVAL_SEC="${INTERVAL_SEC:-5400}"
 PATH_B_AT="${PATH_B_AT:-2026-09-26T06:53:16Z}"
+# Evidence 121 sourcing experiment T0 (observability only; does not alter A/B/C triggers).
+SOURCING_T0_AT="${SOURCING_T0_AT:-2026-09-27T10:16:46Z}"
 EXPECT_HL="${EXPECT_HL:-1524}"
 EXPECT_AC="${EXPECT_AC:-4}"
 PENDING_WARN="${PENDING_WARN:-50}"
@@ -48,7 +50,7 @@ redis_group_field() {
 }
 
 evaluate_once() {
-  local NOW TRIG HEALTH ROW HL AC NEW MSG1H SCORE1H XLEN CONSUMERS PENDING LAG
+  local NOW TRIG HEALTH ROW HL AC NEW MSG1H SCORE1H MSG_T0 SCORE_T0 DISC_T0 XLEN CONSUMERS PENDING LAG
   NOW="$(date -u -Iseconds)"
   TRIG=""
 
@@ -64,18 +66,26 @@ evaluate_once() {
       (SELECT COUNT(*) FROM commercial_discovery_candidates
          WHERE discovery_version='disc_v6' AND created_at >= '${PATH_B_AT}'),
       (SELECT COUNT(*) FROM messages WHERE created_at > now() - interval '1 hour'),
-      (SELECT COUNT(*) FROM message_scores WHERE scored_at > now() - interval '1 hour')" \
-      2>/dev/null || echo 'err,err,err,err,err'
+      (SELECT COUNT(*) FROM message_scores WHERE scored_at > now() - interval '1 hour'),
+      (SELECT COUNT(*) FROM messages WHERE created_at >= '${SOURCING_T0_AT}'),
+      (SELECT COUNT(*) FROM message_scores WHERE scored_at >= '${SOURCING_T0_AT}'),
+      (SELECT COUNT(*) FROM commercial_discovery_candidates
+         WHERE discovery_version='disc_v6' AND created_at >= '${SOURCING_T0_AT}')" \
+      2>/dev/null || echo 'err,err,err,err,err,err,err,err'
   )"
   HL="$(echo "$ROW" | cut -d, -f1)"
   AC="$(echo "$ROW" | cut -d, -f2)"
   NEW="$(echo "$ROW" | cut -d, -f3)"
   MSG1H="$(echo "$ROW" | cut -d, -f4)"
   SCORE1H="$(echo "$ROW" | cut -d, -f5)"
+  MSG_T0="$(echo "$ROW" | cut -d, -f6)"
+  SCORE_T0="$(echo "$ROW" | cut -d, -f7)"
+  DISC_T0="$(echo "$ROW" | cut -d, -f8)"
 
   if [[ "$HL" != "$EXPECT_HL" || "$AC" != "$EXPECT_AC" ]]; then
     TRIG="${TRIG}C_ISOLATION "
   fi
+  # Trigger A: path_b NEW window unchanged (not SOURCING_T0_AT).
   if [[ "$NEW" != "0" && "$NEW" != "err" ]]; then
     TRIG="${TRIG}A_NEW "
   fi
@@ -103,13 +113,13 @@ evaluate_once() {
   fi
 
   if [[ -n "$TRIG" ]]; then
-    printf '%s\n' "AGENT_LOOP_WAKE_observe_abc {\"at\":\"${NOW}\",\"triggers\":\"${TRIG}\",\"new\":${NEW},\"hl\":${HL},\"ac\":${AC},\"msg_1h\":${MSG1H},\"score_1h\":${SCORE1H},\"xlen\":${XLEN},\"pending\":${PENDING},\"lag\":${LAG},\"consumers\":${CONSUMERS},\"prompt\":\"OBSERVE trigger. Repo ${ROOT}. Follow docs/ops/COMMERCIAL_DISCOVERY_OBSERVE_RUNBOOK.md. A=freeze+quality NEW (no path reopen). B=correctness/observability. C=halt isolation. Evidence+commit-push if justified.\"}"
+    printf '%s\n' "AGENT_LOOP_WAKE_observe_abc {\"at\":\"${NOW}\",\"triggers\":\"${TRIG}\",\"new\":${NEW},\"hl\":${HL},\"ac\":${AC},\"msg_1h\":${MSG1H},\"score_1h\":${SCORE1H},\"msgs_since_t0\":${MSG_T0},\"scores_since_t0\":${SCORE_T0},\"disc_v6_since_t0\":${DISC_T0},\"t0\":\"${SOURCING_T0_AT}\",\"xlen\":${XLEN},\"pending\":${PENDING},\"lag\":${LAG},\"consumers\":${CONSUMERS},\"prompt\":\"OBSERVE trigger. Repo ${ROOT}. Follow docs/ops/COMMERCIAL_DISCOVERY_OBSERVE_RUNBOOK.md. A=freeze+quality NEW (no path reopen). B=correctness/observability. C=halt isolation. Evidence+commit-push if justified.\"}"
     return 10
   fi
 
   # Quiet path: only --once prints OBSERVE_OK; the loop stays silent.
   if [[ "${ONCE:-0}" -eq 1 ]]; then
-    printf '%s\n' "OBSERVE_OK {\"at\":\"${NOW}\",\"new\":${NEW},\"hl\":${HL},\"ac\":${AC},\"msg_1h\":${MSG1H},\"score_1h\":${SCORE1H},\"xlen\":${XLEN},\"pending\":${PENDING},\"lag\":${LAG},\"consumers\":${CONSUMERS}}"
+    printf '%s\n' "OBSERVE_OK {\"at\":\"${NOW}\",\"new\":${NEW},\"hl\":${HL},\"ac\":${AC},\"msg_1h\":${MSG1H},\"score_1h\":${SCORE1H},\"msgs_since_t0\":${MSG_T0},\"scores_since_t0\":${SCORE_T0},\"disc_v6_since_t0\":${DISC_T0},\"t0\":\"${SOURCING_T0_AT}\",\"xlen\":${XLEN},\"pending\":${PENDING},\"lag\":${LAG},\"consumers\":${CONSUMERS}}"
   fi
   return 0
 }
@@ -122,7 +132,7 @@ if [[ "$ONCE" -eq 1 ]]; then
   exit "$rc"
 fi
 
-echo "observe_abc_watch start interval=${INTERVAL_SEC}s path_b=${PATH_B_AT} expect=${EXPECT_HL}/${EXPECT_AC}" >&2
+echo "observe_abc_watch start interval=${INTERVAL_SEC}s path_b=${PATH_B_AT} t0=${SOURCING_T0_AT} expect=${EXPECT_HL}/${EXPECT_AC}" >&2
 
 while true; do
   sleep "$INTERVAL_SEC"
