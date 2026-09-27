@@ -4,7 +4,7 @@
 ╔══════════════════════════════════════════════════════════════════════════════╗
 ║ STATUS (2026-09-27) — AUTHORITATIVE BANNER — PASTE-READY                       ║
 ║                                                                                ║
-║ HEAD            = b65b17b (Mode-2 harden + P0 bare-project-token revert)       ║
+║ HEAD            = dacdfc6 (E121 T0 counters in observe_abc_watch; re-check)     ║
 ║ MODE            = CONTINUOUS OBSERVE + sourcing T0 active (Evidence 121)       ║
 ║ LIVE CLASS      = RESIDUAL_SCARCITY (Evidence 117; NEW disc_v6 since path_b=0) ║
 ║ OFFLINE CLASS   = UPSTREAM_LOSS@G3 + WP2/WP2b/WP2c CONTAMINATION_DOMINANT      ║
@@ -14,8 +14,11 @@
 ║ WP2c            = DONE  (E118c + Evidence 119d; 16/16 FALSE; e118c_wp2c_*)      ║
 ║ COMBINED FREEZE = 40/40 FALSE — 0 genuine_buyer_project (WP3 BLOCKED)          ║
 ║ Mode-2 FPs      = DONE  (Evidence 119c; 60620+4780480 hardened; path_b/c intact)║
-║ Sourcing T0     = APPLIED (Evidence 121; disable 4 EXCHANGE; +5 algo rooms)    ║
-║ Phase B intake  = GAP (Evidence 123; 137–141 msgs=0; resolve/empty scans)      ║
+║ Sourcing T0     = APPLIED (E121) + OBSERVE T0 snap (E122)                      ║
+║ Phase B intake  = GAP (E123; 137–141 msgs=0)                                   ║
+║ E124 remediate  = OWNER_AUTH_REQUIRED proposal — NOT applied (Steps A–F idle)  ║
+║ Watcher         = INTERVAL_SEC=5400 observe_abc_watch; exit 10 on A/B/C only   ║
+║ Watch emits     = msgs_since_t0 / scores_since_t0 / disc_v6_since_t0 (+ A/B/C) ║
 ║ WP3 / ML ladder = BLOCKED until genuine-positive adjudicated set (S3→S9)       ║
 ║ Optuna/LGBM/SHAP= NOT in deps/scripts; Evidence 44 ML NO-GO; M1–M10 fail       ║
 ║ AI gates        = CLOSED (~94 validated / 0 VALIDATED_TRUE; need ≥100 / ≥30)   ║
@@ -23,14 +26,18 @@
 ║ shadow / ML     = OFF / ml_training_enabled=false (hard)                       ║
 ║ isolation expect= human_labels=1524 / AI_CONFIRMED=4                           ║
 ║                                                                                ║
-║ NEXT            = watch NEW-since-T0; Phase B intake gap noted (E123)          ║
+║ NEXT            = (1) owner auth → apply E124 Steps A–F  OR                    ║
+║                   (2) Trigger A/B/C from durable watcher (exit 10)              ║
+║ AGENT RULE      = while OBSERVE_OK + no owner auth: do NOT invent timed        ║
+║                   remesure wakes; wait for watcher exit 10 or owner E124 auth  ║
+║ DO NOT          = apply E124 · remesure scarcity · UpdateGoal complete         ║
 ║ DO NOT          = more freeze expand · reopen path_b/c · enable shadow/ML      ║
 ║ DO NOT          = mutate human_labels · loosen scoring.yaml · timed remesures  ║
 ║ DO NOT          = claim ML GO · wipe last_message_id · down -v · audit_* as GT  ║
 ╚══════════════════════════════════════════════════════════════════════════════╝
 ```
 
-**Created / last rewritten:** 2026-09-27 (post–E123 Phase B intake gap note; ABC/Mode-2 prior)  
+**Created / last rewritten:** 2026-09-27 (post–E122/E123/E124; OBSERVE wait for watcher or owner E124 auth)  
 **Purpose:** Pasteable operating prompt for the next agent (whole file below the line).  
 **Repo:** `/home/slamer-lim/telegram-lead-monitor` (NOT Quantum-Trading-System)  
 **Sibling research injected:** standing-state `882d1461`, ML/SDK `04ef55a9`, ops/DoD `4b8d04a6`.
@@ -62,7 +69,7 @@ deterministic discovery → stable evidence datasets → **Optuna** (rule/thresh
 ```text
 MODE=CONTINUOUS OBSERVE + sourcing T0 (Evidence 121)
 REPO=/home/slamer-lim/telegram-lead-monitor
-HEAD=b65b17b (re-check: git rev-parse --short HEAD)
+HEAD=dacdfc6 (re-check: git rev-parse --short HEAD)
 commercial_discovery_enabled=true
 commercial_discovery_version=disc_v6
 cap=120/hour
@@ -79,15 +86,19 @@ WP2=DONE → Evidence 119 (8/8 FALSE; batch e118_wp2_adjudication_2026-09-27)
 WP2b=DONE → Evidence 118b + 119b (16/16 FALSE; batch e118b_wp2b_adjudication_2026-09-27)
 WP2c=DONE → Evidence 118c + 119d (16/16 FALSE; batch e118c_wp2c_adjudication_2026-09-27; excluded all 24 prior)
 COMBINED=40/40 FALSE; genuine_buyer_project=0 → WP3 BLOCKED
-Mode2_FPs=DONE → Evidence 119c (60620 LaborX + 4780480 MEXC FOMO hardened; b65b17b P0 ownership revert)
-Sourcing=T0 APPLIED → Evidence 121 (disable 4 EXCHANGE; add 5 algo rooms; scans days=14)
-PhaseB_intake=GAP → Evidence 123 (137–141 msgs=0; 137/140 resolve fail; 138/139/141 empty completed)
+Mode2_FPs=DONE → Evidence 119c (60620 LaborX + 4780480 MEXC FOMO hardened; P0 ownership revert)
+Sourcing=T0 APPLIED → Evidence 121; T0 snapshot → Evidence 122
+PhaseB_intake=GAP → Evidence 123 (137–141 msgs=0; resolve fail + empty completed)
+E124=OWNER_AUTH_REQUIRED remediation proposal (Steps A–F) — NOT applied
+Watcher=INTERVAL_SEC=5400 ./scripts/observe_abc_watch.sh (confirm with ps); wake exit 10
+Watch_emits=msgs_since_t0 / scores_since_t0 / disc_v6_since_t0 (+ A/B/C fields)
 AI_GATES=CLOSED (~94 msgs / 0 VALIDATED_TRUE; need ≥100 / ≥30)
 Optuna/LGBM/SHAP=NOT implemented (no deps/scripts); Evidence 44 ML NO-GO; M1–M10 fail
-NEXT=watch NEW-since-T0 / Trigger A quality-classify; Phase B intake gap noted (E123); NO freeze expand / username remeds without owner auth
+AGENT_RULE=while OBSERVE_OK and no owner auth: do NOT invent timed remesure wakes; wait for watcher exit 10 (A/B/C) OR owner auth to apply E124 Steps A–F
+NEXT=(1) owner auth → apply E124 Steps A–F  OR  (2) Trigger A/B/C from durable watcher
 ```
 
-### Evidence headline table (117–123)
+### Evidence headline table (117–124)
 
 | ID | Path | Headline |
 |----|------|----------|
@@ -105,6 +116,7 @@ NEXT=watch NEW-since-T0 / Trigger A quality-classify; Phase B intake gap noted (
 | E121 | `docs/audit/evidence/121-sourcing-experiment-t0.*` | Sourcing T0: Phase A disable 4 EXCHANGE; Phase B +5 rooms + days=14 scans; cursors unchanged |
 | E122 | `docs/audit/evidence/122-observe-t0-snapshot.*` | OBSERVE_OK T0 snapshot; isolation 1524/4; disc_v6 NEW=0; Phase B msgs_since_t0=0 |
 | E123 | `docs/audit/evidence/123-sourcing-t0-phase-b-intake.*` | Phase B intake gap: 137–141=0 msgs; resolve failures + empty completed scans; Mode-1 only |
+| E124 | `docs/audit/evidence/124-sourcing-phase-b-remediation-proposal.*` | Phase B remediation **PROPOSAL**; `OWNER_AUTH_REQUIRED`; Steps A–F **not applied** |
 | E44 | `docs/audit/evidence/44-ml-nogo-attestation.txt` | Explicit ML NO-GO for LGBM/Optuna/SHAP training |
 | Plan ABC | `docs/ops/PLAN_ABC_WP2C_SOURCING_MODE2_2026-09-27.md` | Executed A/B/C plan (WP2c + sourcing + Mode-2) |
 | Runbook | `docs/ops/COMMERCIAL_DISCOVERY_OBSERVE_RUNBOOK.md` | A/B/C triggers + cheap watch |
@@ -116,7 +128,7 @@ NEXT=watch NEW-since-T0 / Trigger A quality-classify; Phase B intake gap noted (
 | AI roster | `config/ai_validators.yaml` | modes A/B/C/D |
 | Gate logic | `shared/validation/gate.py` | `ml_training_enabled` hard-false; ≥100 msgs / ≥30 TRUE |
 
-**On-disk reconcile (HEAD `b65b17b`):** Evidence 117–121 artifacts and OBSERVE/WP scripts **exist** under `docs/audit/evidence/` and `scripts/` (including `offline_ml_dataset_readiness_inventory.py`). Plan ABC exists at `docs/ops/PLAN_ABC_WP2C_SOURCING_MODE2_2026-09-27.md`. If a checkout lacks them, restore from `origin/main` before inventing replacements.
+**On-disk reconcile (HEAD `dacdfc6`):** Evidence 117–124 artifacts and OBSERVE/WP scripts **exist** under `docs/audit/evidence/` and `scripts/` (including `offline_ml_dataset_readiness_inventory.py`). Plan ABC exists at `docs/ops/PLAN_ABC_WP2C_SOURCING_MODE2_2026-09-27.md`. If a checkout lacks them, restore from `origin/main` before inventing replacements.
 
 **OBSERVE / offline tooling (shipped)**
 
@@ -133,7 +145,7 @@ NEXT=watch NEW-since-T0 / Trigger A quality-classify; Phase B intake gap noted (
 | `scripts/run_sourcing_experiment_121.py` | Sourcing T0 (DONE) |
 | `scripts/verify_commercial_discovery_post_enable.py` | Full verifier — Trigger A/B only |
 
-**Durable watcher:** `INTERVAL_SEC=5400 ./scripts/observe_abc_watch.sh` (confirm with `ps`). Wake line: `AGENT_LOOP_WAKE_observe_abc`.
+**Durable watcher:** `INTERVAL_SEC=5400 ./scripts/observe_abc_watch.sh` (confirm with `ps`). Wake line: `AGENT_LOOP_WAKE_observe_abc` + exit 10. Emits `msgs_since_t0` / `scores_since_t0` / `disc_v6_since_t0` (T0 from Evidence 121; override `SOURCING_T0_AT`). While `OBSERVE_OK` and no owner auth: **do not** invent timed remesure wakes — wait for watcher exit 10 or owner auth to apply E124 Steps A–F.
 
 ### Evidence 118 headline (WP1 DONE — do not re-prove)
 
@@ -156,7 +168,7 @@ NEXT=watch NEW-since-T0 / Trigger A quality-classify; Phase B intake gap noted (
 - [ ] `/home/slamer-lim/telegram-lead-monitor` — production Ubuntu host Docker/Postgres; not Cloud Agent VM
 - [ ] Read: `AGENTS.md`, `.cursor/rules/end-of-turn-report.mdc`, `.cursor/rules/push-deploy-verify.mdc`
 - [ ] Read: `docs/ops/COMMERCIAL_DISCOVERY_OBSERVE_RUNBOOK.md`, `docs/ops/MASTER_CONTINUATION_PROMPT_COMMERCIAL_DISCOVERY.md`
-- [ ] Standing: CONTINUOUS OBSERVE + sourcing T0 (E121); path_b/c FROZEN; shadow OFF; isolation expect `human_labels=1524`, `AI_CONFIRMED=4`
+- [ ] Standing: CONTINUOUS OBSERVE + sourcing T0 (E121/E122); Phase B gap E123; E124 OWNER_AUTH_REQUIRED not applied; path_b/c FROZEN; shadow OFF; isolation `1524`/`4`; durable `INTERVAL_SEC=5400` watcher
 
 ### Mandatory commands (every wake)
 ```bash
@@ -177,6 +189,8 @@ python3 scripts/offline_ml_dataset_readiness_inventory.py
 ### Classify interrupt precedence
 - [ ] C (isolation drift) > B (pipeline/observability) > A (first NEW → freeze+quality, no path reopen) > offline Mode-1
 - [ ] Do NOT invent timed remesures after E117; do NOT re-adjudicate `e118_wp2_*` / `e118b_wp2b_*` / `e118c_wp2c_*`
+- [ ] While OBSERVE_OK + no owner auth: do NOT invent timed remesure wakes; wait for watcher exit 10 (A/B/C) or owner auth to apply E124 Steps A–F
+- [ ] Do NOT apply E124 / remesure scarcity / UpdateGoal complete without explicit owner instruction
 - [ ] Do NOT expand freezes further unless owner explicitly asks
 
 ### AI validation pointers (if relevant)
@@ -327,8 +341,9 @@ Is genuine commercial intent:
 Do **not** re-adjudicate batches `e118_wp2_*` / `e118b_wp2b_*` / `e118c_wp2c_*`.  
 Do **not** expand freezes further unless owner asks.  
 Mode-2 FP harden shipped (E119c + `b65b17b` P0 ownership revert — bare `project` tokens must not widen `_OWNERSHIP_RX` feeding frozen path_b/c).  
-Sourcing T0 applied (E121) — watch NEW-since-T0; rollback Phase A (re-enable 4 EXCHANGE usernames) only if intake harm; preserve `last_message_id`.  
-Phase B intake gap documented (E123) — 137–141 still 0 msgs; Mode-1 observational; username fix/replace or alternate rooms need optional owner auth (does not authorize path reopen/ML).
+Sourcing T0 applied (E121) + T0 snapshot (E122) — watch NEW-since-T0 via durable watcher counters; rollback Phase A only if intake harm; preserve `last_message_id`.  
+Phase B intake gap documented (E123) — 137–141 still 0 msgs; Mode-1 observational.  
+E124 remediation proposal recorded (`OWNER_AUTH_REQUIRED`) — Steps A–F **not applied**; apply only after explicit owner auth (does not authorize path reopen/ML).
 
 ### WP3 — Frozen dataset + leakage contract → Evidence 120 — **BLOCKED**
 
@@ -340,12 +355,13 @@ Requires genuine-positive adjudicated n (not contamination-only labels). Then S4
 
 If `--once` is still `OBSERVE_OK` and isolation holds (1524/4):
 
-1. Stay Mode 0/1 — **do not** reopen paths, enable shadow/ML, or mutate `human_labels`.
-2. **Sourcing T0 active (E121):** NEXT still watch NEW-since-T0; Phase B intake gap noted (E123); on Trigger A freeze+classify.
-3. **Do NOT** more freeze expand / WP2d / Phase B username remeds unless owner asks.
-4. **Do NOT** start Optuna/LightGBM/SHAP/Cursor SDK commercial LLM yet.
-5. Mode-2 discovery semantics only with **new** owner auth + one conceptual change + contamination guardrails.
-6. Keep `observe_abc_watch.sh` running; on A freeze+classify; on B fix correctness; on C halt.
+1. Stay Mode 0/1 — **do not** reopen paths, enable shadow/ML, mutate `human_labels`, apply E124, remesure scarcity, or UpdateGoal complete.
+2. **NEXT is only:** (1) **owner auth** to apply E124 Steps A–F, **or** (2) **Trigger A/B/C** from durable watcher (`INTERVAL_SEC=5400`, exit 10).
+3. **AGENT RULE:** while OBSERVE_OK and no owner auth — **do NOT invent timed remesure wakes**; wait for watcher exit 10 or owner E124 auth.
+4. Watcher already emits `msgs_since_t0` / `scores_since_t0` / `disc_v6_since_t0` (E121 T0); use those on wake, not invented remesures.
+5. **Do NOT** more freeze expand / WP2d / Phase B username remeds unless owner asks (E124 is the authorized path when owner authorizes).
+6. **Do NOT** start Optuna/LightGBM/SHAP/Cursor SDK commercial LLM yet.
+7. Keep `INTERVAL_SEC=5400 ./scripts/observe_abc_watch.sh` running; on A freeze+classify; on B fix correctness; on C halt.
 
 If a trigger is already firing: handle per §4 before any offline work.
 
@@ -371,7 +387,8 @@ If a trigger is already firing: handle per §4 before any offline work.
 - [ ] `./scripts/observe_abc_watch.sh --once` → OBSERVE_OK when idle; isolation unchanged
 
 ### Commercial discovery OBSERVE “done” for a wake (no trigger)
-- [ ] Mode 0/1 only: watch sourcing T0 (E121) NEW-since-T0; Phase B intake gap noted (E123); no path_b/c reopen, no shadow, no ML enable
+- [ ] Mode 0/1 only: OBSERVE_OK; durable watcher alive; E124 not applied without owner auth; no invented remesure wakes
+- [ ] NEXT remains (1) owner auth E124 apply OR (2) Trigger A/B/C from watcher; no path_b/c reopen, no shadow, no ML enable
 - [ ] WP3 / Optuna / LGBM / SHAP / Cursor SDK LLM: NOT started (blocked until genuine-positive adjudicated n; ML ladder S1–S3)
 - [ ] Full verifier only on Trigger A/B: `scripts/verify_commercial_discovery_post_enable.py` (not idle remesure)
 
@@ -403,7 +420,7 @@ If a trigger is already firing: handle per §4 before any offline work.
 - Loosen `config/scoring.yaml`; remove global vetoes for volume
 - Mutate `human_labels` or existing `AI_CONFIRMED` from discovery/validation
 - Claim ML GO; enable `ml_training_enabled` without auth
-- Timed remesure loops after E117; busy scarcity re-proofs; busy WP1 re-runs; more freeze expand without owner ask
+- Timed remesure loops after E117; inventing remesure wakes while OBSERVE_OK; busy scarcity re-proofs; busy WP1 re-runs; more freeze expand / apply E124 without owner auth
 - Blind `XACK`; candidate/label fabrication; outreach / RESPONSE/WON fabrication
 - Combine discovery-rule change + source expansion + ML + LLM in one experiment
 - Treat Phase D / `agent_*` / `audit_*` / `blind_adjudicator_phaseD` as independent validation GT
@@ -413,7 +430,7 @@ If a trigger is already firing: handle per §4 before any offline work.
 
 ## 11. Classification vocabulary
 
-`RESIDUAL_SCARCITY` | `NEW_ACTIVITY` | `PIPELINE_FAILURE` | `QUERY_FAILURE` | `ISOLATION_DRIFT` | `SEMANTIC_LOSS` | `VETO_LOSS` | `SCORING_COVERAGE_LOSS` | `SOURCE_ABSENT` | `UPSTREAM_LOSS` | `UPSTREAM_LOSS@G3` | `EXPECTED_IDLE` | `INTENTIONAL_SHADOW_OFF` | `CONTAMINATION_DOMINANT` | `SOURCING_T0_APPLIED` | `PHASE_B_INTAKE_GAP` | `MODE2_HARDENED`
+`RESIDUAL_SCARCITY` | `NEW_ACTIVITY` | `PIPELINE_FAILURE` | `QUERY_FAILURE` | `ISOLATION_DRIFT` | `SEMANTIC_LOSS` | `VETO_LOSS` | `SCORING_COVERAGE_LOSS` | `SOURCE_ABSENT` | `UPSTREAM_LOSS` | `UPSTREAM_LOSS@G3` | `EXPECTED_IDLE` | `INTENTIONAL_SHADOW_OFF` | `CONTAMINATION_DOMINANT` | `SOURCING_T0_APPLIED` | `PHASE_B_INTAKE_GAP` | `OWNER_AUTH_REQUIRED` | `MODE2_HARDENED`
 
 ---
 
@@ -421,14 +438,18 @@ If a trigger is already firing: handle per §4 before any offline work.
 
 ```bash
 cd /home/slamer-lim/telegram-lead-monitor
-git rev-parse --short HEAD   # expect b65b17b or newer after this ship
-./scripts/observe_abc_watch.sh --once
+git rev-parse --short HEAD   # expect dacdfc6 or newer after this ship
+./scripts/observe_abc_watch.sh --once   # OBSERVE_OK → exit 0; A/B/C → exit 10 + AGENT_LOOP_WAKE_observe_abc
+# confirm durable: ps for INTERVAL_SEC=5400 ./scripts/observe_abc_watch.sh
 curl -sS http://127.0.0.1:8010/health
 curl -sS http://127.0.0.1:8010/validation/gates
 python3 scripts/offline_ml_dataset_readiness_inventory.py
 ```
 
-Then: classify A/B/C/none. If none → **watch sourcing T0 NEW-since-T0**; stay OBSERVE; do not expand freezes; do not start ML. If Trigger A → freeze+quality-classify. End turn with Turn Report.
+Then: classify A/B/C/none.
+- If **none** (`OBSERVE_OK`): stay OBSERVE; **do not** invent timed remesure wakes; **do not** apply E124 without owner auth; wait for durable watcher exit 10 or owner auth for E124 Steps A–F.
+- If Trigger **A** → freeze+quality-classify (no path reopen). **B** → correctness/observability. **C** → halt isolation.
+- End turn with Turn Report. Do **not** UpdateGoal complete / remesure scarcity on idle OBSERVE.
 
 ---
 
@@ -438,8 +459,9 @@ Then: classify A/B/C/none. If none → **watch sourcing T0 NEW-since-T0**; stay 
 
 ## Execution notes (for planner / human)
 
-- Prompt rewritten at HEAD baseline `b65b17b`; ship commit will advance HEAD.
+- Prompt rewritten at HEAD baseline `dacdfc6`; ship commit will advance HEAD.
 - Sibling research: `882d1461` (standing), `04ef55a9` (ML/SDK), `4b8d04a6` (ops checklist/DoD) — injected.
 - PLAN_ABC on disk at `docs/ops/PLAN_ABC_WP2C_SOURCING_MODE2_2026-09-27.md` (executed).
-- Scripts + Evidence 117–121 verified present on production host checkout.
+- Scripts + Evidence 117–124 verified present on production host checkout.
+- CONTINUOUS OBSERVE: do **not** UpdateGoal complete; do **not** apply E124; do **not** remesure scarcity while idle.
 - UpdateGoal tool not available in this agent namespace — mark complete via parent if needed.

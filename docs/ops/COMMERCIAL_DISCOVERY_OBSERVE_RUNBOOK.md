@@ -1,6 +1,7 @@
 # Commercial discovery OBSERVE runbook (post first-iteration)
 
 **Status:** CONTINUOUS OBSERVE ACTIVE  
+**Standing note:** While `OBSERVE_OK` and no owner auth — do **not** invent timed remesure wakes; wait for durable `INTERVAL_SEC=5400` watcher exit 10 (A/B/C) or owner auth to apply E124 Steps A–F (`OWNER_AUTH_REQUIRED`, not applied).  
 **Closed first-iteration:** Evidence 116 (`docs/audit/evidence/116-first-iteration-closure-observe-cycle10.*`)  
 **Path freeze:** path_c (E108) + path_b (E109) — do not reopen without auth + new loss evidence  
 **Shadow:** `COMMERCIAL_EPISODE_SHADOW_ENABLED=false` intentional — do not enable without explicit authorization  
@@ -128,4 +129,4 @@ Master continuation prompt: `docs/ops/MASTER_CONTINUATION_PROMPT_COMMERCIAL_DISC
 
 ## Next hypothesis
 
-Live resume only on **(A)** first NEW disc_v6 (quality-classify; do not reopen path_b/c), **(B)** pipeline/Redis/worker/query failure, or **(C)** isolation drift. Offline: WP2/WP2b/WP2c DONE — do not re-adjudicate `e118_*` batches. **Sourcing T0 active (E121)** — NEXT still watch NEW-since-T0; **Phase B intake gap noted (E123)** — remediation needs owner auth. Mode-2 FP harden DONE (E119c). **WP3** blocked until genuine-positive adjudicated n. Do not busy remesure. Do not enable shadow / reopen paths without auth.
+NEXT = (1) owner auth to apply E124 Steps A–F, or (2) Trigger A/B/C from durable watcher. Live resume only on **(A)** first NEW disc_v6 (quality-classify; do not reopen path_b/c), **(B)** pipeline/Redis/worker/query failure, or **(C)** isolation drift. Offline: WP2/WP2b/WP2c DONE — do not re-adjudicate `e118_*` batches. **Sourcing T0 (E121) + T0 snap (E122)**; **Phase B gap (E123)**; **E124 OWNER_AUTH_REQUIRED not applied**. Mode-2 FP harden DONE (E119c). **WP3** blocked until genuine-positive adjudicated n. Do not invent remesure wakes / busy remesure. Do not enable shadow / reopen paths without auth.
