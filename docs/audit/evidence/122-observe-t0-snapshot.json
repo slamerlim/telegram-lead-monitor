@@ -1,0 +1,161 @@
+{
+  "evidence_id": "122",
+  "title": "OBSERVE wake T0 snapshot (post Evidence 121 sourcing)",
+  "generated_at": "2026-09-27T11:01:01.213833+00:00",
+  "head": "54db3dd",
+  "mode": "CONTINUOUS_OBSERVE",
+  "classification": "OBSERVE_OK",
+  "triggers": [],
+  "t0": "2026-09-27T10:16:46.876011+00:00",
+  "t0_source": "docs/audit/evidence/121-sourcing-experiment-t0.json",
+  "path_b_at": "2026-09-26T06:53:16Z",
+  "hours_since_t0": 0.7373,
+  "observe_once": {
+    "at": "2026-09-27T11:00:38+00:00",
+    "new": 0,
+    "hl": 1524,
+    "ac": 4,
+    "msg_1h": 799,
+    "score_1h": 799,
+    "xlen": 6,
+    "pending": 0,
+    "lag": 0,
+    "consumers": 1
+  },
+  "health": {
+    "status": "ok",
+    "postgres": "ok",
+    "redis": "ok"
+  },
+  "validation_gates": {
+    "ai_validation_gate_ready": false,
+    "ai_validated_messages": 94,
+    "ai_validated_true": 0,
+    "ai_validated_false": 94,
+    "ml_training_enabled": false,
+    "ml_gate_independence_ready": false,
+    "closed_reasons": [
+      "ai_validated_messages<100",
+      "ai_validated_true<30"
+    ]
+  },
+  "isolation": {
+    "human_labels": 1524,
+    "AI_CONFIRMED": 4,
+    "expect": {
+      "human_labels": 1524,
+      "AI_CONFIRMED": 4
+    },
+    "ok": true
+  },
+  "metrics_since_t0": {
+    "messages_since_t0": 572,
+    "scores_since_t0": 572,
+    "disc_v6_since_t0": 0
+  },
+  "disc_v6": {
+    "all_historical": 6,
+    "new_since_path_b": 0,
+    "new_since_t0": 0
+  },
+  "totals": {
+    "messages": 8677743,
+    "message_scores": 181312
+  },
+  "durable_watcher": {
+    "alive": true,
+    "interval_sec": 5400,
+    "pids_note": "bash ./scripts/observe_abc_watch.sh since Sep26 (INTERVAL_SEC=5400)"
+  },
+  "sourcing_t0_state": {
+    "phase_a_disabled_still": [
+      {
+        "username": "BitgetENOfficial",
+        "enabled": false,
+        "last_message_id": 10480032
+      },
+      {
+        "username": "BybitEnglish",
+        "enabled": false,
+        "last_message_id": 4748841
+      },
+      {
+        "username": "OKXOfficial_English",
+        "enabled": false,
+        "last_message_id": 12431466
+      },
+      {
+        "username": "WeexGlobal_Group",
+        "enabled": false,
+        "last_message_id": 4086143
+      }
+    ],
+    "phase_b_msgs_since_t0": {
+      "Freqtrade": 0,
+      "Hummingbot": 0,
+      "NautilusTrader": 0,
+      "backtrader_community": 0,
+      "jessetrade": 0
+    },
+    "scan_runs_66605_66609": [
+      {
+        "id": 66605,
+        "community_id": 137,
+        "status": "completed_with_errors",
+        "days": 14
+      },
+      {
+        "id": 66606,
+        "community_id": 138,
+        "status": "completed",
+        "days": 14
+      },
+      {
+        "id": 66607,
+        "community_id": 139,
+        "status": "completed",
+        "days": 14
+      },
+      {
+        "id": 66608,
+        "community_id": 140,
+        "status": "completed_with_errors",
+        "days": 14
+      },
+      {
+        "id": 66609,
+        "community_id": 141,
+        "status": "completed",
+        "days": 14
+      }
+    ]
+  },
+  "redis": {
+    "telegram:commercial_discovery": {
+      "consumers": 1,
+      "pending": 0,
+      "lag": 0,
+      "xlen": 6
+    },
+    "telegram:messages": {
+      "consumers": 1,
+      "pending": 0,
+      "lag": 0
+    }
+  },
+  "ml_readiness": {
+    "ready_for_production_optuna": false,
+    "ready_for_production_ml": false,
+    "ready_for_shap": false,
+    "ready_for_llm_augmentation": false
+  },
+  "decision": "OBSERVE_OK \u2014 stay Mode 0/1; no freeze expand; no path reopen; no ML; no human_labels mutation",
+  "next": "Continue durable watch; Trigger A quality-classify on first NEW disc_v6; recheck Phase B intake if still 0 after longer window (observational only)",
+  "locks": {
+    "path_b_path_c": "FROZEN",
+    "shadow": "OFF",
+    "ml_training_enabled": false,
+    "scoring_yaml_loosen": false,
+    "human_labels_mutated": false
+  }
+}
