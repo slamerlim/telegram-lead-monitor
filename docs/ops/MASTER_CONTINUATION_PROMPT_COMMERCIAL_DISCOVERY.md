@@ -4,26 +4,28 @@
 ╔══════════════════════════════════════════════════════════════════════════════╗
 ║ STATUS (2026-09-27) — AUTHORITATIVE BANNER                                     ║
 ║                                                                                ║
-║ MODE            = CONTINUOUS OBSERVE (event-driven; A/B/C only)                ║
+║ MODE            = CONTINUOUS OBSERVE + sourcing T0 active (Evidence 121)       ║
 ║ LIVE CLASS      = RESIDUAL_SCARCITY (Evidence 117; NEW disc_v6 since path_b=0) ║
-║ OFFLINE CLASS   = UPSTREAM_LOSS@G3 + WP2/WP2b CONTAMINATION_DOMINANT           ║
+║ OFFLINE CLASS   = UPSTREAM_LOSS@G3 + WP2/WP2b/WP2c CONTAMINATION_DOMINANT      ║
 ║ WP1             = DONE  (Evidence 118)                                         ║
 ║ WP2             = DONE  (Evidence 119; 8/8 FALSE; do NOT re-adjudicate)        ║
-║ WP2b            = DONE  (E118b freeze + Evidence 119b; 16/16 FALSE)            ║
-║                 = 2 disc_v6 RETRIEVED FPs (LaborX job + MEXC FOMO commentary)   ║
-║ NEXT Mode-1     = Owner: sourcing vs more freeze expand; WP3 needs positives   ║
-║ WP3             = BLOCKED until larger genuine-positive adjudicated set        ║
+║ WP2b            = DONE  (E118b + Evidence 119b; 16/16 FALSE)                   ║
+║ WP2c            = DONE  (E118c + Evidence 119d; 16/16 FALSE; exclude 24 prior) ║
+║ Mode-2 FPs      = DONE  (Evidence 119c; 60620+4780480 hardened in discovery.py)║
+║ Sourcing T0     = APPLIED (Evidence 121; Phase A disable 4 EXCHANGE; +5 rooms) ║
+║ WP3             = BLOCKED until genuine-positive adjudicated set               ║
 ║ ML LADDER       = BLOCKED until S1–S3 earned (Optuna→LGBM→SHAP→Cursor SDK)     ║
 ║ path_b / path_c = FROZEN (E109 / E108) — no reopen without owner auth          ║
 ║ shadow / ML     = OFF / ml_training_enabled=false                              ║
 ║ isolation expect= human_labels=1524 / AI_CONFIRMED=4                           ║
 ║                                                                                ║
 ║ DO NOT: reopen path_b/c · enable shadow · mutate human_labels · timed remesures║
-║ DO NOT: enable ML / claim ML GO · loosen scoring.yaml · duplicate WP2 on same IDs║
+║ DO NOT: enable ML / claim ML GO · loosen scoring.yaml · re-label e118/e118b/e118c║
+║ DO NOT: wipe last_message_id / down -v                                         ║
 ╚══════════════════════════════════════════════════════════════════════════════╝
 ```
 
-**Created / last rewritten:** 2026-09-27 (post–Evidence 119b / WP2b DONE)  
+**Created / last rewritten:** 2026-09-27 (post–WP2c / Mode-2 harden / sourcing T0)  
 **Purpose:** Pasteable operating prompt for the next agent. Design + Mode-1 offline prep only unless a live A/B/C trigger fires.  
 **Repo:** `/home/slamer-lim/telegram-lead-monitor` (NOT Quantum-Trading-System)
 
@@ -52,9 +54,9 @@ deterministic discovery → stable evidence datasets → **Optuna** (rule/thresh
 ## 0. Authoritative standing state (re-verify every wake)
 
 ```text
-MODE=CONTINUOUS OBSERVE (event-driven)
+MODE=CONTINUOUS OBSERVE + sourcing T0 (Evidence 121)
 REPO=/home/slamer-lim/telegram-lead-monitor
-HEAD≈ac9d14e+ (re-check: git rev-parse --short HEAD)
+HEAD≈(re-check: git rev-parse --short HEAD)
 commercial_discovery_enabled=true
 commercial_discovery_version=disc_v6
 cap=120/hour
@@ -63,13 +65,16 @@ path_b=FROZEN (Evidence 109, deploy 2026-09-26T06:53:16Z)
 path_c=FROZEN (Evidence 108)
 ml_training_enabled=false (hard; shared/validation/gate.py)
 LIVE_CLASSIFICATION=RESIDUAL_SCARCITY (Evidence 117)
-OFFLINE_CLASSIFICATION=UPSTREAM_LOSS@G3 + WP2/WP2b_CONTAMINATION_DOMINANT
+OFFLINE_CLASSIFICATION=UPSTREAM_LOSS@G3 + WP2/WP2b/WP2c_CONTAMINATION_DOMINANT
 human_labels=1524
 AI_CONFIRMED=4
 WP1=DONE → Evidence 118
 WP2=DONE → Evidence 119 (8/8 FALSE; batch e118_wp2_adjudication_2026-09-27)
 WP2b=DONE → Evidence 118b + 119b (16/16 FALSE; batch e118b_wp2b_adjudication_2026-09-27)
-NEXT=owner decision: sourcing experiment vs further freeze expand; WP3 blocked (0 genuine positives in 24 adjudicated freezes)
+WP2c=DONE → Evidence 118c + 119d (16/16 FALSE; batch e118c_wp2c_adjudication_2026-09-27; excluded all 24 prior)
+Mode2_FPs=DONE → Evidence 119c (60620 LaborX + 4780480 MEXC FOMO hardened)
+Sourcing=T0 APPLIED → Evidence 121 (disable 4 EXCHANGE; add 5 algo rooms; scans days=14)
+NEXT=watch NEW-since-T0 / Trigger A quality-classify; WP3 blocked (0 genuine positives in 40 adjudicated freezes)
 ```
 
 **Evidence anchors**
@@ -84,6 +89,11 @@ NEXT=owner decision: sourcing experiment vs further freeze expand; WP3 blocked (
 | E119 | `docs/audit/evidence/119-commercial-target-wp2-e118.*` (+ `scripts/audit_commercial_target_wp2_e118.py`) | WP2 DONE: 8/8 FALSE; isolation 1524/4 |
 | E118b | `docs/audit/evidence/118b-offline-freeze-*.{txt,json}` (+ `scripts/expand_offline_freeze_118b.py`) | WP2b freeze expand: stride=89 offsets=11,23,41; n=16 new IDs |
 | E119b | `docs/audit/evidence/119b-wp2b-e118b-freeze-adjudication.*` (+ `scripts/adjudicate_wp2b_e118b_freeze_label_reviews.py`) | WP2b DONE: 16/16 FALSE; 2 RETRIEVED FPs; contamination_share=1.0 |
+| E118c | `docs/audit/evidence/118c-offline-freeze-*.{txt,json}` (+ `scripts/expand_offline_freeze_118c.py`) | WP2c freeze expand: stride=83 offsets=7,19,37,53; exclude all 24 prior |
+| E119d | `docs/audit/evidence/119d-wp2c-e118c-freeze-adjudication.*` (+ `scripts/adjudicate_wp2c_e118c_freeze_label_reviews.py`) | WP2c DONE: 16/16 FALSE; batch e118c_wp2c_adjudication_2026-09-27 |
+| E119c | `docs/audit/evidence/119c-retrieved-fp-mode2-root-cause.*` (+ `scripts/audit_mode2_retrieved_fp_replay_119c.py`) | Mode-2: 60620/4780480 root-cause + hardened |
+| E121 | `docs/audit/evidence/121-sourcing-experiment-t0.*` (+ `scripts/run_sourcing_experiment_121.py`) | Sourcing T0: Phase A disable 4 EXCHANGE; Phase B +5 rooms |
+| Plan | `docs/ops/PLAN_ABC_WP2C_SOURCING_MODE2_2026-09-27.md` | Executable ABC plan |
 | Runbook | `docs/ops/COMMERCIAL_DISCOVERY_OBSERVE_RUNBOOK.md` | A/B/C triggers + cheap watch |
 | This prompt | `docs/ops/MASTER_CONTINUATION_PROMPT_COMMERCIAL_DISCOVERY.md` | pasteable continuation |
 | Discovery | `shared/commercial_ai/discovery.py` | disc_v6 / path_b (~1142) / path_c (~1162) / `evaluate_discovery` (~1414) |
@@ -303,6 +313,24 @@ Idempotent re-run of the WP2 script updates the same 8 rows only; do not invent 
 4. Notable: **2 disc_v6 RETRIEVED false positives** (LaborX job listing mid=60620; MEXC FOMO commentary mid=4780480) — Mode-2 hypothesis only with owner auth; **do not** reopen path_b/c from this alone.  
 5. Combined WP2+WP2b = 24 adjudicated freezes, **0 genuine_buyer_project**. WP3 / Optuna still blocked.
 
+### WP2c — Further freeze expand — **DONE** (Evidence 118c + 119d)
+
+1. Read-only expand: `scripts/expand_offline_freeze_118c.py` → exclude **all 24** prior freeze IDs; stride=83 offsets=7,19,37,53.  
+2. Adjudicated **16 new** IDs → batch `e118c_wp2c_adjudication_2026-09-27` (Evidence 119d): **16/16 FALSE**, contamination_share=1.0.  
+3. Combined WP2+WP2b+WP2c = **40** adjudicated freezes, **0 genuine_buyer_project**.
+
+### Mode-2 RETRIEVED FPs — **DONE** (Evidence 119c)
+
+1. Replay 60620 / 4780480 v4 vs v6 → path-E FPs confirmed.  
+2. Hardened `discovery.py`: NEW PROJECT ON LABORX no longer FO-carves; bare `my strategy` no longer ownership.  
+3. Post-harden: both ineligible; pytest laborx suite green. path_b/c untouched.
+
+### Sourcing experiment T0 — **APPLIED** (Evidence 121)
+
+1. Phase A: disabled BitgetENOfficial / OKXOfficial_English / WeexGlobal_Group / BybitEnglish (`last_message_id` unchanged).  
+2. Phase B: added @Freqtrade @hummingbot @NautilusTrader @backtrader_community @JesseTrade; scans days=14 for new ids only.  
+3. Watch NEW-since-T0; rollback Phase A by re-enabling if intake harm.
+
 ### WP3 — Frozen dataset + leakage contract → Evidence 120 — **AFTER adequate adjudicated n**
 
 - New: `scripts/build_offline_discovery_dataset.py` (or equivalent)  
@@ -379,12 +407,12 @@ Idempotent re-run of the WP2 script updates the same 8 rows only; do not invent 
 If `--once` is still `OBSERVE_OK` and isolation holds (1524/4):
 
 1. Stay Mode 0/1 — **do not** reopen paths, enable shadow/ML, or mutate `human_labels`.  
-2. **Verify WP2 artifacts:** `ls docs/audit/evidence/119-*`; confirm batch `e118_wp2_adjudication_2026-09-27` in DB; **do not re-adjudicate** those 8 message_ids.  
-3. **WP2b DONE.** Do not re-adjudicate batches `e118_wp2_adjudication_2026-09-27` or `e118b_wp2b_adjudication_2026-09-27`.  
-4. **Owner decision next:** sourcing experiment vs further freeze expansion; optional Mode-2 auth for RETRIEVED-FP hypothesis (jobboard/exchange commentary).  
-5. WP3 only after genuine-positive adjudicated n; then S4 baseline → S5 Optuna ladder.  
-6. Keep `observe_abc_watch.sh` running; on A freeze+classify; on B fix correctness; on C halt.  
-7. Do **not** start Optuna/LightGBM/SHAP/Cursor SDK yet.
+2. **Do not re-adjudicate** batches `e118_wp2_*` / `e118b_wp2b_*` / `e118c_wp2c_*`.  
+3. **Sourcing T0 active (E121):** measure NEW-since-T0 messages/scores/disc_v6; on Trigger A freeze+classify new intake.  
+4. WP3 only after genuine-positive adjudicated n; then S4 baseline → S5 Optuna ladder.  
+5. Keep `observe_abc_watch.sh` running; on A freeze+classify; on B fix correctness; on C halt.  
+6. Do **not** start Optuna/LightGBM/SHAP/Cursor SDK yet.  
+7. Rollback sourcing Phase A (re-enable the 4 EXCHANGE usernames) only if intake/harm warrants — preserve `last_message_id`.
 
 If a trigger is already firing: handle per §3 before any offline WP.
 
@@ -402,7 +430,8 @@ If a trigger is already firing: handle per §3 before any offline WP.
 
 ## Execution notes (for planner / human)
 
-- Next agent: owner decision on **sourcing vs more freeze expand**; live A/B/C still governs OBSERVE.  
-- Do **not** re-adjudicate batches `e118_wp2_*` / `e118b_wp2b_*`.  
+- Next agent: **watch sourcing T0 (E121)** + Trigger A/B/C; live OBSERVE still governs.  
+- Do **not** re-adjudicate batches `e118_wp2_*` / `e118b_wp2b_*` / `e118c_wp2c_*`.  
+- Mode-2 FP harden shipped (E119c); do not reopen path_b/c.  
 - Proposed ML thresholds need owner sign-off before becoming gates.  
-- E118 UPSTREAM_LOSS@G3 ≠ path reopen; WP2+WP2b (24/24 contamination, 2 RETRIEVED FPs) reinforces freeze.
+- E118 UPSTREAM_LOSS@G3 ≠ path reopen; WP2+WP2b+WP2c (40/40 contamination) reinforces freeze + sourcing.

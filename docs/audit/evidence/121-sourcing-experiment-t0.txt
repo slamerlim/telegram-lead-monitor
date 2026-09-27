@@ -1,0 +1,31 @@
+Evidence 121: Sourcing experiment T0 (communities lever)
+experiment_id=SOURCING_EXPERIMENT_T0_121
+decision=SOURCING_T0_APPLIED
+t0=2026-09-27T10:16:46.876011+00:00 head=95eb42b dry_run=False
+
+=== 0. OWNER AUTH ===
+  User approved plan+execute A/B/C including Option B sourcing experiment (communities lever). Supersedes E96/E97 default 'do not expand' for this bounded Phase A/B only. NOT Evidence-105 HIGH-tier bridge.
+  lever=communities.enabled + insert communities + scan_runs days=14
+  forbidden=['discovery.py path_b/c edits', 'scoring.yaml threshold loosen', 'E105 Option B bridge', 'last_message_id wipe', 'docker compose down -v', 'human_labels mutation']
+
+=== 1. ISOLATION ===
+  before hl=1524 ac=4 disc_v6_new=0
+  after  hl=1524 ac=4 isolation_ok=True
+  metrics_since_t0={'messages_since_t0': 0, 'scores_since_t0': 0, 'disc_v6_since_t0': 0}
+
+=== 2. PHASE A DISABLE ===
+  targets=['BitgetENOfficial', 'OKXOfficial_English', 'WeexGlobal_Group', 'BybitEnglish']
+  disabled=[{'id': 64, 'username': 'BitgetENOfficial', 'last_message_id': 10480032, 'enabled': False}, {'id': 59, 'username': 'OKXOfficial_English', 'last_message_id': 12431466, 'enabled': False}, {'id': 96, 'username': 'WeexGlobal_Group', 'last_message_id': 4086143, 'enabled': False}, {'id': 57, 'username': 'BybitEnglish', 'last_message_id': 4748841, 'enabled': False}]
+  cursors_unchanged=True
+
+=== 3. PHASE B ADD + SCANS ===
+  plan=[{'ref': '@Freqtrade', 'action': 'add', 'username': 'Freqtrade'}, {'ref': '@hummingbot', 'action': 'add', 'username': 'hummingbot'}, {'ref': '@NautilusTrader', 'action': 'add', 'username': 'NautilusTrader'}, {'ref': '@backtrader_community', 'action': 'add', 'username': 'backtrader_community'}, {'ref': '@JesseTrade', 'action': 'add', 'username': 'JesseTrade'}]
+  added=[{'id': 137, 'telegram_ref': '@Freqtrade', 'username': 'Freqtrade'}, {'id': 138, 'telegram_ref': '@hummingbot', 'username': 'hummingbot'}, {'id': 139, 'telegram_ref': '@NautilusTrader', 'username': 'NautilusTrader'}, {'id': 140, 'telegram_ref': '@backtrader_community', 'username': 'backtrader_community'}, {'id': 141, 'telegram_ref': '@JesseTrade', 'username': 'JesseTrade'}]
+  scans=[{'community_id': 137, 'run_id': 66605, 'days': 14, 'status': 'queued'}, {'community_id': 138, 'run_id': 66606, 'days': 14, 'status': 'queued'}, {'community_id': 139, 'run_id': 66607, 'days': 14, 'status': 'queued'}, {'community_id': 140, 'run_id': 66608, 'days': 14, 'status': 'queued'}, {'community_id': 141, 'run_id': 66609, 'days': 14, 'status': 'queued'}]
+
+=== 4. BUSINESS / LOCKS ===
+  {'outreach': False, 'ml_go': False, 'threshold_loosen': False, 'path_b_path_c_reopened': False, 'discovery_semantic_change': False, 'e105_bridge': False, 'human_labels_mutated': False, 'scoring_yaml_touched': False, 'code_deploy_required': False}
+
+=== 5. NEXT ===
+  Watch NEW-since-T0 messages/scores/disc_v6; on Trigger A freeze+classify; rollback Phase A by re-enabling usernames if intake harm observed.
+

@@ -1,0 +1,124 @@
+{
+  "evidence_id": "118c",
+  "generated_at": "2026-09-27T10:15:26.064086+00:00",
+  "head": "95eb42b",
+  "runtime_sec": 43.24,
+  "read_only": true,
+  "mode": "OFFLINE_PREP_READONLY",
+  "pre_registered": {
+    "hypothesis": "E118 freeze n=8 was contamination-dominant (job-board/vendor). A different messages-only sample with preferential non-JOB_BOARD / non-EXCHANGE_OFFICIAL selection may surface genuine buyer near-misses or confirm contamination dominance.",
+    "decision_rule": "After adjudication of NEW freeze IDs: if genuine_buyer_project share <15% AND commercially_actionable true=0 \u2192 CONTAMINATION_DOMINANT / lean sourcing discussion; if \u22651 clear genuine buyer \u2192 document Mode-2 hypothesis (auth still required). Do not reopen path_b/c from freezes alone.",
+    "selection": "Prefer community_class NOT IN (JOB_BOARD, EXCHANGE_OFFICIAL); prefer NO_PATH_MATCH near-miss; exclude ALL 24 prior WP2+WP2b freeze message_ids; stride=83 offsets=[7, 19, 37, 53] (\u2260 E118 97/3 and \u2260 E118b 89/11,23,41).",
+    "mode": "OFFLINE_PREP_READONLY",
+    "path_freeze": "path_b+path_c",
+    "ml_training_enabled": false
+  },
+  "isolation": {
+    "human_labels": 1524,
+    "ai_confirmed": 4,
+    "message_scores": 180740,
+    "messages": 8677171,
+    "expect_human_labels": 1524,
+    "expect_ai_confirmed": 4,
+    "isolation_ok": true
+  },
+  "sample": {
+    "per_bucket": 2500,
+    "stride": 83,
+    "offsets": [
+      7,
+      19,
+      37,
+      53
+    ],
+    "n_sampled_total": 36172,
+    "n_unique_scored": 36171,
+    "bucket_sampled": {
+      "0_7d@off7": 1509,
+      "8_30d@off7": 2500,
+      "31_90d@off7": 2500,
+      "91d_plus@off7": 2500,
+      "0_7d@off19": 1561,
+      "8_30d@off19": 2500,
+      "31_90d@off19": 2500,
+      "91d_plus@off19": 2500,
+      "0_7d@off37": 1551,
+      "8_30d@off37": 2500,
+      "31_90d@off37": 2500,
+      "91d_plus@off37": 2500,
+      "0_7d@off53": 1551,
+      "8_30d@off53": 2500,
+      "31_90d@off53": 2500,
+      "91d_plus@off53": 2500
+    },
+    "skipped_excluded_prior_ids": 1,
+    "excluded_prior_freeze_ids": [
+      112,
+      189,
+      197,
+      219,
+      278,
+      290,
+      294,
+      308,
+      367,
+      391,
+      397,
+      22884,
+      22895,
+      22896,
+      22914,
+      60620,
+      60628,
+      61451,
+      73917,
+      389386,
+      3595211,
+      4780480,
+      7908373,
+      8568013
+    ],
+    "discovery_version": "disc_v6"
+  },
+  "first_loss_histogram": {
+    "VETO_support_question": 1612,
+    "NO_PATH_MATCH": 33719,
+    "HARD_EXCLUDE_EARLY": 227,
+    "VETO_service_provider": 481,
+    "VETO_corporate_employment": 39,
+    "VETO_job_aggregator": 58,
+    "VETO_generic_recruiter": 9,
+    "VETO_news_digest": 19,
+    "VETO_job_seeker": 6,
+    "RETRIEVED": 1
+  },
+  "community_class_hist": {
+    "EXCHANGE_OFFICIAL": 32680,
+    "OTHER": 3133,
+    "JOB_BOARD": 248,
+    "DEV_COMMUNITY": 22,
+    "TRADER_COMMUNITY": 88
+  },
+  "candidate_pools": {
+    "nopath_near_miss": 2,
+    "veto_near_or_refined": 13,
+    "eligible_retrieved": 1,
+    "near_miss_rx_hits": 8
+  },
+  "freeze_counts": {
+    "nopath_near_miss": 2,
+    "veto_near_or_refined": 13,
+    "eligible_retrieved": 1,
+    "preferred_community_nopath": 1,
+    "preferred_community_veto": 2,
+    "preferred_community_eligible": 1
+  },
+  "business": {
+    "outreach": false,
+    "ml_go": false,
+    "threshold_loosen": false,
+    "discovery_semantic_change": false,
+    "path_b_path_c_reopened": false
+  },
+  "next": "WP2c adjudicate NEW freeze IDs into label_reviews only (batch e118c_wp2c_* \u2192 Evidence 119d)."
+}

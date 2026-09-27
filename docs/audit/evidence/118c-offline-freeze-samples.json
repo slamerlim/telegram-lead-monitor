@@ -1,0 +1,205 @@
+{
+  "evidence_id": "118c",
+  "generated_at": "2026-09-27T10:15:26.064086+00:00",
+  "head": "95eb42b",
+  "parent_evidence": [
+    "118",
+    "118b"
+  ],
+  "selection_policy": "Prefer community_class NOT IN (JOB_BOARD, EXCHANGE_OFFICIAL); prefer NO_PATH_MATCH near-miss; exclude ALL 24 prior WP2+WP2b freeze message_ids; stride=83 offsets=[7, 19, 37, 53] (≠ E118 97/3 and ≠ E118b 89/11,23,41).",
+  "excluded_prior_message_ids": [
+    112,
+    189,
+    197,
+    219,
+    278,
+    290,
+    294,
+    308,
+    367,
+    391,
+    397,
+    22884,
+    22895,
+    22896,
+    22914,
+    60620,
+    60628,
+    61451,
+    73917,
+    389386,
+    3595211,
+    4780480,
+    7908373,
+    8568013
+  ],
+  "nopath_near_miss": [
+    {
+      "message_id": 385572,
+      "bucket": "8_30d",
+      "sample_offset": 37,
+      "first_loss": "NO_PATH_MATCH",
+      "community_class": "TRADER_COMMUNITY",
+      "near_miss_buyer_rx": true,
+      "refined_commercial_rx": false,
+      "preview": "I have been trying to build a bot But I can't seem to find my edge The bot will enter at 70sol in the bonding curve and exit at 80sol before migration My data showed that 70 percent of tokens that reach 70 sol usually go up to graduate I us",
+      "direction": "UNKNOWN"
+    },
+    {
+      "message_id": 720957,
+      "bucket": "31_90d",
+      "sample_offset": 19,
+      "first_loss": "NO_PATH_MATCH",
+      "community_class": "EXCHANGE_OFFICIAL",
+      "near_miss_buyer_rx": true,
+      "refined_commercial_rx": false,
+      "preview": "If I had to build a 3- asset automated DCA or grid bot then I would choose SOL 40% ,ETH 20% , and BTC 20%. Sol is currently performing well and it's back is very strong but i will do the DCA entry on it if it goes on the downside. Eth and B",
+      "direction": "UNKNOWN"
+    }
+  ],
+  "veto_near_or_refined": [
+    {
+      "message_id": 60277,
+      "bucket": "8_30d",
+      "sample_offset": 19,
+      "first_loss": "HARD_EXCLUDE_EARLY",
+      "community_class": "TRADER_COMMUNITY",
+      "near_miss_buyer_rx": false,
+      "refined_commercial_rx": true,
+      "preview": "💰 TOP-PAYING PROJECTS THIS WEEK 1️⃣ $10,000 — Seed Investor Needed – GhostContract MVP Built → https://laborx.com/jobs/seed-investor-needed-ghostcontract-mvp-built-103455 2️⃣ $4,000 — Looking for a U.S.& Canada-Based Software Engineer → htt"
+    },
+    {
+      "message_id": 60597,
+      "bucket": "31_90d",
+      "sample_offset": 7,
+      "first_loss": "VETO_job_aggregator",
+      "community_class": "TRADER_COMMUNITY",
+      "near_miss_buyer_rx": true,
+      "refined_commercial_rx": false,
+      "preview": "🛠 GIG OF THE DAY 🐍 I will build a custom Telegram bot in Python with API integrations 💰 $35 · ⏱ 1 day delivery 🏷 Web, Mobile & Software Dev · Python · Back End Developer 👤 Rfn Moayyed “Need a Telegram bot that automates a repetitive task, c"
+    },
+    {
+      "message_id": 8556477,
+      "bucket": "0_7d",
+      "sample_offset": 7,
+      "first_loss": "VETO_job_aggregator",
+      "community_class": "JOB_BOARD",
+      "near_miss_buyer_rx": true,
+      "refined_commercial_rx": true,
+      "preview": "🌟 Freelance Opportunity: Translate 💰 Budget: $20 🤝 With: Amir Ghfri"
+    },
+    {
+      "message_id": 68030,
+      "bucket": "8_30d",
+      "sample_offset": 53,
+      "first_loss": "VETO_service_provider",
+      "community_class": "JOB_BOARD",
+      "near_miss_buyer_rx": false,
+      "refined_commercial_rx": true,
+      "preview": "Etsy Shop Owners — Need New Digital Products? 💍✨ I’m a Digital Product Designer specializing in wedding, event & celebration templates for Etsy shops. I can create original, professional designs such as: • Wedding Invitations • Wedding Welc"
+    },
+    {
+      "message_id": 203,
+      "bucket": "31_90d",
+      "sample_offset": 37,
+      "first_loss": "VETO_job_aggregator",
+      "community_class": "JOB_BOARD",
+      "near_miss_buyer_rx": true,
+      "refined_commercial_rx": true,
+      "preview": "🌟 Freelance Opportunity: Puedo traducir su texto al español 💰 Budget: $200 🤝 With: vccmarketshop"
+    },
+    {
+      "message_id": 256,
+      "bucket": "31_90d",
+      "sample_offset": 7,
+      "first_loss": "VETO_job_aggregator",
+      "community_class": "JOB_BOARD",
+      "near_miss_buyer_rx": true,
+      "refined_commercial_rx": true,
+      "preview": "🌟 Freelance Opportunity: Chalk Artists 💰 Budget: $42 🤝 With: David LastName"
+    },
+    {
+      "message_id": 259428,
+      "bucket": "31_90d",
+      "sample_offset": 53,
+      "first_loss": "VETO_job_aggregator",
+      "community_class": "JOB_BOARD",
+      "near_miss_buyer_rx": false,
+      "refined_commercial_rx": true,
+      "preview": "Ping Identity is hiring an onsite Office Manager in USA - Denver, CO - Onsite Ping Identity is looking for an Office Manager to lead headquarters operations manage workplace services coordinate vendors and deliver employee events and hospit"
+    },
+    {
+      "message_id": 259465,
+      "bucket": "31_90d",
+      "sample_offset": 7,
+      "first_loss": "VETO_job_aggregator",
+      "community_class": "JOB_BOARD",
+      "near_miss_buyer_rx": false,
+      "refined_commercial_rx": true,
+      "preview": "Arbol is hiring an onsite Office Manager in Sarasota, Florida Arbol is looking for an Office Manager to oversee daily office operations maintain facilities coordinate vendors and provide administrative support for employees and leadership. "
+    },
+    {
+      "message_id": 268,
+      "bucket": "31_90d",
+      "sample_offset": 19,
+      "first_loss": "VETO_job_aggregator",
+      "community_class": "JOB_BOARD",
+      "near_miss_buyer_rx": true,
+      "refined_commercial_rx": true,
+      "preview": "🌟 Freelance Opportunity: Sales Representatives 💰 Budget: $100 🤝 With: Forged Studio"
+    },
+    {
+      "message_id": 270504,
+      "bucket": "31_90d",
+      "sample_offset": 7,
+      "first_loss": "VETO_support_question",
+      "community_class": "JOB_BOARD",
+      "near_miss_buyer_rx": false,
+      "refined_commercial_rx": true,
+      "preview": "#Recruitment 🏡 Flow Traders #Market·Maker 🐇 Introduction: https://flowtraders.com/ A leading global liquidity provider and market maker. 🛵 #FullTime #Onsite #Amsterdam 📚 #Event·Specialist #Marketing 💰 Compensation: Negotiable 🌱 Responsibili"
+    },
+    {
+      "message_id": 6725924,
+      "bucket": "31_90d",
+      "sample_offset": 19,
+      "first_loss": "VETO_support_question",
+      "community_class": "EXCHANGE_OFFICIAL",
+      "near_miss_buyer_rx": false,
+      "refined_commercial_rx": true,
+      "preview": "You are right but is best to support customers budget inorder not to send them away"
+    },
+    {
+      "message_id": 22878,
+      "bucket": "91d_plus",
+      "sample_offset": 53,
+      "first_loss": "VETO_job_aggregator",
+      "community_class": "JOB_BOARD",
+      "near_miss_buyer_rx": true,
+      "refined_commercial_rx": true,
+      "preview": "🌟 Freelance Opportunity: Simple typing task available 💰 Budget: $5500 🤝 With: Nancy Andrew"
+    },
+    {
+      "message_id": 260888,
+      "bucket": "91d_plus",
+      "sample_offset": 19,
+      "first_loss": "VETO_job_aggregator",
+      "community_class": "JOB_BOARD",
+      "near_miss_buyer_rx": false,
+      "refined_commercial_rx": true,
+      "preview": "KAST is hiring a hybrid Senior Creative and Art Director in Singapore KAST is looking for a Senior Creative and Art Director to lead the design of high impact campaigns across digital social and real life touchpoints 🤓 motion | typography |"
+    }
+  ],
+  "eligible_retrieved": [
+    {
+      "message_id": 383479,
+      "bucket": "8_30d",
+      "sample_offset": 19,
+      "first_loss": "RETRIEVED",
+      "community_class": "TRADER_COMMUNITY",
+      "near_miss_buyer_rx": false,
+      "refined_commercial_rx": false,
+      "preview": "I used to spend hours watching charts, taking emotional trades, and constantly questioning my strategy. The biggest problem wasn’t always finding setups it was staying disciplined. Using an automated EA gave my trading a different structure",
+      "trigger_type": "v6_direct_project_domain"
+    }
+  ]
+}

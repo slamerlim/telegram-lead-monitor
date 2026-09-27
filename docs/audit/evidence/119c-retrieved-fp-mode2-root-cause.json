@@ -1,0 +1,403 @@
+{
+  "evidence_id": "119c",
+  "experiment_id": "MODE2_RETRIEVED_FP_REPLAY_119C",
+  "generated_at": "2026-09-27T10:16:46.911327+00:00",
+  "head": "95eb42b",
+  "mode2_auth": {
+    "authorized_by": "owner",
+    "auth_record": "User approved plan+execute A/B/C including Mode-2 investigation of RETRIEVED FPs 60620/4780480 with minimal defensive hardening if falsified",
+    "authorized_at": "2026-09-27T10:16:46.911327+00:00",
+    "scope": [
+      "replay evidence 119c",
+      "LaborX listing veto when not carve (no path_b/c reopen)",
+      "narrow path-E ownership away from bare 'my strategy' advice"
+    ],
+    "forbidden": [
+      "path_b/path_c conjunct reopen",
+      "scoring.yaml threshold loosen",
+      "human_labels mutation",
+      "ML enable / ML GO claim"
+    ]
+  },
+  "isolation": {
+    "human_labels": 1524,
+    "AI_CONFIRMED": 4,
+    "isolation_ok": true
+  },
+  "message_ids": [
+    60620,
+    4780480
+  ],
+  "replays": [
+    {
+      "message_id": 60620,
+      "community_id": 17,
+      "text_preview": "\ud83c\udd95 NEW PROJECT ON LABORX \ud83d\udfe8 Trading Platform\u2013Security Fix,Feature Completion&Deployment \ud83d\udcb0 Budget: $800 \ud83c\udff7 Web, Mobile & Software Dev \u00b7 Javascript \u00b7 React \ud83d\udc64 arlo ski \u00b7 \u2b505\u2605 I have an existing Next.js 15 (App Router) + Prisma + PostgreSQL trading platform. A professional code audit has already been completed. I need an experienced developer to: Fix the critical\u2026 \ud83d\udd17 Apply: https://laborx.com/jobs/trading-",
+      "text_len": 500,
+      "versions": {
+        "disc_v4": {
+          "eligible": false,
+          "first_loss": "VETO_job_aggregator",
+          "trigger_type": null,
+          "matched_paths": [],
+          "veto_categories": [
+            "job_aggregator",
+            "corporate_employment"
+          ],
+          "hard_exclude": false,
+          "exclude_reasons": [],
+          "aggregator_signal": true,
+          "gig_project_carve": false,
+          "ownership_signal": false,
+          "project_scope": false,
+          "budget_signal": true,
+          "true_budget_signal": true,
+          "direct_request_signal": false,
+          "repair_signal": false,
+          "buyer_direction": "EMPLOYER",
+          "signals": {
+            "commercial_patterns": [
+              "\\b(?:need|looking for|seeking|want|hire|hiring|commission|purchase|buy|quote|budget|proposal)\\b.{0,180}\\b(?:developer|engineer|programmer|freelancer|contractor|bot|trading|strategy|quant|ml|ai|system)\\b"
+            ],
+            "hiring_patterns": [],
+            "repair_patterns": [
+              "\\b(?:need|looking for|want|hiring|hire)\\b.{0,160}\\b(?:developer|programmer|engineer|freelancer|someone|help)\\b.{0,160}\\b(?:fix|repair|debug|troubleshoot|diagnose)\\b.{0,160}\\b(?:bot|trading|api|strategy|system|execution)\\b"
+            ],
+            "implementation_patterns": [],
+            "contractor_patterns": [],
+            "budget_language": true,
+            "timeline_language": false,
+            "technical_project_terms": [],
+            "domain_categories": [],
+            "matched_categories": [],
+            "hard_exclude": false,
+            "exclude_reasons": [],
+            "topic_fingerprint": "none",
+            "trigger_type": null,
+            "trigger_score": 0.0,
+            "eligible": false,
+            "buyer_direction": "EMPLOYER",
+            "employment_signal": false,
+            "project_scope": false,
+            "recruiter_signal": false,
+            "seeker_signal": false,
+            "provider_signal": false,
+            "aggregator_signal": true,
+            "support_signal": false,
+            "marketing_signal": false,
+            "news_signal": false,
+            "repair_signal": false,
+            "budget_signal": true,
+            "timeline_signal": false,
+            "buyer_persistence_signal": 0.0,
+            "discovery_score": 0.0,
+            "veto_categories": [
+              "job_aggregator",
+              "corporate_employment"
+            ],
+            "discovery_version": "disc_v4",
+            "buyer_signal_families": [
+              "BUDGETED_REQUEST"
+            ],
+            "project_procurement_signal": false,
+            "direct_request_signal": false,
+            "ownership_signal": false,
+            "automation_signal": false,
+            "hard_veto": true,
+            "soft_direction": false,
+            "matched_paths": [],
+            "true_budget_signal": true,
+            "bot_deliverable_signal": false,
+            "gig_project_carve": false
+          }
+        },
+        "disc_v6": {
+          "eligible": false,
+          "first_loss": "VETO_job_aggregator",
+          "trigger_type": null,
+          "matched_paths": [],
+          "veto_categories": [
+            "job_aggregator",
+            "corporate_employment"
+          ],
+          "hard_exclude": false,
+          "exclude_reasons": [],
+          "aggregator_signal": true,
+          "gig_project_carve": false,
+          "ownership_signal": false,
+          "project_scope": false,
+          "budget_signal": true,
+          "true_budget_signal": true,
+          "direct_request_signal": false,
+          "repair_signal": false,
+          "buyer_direction": "EMPLOYER",
+          "signals": {
+            "commercial_patterns": [
+              "\\b(?:need|looking for|seeking|want|hire|hiring|commission|purchase|buy|quote|budget|proposal)\\b.{0,180}\\b(?:developer|engineer|programmer|freelancer|contractor|bot|trading|strategy|quant|ml|ai|system)\\b"
+            ],
+            "hiring_patterns": [],
+            "repair_patterns": [
+              "\\b(?:need|looking for|want|hiring|hire)\\b.{0,160}\\b(?:developer|programmer|engineer|freelancer|someone|help)\\b.{0,160}\\b(?:fix|repair|debug|troubleshoot|diagnose)\\b.{0,160}\\b(?:bot|trading|api|strategy|system|execution)\\b"
+            ],
+            "implementation_patterns": [],
+            "contractor_patterns": [],
+            "budget_language": true,
+            "timeline_language": false,
+            "technical_project_terms": [],
+            "domain_categories": [],
+            "matched_categories": [],
+            "hard_exclude": false,
+            "exclude_reasons": [],
+            "topic_fingerprint": "none",
+            "trigger_type": null,
+            "trigger_score": 0.0,
+            "eligible": false,
+            "buyer_direction": "EMPLOYER",
+            "employment_signal": false,
+            "project_scope": false,
+            "recruiter_signal": false,
+            "seeker_signal": false,
+            "provider_signal": false,
+            "aggregator_signal": true,
+            "support_signal": false,
+            "marketing_signal": false,
+            "news_signal": false,
+            "repair_signal": false,
+            "budget_signal": true,
+            "timeline_signal": false,
+            "buyer_persistence_signal": 0.0,
+            "discovery_score": 0.0,
+            "veto_categories": [
+              "job_aggregator",
+              "corporate_employment"
+            ],
+            "discovery_version": "disc_v6",
+            "buyer_signal_families": [
+              "BUDGETED_REQUEST"
+            ],
+            "project_procurement_signal": false,
+            "direct_request_signal": false,
+            "ownership_signal": false,
+            "automation_signal": false,
+            "hard_veto": true,
+            "soft_direction": false,
+            "matched_paths": [],
+            "true_budget_signal": true,
+            "bot_deliverable_signal": false,
+            "gig_project_carve": false
+          }
+        }
+      }
+    },
+    {
+      "message_id": 4780480,
+      "community_id": 67,
+      "text_preview": "BTC just hit $81,000! \ud83d\ude80 After such a strong move, I wouldn\u2019t rush into buying or selling based on FOMO. My strategy would be to hold the majority of my BTC as a long-term position while taking a small portion of profits to lock in gains. I\u2019d keep some cash available for a potential pullback, because Bitcoin can move quickly in both directions. For me, the key is staying disciplined, managing risk,",
+      "text_len": 479,
+      "versions": {
+        "disc_v4": {
+          "eligible": false,
+          "first_loss": "NO_PATH_MATCH",
+          "trigger_type": null,
+          "matched_paths": [],
+          "veto_categories": [],
+          "hard_exclude": false,
+          "exclude_reasons": [],
+          "aggregator_signal": false,
+          "gig_project_carve": false,
+          "ownership_signal": false,
+          "project_scope": true,
+          "budget_signal": true,
+          "true_budget_signal": false,
+          "direct_request_signal": false,
+          "repair_signal": false,
+          "buyer_direction": "BUYER",
+          "signals": {
+            "commercial_patterns": [],
+            "hiring_patterns": [],
+            "repair_patterns": [],
+            "implementation_patterns": [],
+            "contractor_patterns": [],
+            "budget_language": true,
+            "timeline_language": false,
+            "technical_project_terms": [],
+            "domain_categories": [],
+            "matched_categories": [],
+            "hard_exclude": false,
+            "exclude_reasons": [],
+            "topic_fingerprint": "none",
+            "trigger_type": null,
+            "trigger_score": 0.0,
+            "eligible": false,
+            "buyer_direction": "BUYER",
+            "employment_signal": false,
+            "project_scope": true,
+            "recruiter_signal": false,
+            "seeker_signal": false,
+            "provider_signal": false,
+            "aggregator_signal": false,
+            "support_signal": false,
+            "marketing_signal": false,
+            "news_signal": false,
+            "repair_signal": false,
+            "budget_signal": true,
+            "timeline_signal": false,
+            "buyer_persistence_signal": 0.0,
+            "discovery_score": 0.0,
+            "veto_categories": [],
+            "discovery_version": "disc_v4",
+            "buyer_signal_families": [
+              "BUDGETED_REQUEST"
+            ],
+            "project_procurement_signal": false,
+            "direct_request_signal": false,
+            "ownership_signal": false,
+            "automation_signal": false,
+            "hard_veto": false,
+            "soft_direction": false,
+            "matched_paths": [],
+            "true_budget_signal": false,
+            "bot_deliverable_signal": false,
+            "gig_project_carve": false
+          }
+        },
+        "disc_v6": {
+          "eligible": false,
+          "first_loss": "NO_PATH_MATCH",
+          "trigger_type": null,
+          "matched_paths": [],
+          "veto_categories": [],
+          "hard_exclude": false,
+          "exclude_reasons": [],
+          "aggregator_signal": false,
+          "gig_project_carve": false,
+          "ownership_signal": false,
+          "project_scope": true,
+          "budget_signal": true,
+          "true_budget_signal": false,
+          "direct_request_signal": false,
+          "repair_signal": false,
+          "buyer_direction": "BUYER",
+          "signals": {
+            "commercial_patterns": [],
+            "hiring_patterns": [],
+            "repair_patterns": [],
+            "implementation_patterns": [],
+            "contractor_patterns": [],
+            "budget_language": true,
+            "timeline_language": false,
+            "technical_project_terms": [],
+            "domain_categories": [],
+            "matched_categories": [],
+            "hard_exclude": false,
+            "exclude_reasons": [],
+            "topic_fingerprint": "none",
+            "trigger_type": null,
+            "trigger_score": 0.0,
+            "eligible": false,
+            "buyer_direction": "BUYER",
+            "employment_signal": false,
+            "project_scope": true,
+            "recruiter_signal": false,
+            "seeker_signal": false,
+            "provider_signal": false,
+            "aggregator_signal": false,
+            "support_signal": false,
+            "marketing_signal": false,
+            "news_signal": false,
+            "repair_signal": false,
+            "budget_signal": true,
+            "timeline_signal": false,
+            "buyer_persistence_signal": 0.0,
+            "discovery_score": 0.0,
+            "veto_categories": [],
+            "discovery_version": "disc_v6",
+            "buyer_signal_families": [
+              "BUDGETED_REQUEST"
+            ],
+            "project_procurement_signal": false,
+            "direct_request_signal": false,
+            "ownership_signal": false,
+            "automation_signal": false,
+            "hard_veto": false,
+            "soft_direction": false,
+            "matched_paths": [],
+            "true_budget_signal": false,
+            "bot_deliverable_signal": false,
+            "gig_project_carve": false
+          }
+        }
+      }
+    }
+  ],
+  "findings": [
+    {
+      "message_id": 60620,
+      "hypothesis": "LaborX NEW PROJECT listing reaches path E (v6_budget_deliverable) despite marketplace shape; JOB_VACANCY FP if eligible.",
+      "v4_eligible": false,
+      "v6_eligible": false,
+      "v6_trigger": null,
+      "v6_paths": [],
+      "v6_first_loss": "VETO_job_aggregator",
+      "v6_ownership": false,
+      "v6_aggregator": true,
+      "v6_carve": false,
+      "v6_vetoes": [
+        "job_aggregator",
+        "corporate_employment"
+      ],
+      "root_cause_notes": [
+        "CURRENT CODE already vetoes via job_aggregator \u2014 freeze RETRIEVED may be stale or race; still harden listing veto for defense-in-depth"
+      ]
+    },
+    {
+      "message_id": 4780480,
+      "hypothesis": "MEXC FOMO commentary reaches path E via ownership_signal on bare 'my strategy' + domain; OFF_DOMAIN FP if eligible.",
+      "v4_eligible": false,
+      "v6_eligible": false,
+      "v6_trigger": null,
+      "v6_paths": [],
+      "v6_first_loss": "NO_PATH_MATCH",
+      "v6_ownership": false,
+      "v6_aggregator": false,
+      "v6_carve": false,
+      "v6_vetoes": [],
+      "root_cause_notes": [
+        "CURRENT CODE already ineligible \u2014 still narrow path-E ownership away from bare strategy advice"
+      ]
+    }
+  ],
+  "business": {
+    "outreach": false,
+    "ml_go": false,
+    "threshold_loosen": false,
+    "path_b_path_c_reopened": false,
+    "human_labels_mutated": false,
+    "discovery_semantic_change_pending": false,
+    "discovery_semantic_change": true
+  },
+  "next": "Apply minimal discovery.py hardening under mode2_auth; run pytest tests/test_discovery_laborx_veto_carve_v6.py; rebuild analyzer.",
+  "post_harden": {
+    "at": "2026-09-27T10:17:24.166252+00:00",
+    "patches": [
+      "Remove new-project-on-laborx from _FO_LISTING_RX (keep in _GIG_MARKETPLACE_RX)",
+      "Narrow _OWNERSHIP_RX: bare 'my strategy' no longer ownership; require trading-strategy/bot/system/api/project"
+    ],
+    "replay_after": {
+      "60620": {
+        "v6_eligible": false,
+        "first_loss": "VETO_job_aggregator",
+        "carve": false
+      },
+      "4780480": {
+        "v6_eligible": false,
+        "first_loss": "NO_PATH_MATCH",
+        "ownership": false
+      }
+    },
+    "pytest": "tests/test_discovery_laborx_veto_carve_v6.py + job_veto related: 43 passed",
+    "path_b_path_c_reopened": false,
+    "scoring_yaml_touched": false
+  },
+  "decision": "MODE2_HARDENED_BOTH_FPS_INELIGIBLE"
+}

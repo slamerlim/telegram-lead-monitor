@@ -130,3 +130,35 @@ def test_v6_does_not_alter_score():
     after = scorer.score(FO_REPAIR)
     assert before.score == after.score
     assert before.tier == after.tier
+
+
+def test_v6_vetoes_new_project_on_laborx_without_fo_template():
+    """Evidence 119c mid=60620: NEW PROJECT ON LABORX must not FO-carve."""
+    scorer = _scorer()
+    text = (
+        "🆕 NEW PROJECT ON LABORX\n\n"
+        "🟨 Trading Platform–Security Fix,Feature Completion&Deployment\n\n"
+        "💰 Budget: $800\n"
+        "I have an existing Next.js 15 trading platform. "
+        "I need an experienced developer to Fix the critical issues.\n"
+        "🔗 Apply: https://laborx.com/jobs/trading-platform-security-fix-104288\n"
+        "#LaborX"
+    )
+    v6 = evaluate_discovery(scorer, text, version=DISCOVERY_VERSION_V6)
+    assert not v6.gig_project_carve
+    assert not v6.eligible
+    assert v6.aggregator_signal or "job_aggregator" in v6.veto_categories
+
+
+def test_v6_vetoes_mexc_fomo_my_strategy_advice():
+    """Evidence 119c mid=4780480: bare 'my strategy' FOMO is not path-E ownership."""
+    scorer = _scorer()
+    text = (
+        "BTC just hit $81,000! 🚀 After such a strong move, I wouldn’t rush into "
+        "buying or selling based on FOMO. My strategy would be to hold the majority "
+        "of my BTC as a long-term position while taking a small portion of profits "
+        "to lock in gains. #MEXC #BTC"
+    )
+    v6 = evaluate_discovery(scorer, text, version=DISCOVERY_VERSION_V6)
+    assert not v6.ownership_signal
+    assert not v6.eligible

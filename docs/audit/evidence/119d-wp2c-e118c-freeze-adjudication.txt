@@ -1,0 +1,66 @@
+Evidence 119d: WP2c E118b freeze adjudication → label_reviews
+experiment_id=WP2C_E118C_LABEL_REVIEWS_ONLY
+decision=OBSERVE / WP2C_CONTAMINATION_DOMINANT
+path_freeze=path_b+path_c
+writes=label_review_samples+label_reviews only (append)
+generated_at=2026-09-27T10:17:17.028648+00:00 head=95eb42b dry_run=False
+
+=== 0. PRE-REGISTERED RULE ===
+  contamination_share≥0.85 & actionable_true=0 → CONTAMINATION_DOMINANT
+  ≥1 genuine_buyer + actionable_true → GENUINE_BUYER_SIGNAL (Mode-2 hyp only w/ auth)
+
+=== 1. ISOLATION ===
+  before human_labels=1524 AI_CONFIRMED=4 label_reviews=677
+  after  human_labels=1524 AI_CONFIRMED=4 label_reviews=677 batch_samples=16 batch_reviews=16
+  isolation_ok=True
+  skipped_prior_e118_ids=[]
+
+=== 2. ADJUDICATION SUMMARY ===
+  n=16 batch=e118c_wp2c_adjudication_2026-09-27 reviewer=audit_e118c_wp2c_adjudicator
+  by_label={'HUMAN_REVIEWED_FALSE': 16}
+  by_fp={'OFF_DOMAIN': 3, 'JOB_VACANCY': 10, 'SERVICE_AD': 1, 'SUPPORT_REQUEST': 2}
+  by_quality={'other_contamination': 3, 'marketplace_gig': 10, 'provider_vendor': 1, 'support': 2}
+  commercially_actionable={'true': 0, 'false': 16, 'null': 0}
+  genuine_buyer_project_n=0 contamination_share=1.000
+  retrieved_false_positives_n=1
+
+=== 3. PER-MESSAGE ===
+  mid=385572 HUMAN_REVIEWED_FALSE fp=OFF_DOMAIN actionable=False q=other_contamination loss=NO_PATH_MATCH class=TRADER_COMMUNITY
+    rationale: NO_PATH near-miss is trading advice / non-RFQ; not commercially actionable.
+  mid=720957 HUMAN_REVIEWED_FALSE fp=OFF_DOMAIN actionable=False q=other_contamination loss=NO_PATH_MATCH class=EXCHANGE_OFFICIAL
+    rationale: NO_PATH near-miss is trading advice / non-RFQ; not commercially actionable.
+  mid=60277 HUMAN_REVIEWED_FALSE fp=JOB_VACANCY actionable=False q=marketplace_gig loss=HARD_EXCLUDE_EARLY class=TRADER_COMMUNITY
+    rationale: Job-board / LaborX marketplace listing or aggregator digest; not organic buyer RFQ.
+  mid=60597 HUMAN_REVIEWED_FALSE fp=JOB_VACANCY actionable=False q=marketplace_gig loss=VETO_job_aggregator class=TRADER_COMMUNITY
+    rationale: Job-board / LaborX marketplace listing or aggregator digest; not organic buyer RFQ.
+  mid=8556477 HUMAN_REVIEWED_FALSE fp=JOB_VACANCY actionable=False q=marketplace_gig loss=VETO_job_aggregator class=JOB_BOARD
+    rationale: Job-board / LaborX marketplace listing or aggregator digest; not organic buyer RFQ.
+  mid=68030 HUMAN_REVIEWED_FALSE fp=SERVICE_AD actionable=False q=provider_vendor loss=VETO_service_provider class=JOB_BOARD
+    rationale: Provider self-promotion / service ad.
+  mid=203 HUMAN_REVIEWED_FALSE fp=JOB_VACANCY actionable=False q=marketplace_gig loss=VETO_job_aggregator class=JOB_BOARD
+    rationale: Job-board / LaborX marketplace listing or aggregator digest; not organic buyer RFQ.
+  mid=256 HUMAN_REVIEWED_FALSE fp=JOB_VACANCY actionable=False q=marketplace_gig loss=VETO_job_aggregator class=JOB_BOARD
+    rationale: Job-board / LaborX marketplace listing or aggregator digest; not organic buyer RFQ.
+  mid=259428 HUMAN_REVIEWED_FALSE fp=JOB_VACANCY actionable=False q=marketplace_gig loss=VETO_job_aggregator class=JOB_BOARD
+    rationale: Job-board / LaborX marketplace listing or aggregator digest; not organic buyer RFQ.
+  mid=259465 HUMAN_REVIEWED_FALSE fp=JOB_VACANCY actionable=False q=marketplace_gig loss=VETO_job_aggregator class=JOB_BOARD
+    rationale: Job-board / LaborX marketplace listing or aggregator digest; not organic buyer RFQ.
+  mid=268 HUMAN_REVIEWED_FALSE fp=JOB_VACANCY actionable=False q=marketplace_gig loss=VETO_job_aggregator class=JOB_BOARD
+    rationale: Job-board / LaborX marketplace listing or aggregator digest; not organic buyer RFQ.
+  mid=270504 HUMAN_REVIEWED_FALSE fp=SUPPORT_REQUEST actionable=False q=support loss=VETO_support_question class=JOB_BOARD
+    rationale: Veto pattern VETO_support_question; non-buyer.
+  mid=6725924 HUMAN_REVIEWED_FALSE fp=SUPPORT_REQUEST actionable=False q=support loss=VETO_support_question class=EXCHANGE_OFFICIAL
+    rationale: Veto pattern VETO_support_question; non-buyer.
+  mid=22878 HUMAN_REVIEWED_FALSE fp=JOB_VACANCY actionable=False q=marketplace_gig loss=VETO_job_aggregator class=JOB_BOARD
+    rationale: Job-board / LaborX marketplace listing or aggregator digest; not organic buyer RFQ.
+  mid=260888 HUMAN_REVIEWED_FALSE fp=JOB_VACANCY actionable=False q=marketplace_gig loss=VETO_job_aggregator class=JOB_BOARD
+    rationale: Job-board / LaborX marketplace listing or aggregator digest; not organic buyer RFQ.
+  mid=383479 HUMAN_REVIEWED_FALSE fp=OFF_DOMAIN actionable=False q=other_contamination loss=RETRIEVED class=TRADER_COMMUNITY
+    rationale: RETRIEVED without clear buyer RFQ; not commercially actionable.
+
+=== 4. BUSINESS / LOCKS ===
+  {'outreach': False, 'ml_go': False, 'threshold_loosen': False, 'discovery_semantic_change': False, 'path_b_path_c_reopened': False, 'human_labels_mutated': False, 'ai_confirmed_mutated': False}
+
+=== 5. NEXT ===
+  Remain OBSERVE. Path_b/c stay frozen. If CONTAMINATION_DOMINANT with RETRIEVED FPs: document Mode-2 hypothesis only with owner auth (eligible-on-jobboard/exchange-commentary). WP3 still needs larger genuine-positive n — do not build Optuna set from contamination rows alone. Owner may authorize sourcing experiment vs more freeze expansion.
+

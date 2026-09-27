@@ -1,0 +1,28 @@
+Evidence 119c: Mode-2 RETRIEVED FP root-cause (60620 LaborX, 4780480 MEXC FOMO)
+experiment_id=MODE2_RETRIEVED_FP_REPLAY_119C
+decision=MODE2_AUTH_REPLAY_THEN_HARDEN
+generated_at=2026-09-27T10:16:46.911327+00:00 head=95eb42b
+
+=== 0. AUTH ===
+  User approved plan+execute A/B/C including Mode-2 investigation of RETRIEVED FPs 60620/4780480 with minimal defensive hardening if falsified
+  scope=['replay evidence 119c', 'LaborX listing veto when not carve (no path_b/c reopen)', "narrow path-E ownership away from bare 'my strategy' advice"]
+
+=== 1. ISOLATION ===
+  human_labels=1524 AI_CONFIRMED=4 isolation_ok=True
+
+=== 2. REPLAY SUMMARY ===
+  mid=60620 v4_elig=False v6_elig=False trigger=None paths=[] loss=VETO_job_aggregator own=False agg=True carve=False vetoes=['job_aggregator', 'corporate_employment']
+    note: CURRENT CODE already vetoes via job_aggregator — freeze RETRIEVED may be stale or race; still harden listing veto for defense-in-depth
+  mid=4780480 v4_elig=False v6_elig=False trigger=None paths=[] loss=NO_PATH_MATCH own=False agg=False carve=False vetoes=[]
+    note: CURRENT CODE already ineligible — still narrow path-E ownership away from bare strategy advice
+
+=== 3. NEXT ===
+  Apply minimal discovery.py hardening under mode2_auth; run pytest tests/test_discovery_laborx_veto_carve_v6.py; rebuild analyzer.
+
+=== 4. POST-HARDEN REPLAY (after discovery.py patch) ===
+  mid=60620 v6_elig=False loss=VETO_job_aggregator carve=False (NEW PROJECT no longer FO-listed for carve)
+  mid=4780480 v6_elig=False loss=NO_PATH_MATCH ownership=False (bare 'my strategy' not ownership)
+  pytest: 43 passed (laborx carve + job_veto suite)
+  path_b/c untouched; scoring.yaml untouched
+  decision=MODE2_HARDENED_BOTH_FPS_INELIGIBLE
+

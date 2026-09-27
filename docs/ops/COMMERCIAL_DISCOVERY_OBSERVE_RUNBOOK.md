@@ -87,7 +87,10 @@ Note: since-enable aggregate still includes 6 historical CONTAMINATED rows; prim
 - **RESIDUAL_SCARCITY** — Evidence 117: 0 NEW / 7649 scored / ~4.1h post–path_b (rate 0 vs UB 0.018/h; expected≈0.07). Post-E117 traffic continues without NEW (spot-check may show larger scored denom).
 - **UPSTREAM_LOSS@G3 (offline)** — Evidence 118: messages-only stratified sample (n=8788 / ~360d) found **0** disc_v6-eligible (`RETRIEVED=0`); dominant loss `NO_PATH_MATCH` (8235); est near-miss buyer-RX ≈3031; freezes under `docs/audit/evidence/118-offline-freeze-samples.json`. Does **not** authorize path reopen.
 - **WP2_E118_ADJUDICATED_CONTAMINATION_DOMINANT** — Evidence 119: all 8 E118 freezes → `HUMAN_REVIEWED_FALSE` / `commercially_actionable=false` via batch `e118_wp2_adjudication_2026-09-27`. Isolation 1524/4.
-- **WP2B_CONTAMINATION_DOMINANT** — Evidence 118b/119b: expanded freezes (n=16 new IDs; stride=89 offsets=11,23,41) → 16/16 FALSE / actionable=false (12×JOB_VACANCY, 2×OFF_DOMAIN, 1×SERVICE_AD, 1×MARKETING_BROADCAST); batch `e118b_wp2b_adjudication_2026-09-27`. Includes **2 disc_v6 RETRIEVED FPs** (LaborX job mid=60620; MEXC FOMO mid=4780480). Combined WP2+WP2b = 24/24 contamination, 0 genuine buyer. Path reopen still unauthorized; WP3 blocked pending positives / owner sourcing decision.
+- **WP2B_CONTAMINATION_DOMINANT** — Evidence 118b/119b: expanded freezes (n=16 new IDs; stride=89 offsets=11,23,41) → 16/16 FALSE; batch `e118b_wp2b_adjudication_2026-09-27`. Includes **2 disc_v6 RETRIEVED FPs** (LaborX mid=60620; MEXC FOMO mid=4780480) — hardened in Evidence 119c.
+- **WP2C_CONTAMINATION_DOMINANT** — Evidence 118c/119d: further freezes (n=16; stride=83 offsets=7,19,37,53; exclude all 24 prior) → 16/16 FALSE; batch `e118c_wp2c_adjudication_2026-09-27`. Combined WP2+WP2b+WP2c = 40/40 contamination, 0 genuine buyer.
+- **MODE2_RETRIEVED_FP_HARDENED** — Evidence 119c: path-E FPs fixed (NEW PROJECT LaborX no FO-carve; bare `my strategy` not ownership). path_b/c untouched.
+- **SOURCING_T0_APPLIED** — Evidence 121: Phase A disabled 4 high-volume EXCHANGE_OFFICIAL; Phase B added 5 algo/dev rooms + days=14 scans; cursors unchanged.
 - **EXPECTED_IDLE** — 900s scheduler waves (Evidence 114)
 - **INTENTIONAL_SHADOW_OFF** — episode→AI handoff gated (Evidence 111)
 - **Invite-expired** — community 132 NOISE (Evidence 115)
@@ -123,4 +126,4 @@ Master continuation prompt: `docs/ops/MASTER_CONTINUATION_PROMPT_COMMERCIAL_DISC
 
 ## Next hypothesis
 
-Live resume only on **(A)** first NEW disc_v6 (quality-classify; do not reopen path_b/c), **(B)** pipeline/Redis/worker/query failure, or **(C)** isolation drift. Offline: **WP2b DONE** (E118b/E119b) — do not re-adjudicate `e118_wp2_*` / `e118b_wp2b_*`. Owner decision: sourcing experiment vs further freeze expand; optional Mode-2 auth for RETRIEVED-FP hypothesis. **WP3** blocked until genuine-positive adjudicated n. Do not busy remesure. Do not enable shadow / reopen paths without auth.
+Live resume only on **(A)** first NEW disc_v6 (quality-classify; do not reopen path_b/c), **(B)** pipeline/Redis/worker/query failure, or **(C)** isolation drift. Offline: WP2/WP2b/WP2c DONE — do not re-adjudicate `e118_*` batches. **Sourcing T0 active (E121)** — watch NEW-since-T0. Mode-2 FP harden DONE (E119c). **WP3** blocked until genuine-positive adjudicated n. Do not busy remesure. Do not enable shadow / reopen paths without auth.

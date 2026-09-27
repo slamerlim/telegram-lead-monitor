@@ -1,0 +1,226 @@
+{
+  "evidence_id": "121",
+  "experiment_id": "SOURCING_EXPERIMENT_T0_121",
+  "generated_at": "2026-09-27T10:16:46.876011+00:00",
+  "t0": "2026-09-27T10:16:46.876011+00:00",
+  "head": "95eb42b",
+  "dry_run": false,
+  "owner_auth": {
+    "authorized_by": "owner",
+    "auth_record": "User approved plan+execute A/B/C including Option B sourcing experiment (communities lever). Supersedes E96/E97 default 'do not expand' for this bounded Phase A/B only. NOT Evidence-105 HIGH-tier bridge.",
+    "research_agent": "24b81832",
+    "authorized_at": "2026-09-27T10:16:46.876011+00:00",
+    "lever": "communities.enabled + insert communities + scan_runs days=14",
+    "forbidden": [
+      "discovery.py path_b/c edits",
+      "scoring.yaml threshold loosen",
+      "E105 Option B bridge",
+      "last_message_id wipe",
+      "docker compose down -v",
+      "human_labels mutation"
+    ]
+  },
+  "pre_registered": {
+    "hypothesis": "Disabling top EXCHANGE_OFFICIAL volume and adding bounded E95-style algo/dev rooms increases non-exchange message mix and near-miss RFQ presence without raising disc_v6 NEW contamination vs WP2 pattern.",
+    "decision_rule": "Observe \u22654h or first NEW disc_v6 since T0; quality-classify any NEW; do not reopen path_b/c from sourcing alone.",
+    "phase_a": [
+      "BitgetENOfficial",
+      "OKXOfficial_English",
+      "WeexGlobal_Group",
+      "BybitEnglish"
+    ],
+    "phase_b_candidates": [
+      "@Freqtrade",
+      "@hummingbot",
+      "@NautilusTrader",
+      "@backtrader_community",
+      "@JesseTrade"
+    ]
+  },
+  "isolation_before": {
+    "human_labels": 1524,
+    "ai_confirmed": 4,
+    "messages": 8677171,
+    "message_scores": 180740,
+    "disc_v6_new": 0
+  },
+  "isolation_after": {
+    "human_labels": 1524,
+    "ai_confirmed": 4,
+    "messages": 8677171,
+    "message_scores": 180740,
+    "disc_v6_new": 0
+  },
+  "isolation_ok": true,
+  "metrics_since_t0": {
+    "messages_since_t0": 0,
+    "scores_since_t0": 0,
+    "disc_v6_since_t0": 0
+  },
+  "phase_a_disable": [
+    {
+      "id": 64,
+      "username": "BitgetENOfficial",
+      "last_message_id": 10480032,
+      "enabled": false
+    },
+    {
+      "id": 59,
+      "username": "OKXOfficial_English",
+      "last_message_id": 12431466,
+      "enabled": false
+    },
+    {
+      "id": 96,
+      "username": "WeexGlobal_Group",
+      "last_message_id": 4086143,
+      "enabled": false
+    },
+    {
+      "id": 57,
+      "username": "BybitEnglish",
+      "last_message_id": 4748841,
+      "enabled": false
+    }
+  ],
+  "phase_b_plan": [
+    {
+      "ref": "@Freqtrade",
+      "action": "add",
+      "username": "Freqtrade"
+    },
+    {
+      "ref": "@hummingbot",
+      "action": "add",
+      "username": "hummingbot"
+    },
+    {
+      "ref": "@NautilusTrader",
+      "action": "add",
+      "username": "NautilusTrader"
+    },
+    {
+      "ref": "@backtrader_community",
+      "action": "add",
+      "username": "backtrader_community"
+    },
+    {
+      "ref": "@JesseTrade",
+      "action": "add",
+      "username": "JesseTrade"
+    }
+  ],
+  "phase_b_added": [
+    {
+      "id": 137,
+      "telegram_ref": "@Freqtrade",
+      "username": "Freqtrade"
+    },
+    {
+      "id": 138,
+      "telegram_ref": "@hummingbot",
+      "username": "hummingbot"
+    },
+    {
+      "id": 139,
+      "telegram_ref": "@NautilusTrader",
+      "username": "NautilusTrader"
+    },
+    {
+      "id": 140,
+      "telegram_ref": "@backtrader_community",
+      "username": "backtrader_community"
+    },
+    {
+      "id": 141,
+      "telegram_ref": "@JesseTrade",
+      "username": "JesseTrade"
+    }
+  ],
+  "scans_new_ids_only": [
+    {
+      "community_id": 137,
+      "run_id": 66605,
+      "days": 14,
+      "status": "queued"
+    },
+    {
+      "community_id": 138,
+      "run_id": 66606,
+      "days": 14,
+      "status": "queued"
+    },
+    {
+      "community_id": 139,
+      "run_id": 66607,
+      "days": 14,
+      "status": "queued"
+    },
+    {
+      "community_id": 140,
+      "run_id": 66608,
+      "days": 14,
+      "status": "queued"
+    },
+    {
+      "community_id": 141,
+      "run_id": 66609,
+      "days": 14,
+      "status": "queued"
+    }
+  ],
+  "cursor_checks": [
+    {
+      "id": 64,
+      "username": "BitgetENOfficial",
+      "last_message_id_before": 10480032,
+      "last_message_id_after": 10480032,
+      "unchanged": true,
+      "enabled_after": false
+    },
+    {
+      "id": 59,
+      "username": "OKXOfficial_English",
+      "last_message_id_before": 12431466,
+      "last_message_id_after": 12431466,
+      "unchanged": true,
+      "enabled_after": false
+    },
+    {
+      "id": 96,
+      "username": "WeexGlobal_Group",
+      "last_message_id_before": 4086143,
+      "last_message_id_after": 4086143,
+      "unchanged": true,
+      "enabled_after": false
+    },
+    {
+      "id": 57,
+      "username": "BybitEnglish",
+      "last_message_id_before": 4748841,
+      "last_message_id_after": 4748841,
+      "unchanged": true,
+      "enabled_after": false
+    }
+  ],
+  "cursors_unchanged": true,
+  "business": {
+    "outreach": false,
+    "ml_go": false,
+    "threshold_loosen": false,
+    "path_b_path_c_reopened": false,
+    "discovery_semantic_change": false,
+    "e105_bridge": false,
+    "human_labels_mutated": false,
+    "scoring_yaml_touched": false,
+    "code_deploy_required": false
+  },
+  "services": [
+    "scheduler",
+    "collector",
+    "api(lockdown\u2192postgres lever)",
+    "postgres",
+    "redis"
+  ],
+  "next": "Watch NEW-since-T0 messages/scores/disc_v6; on Trigger A freeze+classify; rollback Phase A by re-enabling usernames if intake harm observed."
+}

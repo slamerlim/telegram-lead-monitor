@@ -1,0 +1,37 @@
+Evidence 118c: Offline freeze expansion (WP2c / Mode 1 read-only)
+experiment_id=OFFLINE_FREEZE_EXPAND_118C
+decision=OBSERVE / FREEZE_EXPANDED_FOR_WP2C
+path_freeze=path_b+path_c
+shadow=OFF ml_training_enabled=false
+code_change=read-only expand script only (no discovery semantics)
+generated_at=2026-09-27T10:15:26.064086+00:00 head=95eb42b
+runtime_sec=43.24 read_only=true
+
+=== 0. PRE-REGISTERED ===
+  hypothesis=E118 freeze n=8 was contamination-dominant (job-board/vendor). A different messages-only sample with preferential non-JOB_BOARD / non-EXCHANGE_OFFICIAL selection may surface genuine buyer near-misses or confirm contamination dominance.
+  decision_rule=After adjudication of NEW freeze IDs: if genuine_buyer_project share <15% AND commercially_actionable true=0 → CONTAMINATION_DOMINANT / lean sourcing discussion; if ≥1 clear genuine buyer → document Mode-2 hypothesis (auth still required). Do not reopen path_b/c from freezes alone.
+  selection=Prefer community_class NOT IN (JOB_BOARD, EXCHANGE_OFFICIAL); prefer NO_PATH_MATCH near-miss; exclude ALL 24 prior WP2+WP2b freeze message_ids; stride=83 offsets=[7, 19, 37, 53] (≠ E118 97/3 and ≠ E118b 89/11,23,41).
+
+=== 1. ISOLATION ===
+  human_labels=1524 AI_CONFIRMED=4 isolation_ok=True
+
+=== 2. SAMPLE ===
+  n_sampled=36172 unique=36171 stride=83 offsets=[7, 19, 37, 53] per_bucket=2500
+  bucket_sampled={'0_7d@off7': 1509, '8_30d@off7': 2500, '31_90d@off7': 2500, '91d_plus@off7': 2500, '0_7d@off19': 1561, '8_30d@off19': 2500, '31_90d@off19': 2500, '91d_plus@off19': 2500, '0_7d@off37': 1551, '8_30d@off37': 2500, '31_90d@off37': 2500, '91d_plus@off37': 2500, '0_7d@off53': 1551, '8_30d@off53': 2500, '31_90d@off53': 2500, '91d_plus@off53': 2500}
+  skipped_excluded_prior=1 excluded_ids=[112, 189, 197, 219, 278, 290, 294, 308, 367, 391, 397, 22884, 22895, 22896, 22914, 60620, 60628, 61451, 73917, 389386, 3595211, 4780480, 7908373, 8568013]
+  near_miss_rx_hits=8
+  first_loss_hist={'VETO_support_question': 1612, 'NO_PATH_MATCH': 33719, 'HARD_EXCLUDE_EARLY': 227, 'VETO_service_provider': 481, 'VETO_corporate_employment': 39, 'VETO_job_aggregator': 58, 'VETO_generic_recruiter': 9, 'VETO_news_digest': 19, 'VETO_job_seeker': 6, 'RETRIEVED': 1}
+  community_hist={'EXCHANGE_OFFICIAL': 32680, 'OTHER': 3133, 'JOB_BOARD': 248, 'DEV_COMMUNITY': 22, 'TRADER_COMMUNITY': 88}
+
+=== 3. FREEZE SELECTION ===
+  pools nopath=2 veto=13 eligible=1
+  selected nopath=2 (preferred_community=1)
+  selected veto=13 (preferred_community=2)
+  selected eligible_retrieved=1 (preferred_community=1)
+
+=== 4. BUSINESS / LOCKS ===
+  {'outreach': False, 'ml_go': False, 'threshold_loosen': False, 'discovery_semantic_change': False, 'path_b_path_c_reopened': False}
+
+=== 5. NEXT ===
+  WP2c adjudicate NEW freeze IDs into label_reviews only (batch e118c_wp2c_* → Evidence 119d).
+

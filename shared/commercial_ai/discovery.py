@@ -164,8 +164,10 @@ _DIRECT_REQUEST_V5_RX = re.compile(
 )
 _OWNERSHIP_RX = re.compile(
     r"(?:"
-    r"\b(?:my|our)\s+(?:bot|strategy|trading\s+system|system|exchange\s+integration|api)\b|"
-    r"\b(?:existing|current|broken)\s+(?:bot|strategy|system|infrastructure)\b|"
+    # Bare "my strategy" (trading advice / FOMO) is NOT ownership — Evidence 119c mid=4780480.
+    # Require trading-strategy / bot / system / api / project assets.
+    r"\b(?:my|our)\s+(?:bot|trading\s+strategy|trading\s+system|system|exchange\s+integration|api|project)\b|"
+    r"\b(?:existing|current|broken)\s+(?:bot|strategy|system|infrastructure|project)\b|"
     r"\bмо[яй]\s+(?:бот|стратеги\w*|систем\w*)\b|"
     r"\bнаш[ае]?\s+(?:бот|стратеги\w*|систем\w*)\b|"
     r"\bтекущ\w*\s+бот\b"
@@ -282,12 +284,14 @@ _GIG_MARKETPLACE_RX = re.compile(
     re.IGNORECASE,
 )
 
-# Narrow FO listing templates eligible for disc_v6 project carve (not bare laborx / GIG OF THE DAY).
+# Narrow FO listing templates eligible for disc_v6 project carve.
+# Keep "new project on laborx" in _GIG_MARKETPLACE_RX (veto) but NOT here —
+# Evidence 119c mid=60620: NEW PROJECT + repair/budget wrongly carved path E.
+# Carve remains 🌟/Freelance Opportunity templates only (E99 FO+repair+budget).
 _FO_LISTING_RX = re.compile(
     r"(?:"
     r"🌟\s*freelance\s+opportunity\b|"
-    r"\bfreelance\s+opportunity\s*:|"
-    r"\bnew\s+project\s+on\s+laborx\b"
+    r"\bfreelance\s+opportunity\s*:"
     r")",
     re.IGNORECASE,
 )
