@@ -4,7 +4,7 @@
 ╔══════════════════════════════════════════════════════════════════════════════╗
 ║ STATUS (2026-09-27) — AUTHORITATIVE BANNER — PASTE-READY                       ║
 ║                                                                                ║
-║ HEAD            = 2b57e28 (OBSERVE_OK heartbeats; re-check after E125 push)     ║
+║ HEAD            = 5857028 (Evidence 125 mid-window T0; heartbeats from 2b57e28) ║
 ║ MODE            = CONTINUOUS OBSERVE + sourcing T0 active (Evidence 121)       ║
 ║ LIVE CLASS      = RESIDUAL_SCARCITY (disc_v6 NEW=0) + mid-window E125 intake   ║
 ║ MID-WINDOW E125 = msgs/scores/disc_v6 since T0 = 2651/2651/0 (~3.83h)          ║
@@ -71,7 +71,7 @@ deterministic discovery → stable evidence datasets → **Optuna** (rule/thresh
 ```text
 MODE=CONTINUOUS OBSERVE + sourcing T0 (Evidence 121)
 REPO=/home/slamer-lim/telegram-lead-monitor
-HEAD=2b57e28 (re-check: git rev-parse --short HEAD)
+HEAD=5857028 (re-check: git rev-parse --short HEAD)
 commercial_discovery_enabled=true
 commercial_discovery_version=disc_v6
 cap=120/hour
@@ -131,7 +131,7 @@ NEXT=(1) owner auth → apply E124 Steps A–F  OR  (2) Trigger A/B/C from durab
 | AI roster | `config/ai_validators.yaml` | modes A/B/C/D |
 | Gate logic | `shared/validation/gate.py` | `ml_training_enabled` hard-false; ≥100 msgs / ≥30 TRUE |
 
-**On-disk reconcile (HEAD `2b57e28` pre-E125-docs-push):** Evidence 117–125 artifacts and OBSERVE/WP scripts **exist** under `docs/audit/evidence/` and `scripts/` (including `offline_ml_dataset_readiness_inventory.py`). Plan ABC exists at `docs/ops/PLAN_ABC_WP2C_SOURCING_MODE2_2026-09-27.md`. If a checkout lacks them, restore from `origin/main` before inventing replacements.
+**On-disk reconcile (HEAD `5857028`):** Evidence 117–125 artifacts and OBSERVE/WP scripts **exist** under `docs/audit/evidence/` and `scripts/` (including `offline_ml_dataset_readiness_inventory.py`). Plan ABC exists at `docs/ops/PLAN_ABC_WP2C_SOURCING_MODE2_2026-09-27.md`. If a checkout lacks them, restore from `origin/main` before inventing replacements.
 
 **OBSERVE / offline tooling (shipped)**
 
