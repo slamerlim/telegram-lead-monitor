@@ -4,9 +4,11 @@
 ╔══════════════════════════════════════════════════════════════════════════════╗
 ║ STATUS (2026-09-27) — AUTHORITATIVE BANNER — PASTE-READY                       ║
 ║                                                                                ║
-║ HEAD            = dacdfc6 (E121 T0 counters in observe_abc_watch; re-check)     ║
+║ HEAD            = 2b57e28 (OBSERVE_OK heartbeats; re-check after E125 push)     ║
 ║ MODE            = CONTINUOUS OBSERVE + sourcing T0 active (Evidence 121)       ║
-║ LIVE CLASS      = RESIDUAL_SCARCITY (Evidence 117; NEW disc_v6 since path_b=0) ║
+║ LIVE CLASS      = RESIDUAL_SCARCITY (disc_v6 NEW=0) + mid-window E125 intake   ║
+║ MID-WINDOW E125 = msgs/scores/disc_v6 since T0 = 2651/2651/0 (~3.83h)          ║
+║                 = SOURCING_T0_INTAKE_WITHOUT_DISC_V6 (vs E122 572/572/0 @0.74h) ║
 ║ OFFLINE CLASS   = UPSTREAM_LOSS@G3 + WP2/WP2b/WP2c CONTAMINATION_DOMINANT      ║
 ║ WP1             = DONE  (Evidence 118)                                         ║
 ║ WP2             = DONE  (Evidence 119; 8/8 FALSE; batch e118_wp2_*)             ║
@@ -14,15 +16,15 @@
 ║ WP2c            = DONE  (E118c + Evidence 119d; 16/16 FALSE; e118c_wp2c_*)      ║
 ║ COMBINED FREEZE = 40/40 FALSE — 0 genuine_buyer_project (WP3 BLOCKED)          ║
 ║ Mode-2 FPs      = DONE  (Evidence 119c; 60620+4780480 hardened; path_b/c intact)║
-║ Sourcing T0     = APPLIED (E121) + OBSERVE T0 snap (E122)                      ║
-║ Phase B intake  = GAP (E123; 137–141 msgs=0)                                   ║
+║ Sourcing T0     = APPLIED (E121) + E122 early snap + E125 mid-window snap      ║
+║ Phase B intake  = GAP (E123; 137–141 msgs=0; E125 confirms still 0)            ║
 ║ E124 remediate  = OWNER_AUTH_REQUIRED proposal — NOT applied (Steps A–F idle)  ║
-║ Watcher         = INTERVAL_SEC=5400 observe_abc_watch; exit 10 on A/B/C only   ║
+║ Watcher         = PID≈794476 INTERVAL_SEC=5400; heartbeats HEAD 2b57e28        ║
 ║ Watch emits     = msgs_since_t0 / scores_since_t0 / disc_v6_since_t0 (+ A/B/C) ║
 ║ WP3 / ML ladder = BLOCKED until genuine-positive adjudicated set (S3→S9)       ║
 ║ Optuna/LGBM/SHAP= NOT in deps/scripts; Evidence 44 ML NO-GO; M1–M10 fail       ║
 ║ AI gates        = CLOSED (~94 validated / 0 VALIDATED_TRUE; need ≥100 / ≥30)   ║
-║ path_b / path_c = FROZEN (E109 / E108) — no reopen without owner auth          ║
+║ path_b / path_c = FROZEN (E109 / E108) — mid-window intake ≠ path reopen auth  ║
 ║ shadow / ML     = OFF / ml_training_enabled=false (hard)                       ║
 ║ isolation expect= human_labels=1524 / AI_CONFIRMED=4                           ║
 ║                                                                                ║
@@ -37,7 +39,7 @@
 ╚══════════════════════════════════════════════════════════════════════════════╝
 ```
 
-**Created / last rewritten:** 2026-09-27 (post–E122/E123/E124; OBSERVE wait for watcher or owner E124 auth)  
+**Created / last rewritten:** 2026-09-27 (post–E125 mid-window T0 snap; OBSERVE wait for watcher or owner E124 auth)  
 **Purpose:** Pasteable operating prompt for the next agent (whole file below the line).  
 **Repo:** `/home/slamer-lim/telegram-lead-monitor` (NOT Quantum-Trading-System)  
 **Sibling research injected:** standing-state `882d1461`, ML/SDK `04ef55a9`, ops/DoD `4b8d04a6`.
@@ -69,7 +71,7 @@ deterministic discovery → stable evidence datasets → **Optuna** (rule/thresh
 ```text
 MODE=CONTINUOUS OBSERVE + sourcing T0 (Evidence 121)
 REPO=/home/slamer-lim/telegram-lead-monitor
-HEAD=dacdfc6 (re-check: git rev-parse --short HEAD)
+HEAD=2b57e28 (re-check: git rev-parse --short HEAD)
 commercial_discovery_enabled=true
 commercial_discovery_version=disc_v6
 cap=120/hour
@@ -77,7 +79,7 @@ COMMERCIAL_EPISODE_SHADOW_ENABLED=false
 path_b=FROZEN (Evidence 109, deploy 2026-09-26T06:53:16Z)
 path_c=FROZEN (Evidence 108)
 ml_training_enabled=false (hard; shared/validation/gate.py)
-LIVE_CLASSIFICATION=RESIDUAL_SCARCITY (Evidence 117)
+LIVE_CLASSIFICATION=RESIDUAL_SCARCITY + SOURCING_T0_INTAKE_WITHOUT_DISC_V6 (Evidence 125)
 OFFLINE_CLASSIFICATION=UPSTREAM_LOSS@G3 + WP2/WP2b/WP2c_CONTAMINATION_DOMINANT
 human_labels=1524
 AI_CONFIRMED=4
@@ -87,10 +89,10 @@ WP2b=DONE → Evidence 118b + 119b (16/16 FALSE; batch e118b_wp2b_adjudication_2
 WP2c=DONE → Evidence 118c + 119d (16/16 FALSE; batch e118c_wp2c_adjudication_2026-09-27; excluded all 24 prior)
 COMBINED=40/40 FALSE; genuine_buyer_project=0 → WP3 BLOCKED
 Mode2_FPs=DONE → Evidence 119c (60620 LaborX + 4780480 MEXC FOMO hardened; P0 ownership revert)
-Sourcing=T0 APPLIED → Evidence 121; T0 snapshot → Evidence 122
-PhaseB_intake=GAP → Evidence 123 (137–141 msgs=0; resolve fail + empty completed)
+Sourcing=T0 APPLIED → Evidence 121; early snap E122 (572/572/0 @0.74h); mid-window E125 (2651/2651/0 @3.83h)
+PhaseB_intake=GAP → Evidence 123 (137–141 msgs=0); E125 confirms still 0
 E124=OWNER_AUTH_REQUIRED remediation proposal (Steps A–F) — NOT applied
-Watcher=INTERVAL_SEC=5400 ./scripts/observe_abc_watch.sh (confirm with ps); wake exit 10
+Watcher=PID≈794476 INTERVAL_SEC=5400 ./scripts/observe_abc_watch.sh; heartbeats HEAD 2b57e28; wake exit 10
 Watch_emits=msgs_since_t0 / scores_since_t0 / disc_v6_since_t0 (+ A/B/C fields)
 AI_GATES=CLOSED (~94 msgs / 0 VALIDATED_TRUE; need ≥100 / ≥30)
 Optuna/LGBM/SHAP=NOT implemented (no deps/scripts); Evidence 44 ML NO-GO; M1–M10 fail
@@ -98,7 +100,7 @@ AGENT_RULE=while OBSERVE_OK and no owner auth: do NOT invent timed remesure wake
 NEXT=(1) owner auth → apply E124 Steps A–F  OR  (2) Trigger A/B/C from durable watcher
 ```
 
-### Evidence headline table (117–124)
+### Evidence headline table (117–125)
 
 | ID | Path | Headline |
 |----|------|----------|
@@ -117,6 +119,7 @@ NEXT=(1) owner auth → apply E124 Steps A–F  OR  (2) Trigger A/B/C from durab
 | E122 | `docs/audit/evidence/122-observe-t0-snapshot.*` | OBSERVE_OK T0 snapshot; isolation 1524/4; disc_v6 NEW=0; Phase B msgs_since_t0=0 |
 | E123 | `docs/audit/evidence/123-sourcing-t0-phase-b-intake.*` | Phase B intake gap: 137–141=0 msgs; resolve failures + empty completed scans; Mode-1 only |
 | E124 | `docs/audit/evidence/124-sourcing-phase-b-remediation-proposal.*` | Phase B remediation **PROPOSAL**; `OWNER_AUTH_REQUIRED`; Steps A–F **not applied** |
+| E125 | `docs/audit/evidence/125-observe-t0-midwindow.*` | Mid-window T0: **2651/2651/0** @~3.83h vs E122 572/572/0; **SOURCING_T0_INTAKE_WITHOUT_DISC_V6**; Phase B still 0; no path reopen |
 | E44 | `docs/audit/evidence/44-ml-nogo-attestation.txt` | Explicit ML NO-GO for LGBM/Optuna/SHAP training |
 | Plan ABC | `docs/ops/PLAN_ABC_WP2C_SOURCING_MODE2_2026-09-27.md` | Executed A/B/C plan (WP2c + sourcing + Mode-2) |
 | Runbook | `docs/ops/COMMERCIAL_DISCOVERY_OBSERVE_RUNBOOK.md` | A/B/C triggers + cheap watch |
@@ -128,7 +131,7 @@ NEXT=(1) owner auth → apply E124 Steps A–F  OR  (2) Trigger A/B/C from durab
 | AI roster | `config/ai_validators.yaml` | modes A/B/C/D |
 | Gate logic | `shared/validation/gate.py` | `ml_training_enabled` hard-false; ≥100 msgs / ≥30 TRUE |
 
-**On-disk reconcile (HEAD `dacdfc6`):** Evidence 117–124 artifacts and OBSERVE/WP scripts **exist** under `docs/audit/evidence/` and `scripts/` (including `offline_ml_dataset_readiness_inventory.py`). Plan ABC exists at `docs/ops/PLAN_ABC_WP2C_SOURCING_MODE2_2026-09-27.md`. If a checkout lacks them, restore from `origin/main` before inventing replacements.
+**On-disk reconcile (HEAD `2b57e28` pre-E125-docs-push):** Evidence 117–125 artifacts and OBSERVE/WP scripts **exist** under `docs/audit/evidence/` and `scripts/` (including `offline_ml_dataset_readiness_inventory.py`). Plan ABC exists at `docs/ops/PLAN_ABC_WP2C_SOURCING_MODE2_2026-09-27.md`. If a checkout lacks them, restore from `origin/main` before inventing replacements.
 
 **OBSERVE / offline tooling (shipped)**
 

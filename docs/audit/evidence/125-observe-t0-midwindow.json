@@ -1,0 +1,200 @@
+{
+  "evidence_id": "125",
+  "title": "OBSERVE mid-window T0 snapshot (vs Evidence 122)",
+  "experiment_id": "SOURCING_T0_INTAKE_WITHOUT_DISC_V6_125",
+  "generated_at": "2026-09-27T14:06:50+00:00",
+  "head": "2b57e28",
+  "mode": "CONTINUOUS_OBSERVE",
+  "classification": "SOURCING_T0_INTAKE_WITHOUT_DISC_V6",
+  "live_class_residual": "RESIDUAL_SCARCITY",
+  "triggers": [],
+  "t0": "2026-09-27T10:16:46.876011+00:00",
+  "t0_source": "docs/audit/evidence/121-sourcing-experiment-t0.json",
+  "path_b_at": "2026-09-26T06:53:16Z",
+  "hours_since_t0": 3.8344,
+  "compare_e122": {
+    "evidence_id": "122",
+    "at": "2026-09-27T11:01:01.213833+00:00",
+    "hours_since_t0": 0.7373,
+    "messages_since_t0": 572,
+    "scores_since_t0": 572,
+    "disc_v6_since_t0": 0,
+    "delta_messages": 2079,
+    "delta_scores": 2079,
+    "delta_disc_v6": 0
+  },
+  "observe_once": {
+    "at": "2026-09-27T14:06:50+00:00",
+    "new": 0,
+    "hl": 1524,
+    "ac": 4,
+    "msg_1h": 642,
+    "score_1h": 642,
+    "msgs_since_t0": 2651,
+    "scores_since_t0": 2651,
+    "disc_v6_since_t0": 0,
+    "t0": "2026-09-27T10:16:46Z",
+    "xlen": 6,
+    "pending": 0,
+    "lag": 0,
+    "consumers": 1,
+    "exit": 0
+  },
+  "health": {
+    "status": "ok",
+    "postgres": "ok",
+    "redis": "ok"
+  },
+  "validation_gates": {
+    "ai_validation_gate_ready": false,
+    "ai_validated_messages": 94,
+    "ai_validated_true": 0,
+    "ai_validated_false": 94,
+    "ml_training_enabled": false,
+    "ml_gate_independence_ready": false,
+    "closed_reasons": [
+      "ai_validated_messages<100",
+      "ai_validated_true<30"
+    ]
+  },
+  "isolation": {
+    "human_labels": 1524,
+    "AI_CONFIRMED": 4,
+    "expect": {
+      "human_labels": 1524,
+      "AI_CONFIRMED": 4
+    },
+    "ok": true
+  },
+  "metrics_since_t0": {
+    "messages_since_t0": 2651,
+    "scores_since_t0": 2651,
+    "disc_v6_since_t0": 0,
+    "approx_msg_rate_per_h": 691.4,
+    "approx_score_rate_per_h": 691.4,
+    "approx_disc_v6_rate_per_h": 0.0
+  },
+  "disc_v6": {
+    "all_historical": 6,
+    "new_since_path_b": 0,
+    "new_since_t0": 0
+  },
+  "totals": {
+    "messages": 8679822,
+    "message_scores": 183391
+  },
+  "durable_watcher": {
+    "alive": true,
+    "pid": 794476,
+    "started_approx": "2026-09-27T14:05:38Z",
+    "interval_sec": 5400,
+    "head_shipped_heartbeats": "2b57e28",
+    "nohup_log": "logs/observe_abc_watch.nohup.log",
+    "heartbeat_sample": {
+      "at": "2026-09-27T14:05:40+00:00",
+      "msgs_since_t0": 2651,
+      "scores_since_t0": 2651,
+      "disc_v6_since_t0": 0
+    }
+  },
+  "sourcing_t0_state": {
+    "phase_a_disabled_still": [
+      {
+        "id": 57,
+        "username": "BybitEnglish",
+        "enabled": false,
+        "last_message_id": 4748841
+      },
+      {
+        "id": 59,
+        "username": "OKXOfficial_English",
+        "enabled": false,
+        "last_message_id": 12431466
+      },
+      {
+        "id": 64,
+        "username": "BitgetENOfficial",
+        "enabled": false,
+        "last_message_id": 10480032
+      },
+      {
+        "id": 96,
+        "username": "WeexGlobal_Group",
+        "enabled": false,
+        "last_message_id": 4086143
+      }
+    ],
+    "phase_b_msgs_since_t0": {
+      "Freqtrade": 0,
+      "Hummingbot": 0,
+      "NautilusTrader": 0,
+      "backtrader_community": 0,
+      "jessetrade": 0
+    },
+    "phase_b_rooms": [
+      {
+        "id": 137,
+        "username": "Freqtrade",
+        "enabled": true,
+        "msg_total": 0,
+        "msg_since_t0": 0
+      },
+      {
+        "id": 138,
+        "username": "Hummingbot",
+        "enabled": true,
+        "msg_total": 0,
+        "msg_since_t0": 0
+      },
+      {
+        "id": 139,
+        "username": "NautilusTrader",
+        "enabled": true,
+        "msg_total": 0,
+        "msg_since_t0": 0
+      },
+      {
+        "id": 140,
+        "username": "backtrader_community",
+        "enabled": true,
+        "msg_total": 0,
+        "msg_since_t0": 0
+      },
+      {
+        "id": 141,
+        "username": "jessetrade",
+        "enabled": true,
+        "msg_total": 0,
+        "msg_since_t0": 0
+      }
+    ]
+  },
+  "redis": {
+    "telegram:commercial_discovery": {
+      "consumers": 1,
+      "pending": 0,
+      "lag": 0,
+      "xlen": 6
+    }
+  },
+  "authorizations": {
+    "path_b_path_c_reopen": false,
+    "e124_applied": false,
+    "e124_status": "OWNER_AUTH_REQUIRED",
+    "timed_remeasure_invented": false,
+    "update_goal_complete": false,
+    "ml_enable": false,
+    "human_labels_mutated": false,
+    "scoring_yaml_loosen": false
+  },
+  "decision": "OBSERVE_OK — mid-window SOURCING_T0_INTAKE_WITHOUT_DISC_V6; disc_v6 still RESIDUAL_SCARCITY; does NOT authorize path reopen; E124 not applied",
+  "next": "Continue durable watch; Trigger A quality-classify on first NEW disc_v6 (no path reopen); OR owner auth to apply E124 Steps A–F",
+  "locks": {
+    "path_b_path_c": "FROZEN",
+    "shadow": "OFF",
+    "ml_training_enabled": false,
+    "scoring_yaml_loosen": false,
+    "human_labels_mutated": false,
+    "e124": "OWNER_AUTH_REQUIRED_NOT_APPLIED"
+  }
+}

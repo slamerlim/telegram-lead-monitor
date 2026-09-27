@@ -1,0 +1,74 @@
+Evidence 125: OBSERVE mid-window T0 snapshot (vs Evidence 122)
+experiment_id=SOURCING_T0_INTAKE_WITHOUT_DISC_V6_125
+decision=OBSERVE_OK
+classification=SOURCING_T0_INTAKE_WITHOUT_DISC_V6 + RESIDUAL_SCARCITY (disc_v6 NEW=0)
+measure_at=2026-09-27T14:06:50+00:00 head=2b57e28
+t0=2026-09-27T10:16:46.876011+00:00 hours_since_t0=3.8344
+path_b_at=2026-09-26T06:53:16Z
+parent=Evidence 121 (T0) + Evidence 122 (~0.74h snap) + E123/E124 (Phase B gap / proposal idle)
+read_only=true code_change=none deploy=not_needed
+mode=CONTINUOUS_OBSERVE Mode-0/1 mid-window measure (one --once only; not a remesure loop)
+
+=== 0. PRE-REGISTERED / LOCKS ===
+  Mid-window NEW-since-T0 measurement under CONTINUOUS OBSERVE.
+  Does NOT authorize:
+    - path_b / path_c reopen
+    - apply E124 Steps A–F (still OWNER_AUTH_REQUIRED)
+    - ML enable / Optuna / SHAP / LLM augmentation
+    - scoring.yaml threshold loosen / human_labels mutation
+    - inventing timed remesure loops beyond this single --once
+    - UpdateGoal complete
+  Stay Mode 0/1; wait durable watcher exit 10 (A/B/C) or owner E124 auth.
+
+=== 1. COMPARE TO Evidence 122 (~0.74h) ===
+  E122 (2026-09-27T11:01Z, head=54db3dd, hours≈0.7373):
+    messages_since_t0=572  scores_since_t0=572  disc_v6_since_t0=0
+  E125 (2026-09-27T14:06Z, head=2b57e28, hours≈3.8344):
+    messages_since_t0=2651 scores_since_t0=2651 disc_v6_since_t0=0
+  Delta (~3.1h since E122): +2079 msgs / +2079 scores / +0 disc_v6
+  Intake continues (~691 msg/h + score/h); disc_v6 rate still 0/h.
+  Classification: SOURCING_T0_INTAKE_WITHOUT_DISC_V6 — global T0 intake/score
+  pipeline healthy; commercial disc_v6 still RESIDUAL_SCARCITY.
+
+=== 2. OBSERVE --once (once only) ===
+  OBSERVE_OK {"at":"2026-09-27T14:06:50+00:00","new":0,"hl":1524,"ac":4,
+              "msg_1h":642,"score_1h":642,"msgs_since_t0":2651,"scores_since_t0":2651,
+              "disc_v6_since_t0":0,"t0":"2026-09-27T10:16:46Z","xlen":6,"pending":0,
+              "lag":0,"consumers":1}
+  triggers=[] exit=0
+  health={"status":"ok","postgres":"ok","redis":"ok"}
+  gates: ai_validated=94/0/94 ready=false ml_training_enabled=false
+
+=== 3. ISOLATION + SQL (verified) ===
+  human_labels=1524 AI_CONFIRMED=4 isolation_ok=True (expect 1524/4)
+  messages_total=8679822 message_scores=183391
+  disc_v6_all=6 disc_v6_new_since_path_b=0 disc_v6_since_t0=0
+  messages_since_t0=2651 scores_since_t0=2651
+
+=== 4. PHASE A (still disabled EXCHANGE — E121) ===
+  BybitEnglish(57) enabled=f last_message_id=4748841
+  OKXOfficial_English(59) enabled=f last_message_id=12431466
+  BitgetENOfficial(64) enabled=f last_message_id=10480032
+  WeexGlobal_Group(96) enabled=f last_message_id=4086143
+  cursors_unchanged=True
+
+=== 5. PHASE B rooms 137–141 — still 0 since T0 (cheap SQL) ===
+  id=137 Freqtrade enabled=t msg_total=0 msg_since_t0=0
+  id=138 Hummingbot enabled=t msg_total=0 msg_since_t0=0
+  id=139 NautilusTrader enabled=t msg_total=0 msg_since_t0=0
+  id=140 backtrader_community enabled=t msg_total=0 msg_since_t0=0
+  id=141 jessetrade enabled=t msg_total=0 msg_since_t0=0
+  (E123 gap + E124 proposal still idle; no remediation applied)
+
+=== 6. DURABLE WATCHER / HEARTBEATS ===
+  HEAD=2b57e28 Emit OBSERVE_OK heartbeats in observe_abc_watch loop mode
+  watcher PID≈794476 (restarted ~2026-09-27T14:05:38Z with heartbeat ship)
+  nohup logs/observe_abc_watch.nohup.log: start + OBSERVE_OK at 14:05:40
+    msgs_since_t0=2651 scores_since_t0=2651 disc_v6_since_t0=0 (matches --once)
+  INTERVAL_SEC=5400; wake exit 10 on A/B/C only
+
+=== 7. BUSINESS / DECISION / NEXT ===
+  Stay CONTINUOUS OBSERVE. RESIDUAL_SCARCITY for disc_v6 unchanged.
+  Mid-window intake without disc_v6 does NOT authorize path reopen.
+  E124 NOT applied. Do not invent further remesure beyond this one --once.
+  NEXT: durable watch for Trigger A/B/C OR owner auth → apply E124 Steps A–F.
