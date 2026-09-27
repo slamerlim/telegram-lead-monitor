@@ -1,0 +1,292 @@
+{
+  "evidence_id": "123",
+  "experiment_id": "SOURCING_T0_PHASE_B_INTAKE_GAP_123",
+  "title": "Sourcing T0 Phase B intake gap (observational Mode-1)",
+  "generated_at": "2026-09-27T11:04:15.833195+00:00",
+  "head": "402ff79",
+  "t0": "2026-09-27T10:16:46.876011+00:00",
+  "t0_source": "docs/audit/evidence/121-sourcing-experiment-t0.json",
+  "path_b_at": "2026-09-26T06:53:16Z",
+  "hours_since_t0": 0.7914,
+  "parent": [
+    "Evidence 121 SOURCING_T0_APPLIED",
+    "Evidence 122 OBSERVE_OK T0 snapshot"
+  ],
+  "mode": "CONTINUOUS_OBSERVE",
+  "decision": "PHASE_B_INTAKE_GAP_DOCUMENTED",
+  "classification": "SOURCE_ABSENT",
+  "secondary_classes": [
+    "SOURCING_T0_APPLIED",
+    "RESIDUAL_SCARCITY",
+    "PHASE_B_INTAKE_GAP"
+  ],
+  "read_only": true,
+  "code_change": "none",
+  "deploy": "not_needed",
+  "pre_registered": {
+    "mode": "observational_Mode-1",
+    "hypothesis": "Phase B algo/dev rooms (137-141) have produced zero messages since T0; intake gap is from username resolve failures and/or empty completed scans — not from discovery path semantics.",
+    "does_not_authorize": [
+      "path_b_path_c_reopen",
+      "ML_enable",
+      "Optuna_SHAP_LLM",
+      "scoring_yaml_threshold_loosen",
+      "human_labels_mutation",
+      "invite_autofix",
+      "cursor_wipe",
+      "freeze_expand",
+      "timed_remeasure_loop_E117_forbidden"
+    ],
+    "optional_owner_auth_needed_for": [
+      "fix_or_replace_bad_usernames",
+      "choose_alternate_rooms"
+    ],
+    "decision_rule": "Document gap; stay CONTINUOUS OBSERVE; NEXT still watch NEW-since-T0 / Trigger A; remediation only with owner auth."
+  },
+  "observe_once": {
+    "at": "2026-09-27T11:04:09+00:00",
+    "line": "OBSERVE_OK",
+    "new": 0,
+    "hl": 1524,
+    "ac": 4,
+    "msg_1h": 799,
+    "score_1h": 799,
+    "xlen": 6,
+    "pending": 0,
+    "lag": 0,
+    "consumers": 1,
+    "exit_code": 0,
+    "triggers": []
+  },
+  "health": {
+    "status": "ok",
+    "postgres": "ok",
+    "redis": "ok"
+  },
+  "validation_gates": {
+    "ai_validation_gate_ready": false,
+    "ai_validated_messages": 94,
+    "ai_validated_true": 0,
+    "ai_validated_false": 94,
+    "ml_training_enabled": false,
+    "ml_gate_independence_ready": false
+  },
+  "isolation": {
+    "human_labels": 1524,
+    "AI_CONFIRMED": 4,
+    "expect": {
+      "human_labels": 1524,
+      "AI_CONFIRMED": 4
+    },
+    "ok": true
+  },
+  "metrics_since_t0": {
+    "messages_since_t0": 572,
+    "scores_since_t0": 572,
+    "disc_v6_since_t0": 0
+  },
+  "disc_v6": {
+    "all_historical": 6,
+    "new_since_path_b": 0,
+    "new_since_t0": 0
+  },
+  "totals": {
+    "messages": 8677743,
+    "message_scores": 181312
+  },
+  "phase_a_disabled_still": [
+    {
+      "id": 57,
+      "username": "BybitEnglish",
+      "enabled": false,
+      "last_message_id": 4748841
+    },
+    {
+      "id": 59,
+      "username": "OKXOfficial_English",
+      "enabled": false,
+      "last_message_id": 12431466
+    },
+    {
+      "id": 64,
+      "username": "BitgetENOfficial",
+      "enabled": false,
+      "last_message_id": 10480032
+    },
+    {
+      "id": 96,
+      "username": "WeexGlobal_Group",
+      "enabled": false,
+      "last_message_id": 4086143
+    }
+  ],
+  "cursors_unchanged": true,
+  "phase_b_communities": [
+    {
+      "id": 137,
+      "username": "Freqtrade",
+      "telegram_ref": "@Freqtrade",
+      "enabled": true,
+      "msg_total": 0,
+      "msg_since_t0": 0,
+      "intake_class": "username_resolve_failure"
+    },
+    {
+      "id": 138,
+      "username": "Hummingbot",
+      "telegram_ref": "@hummingbot",
+      "enabled": true,
+      "msg_total": 0,
+      "msg_since_t0": 0,
+      "intake_class": "scan_completed_empty"
+    },
+    {
+      "id": 139,
+      "username": "NautilusTrader",
+      "telegram_ref": "@NautilusTrader",
+      "enabled": true,
+      "msg_total": 0,
+      "msg_since_t0": 0,
+      "intake_class": "scan_completed_empty"
+    },
+    {
+      "id": 140,
+      "username": "backtrader_community",
+      "telegram_ref": "@backtrader_community",
+      "enabled": true,
+      "msg_total": 0,
+      "msg_since_t0": 0,
+      "intake_class": "username_resolve_failure"
+    },
+    {
+      "id": 141,
+      "username": "jessetrade",
+      "telegram_ref": "@JesseTrade",
+      "enabled": true,
+      "msg_total": 0,
+      "msg_since_t0": 0,
+      "intake_class": "scan_completed_empty"
+    }
+  ],
+  "scan_runs_t0_batch": [
+    {
+      "id": 66605,
+      "community_id": 137,
+      "days": 14,
+      "status": "completed_with_errors",
+      "messages_seen": 0,
+      "messages_published": 0,
+      "error": "@Freqtrade: UsernameInvalidError: Nobody is using this username or the username is unacceptable (caused by ResolveUsernameRequest)"
+    },
+    {
+      "id": 66606,
+      "community_id": 138,
+      "days": 14,
+      "status": "completed",
+      "messages_seen": 0,
+      "messages_published": 0,
+      "error": null
+    },
+    {
+      "id": 66607,
+      "community_id": 139,
+      "days": 14,
+      "status": "completed",
+      "messages_seen": 0,
+      "messages_published": 0,
+      "error": null
+    },
+    {
+      "id": 66608,
+      "community_id": 140,
+      "days": 14,
+      "status": "completed_with_errors",
+      "messages_seen": 0,
+      "messages_published": 0,
+      "error": "@backtrader_community: ValueError: No user has \"backtrader_community\" as username"
+    },
+    {
+      "id": 66609,
+      "community_id": 141,
+      "days": 14,
+      "status": "completed",
+      "messages_seen": 0,
+      "messages_published": 0,
+      "error": null
+    }
+  ],
+  "scan_runs_latest": [
+    {
+      "id": 66893,
+      "community_id": 137,
+      "days": 2,
+      "status": "completed_with_errors",
+      "messages_seen": 0,
+      "messages_published": 0,
+      "finished_at": "2026-09-27T10:52:32.800279+00:00",
+      "error": "@Freqtrade: UsernameInvalidError: Nobody is using this username or the username is unacceptable (caused by ResolveUsernameRequest)"
+    },
+    {
+      "id": 66892,
+      "community_id": 138,
+      "days": 2,
+      "status": "completed",
+      "messages_seen": 0,
+      "messages_published": 0,
+      "finished_at": "2026-09-27T10:52:32.700457+00:00",
+      "error": null
+    },
+    {
+      "id": 66894,
+      "community_id": 139,
+      "days": 2,
+      "status": "completed",
+      "messages_seen": 0,
+      "messages_published": 0,
+      "finished_at": "2026-09-27T10:52:32.977746+00:00",
+      "error": null
+    },
+    {
+      "id": 66900,
+      "community_id": 140,
+      "days": 2,
+      "status": "completed_with_errors",
+      "messages_seen": 0,
+      "messages_published": 0,
+      "finished_at": "2026-09-27T10:52:34.334421+00:00",
+      "error": "@backtrader_community: ValueError: No user has \"backtrader_community\" as username"
+    },
+    {
+      "id": 66885,
+      "community_id": 141,
+      "days": 2,
+      "status": "completed",
+      "messages_seen": 0,
+      "messages_published": 0,
+      "finished_at": "2026-09-27T10:52:30.611544+00:00",
+      "error": null
+    }
+  ],
+  "locks": {
+    "path_b_path_c": "FROZEN",
+    "shadow": "OFF",
+    "ml_training_enabled": false,
+    "scoring_yaml_loosen": false,
+    "human_labels_mutated": false,
+    "timed_remeasure_invented": false
+  },
+  "business": {
+    "outreach": false,
+    "ml_go": false,
+    "threshold_loosen": false,
+    "path_b_path_c_reopened": false,
+    "discovery_semantic_change": false,
+    "e105_bridge": false,
+    "human_labels_mutated": false,
+    "scoring_yaml_touched": false,
+    "autofix_invites": false,
+    "cursor_wipe": false,
+    "freeze_expand": false
+  },
+  "next": "NEXT still watch NEW-since-T0 / Trigger A quality-classify. Phase B intake gap noted; remediation (username fix/replace or alternate rooms) needs optional owner auth. No path reopen, no ML, no E117 remesure invent."
+}

@@ -1,0 +1,91 @@
+Evidence 123: Sourcing T0 Phase B intake gap (observational)
+experiment_id=SOURCING_T0_PHASE_B_INTAKE_GAP_123
+decision=PHASE_B_INTAKE_GAP_DOCUMENTED
+classification=SOURCE_ABSENT (Phase B) + SOURCING_T0_APPLIED (Phase A still) + RESIDUAL_SCARCITY (disc_v6 NEW=0)
+measure_at=2026-09-27T11:04:15.833195+00:00 head=402ff79 (pre-commit tip=E122; this evidence commit follows)
+t0=2026-09-27T10:16:46.876011+00:00 hours_since_t0≈0.7914
+parent=Evidence 121 (T0 applied) + Evidence 122 (OBSERVE_OK T0 snapshot)
+read_only=true code_change=none deploy=not_needed
+mode=CONTINUOUS_OBSERVE Mode-1 observational
+
+=== 0. PRE-REGISTERED (Mode-1) ===
+  This evidence is observational Mode-1 documentation of an already-observed
+  Phase B intake gap. It does NOT authorize:
+    - path_b / path_c reopen
+    - ML enable / Optuna / SHAP / LLM augmentation
+    - scoring.yaml threshold loosen
+    - human_labels mutation
+    - invite autofix / cursor wipe / freeze expand
+    - inventing a timed remesure loop (E117 forbidden)
+  Optional owner authorization is required before any remediation such as
+  fixing/replacing bad usernames or choosing alternate rooms.
+
+=== 1. OBSERVE --once (once only; not a remesure loop) ===
+  OBSERVE_OK {"at":"2026-09-27T11:04:09+00:00","new":0,"hl":1524,"ac":4,
+              "msg_1h":799,"score_1h":799,"xlen":6,"pending":0,"lag":0,"consumers":1}
+  triggers=[] exit=0
+  health={"status":"ok","postgres":"ok","redis":"ok"}
+  gates: ai_validated=94/0/94 ready=false ml_training_enabled=false
+
+=== 2. ISOLATION + T0 COUNTS ===
+  human_labels=1524 AI_CONFIRMED=4 isolation_ok=True (expect 1524/4)
+  messages_total=8677743 message_scores=181312
+  disc_v6_all=6 disc_v6_new_since_path_b=0 disc_v6_since_t0=0
+  messages_since_t0=572 scores_since_t0=572
+  (global T0 intake continues from non–Phase-B sources; Phase B rooms=0)
+
+=== 3. PHASE A (still disabled EXCHANGE — E121) ===
+  BybitEnglish(57) enabled=f last_message_id=4748841
+  OKXOfficial_English(59) enabled=f last_message_id=12431466
+  BitgetENOfficial(64) enabled=f last_message_id=10480032
+  WeexGlobal_Group(96) enabled=f last_message_id=4086143
+  cursors_unchanged=True
+
+=== 4. PHASE B COMMUNITIES 137–141 — 0 messages since T0 ===
+  id=137 username=Freqtrade telegram_ref=@Freqtrade
+       enabled=t msg_total=0 msg_since_t0=0
+  id=138 username=Hummingbot telegram_ref=@hummingbot
+       enabled=t msg_total=0 msg_since_t0=0
+  id=139 username=NautilusTrader telegram_ref=@NautilusTrader
+       enabled=t msg_total=0 msg_since_t0=0
+  id=140 username=backtrader_community telegram_ref=@backtrader_community
+       enabled=t msg_total=0 msg_since_t0=0
+  id=141 username=jessetrade telegram_ref=@JesseTrade
+       enabled=t msg_total=0 msg_since_t0=0
+
+=== 5. SCAN_RUNS — T0 batch (66605–66609) + latest ===
+  T0 days=14 batch:
+    66605 cid=137 completed_with_errors seen=0 pub=0
+      error=@Freqtrade: UsernameInvalidError: Nobody is using this username
+            or the username is unacceptable (ResolveUsernameRequest)
+    66606 cid=138 completed seen=0 pub=0 (no error)
+    66607 cid=139 completed seen=0 pub=0 (no error)
+    66608 cid=140 completed_with_errors seen=0 pub=0
+      error=@backtrader_community: ValueError: No user has
+            "backtrader_community" as username
+    66609 cid=141 completed seen=0 pub=0 (no error)
+
+  Latest (scheduler days=2 repeats; still 0 intake):
+    66893 cid=137 completed_with_errors seen=0 pub=0 (same UsernameInvalidError)
+    66892 cid=138 completed seen=0 pub=0
+    66894 cid=139 completed seen=0 pub=0
+    66900 cid=140 completed_with_errors seen=0 pub=0 (same ValueError)
+    66885 cid=141 completed seen=0 pub=0
+
+  Pattern:
+    - 137 Freqtrade / 140 backtrader_community: resolve failures → completed_with_errors
+    - 138 Hummingbot / 139 NautilusTrader / 141 jessetrade: scan completed but
+      messages_seen=messages_published=0 (joined/resolved but empty window or no history)
+
+=== 6. BUSINESS / LOCKS ===
+  outreach=false ml_go=false threshold_loosen=false
+  path_b_path_c_reopened=false discovery_semantic_change=false
+  e105_bridge=false human_labels_mutated=false scoring_yaml_touched=false
+  autofix_invites=false cursor_wipe=false freeze_expand=false
+  timed_remeasure_invented=false (E117 still closed)
+
+=== 7. DECISION / NEXT ===
+  Document Phase B intake gap under CONTINUOUS OBSERVE. Stay Mode-1 watch.
+  NEXT still watch NEW-since-T0 / Trigger A quality-classify.
+  Remediation of bad usernames or alternate rooms requires optional owner auth.
+  Do not reopen path_b/c; do not enable ML; do not invent timed remesure.

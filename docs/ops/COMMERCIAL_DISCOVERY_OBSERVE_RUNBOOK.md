@@ -91,6 +91,7 @@ Note: since-enable aggregate still includes 6 historical CONTAMINATED rows; prim
 - **WP2C_CONTAMINATION_DOMINANT** — Evidence 118c/119d: further freezes (n=16; stride=83 offsets=7,19,37,53; exclude all 24 prior) → 16/16 FALSE; batch `e118c_wp2c_adjudication_2026-09-27`. Combined WP2+WP2b+WP2c = 40/40 contamination, 0 genuine buyer.
 - **MODE2_RETRIEVED_FP_HARDENED** — Evidence 119c: path-E FPs fixed (NEW PROJECT LaborX no FO-carve; bare `my strategy` not ownership). path_b/c untouched.
 - **SOURCING_T0_APPLIED** — Evidence 121: Phase A disabled 4 high-volume EXCHANGE_OFFICIAL; Phase B added 5 algo/dev rooms + days=14 scans; cursors unchanged.
+- **PHASE_B_INTAKE_GAP (SOURCE_ABSENT)** — Evidence 123: communities 137–141 still 0 messages since T0; 137/140 username resolve failures; 138/139/141 scans completed with messages_seen/published=0. Observational Mode-1 only — does **not** authorize path reopen/ML; username fix/replace or alternate rooms need optional owner auth.
 - **EXPECTED_IDLE** — 900s scheduler waves (Evidence 114)
 - **INTENTIONAL_SHADOW_OFF** — episode→AI handoff gated (Evidence 111)
 - **Invite-expired** — community 132 NOISE (Evidence 115)
@@ -126,4 +127,4 @@ Master continuation prompt: `docs/ops/MASTER_CONTINUATION_PROMPT_COMMERCIAL_DISC
 
 ## Next hypothesis
 
-Live resume only on **(A)** first NEW disc_v6 (quality-classify; do not reopen path_b/c), **(B)** pipeline/Redis/worker/query failure, or **(C)** isolation drift. Offline: WP2/WP2b/WP2c DONE — do not re-adjudicate `e118_*` batches. **Sourcing T0 active (E121)** — watch NEW-since-T0. Mode-2 FP harden DONE (E119c). **WP3** blocked until genuine-positive adjudicated n. Do not busy remesure. Do not enable shadow / reopen paths without auth.
+Live resume only on **(A)** first NEW disc_v6 (quality-classify; do not reopen path_b/c), **(B)** pipeline/Redis/worker/query failure, or **(C)** isolation drift. Offline: WP2/WP2b/WP2c DONE — do not re-adjudicate `e118_*` batches. **Sourcing T0 active (E121)** — NEXT still watch NEW-since-T0; **Phase B intake gap noted (E123)** — remediation needs owner auth. Mode-2 FP harden DONE (E119c). **WP3** blocked until genuine-positive adjudicated n. Do not busy remesure. Do not enable shadow / reopen paths without auth.

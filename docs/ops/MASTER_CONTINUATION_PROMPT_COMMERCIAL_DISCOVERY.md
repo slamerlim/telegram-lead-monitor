@@ -15,6 +15,7 @@
 ║ COMBINED FREEZE = 40/40 FALSE — 0 genuine_buyer_project (WP3 BLOCKED)          ║
 ║ Mode-2 FPs      = DONE  (Evidence 119c; 60620+4780480 hardened; path_b/c intact)║
 ║ Sourcing T0     = APPLIED (Evidence 121; disable 4 EXCHANGE; +5 algo rooms)    ║
+║ Phase B intake  = GAP (Evidence 123; 137–141 msgs=0; resolve/empty scans)      ║
 ║ WP3 / ML ladder = BLOCKED until genuine-positive adjudicated set (S3→S9)       ║
 ║ Optuna/LGBM/SHAP= NOT in deps/scripts; Evidence 44 ML NO-GO; M1–M10 fail       ║
 ║ AI gates        = CLOSED (~94 validated / 0 VALIDATED_TRUE; need ≥100 / ≥30)   ║
@@ -22,14 +23,14 @@
 ║ shadow / ML     = OFF / ml_training_enabled=false (hard)                       ║
 ║ isolation expect= human_labels=1524 / AI_CONFIRMED=4                           ║
 ║                                                                                ║
-║ NEXT            = watch NEW-since-T0 sourcing; Trigger A quality-classify      ║
+║ NEXT            = watch NEW-since-T0; Phase B intake gap noted (E123)          ║
 ║ DO NOT          = more freeze expand · reopen path_b/c · enable shadow/ML      ║
 ║ DO NOT          = mutate human_labels · loosen scoring.yaml · timed remesures  ║
 ║ DO NOT          = claim ML GO · wipe last_message_id · down -v · audit_* as GT  ║
 ╚══════════════════════════════════════════════════════════════════════════════╝
 ```
 
-**Created / last rewritten:** 2026-09-27 (post–ABC execute + Mode-2 P0 revert at `b65b17b`)  
+**Created / last rewritten:** 2026-09-27 (post–E123 Phase B intake gap note; ABC/Mode-2 prior)  
 **Purpose:** Pasteable operating prompt for the next agent (whole file below the line).  
 **Repo:** `/home/slamer-lim/telegram-lead-monitor` (NOT Quantum-Trading-System)  
 **Sibling research injected:** standing-state `882d1461`, ML/SDK `04ef55a9`, ops/DoD `4b8d04a6`.
@@ -80,12 +81,13 @@ WP2c=DONE → Evidence 118c + 119d (16/16 FALSE; batch e118c_wp2c_adjudication_2
 COMBINED=40/40 FALSE; genuine_buyer_project=0 → WP3 BLOCKED
 Mode2_FPs=DONE → Evidence 119c (60620 LaborX + 4780480 MEXC FOMO hardened; b65b17b P0 ownership revert)
 Sourcing=T0 APPLIED → Evidence 121 (disable 4 EXCHANGE; add 5 algo rooms; scans days=14)
+PhaseB_intake=GAP → Evidence 123 (137–141 msgs=0; 137/140 resolve fail; 138/139/141 empty completed)
 AI_GATES=CLOSED (~94 msgs / 0 VALIDATED_TRUE; need ≥100 / ≥30)
 Optuna/LGBM/SHAP=NOT implemented (no deps/scripts); Evidence 44 ML NO-GO; M1–M10 fail
-NEXT=watch NEW-since-T0 / Trigger A quality-classify; NO more freeze expand unless owner asks
+NEXT=watch NEW-since-T0 / Trigger A quality-classify; Phase B intake gap noted (E123); NO freeze expand / username remeds without owner auth
 ```
 
-### Evidence headline table (117–121)
+### Evidence headline table (117–123)
 
 | ID | Path | Headline |
 |----|------|----------|
@@ -101,6 +103,8 @@ NEXT=watch NEW-since-T0 / Trigger A quality-classify; NO more freeze expand unle
 | E119c | `docs/audit/evidence/119c-retrieved-fp-mode2-root-cause.*` | Mode-2: both FPs ineligible post-harden; pytest laborx suite green; path_b/c untouched |
 | E119d | `docs/audit/evidence/119d-wp2c-e118c-freeze-adjudication.*` | WP2c: **16/16 FALSE**; batch `e118c_wp2c_adjudication_2026-09-27` |
 | E121 | `docs/audit/evidence/121-sourcing-experiment-t0.*` | Sourcing T0: Phase A disable 4 EXCHANGE; Phase B +5 rooms + days=14 scans; cursors unchanged |
+| E122 | `docs/audit/evidence/122-observe-t0-snapshot.*` | OBSERVE_OK T0 snapshot; isolation 1524/4; disc_v6 NEW=0; Phase B msgs_since_t0=0 |
+| E123 | `docs/audit/evidence/123-sourcing-t0-phase-b-intake.*` | Phase B intake gap: 137–141=0 msgs; resolve failures + empty completed scans; Mode-1 only |
 | E44 | `docs/audit/evidence/44-ml-nogo-attestation.txt` | Explicit ML NO-GO for LGBM/Optuna/SHAP training |
 | Plan ABC | `docs/ops/PLAN_ABC_WP2C_SOURCING_MODE2_2026-09-27.md` | Executed A/B/C plan (WP2c + sourcing + Mode-2) |
 | Runbook | `docs/ops/COMMERCIAL_DISCOVERY_OBSERVE_RUNBOOK.md` | A/B/C triggers + cheap watch |
@@ -323,7 +327,8 @@ Is genuine commercial intent:
 Do **not** re-adjudicate batches `e118_wp2_*` / `e118b_wp2b_*` / `e118c_wp2c_*`.  
 Do **not** expand freezes further unless owner asks.  
 Mode-2 FP harden shipped (E119c + `b65b17b` P0 ownership revert — bare `project` tokens must not widen `_OWNERSHIP_RX` feeding frozen path_b/c).  
-Sourcing T0 applied (E121) — watch NEW-since-T0; rollback Phase A (re-enable 4 EXCHANGE usernames) only if intake harm; preserve `last_message_id`.
+Sourcing T0 applied (E121) — watch NEW-since-T0; rollback Phase A (re-enable 4 EXCHANGE usernames) only if intake harm; preserve `last_message_id`.  
+Phase B intake gap documented (E123) — 137–141 still 0 msgs; Mode-1 observational; username fix/replace or alternate rooms need optional owner auth (does not authorize path reopen/ML).
 
 ### WP3 — Frozen dataset + leakage contract → Evidence 120 — **BLOCKED**
 
@@ -336,8 +341,8 @@ Requires genuine-positive adjudicated n (not contamination-only labels). Then S4
 If `--once` is still `OBSERVE_OK` and isolation holds (1524/4):
 
 1. Stay Mode 0/1 — **do not** reopen paths, enable shadow/ML, or mutate `human_labels`.
-2. **Sourcing T0 active (E121):** measure NEW-since-T0 messages/scores/disc_v6; on Trigger A freeze+classify.
-3. **Do NOT** more freeze expand / WP2d unless owner asks.
+2. **Sourcing T0 active (E121):** NEXT still watch NEW-since-T0; Phase B intake gap noted (E123); on Trigger A freeze+classify.
+3. **Do NOT** more freeze expand / WP2d / Phase B username remeds unless owner asks.
 4. **Do NOT** start Optuna/LightGBM/SHAP/Cursor SDK commercial LLM yet.
 5. Mode-2 discovery semantics only with **new** owner auth + one conceptual change + contamination guardrails.
 6. Keep `observe_abc_watch.sh` running; on A freeze+classify; on B fix correctness; on C halt.
@@ -366,7 +371,7 @@ If a trigger is already firing: handle per §4 before any offline work.
 - [ ] `./scripts/observe_abc_watch.sh --once` → OBSERVE_OK when idle; isolation unchanged
 
 ### Commercial discovery OBSERVE “done” for a wake (no trigger)
-- [ ] Mode 0/1 only: watch sourcing T0 (E121) NEW-since-T0; no path_b/c reopen, no shadow, no ML enable
+- [ ] Mode 0/1 only: watch sourcing T0 (E121) NEW-since-T0; Phase B intake gap noted (E123); no path_b/c reopen, no shadow, no ML enable
 - [ ] WP3 / Optuna / LGBM / SHAP / Cursor SDK LLM: NOT started (blocked until genuine-positive adjudicated n; ML ladder S1–S3)
 - [ ] Full verifier only on Trigger A/B: `scripts/verify_commercial_discovery_post_enable.py` (not idle remesure)
 
@@ -408,7 +413,7 @@ If a trigger is already firing: handle per §4 before any offline work.
 
 ## 11. Classification vocabulary
 
-`RESIDUAL_SCARCITY` | `NEW_ACTIVITY` | `PIPELINE_FAILURE` | `QUERY_FAILURE` | `ISOLATION_DRIFT` | `SEMANTIC_LOSS` | `VETO_LOSS` | `SCORING_COVERAGE_LOSS` | `SOURCE_ABSENT` | `UPSTREAM_LOSS` | `UPSTREAM_LOSS@G3` | `EXPECTED_IDLE` | `INTENTIONAL_SHADOW_OFF` | `CONTAMINATION_DOMINANT` | `SOURCING_T0_APPLIED` | `MODE2_HARDENED`
+`RESIDUAL_SCARCITY` | `NEW_ACTIVITY` | `PIPELINE_FAILURE` | `QUERY_FAILURE` | `ISOLATION_DRIFT` | `SEMANTIC_LOSS` | `VETO_LOSS` | `SCORING_COVERAGE_LOSS` | `SOURCE_ABSENT` | `UPSTREAM_LOSS` | `UPSTREAM_LOSS@G3` | `EXPECTED_IDLE` | `INTENTIONAL_SHADOW_OFF` | `CONTAMINATION_DOMINANT` | `SOURCING_T0_APPLIED` | `PHASE_B_INTAKE_GAP` | `MODE2_HARDENED`
 
 ---
 
