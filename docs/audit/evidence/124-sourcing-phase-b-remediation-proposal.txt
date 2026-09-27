@@ -1,0 +1,209 @@
+Evidence 124: Mode-1 remediation PROPOSAL for Evidence 123 Phase B intake gap
+evidence_id=124
+experiment_id=SOURCING_PHASE_B_REMEDIATION_PROPOSAL_124
+decision=PROPOSAL_ONLY_AWAITING_OWNER_AUTH
+classification=OWNER_AUTH_REQUIRED
+OWNER_AUTH_REQUIRED=true
+MUST_NOT_APPLY_THIS_TURN=true
+measure_at=2026-09-27T11:08:03+00:00 head=69c8891
+t0=2026-09-27T10:16:46.876011+00:00 (E121)
+parent=Evidence 121 (T0 applied) + Evidence 123 (PHASE_B_INTAKE_GAP_DOCUMENTED)
+read_only_sql=true code_change=none deploy=not_needed
+mode=CONTINUOUS_OBSERVE Mode-1 proposal (no community PATCH/disable/replace applied)
+
+=== 0. OWNER_AUTH_REQUIRED (HARD STOP) ===
+  OWNER_AUTH_REQUIRED: true
+  This evidence is a remediation PROPOSAL only.
+  MUST NOT apply in this turn:
+    - PATCH communities (enabled / telegram_ref / username)
+    - disable / replace / insert Phase B rooms
+    - invite autofix / JoinChannel autofix
+    - last_message_id cursor wipe
+    - docker compose down -v
+    - path_b / path_c reopen
+    - ML enable / Optuna / SHAP / LLM
+    - scoring.yaml threshold loosen
+    - human_labels mutation
+    - scarcity remesure / E117 timed remesure invent
+    - UpdateGoal complete
+  Awaiting explicit owner auth before any apply turn.
+
+=== 1. SOURCES READ (this turn) ===
+  - docs/audit/evidence/121-sourcing-experiment-t0.{txt,json}
+  - docs/audit/evidence/123-sourcing-t0-phase-b-intake.{txt,json}
+  - SQL read-only: communities id 137–141 + scan_runs + messages count
+  - docker logs collector (community_scan_failed / completed for 137–141)
+  - Public t.me probes + official Freqtrade docs (Discord-only community)
+  - Repo prefs: config/communities.example.yaml, config/communities.seed.txt
+    (no Freqtrade/backtrader refs in example/seed; E95 = E95-style algo/dev rooms
+     referenced by scripts/run_sourcing_experiment_121.py, not a separate E95 file)
+
+=== 2. LIVE SQL SNAPSHOT communities 137–141 ===
+  id=137 telegram_ref=@Freqtrade username=Freqtrade
+       enabled=t resolve_status=error telegram_chat_id=NULL kind=NULL msgs=0
+       last_error=@Freqtrade: UsernameInvalidError: Nobody is using this username
+                 or the username is unacceptable (caused by ResolveUsernameRequest)
+  id=138 telegram_ref=@hummingbot username=Hummingbot name=Humbot
+       enabled=t resolve_status=resolved telegram_chat_id=99182088 kind=unknown msgs=0
+  id=139 telegram_ref=@NautilusTrader username=NautilusTrader name=NautilusTrader
+       enabled=t resolve_status=resolved telegram_chat_id=2276323404 kind=channel msgs=0
+  id=140 telegram_ref=@backtrader_community username=backtrader_community
+       enabled=t resolve_status=error telegram_chat_id=NULL kind=NULL msgs=0
+       last_error=@backtrader_community: ValueError: No user has "backtrader_community" as username
+  id=141 telegram_ref=@JesseTrade username=jessetrade name=Jesse Filibus
+       enabled=t resolve_status=resolved telegram_chat_id=5444388783 kind=unknown msgs=0
+
+=== 3. EXACT RESOLVE ERROR STRINGS (137 / 140) ===
+  From scan_runs (T0 batch + latest) AND collector logs (community_scan_failed):
+
+  137 / @Freqtrade:
+    scan_runs.error=
+      "@Freqtrade: UsernameInvalidError: Nobody is using this username or the username is unacceptable (caused by ResolveUsernameRequest)"
+    collector log error field=
+      "Nobody is using this username or the username is unacceptable (caused by ResolveUsernameRequest)"
+    event=community_scan_failed (seen on 66605, 66617, 66753, 66893)
+
+  140 / @backtrader_community:
+    scan_runs.error=
+      "@backtrader_community: ValueError: No user has \"backtrader_community\" as username"
+    collector log error field=
+      "No user has \"backtrader_community\" as username"
+    event=community_scan_failed (seen on 66608, 66624, 66754, 66900)
+
+=== 4. DIAGNOSIS + CANDIDATES ===
+
+  --- 137 Freqtrade (RESOLVE FAIL → replace/disable) ---
+  Diagnosis: username does not exist on Telegram (UsernameInvalidError).
+  Public research: official Freqtrade help/community is Discord-only
+    (docs index → discord.gg/p7nuUNVfP7). Probes of @Freqtrade/@freqtrade/
+    @freqtrade_official/@freqtrade_community/@freqtradechat all missing/invalid.
+    @freqtradebot exists but is a BOT user, not a contractor/dev room.
+  Proposed telegram_ref candidates (prefer repo-known when no official TG):
+    PRIMARY: DISABLE id=137 (no official public Freqtrade Telegram room found)
+    REPLACE_INSERT (bounded, optional, pick ONE if owner wants slot filled):
+      A) @commaschatru  — already in config/communities.example.yaml
+         (note: "3Commas Russian community"); NOT currently in DB
+      B) keep slot empty (preferred if avoiding non-Freqtrade substitutes)
+  Do NOT invent @Freqtrade* aliases that fail resolve.
+
+  --- 140 backtrader_community (RESOLVE FAIL → replace/disable) ---
+  Diagnosis: username does not exist (ValueError / No user has … as username).
+  Public research: @backtrader / @backtrader_community / @BacktraderCommunity /
+    @backtraderchat all missing. Project community is forum/Discord-style,
+    not a public t.me username usable by collector resolve.
+  Proposed:
+    PRIMARY: DISABLE id=140
+    REPLACE_INSERT optional (repo-known, not already Phase-B wrong refs):
+      A) @commaschatru (example.yaml) if not used for 137
+      B) leave disabled (preferred — no verified public backtrader TG)
+  Do NOT retry @backtrader_community / @backtrader without new public proof.
+
+  --- 138 hummingbot (seen=0, resolved wrong entity → REPLACE) ---
+  Diagnosis: WRONG ENTITY. Resolved to user "Humbot" (kind=unknown,
+    "You can contact @hummingbot"). Official hummingbot.org points to
+    @hummingbot_io (190 members group; description links hummingbot.org).
+    Avoid @HummingbotCommunity (different "Humming Bot" token project, 5 members).
+  Proposed:
+    REPLACE telegram_ref id=138: @hummingbot → @hummingbot_io
+    Then enqueue scan_runs days=14 for id=138 only (no cursor wipe needed;
+    last_message_id already NULL).
+  Alt: DISABLE 138 if owner rejects @hummingbot_io after verify.
+
+  --- 139 NautilusTrader (seen=0, correct channel → VERIFY-JOIN) ---
+  Diagnosis: CORRECT ENTITY type (kind=channel, chat_id set) but EMPTY/STALE.
+    Public page: "2 subscribers"; preview history shows ~1 message dated
+    2025-02-10 (outside active 14d/2d scan windows) → empty window, not
+    UsernameInvalid. Possible secondary: not joined → limited history.
+  Proposed:
+    1) VERIFY-JOIN: confirm session is member of @NautilusTrader; JoinChannel
+       only if owner auth + manual/controlled join (NO autofix invites).
+    2) Re-queue scan days=14 after join; if still seen=0 → DISABLE (inactive
+       announce channel) rather than invent alternate nautilus_* refs
+       (@nautilus_trader appears same title/empty).
+  Prefer VERIFY-JOIN over REPLACE.
+
+  --- 141 JesseTrade (seen=0, resolved wrong entity → REPLACE) ---
+  Diagnosis: WRONG ENTITY. Resolved to personal user "Jesse Filibus"
+    (kind=unknown). Public announcement channel is @jesse_trade
+    ("Jesse.Trade", 1623 subscribers, active preview posts; Discord link
+    in description). Not in example.yaml/seed but publicly verified.
+  Proposed:
+    REPLACE telegram_ref id=141: @JesseTrade → @jesse_trade
+    Then enqueue scan_runs days=14 for id=141 only.
+  Prefer REPLACE over verify-join (join cannot fix a User entity).
+
+=== 5. PROPOSED APPLY STEPS (DO NOT RUN UNTIL OWNER AUTH) ===
+  Ordered plan for a future authorized apply turn:
+
+  Step A — DISABLE resolve failures (no insert yet):
+    UPDATE communities SET enabled=false, updated_at=now()
+      WHERE id IN (137, 140);
+    -- optional: leave resolve_status/last_error intact as forensic evidence
+
+  Step B — REPLACE wrong entities (UPDATE telegram_ref + username; keep ids):
+    -- 138
+    UPDATE communities SET telegram_ref='@hummingbot_io', username='hummingbot_io',
+      resolve_status='pending', last_error=NULL, telegram_chat_id=NULL,
+      name=NULL, kind=NULL, updated_at=now()
+      WHERE id=138 AND telegram_ref='@hummingbot';
+    -- 141
+    UPDATE communities SET telegram_ref='@jesse_trade', username='jesse_trade',
+      resolve_status='pending', last_error=NULL, telegram_chat_id=NULL,
+      name=NULL, kind=NULL, updated_at=now()
+      WHERE id=141 AND telegram_ref='@JesseTrade';
+    NOTE: telegram_ref is UNIQUE — ensure @hummingbot_io / @jesse_trade
+          not already present (pre-check SELECT).
+
+  Step C — VERIFY-JOIN 139 (manual/owner-controlled; no autofix):
+    Confirm collector session membership for @NautilusTrader.
+    If not member: JoinChannelRequest under owner auth only.
+    Do NOT wipe last_message_id (already NULL).
+
+  Step D — Optional REPLACE_INSERT for disabled 137/140 slots:
+    Only if owner chooses fill-slot:
+      INSERT community @commaschatru (from communities.example.yaml)
+      OR leave 137/140 disabled with no substitute.
+    Skip if @commaschatru already exists.
+
+  Step E — Enqueue scans (NEW refs / verified only; days=14):
+    POST/queue scan_runs for community_ids that were replaced or joined
+      (expect 138, 141; maybe 139 after join). Do NOT scan disabled 137/140
+      unless replaced. Never wipe cursors on Phase A or other communities.
+
+  Step F — Isolation check post-apply:
+    human_labels=1524 AI_CONFIRMED=4 unchanged; no path_b/c; no scoring.yaml.
+
+=== 6. ROLLBACK ===
+  If apply causes intake harm / wrong rooms / isolation drift:
+    1) Revert telegram_ref/username/enabled for 137–141 to E124 pre-apply snapshot:
+         137: @Freqtrade enabled=true (or keep disabled — owner choice)
+         138: @hummingbot enabled=true
+         139: @NautilusTrader enabled=true
+         140: @backtrader_community enabled=true (or keep disabled)
+         141: @JesseTrade enabled=true
+    2) If REPLACE_INSERT added @commaschatru (or other): SET enabled=false
+       (prefer disable over DELETE to preserve FK/history).
+    3) Phase A EXCHANGE disables (57/59/64/96) remain as E121 unless
+       separate owner auth restores them — do not silently re-enable.
+    4) Never wipe last_message_id / never docker compose down -v.
+    5) Re-run observe --once; confirm hl/ac isolation.
+
+=== 7. BUSINESS / LOCKS (unchanged) ===
+  outreach=false ml_go=false threshold_loosen=false
+  path_b_path_c_reopened=false discovery_semantic_change=false
+  e105_bridge=false human_labels_mutated=false scoring_yaml_touched=false
+  autofix_invites=false cursor_wipe=false freeze_expand=false
+  timed_remeasure_invented=false
+  communities_patched_this_turn=false
+
+=== 8. OPTIONAL OBSERVE --once (this turn; not a remesure) ===
+  OBSERVE_OK {"at":"2026-09-27T11:09:08+00:00","new":0,"hl":1524,"ac":4,
+              "msg_1h":735,"score_1h":735,"xlen":6,"pending":0,"lag":0,"consumers":1}
+  exit=0 triggers=[]
+  health={"status":"ok","postgres":"ok","redis":"ok"}
+  communities 137–141 unchanged (no PATCH this turn)
+
+=== 9. DECISION / NEXT ===
+  PROPOSAL_ONLY. Awaiting owner auth to apply.
+  Stay CONTINUOUS OBSERVE Mode-1.
+  Do not remesure scarcity; do not UpdateGoal complete.

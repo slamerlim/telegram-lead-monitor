@@ -1,0 +1,319 @@
+{
+  "evidence_id": "124",
+  "experiment_id": "SOURCING_PHASE_B_REMEDIATION_PROPOSAL_124",
+  "title": "Mode-1 remediation proposal for Evidence 123 Phase B intake gap",
+  "generated_at": "2026-09-27T11:08:03+00:00",
+  "head": "69c8891",
+  "t0": "2026-09-27T10:16:46.876011+00:00",
+  "t0_source": "docs/audit/evidence/121-sourcing-experiment-t0.json",
+  "parent": [
+    "Evidence 121 SOURCING_T0_APPLIED",
+    "Evidence 123 PHASE_B_INTAKE_GAP_DOCUMENTED"
+  ],
+  "mode": "CONTINUOUS_OBSERVE",
+  "decision": "PROPOSAL_ONLY_AWAITING_OWNER_AUTH",
+  "classification": "OWNER_AUTH_REQUIRED",
+  "OWNER_AUTH_REQUIRED": true,
+  "MUST_NOT_APPLY_THIS_TURN": true,
+  "applied_this_turn": false,
+  "read_only": true,
+  "code_change": "none",
+  "deploy": "not_needed",
+  "pre_registered": {
+    "mode": "Mode-1_remediation_proposal",
+    "does_not_authorize": [
+      "PATCH_communities",
+      "disable_replace_insert_without_owner_auth",
+      "invite_autofix",
+      "cursor_wipe",
+      "docker_compose_down_v",
+      "path_b_path_c_reopen",
+      "ML_enable",
+      "scoring_yaml_threshold_loosen",
+      "human_labels_mutation",
+      "scarcity_remeasure",
+      "timed_remeasure_loop_E117_forbidden",
+      "UpdateGoal_complete"
+    ],
+    "decision_rule": "Write proposal + stop. Apply only after explicit owner auth in a later turn."
+  },
+  "sources_read": [
+    "docs/audit/evidence/121-sourcing-experiment-t0.txt",
+    "docs/audit/evidence/121-sourcing-experiment-t0.json",
+    "docs/audit/evidence/123-sourcing-t0-phase-b-intake.txt",
+    "docs/audit/evidence/123-sourcing-t0-phase-b-intake.json",
+    "SQL communities/scan_runs/messages for ids 137-141",
+    "docker logs telegram-lead-monitor-collector-1 (community_scan_failed)",
+    "config/communities.example.yaml",
+    "config/communities.seed.txt",
+    "public t.me probes + Freqtrade docs (Discord-only community)"
+  ],
+  "note_e95": "E95-style means algo/dev rooms per scripts/run_sourcing_experiment_121.py Phase B list; no separate docs/E95 file with Freqtrade/backtrader refs. Prefer example.yaml/seed when inventing substitutes.",
+  "communities_live": [
+    {
+      "id": 137,
+      "telegram_ref": "@Freqtrade",
+      "username": "Freqtrade",
+      "name": null,
+      "kind": null,
+      "enabled": true,
+      "resolve_status": "error",
+      "telegram_chat_id": null,
+      "msg_total": 0,
+      "last_error": "@Freqtrade: UsernameInvalidError: Nobody is using this username or the username is unacceptable (caused by ResolveUsernameRequest)"
+    },
+    {
+      "id": 138,
+      "telegram_ref": "@hummingbot",
+      "username": "Hummingbot",
+      "name": "Humbot",
+      "kind": "unknown",
+      "enabled": true,
+      "resolve_status": "resolved",
+      "telegram_chat_id": 99182088,
+      "msg_total": 0,
+      "last_error": null
+    },
+    {
+      "id": 139,
+      "telegram_ref": "@NautilusTrader",
+      "username": "NautilusTrader",
+      "name": "NautilusTrader",
+      "kind": "channel",
+      "enabled": true,
+      "resolve_status": "resolved",
+      "telegram_chat_id": 2276323404,
+      "msg_total": 0,
+      "last_error": null
+    },
+    {
+      "id": 140,
+      "telegram_ref": "@backtrader_community",
+      "username": "backtrader_community",
+      "name": null,
+      "kind": null,
+      "enabled": true,
+      "resolve_status": "error",
+      "telegram_chat_id": null,
+      "msg_total": 0,
+      "last_error": "@backtrader_community: ValueError: No user has \"backtrader_community\" as username"
+    },
+    {
+      "id": 141,
+      "telegram_ref": "@JesseTrade",
+      "username": "jessetrade",
+      "name": "Jesse Filibus",
+      "kind": "unknown",
+      "enabled": true,
+      "resolve_status": "resolved",
+      "telegram_chat_id": 5444388783,
+      "msg_total": 0,
+      "last_error": null
+    }
+  ],
+  "resolve_errors_exact": {
+    "137": {
+      "telegram_ref": "@Freqtrade",
+      "scan_runs_error": "@Freqtrade: UsernameInvalidError: Nobody is using this username or the username is unacceptable (caused by ResolveUsernameRequest)",
+      "collector_log_error": "Nobody is using this username or the username is unacceptable (caused by ResolveUsernameRequest)",
+      "collector_event": "community_scan_failed",
+      "scan_run_ids_sample": [66605, 66617, 66753, 66893]
+    },
+    "140": {
+      "telegram_ref": "@backtrader_community",
+      "scan_runs_error": "@backtrader_community: ValueError: No user has \"backtrader_community\" as username",
+      "collector_log_error": "No user has \"backtrader_community\" as username",
+      "collector_event": "community_scan_failed",
+      "scan_run_ids_sample": [66608, 66624, 66754, 66900]
+    }
+  },
+  "remediation_by_id": {
+    "137": {
+      "intake_class": "username_resolve_failure",
+      "hypothesis": "Username does not exist; Freqtrade official community is Discord-only; no public t.me room found.",
+      "recommend": "DISABLE",
+      "proposed_telegram_ref_candidates": [
+        {
+          "ref": null,
+          "action": "disable",
+          "reason": "No official public Freqtrade Telegram username; do not invent aliases"
+        },
+        {
+          "ref": "@commaschatru",
+          "action": "optional_replace_insert",
+          "source": "config/communities.example.yaml",
+          "in_db_now": false,
+          "reason": "Repo-known trader community substitute if owner wants the Phase B slot filled"
+        }
+      ],
+      "reject_candidates": ["@Freqtrade", "@freqtrade", "@freqtradebot", "@freqtrade_official", "@freqtrade_community"]
+    },
+    "138": {
+      "intake_class": "wrong_entity_user",
+      "hypothesis": "Resolved to personal/user entity Humbot (kind=unknown), not Hummingbot project group; scan completes with seen=0.",
+      "recommend": "REPLACE",
+      "proposed_telegram_ref_candidates": [
+        {
+          "ref": "@hummingbot_io",
+          "action": "replace_in_place",
+          "source": "public t.me/hummingbot_io (190 members; links hummingbot.org)",
+          "in_db_now": false,
+          "reason": "Best public match for official Hummingbot project presence on Telegram"
+        }
+      ],
+      "reject_candidates": ["@hummingbot", "@HummingbotCommunity"]
+    },
+    "139": {
+      "intake_class": "empty_or_stale_channel",
+      "hypothesis": "Correct channel entity (2 subscribers); public preview last message ~2025-02-10 — outside 14d/2d windows. Invite/join may also limit history; not a wrong username.",
+      "recommend": "VERIFY_JOIN_THEN_RESCAN",
+      "proposed_telegram_ref_candidates": [
+        {
+          "ref": "@NautilusTrader",
+          "action": "keep_verify_join",
+          "source": "already resolved channel chat_id=2276323404",
+          "in_db_now": true,
+          "reason": "Entity correct; prefer join+rescan over replace; disable later if still empty"
+        }
+      ],
+      "reject_candidates": ["@nautilus_trader"]
+    },
+    "140": {
+      "intake_class": "username_resolve_failure",
+      "hypothesis": "Username does not exist; no verified public backtrader Telegram community found.",
+      "recommend": "DISABLE",
+      "proposed_telegram_ref_candidates": [
+        {
+          "ref": null,
+          "action": "disable",
+          "reason": "No public backtrader t.me username verified"
+        },
+        {
+          "ref": "@commaschatru",
+          "action": "optional_replace_insert",
+          "source": "config/communities.example.yaml",
+          "in_db_now": false,
+          "reason": "Only if owner wants slot filled and not already used for 137"
+        }
+      ],
+      "reject_candidates": ["@backtrader_community", "@backtrader", "@BacktraderCommunity", "@backtraderchat"]
+    },
+    "141": {
+      "intake_class": "wrong_entity_user",
+      "hypothesis": "Resolved to personal user Jesse Filibus; official Jesse.Trade announce channel is @jesse_trade (1623 subscribers, active).",
+      "recommend": "REPLACE",
+      "proposed_telegram_ref_candidates": [
+        {
+          "ref": "@jesse_trade",
+          "action": "replace_in_place",
+          "source": "public t.me/jesse_trade (Jesse.Trade announcement channel)",
+          "in_db_now": false,
+          "reason": "Correct public channel for Jesse trading framework announcements"
+        }
+      ],
+      "reject_candidates": ["@JesseTrade", "@jessetrade"]
+    }
+  },
+  "proposed_apply_steps": [
+    {
+      "step": "A",
+      "action": "DISABLE",
+      "targets": [137, 140],
+      "sql_sketch": "UPDATE communities SET enabled=false, updated_at=now() WHERE id IN (137, 140);"
+    },
+    {
+      "step": "B",
+      "action": "REPLACE_REFS",
+      "targets": [
+        {"id": 138, "from": "@hummingbot", "to": "@hummingbot_io"},
+        {"id": 141, "from": "@JesseTrade", "to": "@jesse_trade"}
+      ],
+      "notes": [
+        "Clear telegram_chat_id/name/kind; set resolve_status=pending",
+        "Pre-check UNIQUE telegram_ref not already present",
+        "Do not wipe last_message_id (already NULL)"
+      ]
+    },
+    {
+      "step": "C",
+      "action": "VERIFY_JOIN",
+      "targets": [139],
+      "notes": [
+        "Confirm session membership for @NautilusTrader",
+        "JoinChannel only under owner auth; NO invite autofix",
+        "If still seen=0 after days=14 rescan → DISABLE"
+      ]
+    },
+    {
+      "step": "D",
+      "action": "OPTIONAL_REPLACE_INSERT",
+      "candidates": ["@commaschatru"],
+      "source": "config/communities.example.yaml",
+      "notes": ["Only if owner wants 137/140 slots filled; else leave disabled"]
+    },
+    {
+      "step": "E",
+      "action": "ENQUEUE_SCANS",
+      "days": 14,
+      "community_ids_expected": [138, 141, 139],
+      "notes": ["NEW/verified ids only; never wipe Phase A or other cursors"]
+    },
+    {
+      "step": "F",
+      "action": "ISOLATION_CHECK",
+      "expect": {"human_labels": 1524, "AI_CONFIRMED": 4}
+    }
+  ],
+  "rollback": {
+    "restore_snapshot": [
+      {"id": 137, "telegram_ref": "@Freqtrade", "enabled": true},
+      {"id": 138, "telegram_ref": "@hummingbot", "enabled": true},
+      {"id": 139, "telegram_ref": "@NautilusTrader", "enabled": true},
+      {"id": 140, "telegram_ref": "@backtrader_community", "enabled": true},
+      {"id": 141, "telegram_ref": "@JesseTrade", "enabled": true}
+    ],
+    "notes": [
+      "If optional insert added: disable rather than DELETE",
+      "Do not silently re-enable Phase A EXCHANGE (57/59/64/96) without separate auth",
+      "Never wipe last_message_id; never docker compose down -v",
+      "Re-run observe --once; confirm isolation"
+    ]
+  },
+  "observe_once": {
+    "at": "2026-09-27T11:09:08+00:00",
+    "line": "OBSERVE_OK",
+    "new": 0,
+    "hl": 1524,
+    "ac": 4,
+    "msg_1h": 735,
+    "score_1h": 735,
+    "xlen": 6,
+    "pending": 0,
+    "lag": 0,
+    "consumers": 1,
+    "exit_code": 0,
+    "triggers": []
+  },
+  "health": {
+    "status": "ok",
+    "postgres": "ok",
+    "redis": "ok"
+  },
+  "communities_unchanged_after_proposal": true,
+  "business": {
+    "outreach": false,
+    "ml_go": false,
+    "threshold_loosen": false,
+    "path_b_path_c_reopened": false,
+    "discovery_semantic_change": false,
+    "e105_bridge": false,
+    "human_labels_mutated": false,
+    "scoring_yaml_touched": false,
+    "autofix_invites": false,
+    "cursor_wipe": false,
+    "freeze_expand": false,
+    "communities_patched_this_turn": false,
+    "timed_remeasure_invented": false
+  },
+  "next": "AWAITING_OWNER_AUTH_TO_APPLY. Stay CONTINUOUS OBSERVE. Do not remesure scarcity. Do not UpdateGoal complete."
+}
