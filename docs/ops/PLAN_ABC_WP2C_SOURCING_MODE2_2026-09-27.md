@@ -1,6 +1,6 @@
 # Plan ABC — WP2c + Sourcing + Mode-2 RETRIEVED FPs (2026-09-27)
 
-**Status:** APPROVED (owner deferred GO; execute immediately)  
+**Status:** EXECUTED — HEAD `e2061ff` pushed; analyzer+discovery-worker rebuilt  
 **HEAD at plan write:** re-check `git rev-parse --short HEAD`  
 **Mode:** OBSERVE live + Mode-1 offline (A) + authorized Mode-2 (B sourcing, C FP hardening)
 
@@ -57,3 +57,12 @@
 3. Deploy only if discovery.py patched
 4. Runtime verify health + gates + isolation + OBSERVE_OK
 5. Turn Report with all evidence paths + HEAD
+
+
+## Execution result (2026-09-27)
+
+| Stream | Evidence | Result |
+|--------|----------|--------|
+| A WP2c | 118c + 119d | 16/16 FALSE; excluded 24 prior; batch e118c_wp2c_adjudication_2026-09-27; lr 661→677 |
+| B Sourcing | 121 | T0 applied; 4 EXCHANGE disabled; 5 rooms added + scans; cursors OK; iso 1524/4 |
+| C Mode-2 | 119c | Both FPs ineligible post-harden; pytest 43 passed; analyzer deployed |

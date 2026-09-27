@@ -56,7 +56,7 @@ deterministic discovery → stable evidence datasets → **Optuna** (rule/thresh
 ```text
 MODE=CONTINUOUS OBSERVE + sourcing T0 (Evidence 121)
 REPO=/home/slamer-lim/telegram-lead-monitor
-HEAD≈(re-check: git rev-parse --short HEAD)
+HEAD≈e2061ff (re-check: git rev-parse --short HEAD)
 commercial_discovery_enabled=true
 commercial_discovery_version=disc_v6
 cap=120/hour
