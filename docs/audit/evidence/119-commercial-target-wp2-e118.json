@@ -1,0 +1,170 @@
+{
+  "evidence_id": "119",
+  "generated_at": "2026-09-27T09:48:22.166840+00:00",
+  "head": "e9409b3",
+  "read_only_human_labels": true,
+  "dry_run": false,
+  "sample_batch_id": "e118_wp2_adjudication_2026-09-27",
+  "reviewer_id": "audit_e118_wp2_adjudicator",
+  "validator_kind": "human",
+  "non_independent": true,
+  "target_definition": "Commercial target (WP2 / Evidence 119)\n=====================================\n\nA message is commercially_actionable=TRUE iff ALL hold:\n  1) Buyer/project intent (hire, build, fix, procure) \u2014 not seeking a job.\n  2) In-domain work relevant to trading/automation/integration/repair objectives\n     in config/scoring.yaml (or clear adjacent procurement of such work).\n  3) Not contamination: recruiter/employment, marketplace/gig aggregator posts,\n     support troubleshooting, marketing/broadcast, vendor self-promotion,\n     news digests, off-domain gigs.\n\nLabel mapping into label_reviews (human, non-independent audit reviewer):\n  HUMAN_REVIEWED_TRUE  + commercially_actionable=true  + fp_class=null\n  HUMAN_REVIEWED_FALSE + commercially_actionable=false + fp_class required\n  HUMAN_REVIEWED_AMBIGUOUS + commercially_actionable=null when insufficient evidence\n\nE118 freeze classes \u2192 default adjudications (text-confirmed):\n  VETO_job_aggregator / laborx TOP-PAYING / Freelance Opportunity templates\n    \u2192 FALSE / JOB_VACANCY (marketplace-gig aggregator)\n  HARD_EXCLUDE_EARLY on job-board multi-listing\n    \u2192 FALSE / JOB_VACANCY\n  VETO_support_question on lead-selling / ad-spend promo\n    \u2192 FALSE / MARKETING_BROADCAST or SERVICE_AD\n  NO_PATH_MATCH near-miss that is generic advice (not RFQ)\n    \u2192 FALSE / OFF_DOMAIN",
+  "source_freeze": "docs/audit/evidence/118-offline-freeze-samples.json",
+  "n_adjudicated": 8,
+  "by_label": {
+    "HUMAN_REVIEWED_FALSE": 8
+  },
+  "by_fp_class": {
+    "OFF_DOMAIN": 1,
+    "JOB_VACANCY": 6,
+    "MARKETING_BROADCAST": 1
+  },
+  "by_quality_class": {
+    "other_contamination": 1,
+    "marketplace_gig": 6,
+    "provider_vendor": 1
+  },
+  "commercially_actionable": {
+    "true": 0,
+    "false": 8,
+    "null": 0
+  },
+  "adjudications": [
+    {
+      "message_id": 3595211,
+      "stratum": "e118_nopath_near_miss",
+      "freeze_family": "nopath_near_miss",
+      "first_loss": "NO_PATH_MATCH",
+      "bucket": "31_90d",
+      "community_class": "EXCHANGE_OFFICIAL",
+      "preview": "Fixing foundational bottlenecks should come first; extra layers should complement that work, not hide inefficiencies.",
+      "label": "HUMAN_REVIEWED_FALSE",
+      "fp_class": "OFF_DOMAIN",
+      "commercially_actionable": false,
+      "quality_class": "other_contamination",
+      "rationale": "NO_PATH near-miss is generic advice / non-RFQ; not commercially actionable."
+    },
+    {
+      "message_id": 8568013,
+      "stratum": "e118_veto_near_or_refined",
+      "freeze_family": "veto_near_or_refined",
+      "first_loss": "VETO_job_aggregator",
+      "bucket": "0_7d",
+      "community_class": "JOB_BOARD",
+      "preview": "\ud83c\udf1f Freelance Opportunity: Clipper Needed\n\n\ud83d\udcb0 Budget: $150\n\n\ud83e\udd1d With: Patrick Boswell",
+      "label": "HUMAN_REVIEWED_FALSE",
+      "fp_class": "JOB_VACANCY",
+      "commercially_actionable": false,
+      "quality_class": "marketplace_gig",
+      "rationale": "Marketplace/gig or job-aggregator listing; not a buyer RFQ."
+    },
+    {
+      "message_id": 197,
+      "stratum": "e118_veto_near_or_refined",
+      "freeze_family": "veto_near_or_refined",
+      "first_loss": "VETO_job_aggregator",
+      "bucket": "31_90d",
+      "community_class": "JOB_BOARD",
+      "preview": "\ud83c\udf1f Freelance Opportunity: 5 TASKS - 5000 PEPE\n\n\ud83d\udcb0 Budget: $50\n\n\ud83e\udd1d With: Quetta Audy",
+      "label": "HUMAN_REVIEWED_FALSE",
+      "fp_class": "JOB_VACANCY",
+      "commercially_actionable": false,
+      "quality_class": "marketplace_gig",
+      "rationale": "Marketplace/gig or job-aggregator listing; not a buyer RFQ."
+    },
+    {
+      "message_id": 391,
+      "stratum": "e118_veto_near_or_refined",
+      "freeze_family": "veto_near_or_refined",
+      "first_loss": "HARD_EXCLUDE_EARLY",
+      "bucket": "31_90d",
+      "community_class": "JOB_BOARD",
+      "preview": "\ud83d\udcb0 TOP-PAYING PROJECTS THIS WEEK\n\n1\ufe0f\u20e3 $10,000 \u2014 Building A Company Website Using MERN\n   \u2192 https://laborx.com/jobs/building-a-company-website-using-mern-104148\n\n2\ufe0f\u20e3 $10,000 \u2014 Seed Investor Needed \u2013 GhostContract MVP Built\n   \u2192 https://laborx",
+      "label": "HUMAN_REVIEWED_FALSE",
+      "fp_class": "JOB_VACANCY",
+      "commercially_actionable": false,
+      "quality_class": "marketplace_gig",
+      "rationale": "Marketplace/gig or job-aggregator listing; not a buyer RFQ."
+    },
+    {
+      "message_id": 294,
+      "stratum": "e118_veto_near_or_refined",
+      "freeze_family": "veto_near_or_refined",
+      "first_loss": "VETO_job_aggregator",
+      "bucket": "31_90d",
+      "community_class": "JOB_BOARD",
+      "preview": "\ud83c\udf1f Freelance Opportunity: AI Project Partner\n\n\ud83d\udcb0 Budget: $800\n\n\ud83e\udd1d With: Mike Gike",
+      "label": "HUMAN_REVIEWED_FALSE",
+      "fp_class": "JOB_VACANCY",
+      "commercially_actionable": false,
+      "quality_class": "marketplace_gig",
+      "rationale": "Marketplace/gig or job-aggregator listing; not a buyer RFQ."
+    },
+    {
+      "message_id": 60628,
+      "stratum": "e118_veto_near_or_refined",
+      "freeze_family": "veto_near_or_refined",
+      "first_loss": "HARD_EXCLUDE_EARLY",
+      "bucket": "31_90d",
+      "community_class": "TRADER_COMMUNITY",
+      "preview": "\ud83d\udcb0 TOP-PAYING PROJECTS THIS WEEK\n\n1\ufe0f\u20e3 $10,000 \u2014 Building A Company Website Using MERN\n   \u2192 https://laborx.com/jobs/building-a-company-website-using-mern-104148\n\n2\ufe0f\u20e3 $10,000 \u2014 Seed Investor Needed \u2013 GhostContract MVP Built\n   \u2192 https://laborx",
+      "label": "HUMAN_REVIEWED_FALSE",
+      "fp_class": "JOB_VACANCY",
+      "commercially_actionable": false,
+      "quality_class": "marketplace_gig",
+      "rationale": "Marketplace/gig or job-aggregator listing; not a buyer RFQ."
+    },
+    {
+      "message_id": 22895,
+      "stratum": "e118_veto_near_or_refined",
+      "freeze_family": "veto_near_or_refined",
+      "first_loss": "VETO_job_aggregator",
+      "bucket": "91d_plus",
+      "community_class": "JOB_BOARD",
+      "preview": "\ud83c\udf1f Freelance Opportunity: Louisville Roofing\n\n\ud83d\udcb0 Budget: $2222\n\n\ud83e\udd1d With: Louisville Roofing",
+      "label": "HUMAN_REVIEWED_FALSE",
+      "fp_class": "JOB_VACANCY",
+      "commercially_actionable": false,
+      "quality_class": "marketplace_gig",
+      "rationale": "Marketplace/gig or job-aggregator listing; not a buyer RFQ."
+    },
+    {
+      "message_id": 73917,
+      "stratum": "e118_veto_near_or_refined",
+      "freeze_family": "veto_near_or_refined",
+      "first_loss": "VETO_support_question",
+      "bucket": "91d_plus",
+      "community_class": "JOB_BOARD",
+      "preview": "Still burning budget on ad spend when you can grow your business faster with conversion-ready leads that drive revenue across every sector \n\n\ud83c\udfe1 Homeowners Leads\nTarget people with high purchasing power \u2014 ideal for real estate, home services,",
+      "label": "HUMAN_REVIEWED_FALSE",
+      "fp_class": "MARKETING_BROADCAST",
+      "commercially_actionable": false,
+      "quality_class": "provider_vendor",
+      "rationale": "Lead-selling / marketing promo; not buyer procurement."
+    }
+  ],
+  "isolation_before": {
+    "human_labels": 1524,
+    "AI_CONFIRMED": 4,
+    "label_reviews": 637
+  },
+  "isolation_after": {
+    "human_labels": 1524,
+    "AI_CONFIRMED": 4,
+    "label_reviews": 645,
+    "sample_rows": 8,
+    "review_rows": 8,
+    "isolation_ok": true
+  },
+  "business": {
+    "outreach": false,
+    "ml_go": false,
+    "threshold_loosen": false,
+    "discovery_semantic_change": false,
+    "path_b_path_c_reopened": false,
+    "human_labels_mutated": false,
+    "ai_confirmed_mutated": false
+  },
+  "classification": "WP2_E118_ADJUDICATED_CONTAMINATION_DOMINANT",
+  "next": "Remain OBSERVE. WP3 frozen dataset only after larger adjudicated set; E118 freezes alone are too small for Optuna/LightGBM. Do not reopen path_b/c from these contamination-dominant freezes."
+}

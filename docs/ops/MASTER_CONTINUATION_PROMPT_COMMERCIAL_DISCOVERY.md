@@ -1,12 +1,32 @@
 # Master Continuation Prompt — Commercial Lead Discovery R&D
 
-**Status: APPROVED for Mode-1 execution (2026-09-27)**
+```text
+╔══════════════════════════════════════════════════════════════════════════════╗
+║ STATUS (2026-09-27) — AUTHORITATIVE BANNER                                     ║
+║                                                                                ║
+║ MODE            = CONTINUOUS OBSERVE (event-driven; A/B/C only)                ║
+║ LIVE CLASS      = RESIDUAL_SCARCITY (Evidence 117; NEW disc_v6 since path_b=0) ║
+║ OFFLINE CLASS   = UPSTREAM_LOSS@G3 (Evidence 118 / WP1 DONE)                   ║
+║ WP1             = DONE  (ce6b0c0 / e9409b3)                                     ║
+║ WP2             = DONE on E118 freeze set (batch e118_wp2_adjudication_2026-09-27)║
+║                 = 8/8 HUMAN_REVIEWED_FALSE; commercially_actionable true=0       ║
+║                 = CONTAMINATION_DOMINANT — do NOT re-adjudicate these 8 IDs     ║
+║                 = Evidence 119 artifacts may be uncommitted — verify before redo ║
+║ NEXT Mode-1     = Expand near-miss freezes (118b) OR finalize/commit E119 + WP3  ║
+║ WP3             = Only after larger adjudicated set (E118 n=8 too small for ML) ║
+║ ML LADDER       = BLOCKED until S1–S3 earned (Optuna→LGBM→SHAP→Cursor SDK)     ║
+║ path_b / path_c = FROZEN (E109 / E108) — no reopen without owner auth          ║
+║ shadow / ML     = OFF / ml_training_enabled=false                              ║
+║ isolation expect= human_labels=1524 / AI_CONFIRMED=4                           ║
+║                                                                                ║
+║ DO NOT: reopen path_b/c · enable shadow · mutate human_labels · timed remesures║
+║ DO NOT: enable ML / claim ML GO · loosen scoring.yaml · duplicate WP2 on same IDs║
+╚══════════════════════════════════════════════════════════════════════════════╝
+```
 
-# Plan: Master Continuation Prompt — Commercial Lead Discovery R&D
-
-**Created:** 2026-09-27  
-**Purpose:** Pasteable operating prompt for the next agent turn(s). Design only; no production discovery change until authorized.  
-**Research inputs:** Evidence 117, OBSERVE runbook, discovery freeze map ([explore](c88707f0-75ff-4e54-9ea3-383718d277b6)), ML/offline gap map ([explore](3482f0a8-984b-4e26-bd67-36e6db41c98c)), roadmap design ([design](f601fab9-0a30-4249-bca1-dbf8be6ff3a4)), live `--once` + readiness inventory 2026-09-27.
+**Created / last rewritten:** 2026-09-27 (post–Evidence 118 + WP2 freeze adjudication)  
+**Purpose:** Pasteable operating prompt for the next agent. Design + Mode-1 offline prep only unless a live A/B/C trigger fires.  
+**Repo:** `/home/slamer-lim/telegram-lead-monitor` (NOT Quantum-Trading-System)
 
 ---
 
@@ -21,12 +41,12 @@ You are the continuous engineering, research, experimentation, and production-re
 
 `/home/slamer-lim/telegram-lead-monitor`
 
-**Product goal:** find **commercial-intended leads** by analyzing user messaging activity (buyer/project/procurement intent), not technical chit-chat, jobs, recruiting, support, or vendor ads.
+**Product goal:** find **commercial-intended leads** by analyzing user messaging activity (buyer / project / procurement intent), not technical chit-chat, jobs, recruiting, support, or vendor ads.
 
-**Desired long-term stack (must earn introduction):**  
+**Desired long-term stack (must earn introduction in order):**  
 deterministic discovery → stable evidence datasets → **Optuna** (rule/threshold optimization) → **LightGBM** (offline supervised shadow) → **SHAP** (explainability / leakage veto) → targeted **Cursor SDK** LLM augmentation.
 
-**Governing rule:** Quiet healthy production is a condition to understand, not a defect to automatically “fix.” Do not reverse the order above.
+**Governing rule:** Quiet healthy production is a condition to understand, not a defect to automatically “fix.” Do not reverse the stack order. Do not treat Optuna/LGBM/SHAP/LLM as the next click — they are S5–S8 after S1–S3 exit criteria.
 
 ---
 
@@ -35,7 +55,7 @@ deterministic discovery → stable evidence datasets → **Optuna** (rule/thresh
 ```text
 MODE=CONTINUOUS OBSERVE (event-driven)
 REPO=/home/slamer-lim/telegram-lead-monitor
-HEAD≈51b53c2 (re-check git rev-parse)
+HEAD≈e9409b3 (re-check: git rev-parse --short HEAD)
 commercial_discovery_enabled=true
 commercial_discovery_version=disc_v6
 cap=120/hour
@@ -43,9 +63,13 @@ COMMERCIAL_EPISODE_SHADOW_ENABLED=false
 path_b=FROZEN (Evidence 109, deploy 2026-09-26T06:53:16Z)
 path_c=FROZEN (Evidence 108)
 ml_training_enabled=false (hard; shared/validation/gate.py)
-CLASSIFICATION=RESIDUAL_SCARCITY (Evidence 117)
+LIVE_CLASSIFICATION=RESIDUAL_SCARCITY (Evidence 117)
+OFFLINE_CLASSIFICATION=UPSTREAM_LOSS@G3 + WP2_E118_ADJUDICATED_CONTAMINATION_DOMINANT
 human_labels=1524
 AI_CONFIRMED=4
+WP1=DONE → Evidence 118
+WP2=DONE → Evidence 119 (8/8 FALSE; batch e118_wp2_adjudication_2026-09-27)
+NEXT=expand near-miss freezes (118b) + adjudicate → then WP3 dataset (n=8 underpowered)
 ```
 
 **Evidence anchors**
@@ -53,38 +77,72 @@ AI_CONFIRMED=4
 | ID | Path | Meaning |
 |----|------|---------|
 | E108 | `docs/audit/evidence/108-disc-v6-path-c-automation-conjunct-cycle2.*` | path_c freeze |
-| E109 | `docs/audit/evidence/109-disc-v6-path-b-repair-conjunct-cycle3.*` | path_b freeze + deploy marker |
+| E109 | `docs/audit/evidence/109-disc-v6-path-b-repair-conjunct-cycle3.*` | path_b freeze + deploy marker `2026-09-26T06:53:16Z` |
 | E116 | `docs/audit/evidence/116-first-iteration-closure-observe-cycle10.*` | first iteration closed → OBSERVE |
-| E117 | `docs/audit/evidence/117-disc-v6-observe-remeasure.*` | Cycle 11: NEW=0 / scores=7649 / ~4.1h → RESIDUAL_SCARCITY |
-| Runbook | `docs/ops/COMMERCIAL_DISCOVERY_OBSERVE_RUNBOOK.md` | A/B/C triggers + cheap watch |
-| Discovery | `shared/commercial_ai/discovery.py` | disc_v6 / path_b / path_c / vetoes |
+| E117 | `docs/audit/evidence/117-disc-v6-observe-remeasure.*` | Cycle 11 live: NEW=0 / scores=7649 / ~4.1h → RESIDUAL_SCARCITY |
+| E118 | `docs/audit/evidence/118-offline-corpus-loss-attribution.*` + `118-offline-freeze-samples.json` | WP1 DONE: messages-only UPSTREAM_LOSS@G3 |
+| E119 | `docs/audit/evidence/119-commercial-target-wp2-e118.*` (+ `scripts/audit_commercial_target_wp2_e118.py`) | WP2 DONE: 8/8 FALSE (6 JOB_VACANCY / 1 MARKETING / 1 OFF_DOMAIN); isolation 1524/4 |
+| Runbook | `docs/ops/COMMERCIAL_DISCOVERY_OBSERVE_RUNBOOK.md` | A/B/C triggers + cheap watch (already cites E118) |
+| This prompt | `docs/ops/MASTER_CONTINUATION_PROMPT_COMMERCIAL_DISCOVERY.md` | pasteable continuation |
+| Discovery | `shared/commercial_ai/discovery.py` | disc_v6 / path_b (~1142) / path_c (~1162) / `evaluate_discovery` (~1414) |
 | Enqueue | `services/analyzer/app/main.py` (~192–226) | discovery only when enabled + tier LOW + eligible |
+| Labels API | `GET /labels/independent-queue`, `POST /labels/reviews` | append-only reviews; never touches `human_labels` |
+| Models | `shared/models.py` `LabelReview` / `LabelReviewSample` | schema for WP2 |
 
-**OBSERVE tooling (already shipped)**
+**OBSERVE / offline tooling (already shipped)**
 
-- `scripts/observe_abc_watch.sh` — wake only on A/B/C; `--once` → `OBSERVE_OK` when quiet  
-- `scripts/offline_ml_dataset_readiness_inventory.py` — read-only ML readiness  
-- `scripts/freeze_classify_new_disc_v6.py` — Trigger A freeze helper  
-- `scripts/verify_commercial_discovery_post_enable.py` — full verifier (Trigger A/B only, not idle remesure)
+| Script | Role |
+|--------|------|
+| `scripts/observe_abc_watch.sh` | Wake only on A/B/C; `--once` → `OBSERVE_OK` when quiet |
+| `scripts/offline_ml_dataset_readiness_inventory.py` | Read-only ML readiness (still NOT ready) |
+| `scripts/freeze_classify_new_disc_v6.py` | Trigger A freeze helper (dormant until NEW) |
+| `scripts/audit_offline_corpus_loss_attribution_360d.py` | WP1 audit (DONE; may re-run read-only to expand freezes) |
+| `scripts/audit_commercial_target_wp2_e118.py` | WP2 target + E118 freeze adjudication (DONE on n=8) |
+| `scripts/verify_commercial_discovery_post_enable.py` | Full verifier — Trigger A/B only, not idle remesure |
+| `scripts/build_independent_review_sample.py` | Prior pattern for `label_review_samples` batches |
 
-**Live snapshot at prompt drafting (2026-09-27 ~09:00Z)** — re-measure; do not treat as frozen truth:
+**Durable watcher:** already running as `INTERVAL_SEC=5400 ./scripts/observe_abc_watch.sh` (confirm with `ps`). Wake line: `AGENT_LOOP_WAKE_observe_abc`.
 
-- `--once`: NEW=0, 1524/4, msg_1h≈score_1h, Redis lag=0  
-- messages ~8.68M; `message_scores` ~180k (**~2% corpus scored**)  
-- score coverage: 0–7d ~100%; older buckets ≪1%  
-- `human_labels`: TRUE_LEAD=389, FP=932, AMBIGUOUS=203 (provisional agent/audit — not independent GT)  
-- `commercially_actionable=true` only **6**; null on ~1380  
-- `label_reviews`=637; validation gates still closed (`ai_validated_true`≈0)  
-- disc_v6 NEW since path_b = **0**; 6 historical disc_v6 = contaminated legacy (not primary)
+### Evidence 118 headline results (WP1 DONE — do not re-prove)
+
+| Metric | Value |
+|--------|-------|
+| Sample | messages-only stratified; n=8788; stride=97; offset=3; ~360d |
+| RETRIEVED / disc_v6-eligible in sample | **0** |
+| Dominant first-loss | `NO_PATH_MATCH` **8235** (G3) |
+| G2 veto/hard | 553 (`VETO_support_question` 378 dominant among vetoes) |
+| est near-miss buyer-RX (selection-corrected) | **≈3031** |
+| est refined commercial RX | ≈8839 |
+| est eligible | **0.0** |
+| Freeze file | `docs/audit/evidence/118-offline-freeze-samples.json` |
+| Freeze counts | nopath_near_miss=**1**, veto_near_or_refined=**7**, eligible_non_low=**0** |
+| Community skew in sample | EXCHANGE_OFFICIAL 7991 / OTHER 712 / JOB_BOARD 63 / … |
+| Decision | `OBSERVE / UPSTREAM_LOSS@G3` — **does not authorize path reopen** |
+| Commits | `ce6b0c0` (record), `e9409b3` (SHA backfill) |
+
+**Frozen message_ids for WP2 (from freeze JSON):**
+
+- NO_PATH_MATCH near-miss: `3595211`
+- Veto / hard near-or-refined: `8568013`, `197`, `391`, `294`, `60628`, `22895`, `73917`
+
+**Interpretation constraint:** E118 proves unbiased-sample **semantic / path non-match (G3)** dominates over “nothing in corpus.” It does **not** prove path_b/c should reopen. Live production remains RESIDUAL_SCARCITY (0 NEW since path_b). Near-miss estimates need **adjudication** before any Mode-2 semantic experiment.
+
+**Live snapshot at prompt rewrite (2026-09-27 ~09:46Z)** — re-measure; not frozen truth:
+
+- `--once`: `OBSERVE_OK` NEW=0, 1524/4, msg_1h=838=score_1h, Redis lag=0, consumers=1  
+- `/health` ok; gates closed (`ai_validated_true=0`, `ml_training_enabled=false`)  
+- `commercially_actionable=true` only **6**; null on ~1380 of 1524 `human_labels`  
+- `label_reviews`≈637 (includes AI/diagnostic — not all independence-grade)
 
 ---
 
 ## 1. Mandatory first actions every session
 
-1. Read `AGENTS.md`, `.cursor/rules/end-of-turn-report.mdc`, `.cursor/rules/push-deploy-verify.mdc`, `docs/ops/COMMERCIAL_DISCOVERY_OBSERVE_RUNBOOK.md`.  
+1. Read `AGENTS.md`, `.cursor/rules/end-of-turn-report.mdc`, `.cursor/rules/push-deploy-verify.mdc`, `docs/ops/COMMERCIAL_DISCOVERY_OBSERVE_RUNBOOK.md`, and **this** prompt.  
 2. Run:
 
 ```bash
+cd /home/slamer-lim/telegram-lead-monitor
 git rev-parse --short HEAD
 ./scripts/observe_abc_watch.sh --once
 curl -sS http://127.0.0.1:8010/health
@@ -92,9 +150,10 @@ curl -sS http://127.0.0.1:8010/validation/gates
 python3 scripts/offline_ml_dataset_readiness_inventory.py
 ```
 
-3. Ensure durable watcher is running: `INTERVAL_SEC=5400 ./scripts/observe_abc_watch.sh` (wake line `AGENT_LOOP_WAKE_observe_abc`).  
+3. Confirm durable watcher still running (`ps` / wake line `AGENT_LOOP_WAKE_observe_abc`). Restart only if dead: `INTERVAL_SEC=5400 ./scripts/observe_abc_watch.sh`.  
 4. Classify: Trigger A / B / C / none.  
-5. If **none** → remain OBSERVE; prefer Mode 1 offline prep (below). **Do not** invent timed remesures or re-prove scarcity.
+5. Check whether **WP2 adjudication is already in progress** elsewhere (open PRs, recent `label_review_samples` batch ids like `e118_*` / `wp2_*`, agent transcripts). **If yes → do not duplicate adjudication**; advance documentation / Evidence 119 scaffolding / WP3 prep only.  
+6. If **none** of A/B/C → remain OBSERVE; execute **WP2** (below). **Do not** invent timed remesures or re-prove E117 scarcity / re-run WP1 as a busy loop.
 
 ---
 
@@ -103,18 +162,20 @@ python3 scripts/offline_ml_dataset_readiness_inventory.py
 | Mode | Enter | May write | Must not |
 |------|-------|-----------|----------|
 | **0 OBSERVE** | default | evidence only if anomaly | discovery semantics, remesure loops, busy scarcity reports |
-| **1 OFFLINE PREP** | agent initiative while A/B/C clear | new read-only scripts, `/tmp`, `docs/audit/evidence/*` prep artifacts | **any** production table writes (incl. `message_scores` rescore), env flags, path_b/c, shadow, ML enable |
+| **1 OFFLINE PREP** | agent initiative while A/B/C clear | new read-only scripts, `/tmp`, `docs/audit/evidence/*`, **new** `label_review_samples` + **new** `label_reviews` rows for WP2 | mutate `human_labels` / `AI_CONFIRMED`; production `message_scores` rescore; env flags; path_b/c; shadow; ML enable; discovery.py semantics |
 | **2 AUTHORIZED EXPERIMENT** | owner authorization record only | scoped tables/flags named in auth + rollback | anything outside the auth record |
 
 **Interrupt precedence:** `C > B > A > offline work`. Offline work is preemptible at package boundaries.
 
-**Mode 1 critical rule:** Do **not** use `scripts/rescore_slice.py` / production backfills to “create” historical scores for analysis — those mutate production denominators and are Mode 2. Instead, **in-process replay**: `LeadScorer` + `evaluate_discovery()` with results written only to offline artifacts.
+**Mode 1 critical rules:**
 
-**ML deps rule:** `optuna` / `lightgbm` / `shap` must live in an optional extra (e.g. `ml-offline`) **not** installed by production `Dockerfile`. Host/venv only until authorized.
+- Do **not** use `scripts/rescore_slice.py` / production backfills to invent historical scores — those mutate production denominators → Mode 2. Prefer **in-process replay**: `LeadScorer` + `evaluate_discovery()` → offline artifacts only.  
+- `optuna` / `lightgbm` / `shap` must live in an optional extra (e.g. `ml-offline`) **not** installed by production `Dockerfile`. Host/venv only until authorized.  
+- **Never mutate `human_labels`.** WP2 writes only via independent review path (`label_review_samples` + `label_reviews`).
 
 ---
 
-## 3. Resume triggers (only reasons to leave pure OBSERVE)
+## 3. Resume triggers (only reasons to leave pure OBSERVE for *live* work)
 
 ### Trigger A — first NEW `disc_v6`
 
@@ -143,17 +204,22 @@ Expected: `human_labels=1524`, `AI_CONFIRMED=4`. Any deviation → halt discover
 
 ---
 
-## 4. The unresolved scientific question
+## 4. The unresolved scientific question (updated post-E118)
 
 Is genuine commercial intent:
 
 1. **absent** from the current incoming (and historical) message population, or  
 2. **present but lost** upstream of `commercial_discovery_candidates`?
 
-E117 only proves: **live disc_v6 emitted 0 NEW candidates** over a healthy scored window — not that the market has zero intent.
+| Evidence | Answers |
+|----------|---------|
+| E117 | Live disc_v6 emitted **0 NEW** over a healthy scored window → live **RESIDUAL_SCARCITY** (not pipeline death). |
+| E118 | Messages-only stratified sample → **0 eligible**, dominant **NO_PATH_MATCH@G3**, est near-miss buyer-RX **≈3031** → offline **UPSTREAM_LOSS@G3** (not SOURCE_ABSENT by pre-registered rule). |
 
-**Critical measurement bias (must address offline):**  
-Live discovery runs only at score time for **LOW** tier (`services/analyzer/app/main.py`). ~98% of messages lack `message_scores`. Historical audits that `JOIN message_scores` inherit that bias. Claims of “source scarcity” or “semantic loss” must use **messages-only / stratified age buckets** or in-process scoring — not the 2% scored slice alone.
+**Both can be true simultaneously:** live rate can be ~0 under frozen paths while historical corpus contains near-miss buyerish text that fails path conjuncts / vetoes.
+
+**Critical measurement bias (still apply):**  
+Live discovery runs only at score time for **LOW** tier (`services/analyzer/app/main.py` ~192–226). ~98% of messages lack `message_scores`. Historical audits that `JOIN message_scores` inherit that bias. E118 corrected this for loss attribution; do not regress to scored-slice-only claims.
 
 **Gate ladder for first-loss attribution**
 
@@ -163,63 +229,90 @@ G0 ingestion → G1 tier (LOW vs MEDIUM/HIGH CRM path) → G2 hard-exclude/vetoe
 ```
 
 Classify loss as: source scarcity | scoring coverage | semantic | veto | carve | ranking | dedup | cap | runtime | AI qualification | observability.  
-Do not call a semantic problem a message that never reached discovery.
+Do not call a semantic problem a message that never reached discovery.  
+**E118 first_loss_stage=`semantic_loss` / G3.** WP2 on the freeze set found **contamination-dominant** labels (0 commercial TRUE). Expand freezes (WP2b) before any Mode-2 semantic change proposal.
 
 ---
 
 ## 5. Ordered roadmap (do not skip)
 
-| Stage | Name | Entry | Exit artifact |
-|-------|------|-------|---------------|
-| S0 | OBSERVE steady state | now | watcher + runbook |
-| S1 | Unbiased loss attribution | S0 healthy | Evidence 118 — SOURCE_ABSENT vs UPSTREAM_LOSS@G\<n\> |
-| S2 | Commercial target + adjudication | S1 slice | Evidence 119 — target rule + new `label_reviews` only |
-| S3 | Frozen datasets + leakage contract | ≥N adjudicated | Evidence 120 — hashed splits + feature manifest |
-| S4 | Deterministic baseline | S3 | disc_v6 replay metrics at fixed volume budget |
-| S5 | Optuna on deterministic knobs | S4 reproducible | offline tuned rules; beat baseline on holdout |
-| S6 | LightGBM offline shadow | S5 recall ceiling | model card; no prod scoring |
-| S7 | SHAP audit | S6 model | engineering hypothesis or “no change” |
-| S8 | Targeted Cursor SDK LLM | S7 residual ambiguity | LLM on disagreement band only; not discovery hot path |
+| Stage | Name | Status | Exit artifact |
+|-------|------|--------|---------------|
+| S0 | OBSERVE steady state | ACTIVE | watcher + runbook |
+| S1 | Unbiased loss attribution | **DONE (E118)** | UPSTREAM_LOSS@G3 + freezes |
+| S2 | Commercial target + adjudication | **E118 freeze set DONE (contam.)** — expand power next | Evidence 119 (+ optional 119b larger set) |
+| S3 | Frozen datasets + leakage contract | after adequate adjudicated n | Evidence 120 — hashed splits + feature manifest |
+| S4 | Deterministic baseline | after S3 | disc_v6 replay metrics at fixed volume budget |
+| S5 | Optuna on deterministic knobs | after S4 | offline tuned rules; beat baseline on holdout |
+| S6 | LightGBM offline shadow | after S5 recall ceiling | model card; no prod scoring |
+| S7 | SHAP audit | after S6 | engineering hypothesis or “no change” |
+| S8 | Targeted Cursor SDK LLM | after S7 residual ambiguity | LLM on disagreement band only; not discovery hot path |
 | S9 | Production introduction | S8 + owner auth | shadow-first, kill switch, rollback |
 
-If S1 returns **SOURCE_ABSENT** with adequate power → stop ML ladder; present **sourcing** experiment to owner (separate from discovery-rule change).  
-If S1 returns **UPSTREAM_LOSS** → Mode 2 experiment only with auth + one conceptual change + contamination guardrails.
+If future power analysis revises E118 to **SOURCE_ABSENT** with adequate power → stop ML ladder; present **sourcing** experiment to owner (separate from discovery-rule change).  
+UPSTREAM_LOSS@G3 + WP2 contamination on n=8 → Mode 2 path experiment **only** with owner auth + one conceptual change + contamination guardrails — and **only after** an expanded freeze set shows genuine buyer signal (not job-board spam).
 
 **Proposed numeric thresholds (OWNER SIGN-OFF REQUIRED — do not silently adopt):**  
 ≥300 adjudicated commercial positives and ≥3000 adjudicated rows before S6; ≤40% positives from one community. Contested/uncertain never count as positive.
 
 ---
 
-## 6. First three Mode-1 work packages (execute while OBSERVE if no A/B/C)
+## 6. Mode-1 work packages
 
-### WP1 — Unbiased corpus loss attribution → Evidence 118
+### WP1 — Unbiased corpus loss attribution → Evidence 118 — **DONE**
 
-- New: `scripts/audit_offline_corpus_loss_attribution_360d.py` (or equivalent)  
-- Pool: **messages-only** (no required `message_scores` join), stratified by age (0–7d / 8–30d / 31–90d / 91d+) and community class  
-- In-process `LeadScorer` + `evaluate_discovery` for `disc_v6` (and optionally v4)  
-- Reuse `first_loss` helpers (do not invent a 7th copy); counterfactual relax G1/G2/G3 independently  
-- Freeze ≤200 near-miss buyerish + ≤200 veto samples to JSON for WP2  
-- Report MEDIUM/HIGH separately (CRM path ≠ discovery loss)  
-- Pre-register decision rule in evidence header **before** counts  
-- Guard: LIMIT, batching, statement timeout (WP1 must not cause Trigger B)
+Do **not** redo as a busy loop. Artifacts:
 
-### WP2 — Commercial target definition → Evidence 119
+- `scripts/audit_offline_corpus_loss_attribution_360d.py`
+- `docs/audit/evidence/118-offline-corpus-loss-attribution.{json,txt}`
+- `docs/audit/evidence/118-offline-freeze-samples.json`
+- Commits `ce6b0c0`, `e9409b3`
 
-- Problem: supervised target `commercially_actionable` is null for ~1380/1524 labels; only 6 true  
-- Deliver written mapping from `config/scoring.yaml` commercial objectives → actionable decision  
-- Adjudicate WP1 freezes + backlog via **new `label_reviews` only** (never mutate `human_labels`)  
-- Measure AI vs human review agreement; explain gate `ai_validated_true≈0` vs raw `AI_TRUE` rows
+**Optional (only if WP2 needs more power):** read-only re-run with higher freeze caps / different stride to harvest more near-miss IDs into a **new** freeze JSON (e.g. `118b-…`). Do not overwrite E118; do not write production tables.
 
-### WP3 — Frozen dataset + leakage contract → Evidence 120
+### WP2 — Commercial target + E118 freeze adjudication → Evidence 119 — **DONE on freeze set (do not redo)**
 
-- New: `scripts/build_offline_discovery_dataset.py`  
+**Verified outcome (re-check on disk / DB before acting):**
+
+| Field | Value |
+|-------|-------|
+| Batch | `e118_wp2_adjudication_2026-09-27` |
+| Reviewer | `audit_e118_wp2_adjudicator` (reserved; **not** independence GT / not ML GO fuel) |
+| n | 8/8 `HUMAN_REVIEWED_FALSE` |
+| commercially_actionable | true=**0**, false=8 |
+| Quality | marketplace_gig=6, other_contamination=1, provider_vendor=1 |
+| fp_class | JOB_VACANCY=6, OFF_DOMAIN=1, MARKETING_BROADCAST=1 |
+| Isolation | 1524/4 held; `label_reviews` 637→645; **human_labels untouched** |
+| Decision | OBSERVE / WP2_E118_ADJUDICATED_CONTAMINATION_DOMINANT |
+| Script | `scripts/audit_commercial_target_wp2_e118.py` |
+| Evidence | `docs/audit/evidence/119-commercial-target-wp2-e118.{txt,json}` |
+
+**Implication:** The E118 freeze harvest (especially veto/job-board near-misses) is **contamination-dominated**. Do **not** treat est near-miss ≈3031 as proven buyer volume. Do **not** reopen path_b/c from these 8 rows. Target rubric is written in Evidence 119 §0.
+
+**If Evidence 119 / script are still uncommitted:** prefer commit+push those artifacts (no secrets) rather than re-running adjudication. Idempotent re-run must not create contradictory labels on the same (message_id, reviewer_id, batch).
+
+### WP2b — Expand freeze power (recommended Mode-1 next if E119 committed)
+
+E118 freeze_n=8 is underpowered for Optuna/LGBM. While OBSERVE:
+
+1. Read-only re-run / extend `audit_offline_corpus_loss_attribution_360d.py` (or new helper) with higher freeze caps → `docs/audit/evidence/118b-offline-freeze-samples.json` (do not overwrite E118).  
+2. Prefer strata that are less job-board contaminated (NON job_board / NON exchange_official if possible; document selection).  
+3. Adjudicate **new** IDs only into a new batch (e.g. `e118b_wp2_…`) via `label_reviews` only.  
+4. Pre-register: if expanded set still ≥X% contamination → lean SOURCE_ABSENT / sourcing experiment for owner; if genuine buyer RFQs appear → document Mode-2 hypothesis (still needs auth).
+
+### WP3 — Frozen dataset + leakage contract → Evidence 120 — **AFTER adequate adjudicated n**
+
+- New: `scripts/build_offline_discovery_dataset.py` (or equivalent)  
 - Time-based train/val/holdout to `/tmp` or evidence dir with checksums  
+- Labels from **WP2 `label_reviews`**, not agent `human_labels` as GT  
+- **Do not** build ML-training datasets from only the 8 contamination rows  
 - Feature manifest + **prohibited features** (prod score/tier/decision, veto reasons, discovery_version, label provenance, community identity leakage)  
-- Stamp HEAD SHA, UTC, isolation counts at build time
+- Stamp HEAD SHA, UTC, isolation counts at build time  
+- Still no Optuna until S4 baseline exists
 
 ---
 
-## 7. Future Optuna / LightGBM / SHAP / Cursor SDK rules
+## 7. Future Optuna / LightGBM / SHAP / Cursor SDK rules (S5–S8)
 
 ### Optuna (S5)
 
@@ -248,19 +341,23 @@ If S1 returns **UPSTREAM_LOSS** → Mode 2 experiment only with auth + one conce
 - Commercial AI remains separate from 0007 independent validation  
 - Measure precision, recall, uncertainty, disagreement, cost, latency, reproducibility
 
+**Readiness inventory truth (as of rewrite):** `ready_for_production_optuna/ml/shap/llm` all **false**. Gaps include no NEW disc_v6, weak commercially_actionable positives, missing holdout/leakage controls.
+
 ---
 
 ## 8. Hard prohibitions (never)
 
 - `docker compose down -v`; truncate messages/leads/labels; wipe Redis/PG/Telegram sessions  
-- Commit `.env`, secrets, session files  
+- Commit `.env`, secrets, session files, `docker-secrets/*`  
 - Reopen path_b / path_c; enable episode shadow; expand communities; autofix invites  
 - Loosen `config/scoring.yaml`; remove global vetoes for volume  
 - Mutate `human_labels` or existing `AI_CONFIRMED` from discovery/validation  
 - Claim ML GO; enable `ml_training_enabled` without auth  
-- Timed remesure loops after E117; busy scarcity re-proofs  
+- Timed remesure loops after E117; busy scarcity re-proofs; busy WP1 re-runs  
 - Blind `XACK`; candidate/label fabrication; outreach / RESPONSE/WON fabrication  
-- Combine discovery-rule change + source expansion + ML + LLM in one experiment
+- Combine discovery-rule change + source expansion + ML + LLM in one experiment  
+- Treat Phase D / `agent_*` / `audit_*` / `blind_adjudicator_phaseD` as independent validation GT  
+- Work in Quantum-Trading-System for this goal
 
 ---
 
@@ -276,12 +373,15 @@ If S1 returns **UPSTREAM_LOSS** → Mode 2 experiment only with auth + one conce
 
 ## 10. Immediate next step when this prompt is executed
 
-If `--once` is still `OBSERVE_OK` and isolation holds:
+If `--once` is still `OBSERVE_OK` and isolation holds (1524/4):
 
-1. Stay Mode 0/1 — **do not** reopen paths or enable ML.  
-2. Start **WP1** (unbiased offline loss attribution → Evidence 118).  
-3. Keep `observe_abc_watch.sh` running; on A freeze+classify; on B fix correctness; on C halt.  
-4. Do not start Optuna/LightGBM/SHAP until S1–S3 exit criteria are met and owner signs proposed label thresholds.
+1. Stay Mode 0/1 — **do not** reopen paths, enable shadow/ML, or mutate `human_labels`.  
+2. **Verify WP2 artifacts:** `ls docs/audit/evidence/119-*`; confirm batch `e118_wp2_adjudication_2026-09-27` in DB; **do not re-adjudicate** those 8 message_ids.  
+3. If E119 script/evidence are uncommitted and coherent → commit+push them (user ask).  
+4. **Mode-1 next work:** WP2b expand freezes (118b) with less job-board bias, then adjudicate **new** IDs only — OR, if owner prefers, document contamination-dominant finding and pause offline expansion.  
+5. WP3 only after a larger adjudicated set; then S4 baseline → S5 Optuna ladder.  
+6. Keep `observe_abc_watch.sh` running; on A freeze+classify; on B fix correctness; on C halt.  
+7. Do **not** start Optuna/LightGBM/SHAP/Cursor SDK yet.
 
 If a trigger is already firing: handle per §3 before any offline WP.
 
@@ -289,7 +389,7 @@ If a trigger is already firing: handle per §3 before any offline WP.
 
 ## 11. Classification vocabulary
 
-`RESIDUAL_SCARCITY` | `NEW_ACTIVITY` | `PIPELINE_FAILURE` | `QUERY_FAILURE` | `ISOLATION_DRIFT` | `SEMANTIC_LOSS` | `VETO_LOSS` | `SCORING_COVERAGE_LOSS` | `SOURCE_ABSENT` | `UPSTREAM_LOSS`
+`RESIDUAL_SCARCITY` | `NEW_ACTIVITY` | `PIPELINE_FAILURE` | `QUERY_FAILURE` | `ISOLATION_DRIFT` | `SEMANTIC_LOSS` | `VETO_LOSS` | `SCORING_COVERAGE_LOSS` | `SOURCE_ABSENT` | `UPSTREAM_LOSS` | `UPSTREAM_LOSS@G3` | `EXPECTED_IDLE` | `INTENTIONAL_SHADOW_OFF`
 
 ---
 
@@ -299,6 +399,7 @@ If a trigger is already firing: handle per §3 before any offline WP.
 
 ## Execution notes (for planner / human)
 
-- **Do not implement in plan mode** — next agent executes WP1 after user exits plan mode / authorizes.  
-- Persist this prompt into `docs/ops/` only if user asks (commit-and-push).  
-- Proposed ML thresholds need owner sign-off before becoming gates.
+- Next agent: verify/commit E119 if needed, then **WP2b expand freezes** (or pause per owner) while OBSERVE stays active for live A/B/C.  
+- Do **not** re-adjudicate batch `e118_wp2_adjudication_2026-09-27`. Update runbook when E119 is committed.  
+- Proposed ML thresholds need owner sign-off before becoming gates.  
+- E118 UPSTREAM_LOSS@G3 ≠ authorization to reopen path_b/c; WP2 n=8 contamination reinforces that.

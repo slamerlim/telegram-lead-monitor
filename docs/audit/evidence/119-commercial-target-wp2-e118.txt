@@ -1,0 +1,70 @@
+Evidence 119: Commercial target + E118 freeze adjudication (WP2)
+experiment_id=WP2_E118_LABEL_REVIEWS_ONLY
+decision=OBSERVE / WP2_E118_ADJUDICATED_CONTAMINATION_DOMINANT
+path_freeze=path_b+path_c
+writes=label_review_samples+label_reviews only (append)
+generated_at=2026-09-27T09:48:22.166840+00:00 head=e9409b3 dry_run=False
+
+=== 0. TARGET DEFINITION ===
+Commercial target (WP2 / Evidence 119)
+=====================================
+
+A message is commercially_actionable=TRUE iff ALL hold:
+  1) Buyer/project intent (hire, build, fix, procure) — not seeking a job.
+  2) In-domain work relevant to trading/automation/integration/repair objectives
+     in config/scoring.yaml (or clear adjacent procurement of such work).
+  3) Not contamination: recruiter/employment, marketplace/gig aggregator posts,
+     support troubleshooting, marketing/broadcast, vendor self-promotion,
+     news digests, off-domain gigs.
+
+Label mapping into label_reviews (human, non-independent audit reviewer):
+  HUMAN_REVIEWED_TRUE  + commercially_actionable=true  + fp_class=null
+  HUMAN_REVIEWED_FALSE + commercially_actionable=false + fp_class required
+  HUMAN_REVIEWED_AMBIGUOUS + commercially_actionable=null when insufficient evidence
+
+E118 freeze classes → default adjudications (text-confirmed):
+  VETO_job_aggregator / laborx TOP-PAYING / Freelance Opportunity templates
+    → FALSE / JOB_VACANCY (marketplace-gig aggregator)
+  HARD_EXCLUDE_EARLY on job-board multi-listing
+    → FALSE / JOB_VACANCY
+  VETO_support_question on lead-selling / ad-spend promo
+    → FALSE / MARKETING_BROADCAST or SERVICE_AD
+  NO_PATH_MATCH near-miss that is generic advice (not RFQ)
+    → FALSE / OFF_DOMAIN
+
+=== 1. ISOLATION ===
+  before human_labels=1524 AI_CONFIRMED=4 label_reviews=637
+  after  human_labels=1524 AI_CONFIRMED=4 label_reviews=645 batch_samples=8 batch_reviews=8
+  isolation_ok=True
+
+=== 2. ADJUDICATION SUMMARY ===
+  n=8 batch=e118_wp2_adjudication_2026-09-27 reviewer=audit_e118_wp2_adjudicator
+  by_label={'HUMAN_REVIEWED_FALSE': 8}
+  by_fp={'OFF_DOMAIN': 1, 'JOB_VACANCY': 6, 'MARKETING_BROADCAST': 1}
+  by_quality={'other_contamination': 1, 'marketplace_gig': 6, 'provider_vendor': 1}
+  commercially_actionable={'true': 0, 'false': 8, 'null': 0}
+
+=== 3. PER-MESSAGE ===
+  mid=3595211 HUMAN_REVIEWED_FALSE fp=OFF_DOMAIN actionable=False q=other_contamination loss=NO_PATH_MATCH
+    rationale: NO_PATH near-miss is generic advice / non-RFQ; not commercially actionable.
+  mid=8568013 HUMAN_REVIEWED_FALSE fp=JOB_VACANCY actionable=False q=marketplace_gig loss=VETO_job_aggregator
+    rationale: Marketplace/gig or job-aggregator listing; not a buyer RFQ.
+  mid=197 HUMAN_REVIEWED_FALSE fp=JOB_VACANCY actionable=False q=marketplace_gig loss=VETO_job_aggregator
+    rationale: Marketplace/gig or job-aggregator listing; not a buyer RFQ.
+  mid=391 HUMAN_REVIEWED_FALSE fp=JOB_VACANCY actionable=False q=marketplace_gig loss=HARD_EXCLUDE_EARLY
+    rationale: Marketplace/gig or job-aggregator listing; not a buyer RFQ.
+  mid=294 HUMAN_REVIEWED_FALSE fp=JOB_VACANCY actionable=False q=marketplace_gig loss=VETO_job_aggregator
+    rationale: Marketplace/gig or job-aggregator listing; not a buyer RFQ.
+  mid=60628 HUMAN_REVIEWED_FALSE fp=JOB_VACANCY actionable=False q=marketplace_gig loss=HARD_EXCLUDE_EARLY
+    rationale: Marketplace/gig or job-aggregator listing; not a buyer RFQ.
+  mid=22895 HUMAN_REVIEWED_FALSE fp=JOB_VACANCY actionable=False q=marketplace_gig loss=VETO_job_aggregator
+    rationale: Marketplace/gig or job-aggregator listing; not a buyer RFQ.
+  mid=73917 HUMAN_REVIEWED_FALSE fp=MARKETING_BROADCAST actionable=False q=provider_vendor loss=VETO_support_question
+    rationale: Lead-selling / marketing promo; not buyer procurement.
+
+=== 4. BUSINESS / LOCKS ===
+  {'outreach': False, 'ml_go': False, 'threshold_loosen': False, 'discovery_semantic_change': False, 'path_b_path_c_reopened': False, 'human_labels_mutated': False, 'ai_confirmed_mutated': False}
+
+=== 5. NEXT ===
+  Remain OBSERVE. WP3 frozen dataset only after larger adjudicated set; E118 freezes alone are too small for Optuna/LightGBM. Do not reopen path_b/c from these contamination-dominant freezes.
+
