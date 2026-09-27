@@ -1,7 +1,7 @@
 # Commercial discovery OBSERVE runbook (post first-iteration)
 
 **Status:** CONTINUOUS OBSERVE ACTIVE  
-**Standing note:** While `OBSERVE_OK` and no owner auth — do **not** invent timed remesure wakes; wait for durable `INTERVAL_SEC=5400` watcher exit 10 (A/B/C) or owner auth to apply E124 Steps A–F (`OWNER_AUTH_REQUIRED`, not applied). Mid-window E125 (`2651/2651/0` @~3.83h) = `SOURCING_T0_INTAKE_WITHOUT_DISC_V6`; does **not** authorize path reopen.  
+**Standing note:** While `OBSERVE_OK` and no owner auth — do **not** invent timed remesure wakes; wait for durable `INTERVAL_SEC=5400` watcher exit 10 (A/B/C) or owner auth to apply E124 Steps A–F (`OWNER_AUTH_REQUIRED`, not applied). E126 community mix (~3.90h): intake continues from residual enabled sources (`2793/2793/0`); Phase A disable effect observable (4 EXCHANGE=0 msgs); Phase B still 0; EXCHANGE_OFFICIAL-mapped share ≈35.95%; does **not** authorize path reopen.  
 **Closed first-iteration:** Evidence 116 (`docs/audit/evidence/116-first-iteration-closure-observe-cycle10.*`)  
 **Path freeze:** path_c (E108) + path_b (E109) — do not reopen without auth + new loss evidence  
 **Shadow:** `COMMERCIAL_EPISODE_SHADOW_ENABLED=false` intentional — do not enable without explicit authorization  

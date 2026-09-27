@@ -1,0 +1,450 @@
+{
+  "evidence_id": "126",
+  "title": "Sourcing T0 community mix attribution (Mode-1 read-only)",
+  "experiment_id": "SOURCING_T0_COMMUNITY_MIX_126",
+  "generated_at": "2026-09-27T14:10:30+00:00",
+  "head_at_measure": "54f29c8",
+  "mode": "CONTINUOUS_OBSERVE",
+  "read_only": true,
+  "code_change": "none",
+  "deploy": "not_needed",
+  "classification": "SOURCING_T0_INTAKE_FROM_RESIDUAL_ENABLED",
+  "live_class_residual": "RESIDUAL_SCARCITY",
+  "decision": "INTAKE_CONTINUES_RESIDUAL_ENABLED_SOURCES",
+  "t0": "2026-09-27T10:16:46.876011+00:00",
+  "t0_source": "docs/audit/evidence/121-sourcing-experiment-t0.json",
+  "path_b_at": "2026-09-26T06:53:16Z",
+  "hours_since_t0": 3.8953,
+  "parent": [
+    "Evidence 121 SOURCING_T0_APPLIED",
+    "Evidence 122 OBSERVE_OK early snap",
+    "Evidence 123 PHASE_B_INTAKE_GAP",
+    "Evidence 124 OWNER_AUTH_REQUIRED proposal (idle)",
+    "Evidence 125 mid-window OBSERVE_OK"
+  ],
+  "pre_registered": {
+    "mode": "Mode-1 read-only attribution",
+    "does_not_authorize": [
+      "path_b_path_c_reopen",
+      "apply_E124_Steps_A_F",
+      "ML_enable",
+      "scoring_yaml_threshold_loosen",
+      "human_labels_mutation",
+      "UpdateGoal_complete",
+      "timed_remeasure_invent"
+    ]
+  },
+  "observe_once": {
+    "at": "2026-09-27T14:09:36+00:00",
+    "new": 0,
+    "hl": 1524,
+    "ac": 4,
+    "msg_1h": 583,
+    "score_1h": 583,
+    "msgs_since_t0": 2793,
+    "scores_since_t0": 2793,
+    "disc_v6_since_t0": 0,
+    "t0": "2026-09-27T10:16:46Z",
+    "xlen": 6,
+    "pending": 0,
+    "lag": 0,
+    "consumers": 1,
+    "exit": 0
+  },
+  "health": {
+    "status": "ok",
+    "postgres": "ok",
+    "redis": "ok"
+  },
+  "validation_gates": {
+    "ai_validation_gate_ready": false,
+    "ai_validated_messages": 94,
+    "ai_validated_true": 0,
+    "ai_validated_false": 94,
+    "ml_training_enabled": false,
+    "ml_gate_independence_ready": false,
+    "closed_reasons": [
+      "ai_validated_messages<100",
+      "ai_validated_true<30"
+    ]
+  },
+  "isolation": {
+    "human_labels": 1524,
+    "AI_CONFIRMED": 4,
+    "expect": {
+      "human_labels": 1524,
+      "AI_CONFIRMED": 4
+    },
+    "ok": true
+  },
+  "metrics_since_t0": {
+    "messages_since_t0": 2793,
+    "scores_since_t0": 2793,
+    "disc_v6_since_t0": 0,
+    "approx_msg_rate_per_h": 717.0,
+    "approx_score_rate_per_h": 717.0,
+    "approx_disc_v6_rate_per_h": 0.0,
+    "n_communities_with_msgs": 58,
+    "all_enabled_volume": true
+  },
+  "compare_e125": {
+    "evidence_id": "125",
+    "at": "2026-09-27T14:06:50+00:00",
+    "hours_since_t0": 3.8344,
+    "messages_since_t0": 2651,
+    "scores_since_t0": 2651,
+    "disc_v6_since_t0": 0,
+    "delta_messages": 142,
+    "delta_scores": 142,
+    "delta_disc_v6": 0
+  },
+  "disc_v6": {
+    "all_historical": 6,
+    "new_since_path_b": 0,
+    "new_since_t0": 0
+  },
+  "totals": {
+    "messages": 8679964,
+    "message_scores": 183533
+  },
+  "phase_a_disabled": {
+    "targets": [
+      {
+        "id": 57,
+        "username": "BybitEnglish",
+        "enabled": false,
+        "last_message_id": 4748841,
+        "msg_since_t0": 0
+      },
+      {
+        "id": 59,
+        "username": "OKXOfficial_English",
+        "enabled": false,
+        "last_message_id": 12431466,
+        "msg_since_t0": 0
+      },
+      {
+        "id": 64,
+        "username": "BitgetENOfficial",
+        "enabled": false,
+        "last_message_id": 10480032,
+        "msg_since_t0": 0
+      },
+      {
+        "id": 96,
+        "username": "WeexGlobal_Group",
+        "enabled": false,
+        "last_message_id": 4086143,
+        "msg_since_t0": 0
+      }
+    ],
+    "msgs_since_t0_sum": 0,
+    "cursors_unchanged": true,
+    "disable_effect_observable": true,
+    "note": "All 4 Phase A EXCHANGE disables remain enabled=false with 0 msgs since T0; residual intake is entirely from other enabled communities."
+  },
+  "phase_b_rooms": {
+    "rooms": [
+      {
+        "id": 137,
+        "username": "Freqtrade",
+        "enabled": true,
+        "resolve_status": "error",
+        "msg_total": 0,
+        "msg_since_t0": 0
+      },
+      {
+        "id": 138,
+        "username": "Hummingbot",
+        "enabled": true,
+        "resolve_status": "resolved",
+        "msg_total": 0,
+        "msg_since_t0": 0
+      },
+      {
+        "id": 139,
+        "username": "NautilusTrader",
+        "enabled": true,
+        "resolve_status": "resolved",
+        "msg_total": 0,
+        "msg_since_t0": 0
+      },
+      {
+        "id": 140,
+        "username": "backtrader_community",
+        "enabled": true,
+        "resolve_status": "error",
+        "msg_total": 0,
+        "msg_since_t0": 0
+      },
+      {
+        "id": 141,
+        "username": "jessetrade",
+        "enabled": true,
+        "resolve_status": "resolved",
+        "msg_total": 0,
+        "msg_since_t0": 0
+      }
+    ],
+    "msgs_since_t0_sum": 0,
+    "still_zero": true
+  },
+  "community_mix": {
+    "source": "messages JOIN communities WHERE created_at >= T0",
+    "scoring_yaml_mapping": "config/scoring.yaml community_profiles.communities \u2192 profiles.class",
+    "top_communities": [
+      {
+        "id": 61,
+        "username": "Kucoin_Exchange",
+        "name": "KuCoin Exchange",
+        "enabled": true,
+        "msg_since_t0": 562,
+        "scoring_profile_class": "EXCHANGE_OFFICIAL",
+        "is_exchange_official_mapped": true,
+        "phase_a_disabled_target": false,
+        "phase_b_room": false
+      },
+      {
+        "id": 110,
+        "username": "KCEX_English",
+        "name": "KCEX English",
+        "enabled": true,
+        "msg_since_t0": 442,
+        "scoring_profile_class": "UNMAPPED",
+        "is_exchange_official_mapped": false,
+        "phase_a_disabled_target": false,
+        "phase_b_room": false
+      },
+      {
+        "id": 66,
+        "username": "htxglobalofficial",
+        "name": "HTX English",
+        "enabled": true,
+        "msg_since_t0": 247,
+        "scoring_profile_class": "UNMAPPED",
+        "is_exchange_official_mapped": false,
+        "phase_a_disabled_target": false,
+        "phase_b_room": false
+      },
+      {
+        "id": 130,
+        "username": "CryptoBulls_Community",
+        "name": "Crypto Bulls Community",
+        "enabled": true,
+        "msg_since_t0": 228,
+        "scoring_profile_class": "UNMAPPED",
+        "is_exchange_official_mapped": false,
+        "phase_a_disabled_target": false,
+        "phase_b_room": false
+      },
+      {
+        "id": 105,
+        "username": "Toobit_EN",
+        "name": "Toobit English",
+        "enabled": true,
+        "msg_since_t0": 152,
+        "scoring_profile_class": "UNMAPPED",
+        "is_exchange_official_mapped": false,
+        "phase_a_disabled_target": false,
+        "phase_b_room": false
+      },
+      {
+        "id": 80,
+        "username": "BingXOfficial",
+        "name": "BingX - Empowering Traders",
+        "enabled": true,
+        "msg_since_t0": 133,
+        "scoring_profile_class": "EXCHANGE_OFFICIAL",
+        "is_exchange_official_mapped": true,
+        "phase_a_disabled_target": false,
+        "phase_b_room": false
+      },
+      {
+        "id": 55,
+        "username": "binanceexchange",
+        "name": "Binance English",
+        "enabled": true,
+        "msg_since_t0": 126,
+        "scoring_profile_class": "EXCHANGE_OFFICIAL",
+        "is_exchange_official_mapped": true,
+        "phase_a_disabled_target": false,
+        "phase_b_room": false
+      },
+      {
+        "id": 90,
+        "username": "LBank_en",
+        "name": "LBank Official Group",
+        "enabled": true,
+        "msg_since_t0": 114,
+        "scoring_profile_class": "UNMAPPED",
+        "is_exchange_official_mapped": false,
+        "phase_a_disabled_target": false,
+        "phase_b_room": false
+      },
+      {
+        "id": 67,
+        "username": "MEXCEnglish",
+        "name": "MEXC English (Official)",
+        "enabled": true,
+        "msg_since_t0": 90,
+        "scoring_profile_class": "EXCHANGE_OFFICIAL",
+        "is_exchange_official_mapped": true,
+        "phase_a_disabled_target": false,
+        "phase_b_room": false
+      },
+      {
+        "id": 99,
+        "username": "XT_Futures_EN",
+        "name": "XT Futures",
+        "enabled": true,
+        "msg_since_t0": 67,
+        "scoring_profile_class": "UNMAPPED",
+        "is_exchange_official_mapped": false,
+        "phase_a_disabled_target": false,
+        "phase_b_room": false
+      },
+      {
+        "id": 98,
+        "username": "XTexchange_EN",
+        "name": "XT Exchange Official",
+        "enabled": true,
+        "msg_since_t0": 62,
+        "scoring_profile_class": "UNMAPPED",
+        "is_exchange_official_mapped": false,
+        "phase_a_disabled_target": false,
+        "phase_b_room": false
+      },
+      {
+        "id": 109,
+        "username": "bitunixglobal",
+        "name": "Bitunix Global | Official",
+        "enabled": true,
+        "msg_since_t0": 59,
+        "scoring_profile_class": "EXCHANGE_OFFICIAL",
+        "is_exchange_official_mapped": true,
+        "phase_a_disabled_target": false,
+        "phase_b_room": false
+      },
+      {
+        "id": 92,
+        "username": "coinwoff",
+        "name": "CoinW Official",
+        "enabled": true,
+        "msg_since_t0": 53,
+        "scoring_profile_class": "UNMAPPED",
+        "is_exchange_official_mapped": false,
+        "phase_a_disabled_target": false,
+        "phase_b_room": false
+      },
+      {
+        "id": 119,
+        "username": "thorchain_org",
+        "name": "THORChain Community",
+        "enabled": true,
+        "msg_since_t0": 41,
+        "scoring_profile_class": "UNMAPPED",
+        "is_exchange_official_mapped": false,
+        "phase_a_disabled_target": false,
+        "phase_b_room": false
+      },
+      {
+        "id": 95,
+        "username": "TapbitGlobalOfficial",
+        "name": "Tapbit Exchange",
+        "enabled": true,
+        "msg_since_t0": 35,
+        "scoring_profile_class": "UNMAPPED",
+        "is_exchange_official_mapped": false,
+        "phase_a_disabled_target": false,
+        "phase_b_room": false
+      }
+    ],
+    "exchange_official_mapped": {
+      "msgs": 1004,
+      "share_pct": 35.95,
+      "n_communities": 8,
+      "communities": [
+        {
+          "id": 61,
+          "username": "Kucoin_Exchange",
+          "msg_since_t0": 562
+        },
+        {
+          "id": 80,
+          "username": "BingXOfficial",
+          "msg_since_t0": 133
+        },
+        {
+          "id": 55,
+          "username": "binanceexchange",
+          "msg_since_t0": 126
+        },
+        {
+          "id": 67,
+          "username": "MEXCEnglish",
+          "msg_since_t0": 90
+        },
+        {
+          "id": 109,
+          "username": "bitunixglobal",
+          "msg_since_t0": 59
+        },
+        {
+          "id": 107,
+          "username": "BloFin_Official",
+          "msg_since_t0": 24
+        },
+        {
+          "id": 6,
+          "username": "BybitAPI",
+          "msg_since_t0": 7
+        },
+        {
+          "id": 106,
+          "username": "Toobit_announcements",
+          "msg_since_t0": 3
+        }
+      ]
+    },
+    "other": {
+      "msgs": 1789,
+      "share_pct": 64.05,
+      "by_class": {
+        "EXCHANGE_OFFICIAL": 1004,
+        "UNMAPPED": 1719,
+        "JOB_BOARD": 30,
+        "TRADER_COMMUNITY": 39,
+        "DEV_COMMUNITY": 1
+      },
+      "note": "UNMAPPED includes residual exchange-like rooms (e.g. KCEX_English, htxglobalofficial, Toobit_EN, LBank_en) not listed under exchange_official in scoring.yaml"
+    }
+  },
+  "findings": {
+    "intake_continues_from_residual_enabled": true,
+    "phase_b_still_0": true,
+    "phase_a_disable_effect_observable": true,
+    "phase_a_disable_eliminates_those_four_only": true,
+    "residual_exchange_official_mapped_share_pct": 35.95,
+    "disc_v6_new_since_t0": 0
+  },
+  "authorizations": {
+    "path_b_path_c_reopen": false,
+    "e124_applied": false,
+    "e124_status": "OWNER_AUTH_REQUIRED",
+    "timed_remeasure_invented": false,
+    "update_goal_complete": false,
+    "ml_enable": false,
+    "human_labels_mutated": false,
+    "scoring_yaml_loosen": false
+  },
+  "decision_statement": "Intake continues from residual enabled sources (2793 msgs / 58 enabled communities since T0). Phase B 137-141 still 0. Phase A disable effect observable (4 disabled = 0 msgs; cursors unchanged). scoring.yaml EXCHANGE_OFFICIAL-mapped share = 35.95% (1004/2793) from residual enabled exchanges. disc_v6 NEW since T0 still 0. Does NOT authorize path reopen. E124 still OWNER_AUTH_REQUIRED for Phase B remeds.",
+  "next": "Continue durable watch for Trigger A/B/C OR owner auth \u2192 apply E124 Steps A\u2013F; do not reopen path_b/c",
+  "locks": {
+    "path_b_path_c": "FROZEN",
+    "shadow": "OFF",
+    "ml_training_enabled": false,
+    "scoring_yaml_loosen": false,
+    "human_labels_mutated": false,
+    "e124": "OWNER_AUTH_REQUIRED_NOT_APPLIED"
+  }
+}
