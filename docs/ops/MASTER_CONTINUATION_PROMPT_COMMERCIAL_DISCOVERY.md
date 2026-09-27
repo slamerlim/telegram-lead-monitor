@@ -6,13 +6,12 @@
 ║                                                                                ║
 ║ MODE            = CONTINUOUS OBSERVE (event-driven; A/B/C only)                ║
 ║ LIVE CLASS      = RESIDUAL_SCARCITY (Evidence 117; NEW disc_v6 since path_b=0) ║
-║ OFFLINE CLASS   = UPSTREAM_LOSS@G3 (Evidence 118 / WP1 DONE)                   ║
-║ WP1             = DONE  (ce6b0c0 / e9409b3)                                     ║
-║ WP2             = DONE on E118 freeze set (batch e118_wp2_adjudication_2026-09-27)║
+║ OFFLINE CLASS   = UPSTREAM_LOSS@G3 + WP2 contamination-dominant (E118/E119)    ║
+║ WP1             = DONE  (Evidence 118)                                         ║
+║ WP2             = DONE  (Evidence 119; batch e118_wp2_adjudication_2026-09-27) ║
 ║                 = 8/8 HUMAN_REVIEWED_FALSE; commercially_actionable true=0       ║
 ║                 = CONTAMINATION_DOMINANT — do NOT re-adjudicate these 8 IDs     ║
-║                 = Evidence 119 artifacts may be uncommitted — verify before redo ║
-║ NEXT Mode-1     = Expand near-miss freezes (118b) OR finalize/commit E119 + WP3  ║
+║ NEXT Mode-1     = WP2b expand near-miss freezes (118b) then adjudicate → WP3   ║
 ║ WP3             = Only after larger adjudicated set (E118 n=8 too small for ML) ║
 ║ ML LADDER       = BLOCKED until S1–S3 earned (Optuna→LGBM→SHAP→Cursor SDK)     ║
 ║ path_b / path_c = FROZEN (E109 / E108) — no reopen without owner auth          ║
@@ -24,7 +23,7 @@
 ╚══════════════════════════════════════════════════════════════════════════════╝
 ```
 
-**Created / last rewritten:** 2026-09-27 (post–Evidence 118 + WP2 freeze adjudication)  
+**Created / last rewritten:** 2026-09-27 (post–Evidence 119 / WP2 DONE)  
 **Purpose:** Pasteable operating prompt for the next agent. Design + Mode-1 offline prep only unless a live A/B/C trigger fires.  
 **Repo:** `/home/slamer-lim/telegram-lead-monitor` (NOT Quantum-Trading-System)
 
@@ -289,7 +288,7 @@ Do **not** redo as a busy loop. Artifacts:
 
 **Implication:** The E118 freeze harvest (especially veto/job-board near-misses) is **contamination-dominated**. Do **not** treat est near-miss ≈3031 as proven buyer volume. Do **not** reopen path_b/c from these 8 rows. Target rubric is written in Evidence 119 §0.
 
-**If Evidence 119 / script are still uncommitted:** prefer commit+push those artifacts (no secrets) rather than re-running adjudication. Idempotent re-run must not create contradictory labels on the same (message_id, reviewer_id, batch).
+Idempotent re-run of the WP2 script updates the same 8 rows only; do not invent a parallel batch for the same IDs.
 
 ### WP2b — Expand freeze power (recommended Mode-1 next if E119 committed)
 
@@ -377,11 +376,10 @@ If `--once` is still `OBSERVE_OK` and isolation holds (1524/4):
 
 1. Stay Mode 0/1 — **do not** reopen paths, enable shadow/ML, or mutate `human_labels`.  
 2. **Verify WP2 artifacts:** `ls docs/audit/evidence/119-*`; confirm batch `e118_wp2_adjudication_2026-09-27` in DB; **do not re-adjudicate** those 8 message_ids.  
-3. If E119 script/evidence are uncommitted and coherent → commit+push them (user ask).  
-4. **Mode-1 next work:** WP2b expand freezes (118b) with less job-board bias, then adjudicate **new** IDs only — OR, if owner prefers, document contamination-dominant finding and pause offline expansion.  
-5. WP3 only after a larger adjudicated set; then S4 baseline → S5 Optuna ladder.  
-6. Keep `observe_abc_watch.sh` running; on A freeze+classify; on B fix correctness; on C halt.  
-7. Do **not** start Optuna/LightGBM/SHAP/Cursor SDK yet.
+3. **Mode-1 next work:** WP2b expand freezes (118b) with less job-board bias, then adjudicate **new** IDs only — OR pause offline expansion per owner.  
+4. WP3 only after a larger adjudicated set; then S4 baseline → S5 Optuna ladder.  
+5. Keep `observe_abc_watch.sh` running; on A freeze+classify; on B fix correctness; on C halt.  
+6. Do **not** start Optuna/LightGBM/SHAP/Cursor SDK yet.
 
 If a trigger is already firing: handle per §3 before any offline WP.
 
@@ -399,7 +397,7 @@ If a trigger is already firing: handle per §3 before any offline WP.
 
 ## Execution notes (for planner / human)
 
-- Next agent: verify/commit E119 if needed, then **WP2b expand freezes** (or pause per owner) while OBSERVE stays active for live A/B/C.  
-- Do **not** re-adjudicate batch `e118_wp2_adjudication_2026-09-27`. Update runbook when E119 is committed.  
+- Next agent: **WP2b expand freezes** (or pause per owner) while OBSERVE stays active for live A/B/C.  
+- Do **not** re-adjudicate batch `e118_wp2_adjudication_2026-09-27`.  
 - Proposed ML thresholds need owner sign-off before becoming gates.  
 - E118 UPSTREAM_LOSS@G3 ≠ authorization to reopen path_b/c; WP2 n=8 contamination reinforces that.
