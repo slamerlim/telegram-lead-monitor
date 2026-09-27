@@ -8,7 +8,7 @@
 #   ./scripts/observe_abc_watch.sh --once   # single check; exit 0 quiet / 10 on wake
 #
 # Wake line (stdout): AGENT_LOOP_WAKE_observe_abc {...json...}
-# Quiet once line:    OBSERVE_OK {...json...}
+# Quiet heartbeat:    OBSERVE_OK {...json...}  (--once and loop; proves ticks in nohup log)
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
@@ -113,13 +113,25 @@ evaluate_once() {
   fi
 
   if [[ -n "$TRIG" ]]; then
-    printf '%s\n' "AGENT_LOOP_WAKE_observe_abc {\"at\":\"${NOW}\",\"triggers\":\"${TRIG}\",\"new\":${NEW},\"hl\":${HL},\"ac\":${AC},\"msg_1h\":${MSG1H},\"score_1h\":${SCORE1H},\"msgs_since_t0\":${MSG_T0},\"scores_since_t0\":${SCORE_T0},\"disc_v6_since_t0\":${DISC_T0},\"t0\":\"${SOURCING_T0_AT}\",\"xlen\":${XLEN},\"pending\":${PENDING},\"lag\":${LAG},\"consumers\":${CONSUMERS},\"prompt\":\"OBSERVE trigger. Repo ${ROOT}. Follow docs/ops/COMMERCIAL_DISCOVERY_OBSERVE_RUNBOOK.md. A=freeze+quality NEW (no path reopen). B=correctness/observability. C=halt isolation. Evidence+commit-push if justified.\"}"
+    local wake_line
+    wake_line="AGENT_LOOP_WAKE_observe_abc {\"at\":\"${NOW}\",\"triggers\":\"${TRIG}\",\"new\":${NEW},\"hl\":${HL},\"ac\":${AC},\"msg_1h\":${MSG1H},\"score_1h\":${SCORE1H},\"msgs_since_t0\":${MSG_T0},\"scores_since_t0\":${SCORE_T0},\"disc_v6_since_t0\":${DISC_T0},\"t0\":\"${SOURCING_T0_AT}\",\"xlen\":${XLEN},\"pending\":${PENDING},\"lag\":${LAG},\"consumers\":${CONSUMERS},\"prompt\":\"OBSERVE trigger. Repo ${ROOT}. Follow docs/ops/COMMERCIAL_DISCOVERY_OBSERVE_RUNBOOK.md. A=freeze+quality NEW (no path reopen). B=correctness/observability. C=halt isolation. Evidence+commit-push if justified.\"}"
+    if [[ ! -t 1 ]] && command -v stdbuf >/dev/null 2>&1 && [[ -x /usr/bin/printf ]]; then
+      stdbuf -oL /usr/bin/printf '%s\n' "$wake_line"
+    else
+      printf '%s\n' "$wake_line"
+    fi
     return 10
   fi
 
-  # Quiet path: only --once prints OBSERVE_OK; the loop stays silent.
-  if [[ "${ONCE:-0}" -eq 1 ]]; then
-    printf '%s\n' "OBSERVE_OK {\"at\":\"${NOW}\",\"new\":${NEW},\"hl\":${HL},\"ac\":${AC},\"msg_1h\":${MSG1H},\"score_1h\":${SCORE1H},\"msgs_since_t0\":${MSG_T0},\"scores_since_t0\":${SCORE_T0},\"disc_v6_since_t0\":${DISC_T0},\"t0\":\"${SOURCING_T0_AT}\",\"xlen\":${XLEN},\"pending\":${PENDING},\"lag\":${LAG},\"consumers\":${CONSUMERS}}"
+  # Quiet path: always emit OBSERVE_OK (loop + --once) so durable nohup logs prove ticks.
+  # Wake semantics unchanged: AGENT_LOOP_WAKE_observe_abc + return 10 only on A/B/C above.
+  local ok_line
+  ok_line="OBSERVE_OK {\"at\":\"${NOW}\",\"new\":${NEW},\"hl\":${HL},\"ac\":${AC},\"msg_1h\":${MSG1H},\"score_1h\":${SCORE1H},\"msgs_since_t0\":${MSG_T0},\"scores_since_t0\":${SCORE_T0},\"disc_v6_since_t0\":${DISC_T0},\"t0\":\"${SOURCING_T0_AT}\",\"xlen\":${XLEN},\"pending\":${PENDING},\"lag\":${LAG},\"consumers\":${CONSUMERS}}"
+  # stdout-to-file (nohup) is block-buffered; stdbuf -oL on external printf flushes each line.
+  if [[ ! -t 1 ]] && command -v stdbuf >/dev/null 2>&1 && [[ -x /usr/bin/printf ]]; then
+    stdbuf -oL /usr/bin/printf '%s\n' "$ok_line"
+  else
+    printf '%s\n' "$ok_line"
   fi
   return 0
 }

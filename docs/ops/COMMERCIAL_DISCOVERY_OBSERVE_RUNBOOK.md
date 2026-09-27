@@ -66,7 +66,7 @@ Event-only loop (wake on A/B/C only — not a remesure):
 
 ```bash
 INTERVAL_SEC=5400 ./scripts/observe_abc_watch.sh
-# stdout wake line: AGENT_LOOP_WAKE_observe_abc {...}
+# stdout wake line: AGENT_LOOP_WAKE_observe_abc {...}; quiet loop also appends OBSERVE_OK heartbeats (nohup proof); exit 10 only on A/B/C
 # Trigger B also covers score stall: msg_1h>=20 with score_1h==0
 
 # Smoke (healthy idle must print OBSERVE_OK, exit 0 — not a wake):
