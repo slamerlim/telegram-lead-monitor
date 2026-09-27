@@ -1,7 +1,7 @@
 # Commercial discovery OBSERVE runbook (post first-iteration)
 
 **Status:** CONTINUOUS OBSERVE ACTIVE  
-**Standing note:** While `OBSERVE_OK` and no owner auth — do **not** invent timed remesure wakes; wait for durable `INTERVAL_SEC=5400` watcher exit 10 (A/B/C) or owner auth to apply E124 Steps A–F (`OWNER_AUTH_REQUIRED`, not applied). E126 community mix (~3.90h): intake continues from residual enabled sources (`2793/2793/0`); Phase A disable effect observable (4 EXCHANGE=0 msgs); Phase B still 0; EXCHANGE_OFFICIAL-mapped share ≈35.95%; does **not** authorize path reopen.  
+**Standing note:** While `OBSERVE_OK` — do **not** invent timed remesure wakes; wait for durable `INTERVAL_SEC=5400` watcher exit 10 (A/B/C). E127 applied E124 Steps A–F (disable 137/140; replace 138→`@hummingbot_io`, 141→`@jesse_trade`; days=14 scans). Post-scan: 141 published 8; 138 resolved group (seen=1/pub=0); 139 still 0 → VERIFY-JOIN note if owner wants intake. Do **not** reopen path_b/c / enable ML from remediation alone.  
 **Closed first-iteration:** Evidence 116 (`docs/audit/evidence/116-first-iteration-closure-observe-cycle10.*`)  
 **Path freeze:** path_c (E108) + path_b (E109) — do not reopen without auth + new loss evidence  
 **Shadow:** `COMMERCIAL_EPISODE_SHADOW_ENABLED=false` intentional — do not enable without explicit authorization  
@@ -93,7 +93,8 @@ Note: since-enable aggregate still includes 6 historical CONTAMINATED rows; prim
 - **WP2C_CONTAMINATION_DOMINANT** — Evidence 118c/119d: further freezes (n=16; stride=83 offsets=7,19,37,53; exclude all 24 prior) → 16/16 FALSE; batch `e118c_wp2c_adjudication_2026-09-27`. Combined WP2+WP2b+WP2c = 40/40 contamination, 0 genuine buyer.
 - **MODE2_RETRIEVED_FP_HARDENED** — Evidence 119c: path-E FPs fixed (NEW PROJECT LaborX no FO-carve; bare `my strategy` not ownership). path_b/c untouched.
 - **SOURCING_T0_APPLIED** — Evidence 121: Phase A disabled 4 high-volume EXCHANGE_OFFICIAL; Phase B added 5 algo/dev rooms + days=14 scans; cursors unchanged.
-- **PHASE_B_INTAKE_GAP (SOURCE_ABSENT)** — Evidence 123: communities 137–141 still 0 messages since T0; 137/140 username resolve failures; 138/139/141 scans completed with messages_seen/published=0. Observational Mode-1 only — does **not** authorize path reopen/ML; username fix/replace or alternate rooms need optional owner auth.
+- **PHASE_B_INTAKE_GAP (SOURCE_ABSENT)** — Evidence 123: communities 137–141 still 0 messages since T0; 137/140 username resolve failures; 138/139/141 scans completed with messages_seen/published=0. Observational Mode-1 only — does **not** authorize path reopen/ML.
+- **PHASE_B_REMEDIATION_APPLIED** — Evidence 127: E124 Steps A–F applied under prior Option B auth. Disabled 137/140; replaced 138→`@hummingbot_io`, 141→`@jesse_trade`; queued days=14 for 138/139/141. Immediate scan outcomes: 141 published 8; 138 resolved correct group (seen=1/pub=0); 139 still 0 (VERIFY-JOIN note; no autofix). Isolation 1524/4.
 - **EXPECTED_IDLE** — 900s scheduler waves (Evidence 114)
 - **INTENTIONAL_SHADOW_OFF** — episode→AI handoff gated (Evidence 111)
 - **Invite-expired** — community 132 NOISE (Evidence 115)
@@ -129,4 +130,4 @@ Master continuation prompt: `docs/ops/MASTER_CONTINUATION_PROMPT_COMMERCIAL_DISC
 
 ## Next hypothesis
 
-NEXT = (1) owner auth to apply E124 Steps A–F, or (2) Trigger A/B/C from durable watcher. Live resume only on **(A)** first NEW disc_v6 (quality-classify; do not reopen path_b/c), **(B)** pipeline/Redis/worker/query failure, or **(C)** isolation drift. Offline: WP2/WP2b/WP2c DONE — do not re-adjudicate `e118_*` batches. **Sourcing T0 (E121) + T0 snap (E122)**; **Phase B gap (E123)**; **E124 OWNER_AUTH_REQUIRED not applied**. Mode-2 FP harden DONE (E119c). **WP3** blocked until genuine-positive adjudicated n. Do not invent remesure wakes / busy remesure. Do not enable shadow / reopen paths without auth.
+NEXT = Trigger A/B/C from durable watcher (or owner VERIFY-JOIN for 139 if still empty). Live resume only on **(A)** first NEW disc_v6 (quality-classify; do not reopen path_b/c), **(B)** pipeline/Redis/worker/query failure, or **(C)** isolation drift. Offline: WP2/WP2b/WP2c DONE — do not re-adjudicate `e118_*` batches. **Sourcing T0 (E121)**; **Phase B gap (E123)**; **E124 proposal → E127 APPLIED**. Mode-2 FP harden DONE (E119c). **WP3** blocked until genuine-positive adjudicated n. Do not invent remesure wakes / busy remesure. Do not enable shadow / reopen paths without auth. Do not UpdateGoal complete.

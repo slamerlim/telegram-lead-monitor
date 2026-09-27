@@ -1,0 +1,427 @@
+{
+  "evidence_id": "127",
+  "experiment_id": "SOURCING_PHASE_B_REMEDIATION_APPLIED_127",
+  "generated_at": "2026-09-27T15:37:45.635561+00:00",
+  "head": "9e94124",
+  "dry_run": false,
+  "t0": "2026-09-27T10:16:46.876011+00:00",
+  "parent": [
+    "Evidence 121 SOURCING_T0_APPLIED",
+    "Evidence 123 PHASE_B_INTAKE_GAP_DOCUMENTED",
+    "Evidence 124 PROPOSAL \u2192 this apply"
+  ],
+  "mode": "CONTINUOUS_OBSERVE",
+  "decision": "SOURCING_PHASE_B_REMEDIATION_APPLIED",
+  "OWNER_AUTH": {
+    "authorized_by": "owner",
+    "auth_record": "User previously approved Option B sourcing (A/B/C parallel execute; E121). This turn applies E124 Steps A\u2013F as remediation of that already-authorized sourcing experiment (bad usernames / wrong entities / empty Phase B rooms). NOT a new expansion auth; NOT Evidence-105 bridge; NOT UpdateGoal complete.",
+    "parent_proposal": "docs/audit/evidence/124-sourcing-phase-b-remediation-proposal.*",
+    "parent_t0": "docs/audit/evidence/121-sourcing-experiment-t0.*",
+    "authorized_at": "2026-09-27T15:37:45.635561+00:00",
+    "lever": "communities.enabled=false for 137/140; telegram_ref/username replace 138\u2192@hummingbot_io 141\u2192@jesse_trade; scan_runs days=14 for 138/139/141",
+    "forbidden": [
+      "path_b/path_c reopen",
+      "scoring.yaml threshold loosen",
+      "human_labels mutation",
+      "ML/shadow enable",
+      "last_message_id wipe on Phase A / non-target rows",
+      "docker compose down -v",
+      "invite autofix / JoinChannel autofix",
+      "optional @commaschatru insert (Step D skipped \u2014 leave 137/140 disabled)",
+      "UpdateGoal complete"
+    ]
+  },
+  "baseline_observe_note": "Host ran ./scripts/observe_abc_watch.sh --once before apply; expect OBSERVE_OK hl=1524 ac=4 recorded in apply turn report.",
+  "isolation_before": {
+    "human_labels": 1524,
+    "ai_confirmed": 4,
+    "messages": 8680763,
+    "message_scores": 184332,
+    "disc_v6_new": 0,
+    "messages_since_t0": 3592,
+    "scores_since_t0": 3592,
+    "disc_v6_since_t0": 0
+  },
+  "isolation_after": {
+    "human_labels": 1524,
+    "ai_confirmed": 4,
+    "messages": 8680763,
+    "message_scores": 184332,
+    "disc_v6_new": 0,
+    "messages_since_t0": 3592,
+    "scores_since_t0": 3592,
+    "disc_v6_since_t0": 0
+  },
+  "isolation_ok": true,
+  "communities_before": {
+    "137": {
+      "id": 137,
+      "telegram_ref": "@Freqtrade",
+      "username": "Freqtrade",
+      "name": null,
+      "kind": null,
+      "enabled": true,
+      "resolve_status": "error",
+      "telegram_chat_id": null,
+      "last_message_id": null,
+      "last_error": "@Freqtrade: UsernameInvalidError: Nobody is using this username or the username is unacceptable (caused by ResolveUsernameRequest)"
+    },
+    "138": {
+      "id": 138,
+      "telegram_ref": "@hummingbot",
+      "username": "Hummingbot",
+      "name": "Humbot",
+      "kind": "unknown",
+      "enabled": true,
+      "resolve_status": "resolved",
+      "telegram_chat_id": 99182088,
+      "last_message_id": null,
+      "last_error": null
+    },
+    "139": {
+      "id": 139,
+      "telegram_ref": "@NautilusTrader",
+      "username": "NautilusTrader",
+      "name": "NautilusTrader",
+      "kind": "channel",
+      "enabled": true,
+      "resolve_status": "resolved",
+      "telegram_chat_id": 2276323404,
+      "last_message_id": null,
+      "last_error": null
+    },
+    "140": {
+      "id": 140,
+      "telegram_ref": "@backtrader_community",
+      "username": "backtrader_community",
+      "name": null,
+      "kind": null,
+      "enabled": true,
+      "resolve_status": "error",
+      "telegram_chat_id": null,
+      "last_message_id": null,
+      "last_error": "@backtrader_community: ValueError: No user has \"backtrader_community\" as username"
+    },
+    "141": {
+      "id": 141,
+      "telegram_ref": "@JesseTrade",
+      "username": "jessetrade",
+      "name": "Jesse Filibus \ud83e\udd81\ufe0f",
+      "kind": "unknown",
+      "enabled": true,
+      "resolve_status": "resolved",
+      "telegram_chat_id": 5444388783,
+      "last_message_id": null,
+      "last_error": null
+    }
+  },
+  "communities_after": {
+    "137": {
+      "id": 137,
+      "telegram_ref": "@Freqtrade",
+      "username": "Freqtrade",
+      "name": null,
+      "kind": null,
+      "enabled": false,
+      "resolve_status": "error",
+      "telegram_chat_id": null,
+      "last_message_id": null,
+      "last_error": "@Freqtrade: UsernameInvalidError: Nobody is using this username or the username is unacceptable (caused by ResolveUsernameRequest)"
+    },
+    "138": {
+      "id": 138,
+      "telegram_ref": "@hummingbot_io",
+      "username": "hummingbot_io",
+      "name": "hummingbot",
+      "kind": "group",
+      "enabled": true,
+      "resolve_status": "resolved",
+      "telegram_chat_id": 1318221109,
+      "last_message_id": 1782,
+      "last_error": null
+    },
+    "139": {
+      "id": 139,
+      "telegram_ref": "@NautilusTrader",
+      "username": "NautilusTrader",
+      "name": "NautilusTrader",
+      "kind": "channel",
+      "enabled": true,
+      "resolve_status": "resolved",
+      "telegram_chat_id": 2276323404,
+      "last_message_id": null,
+      "last_error": null
+    },
+    "140": {
+      "id": 140,
+      "telegram_ref": "@backtrader_community",
+      "username": "backtrader_community",
+      "name": null,
+      "kind": null,
+      "enabled": false,
+      "resolve_status": "error",
+      "telegram_chat_id": null,
+      "last_message_id": null,
+      "last_error": "@backtrader_community: ValueError: No user has \"backtrader_community\" as username"
+    },
+    "141": {
+      "id": 141,
+      "telegram_ref": "@jesse_trade",
+      "username": "jesse_trade",
+      "name": null,
+      "kind": null,
+      "enabled": true,
+      "resolve_status": "pending",
+      "telegram_chat_id": null,
+      "last_message_id": null,
+      "last_error": null
+    }
+  },
+  "step_a_disable": [
+    {
+      "id": 137,
+      "telegram_ref": "@Freqtrade",
+      "enabled": false,
+      "last_message_id": null,
+      "resolve_status_kept": "error",
+      "last_error_kept": "@Freqtrade: UsernameInvalidError: Nobody is using this username or the username is unacceptable (caused by ResolveUserna"
+    },
+    {
+      "id": 140,
+      "telegram_ref": "@backtrader_community",
+      "enabled": false,
+      "last_message_id": null,
+      "resolve_status_kept": "error",
+      "last_error_kept": "@backtrader_community: ValueError: No user has \"backtrader_community\" as username"
+    }
+  ],
+  "step_b_replace": [
+    {
+      "id": 138,
+      "action": "replaced",
+      "from": "@hummingbot",
+      "to": "@hummingbot_io",
+      "username": "hummingbot_io",
+      "resolve_status": "pending",
+      "last_message_id_before": null,
+      "last_message_id_after": null,
+      "enabled": true
+    },
+    {
+      "id": 141,
+      "action": "replaced",
+      "from": "@JesseTrade",
+      "to": "@jesse_trade",
+      "username": "jesse_trade",
+      "resolve_status": "pending",
+      "last_message_id_before": null,
+      "last_message_id_after": null,
+      "enabled": true
+    }
+  ],
+  "step_c_nautilus": {
+    "id": 139,
+    "action": "keep_enabled_queue_days14",
+    "verify_join": "If scan days=14 still messages_seen=0, VERIFY-JOIN collector session membership for @NautilusTrader under owner auth (no invite autofix). If still 0 after join+rescan \u2192 DISABLE rather than invent alternate refs.",
+    "join_applied_this_turn": false
+  },
+  "step_d_optional_insert": {
+    "action": "SKIPPED",
+    "reason": "Owner apply instructions leave 137/140 disabled; no @commaschatru insert"
+  },
+  "step_e_scans": [
+    {
+      "community_id": 138,
+      "run_id": 69487,
+      "days": 14,
+      "status": "queued"
+    },
+    {
+      "community_id": 139,
+      "run_id": 69488,
+      "days": 14,
+      "status": "queued"
+    },
+    {
+      "community_id": 141,
+      "run_id": 69489,
+      "days": 14,
+      "status": "queued"
+    }
+  ],
+  "step_f_isolation": {
+    "expect_hl": 1524,
+    "expect_ac": 4,
+    "ok": true
+  },
+  "unique_conflicts": [],
+  "disable_on_fail": [],
+  "cursor_checks": [
+    {
+      "id": 137,
+      "step": "A_disable",
+      "last_message_id_before": null,
+      "last_message_id_after": null,
+      "unchanged": true
+    },
+    {
+      "id": 140,
+      "step": "A_disable",
+      "last_message_id_before": null,
+      "last_message_id_after": null,
+      "unchanged": true
+    },
+    {
+      "id": 138,
+      "step": "B_replace_fresh_cursor",
+      "last_message_id_before": null,
+      "last_message_id_after": null,
+      "note": "fresh cursor for new telegram_ref entity only"
+    },
+    {
+      "id": 141,
+      "step": "B_replace_fresh_cursor",
+      "last_message_id_before": null,
+      "last_message_id_after": null,
+      "note": "fresh cursor for new telegram_ref entity only"
+    }
+  ],
+  "phase_a_cursors_preserved_on_disable": true,
+  "business": {
+    "outreach": false,
+    "ml_go": false,
+    "threshold_loosen": false,
+    "path_b_path_c_reopened": false,
+    "discovery_semantic_change": false,
+    "e105_bridge": false,
+    "human_labels_mutated": false,
+    "scoring_yaml_touched": false,
+    "autofix_invites": false,
+    "cursor_wipe_phase_a_or_other": false,
+    "freeze_expand": false,
+    "timed_remeasure_invented": false,
+    "update_goal_complete": false,
+    "code_deploy_required": false
+  },
+  "next": "Stay CONTINUOUS OBSERVE. Watch scan_runs for 138/139/141; classify any NEW disc_v6 (Trigger A) without path reopen. If 139 still 0 after days=14 \u2192 note VERIFY-JOIN; if replace resolves fail \u2192 disable that id. Do not UpdateGoal complete.",
+  "post_scan_verify": {
+    "verified_at": "2026-09-27T15:38:31.897794+00:00",
+    "health": {
+      "status": "ok",
+      "postgres": "ok",
+      "redis": "ok"
+    },
+    "isolation": {
+      "human_labels": 1524,
+      "AI_CONFIRMED": 4
+    },
+    "scan_runs": [
+      {
+        "id": 69487,
+        "community_id": 138,
+        "days": 14,
+        "status": "completed",
+        "messages_seen": 1,
+        "messages_published": 0,
+        "error": null
+      },
+      {
+        "id": 69488,
+        "community_id": 139,
+        "days": 14,
+        "status": "completed",
+        "messages_seen": 0,
+        "messages_published": 0,
+        "error": null
+      },
+      {
+        "id": 69489,
+        "community_id": 141,
+        "days": 14,
+        "status": "completed",
+        "messages_seen": 8,
+        "messages_published": 8,
+        "error": null
+      }
+    ],
+    "message_totals_by_community": {
+      "138": 0,
+      "139": 0,
+      "141": 8
+    },
+    "communities_live_after_scans": {
+      "137": {
+        "telegram_ref": "@Freqtrade",
+        "enabled": false,
+        "resolve_status": "error"
+      },
+      "138": {
+        "telegram_ref": "@hummingbot_io",
+        "enabled": true,
+        "resolve_status": "resolved",
+        "kind": "group",
+        "telegram_chat_id": 1318221109,
+        "last_message_id": 1782,
+        "name": "hummingbot"
+      },
+      "139": {
+        "telegram_ref": "@NautilusTrader",
+        "enabled": true,
+        "resolve_status": "resolved",
+        "kind": "channel",
+        "telegram_chat_id": 2276323404,
+        "last_message_id": null,
+        "note": "days=14 seen=0 \u2192 VERIFY-JOIN still recommended if owner wants intake"
+      },
+      "140": {
+        "telegram_ref": "@backtrader_community",
+        "enabled": false,
+        "resolve_status": "error"
+      },
+      "141": {
+        "telegram_ref": "@jesse_trade",
+        "enabled": true,
+        "resolve_status": "resolved",
+        "kind": "channel",
+        "telegram_chat_id": 1308360769,
+        "last_message_id": 212,
+        "name": "Jesse.Trade"
+      }
+    },
+    "intake_note": "Replace success: 141 @jesse_trade published 8 msgs in days=14 window. 138 @hummingbot_io resolved to group (seen=1 published=0; msg table still 0 \u2014 likely non-text/out-of-window). 139 @NautilusTrader still empty after rescan; VERIFY-JOIN note retained; no JoinChannel autofix this turn."
+  },
+  "baseline_observe": {
+    "at": "2026-09-27T15:36:55+00:00",
+    "line": "OBSERVE_OK",
+    "new": 0,
+    "hl": 1524,
+    "ac": 4,
+    "msg_1h": 704,
+    "score_1h": 704,
+    "msgs_since_t0": 3592,
+    "scores_since_t0": 3592,
+    "disc_v6_since_t0": 0,
+    "xlen": 6,
+    "pending": 0,
+    "lag": 0,
+    "consumers": 1,
+    "exit_code": 0
+  },
+  "post_apply_observe": {
+    "at": "2026-09-27T15:39:22+00:00",
+    "line": "OBSERVE_OK",
+    "new": 0,
+    "hl": 1524,
+    "ac": 4,
+    "msg_1h": 764,
+    "score_1h": 764,
+    "msgs_since_t0": 3837,
+    "scores_since_t0": 3837,
+    "disc_v6_since_t0": 0,
+    "xlen": 6,
+    "pending": 0,
+    "lag": 0,
+    "consumers": 1,
+    "exit_code": 0
+  }
+}
