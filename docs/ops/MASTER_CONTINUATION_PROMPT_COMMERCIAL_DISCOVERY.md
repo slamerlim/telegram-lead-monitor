@@ -6,13 +6,13 @@
 ║                                                                                ║
 ║ MODE            = CONTINUOUS OBSERVE (event-driven; A/B/C only)                ║
 ║ LIVE CLASS      = RESIDUAL_SCARCITY (Evidence 117; NEW disc_v6 since path_b=0) ║
-║ OFFLINE CLASS   = UPSTREAM_LOSS@G3 + WP2 contamination-dominant (E118/E119)    ║
+║ OFFLINE CLASS   = UPSTREAM_LOSS@G3 + WP2/WP2b CONTAMINATION_DOMINANT           ║
 ║ WP1             = DONE  (Evidence 118)                                         ║
-║ WP2             = DONE  (Evidence 119; batch e118_wp2_adjudication_2026-09-27) ║
-║                 = 8/8 HUMAN_REVIEWED_FALSE; commercially_actionable true=0       ║
-║                 = CONTAMINATION_DOMINANT — do NOT re-adjudicate these 8 IDs     ║
-║ NEXT Mode-1     = WP2b expand near-miss freezes (118b) then adjudicate → WP3   ║
-║ WP3             = Only after larger adjudicated set (E118 n=8 too small for ML) ║
+║ WP2             = DONE  (Evidence 119; 8/8 FALSE; do NOT re-adjudicate)        ║
+║ WP2b            = DONE  (E118b freeze + Evidence 119b; 16/16 FALSE)            ║
+║                 = 2 disc_v6 RETRIEVED FPs (LaborX job + MEXC FOMO commentary)   ║
+║ NEXT Mode-1     = Owner: sourcing vs more freeze expand; WP3 needs positives   ║
+║ WP3             = BLOCKED until larger genuine-positive adjudicated set        ║
 ║ ML LADDER       = BLOCKED until S1–S3 earned (Optuna→LGBM→SHAP→Cursor SDK)     ║
 ║ path_b / path_c = FROZEN (E109 / E108) — no reopen without owner auth          ║
 ║ shadow / ML     = OFF / ml_training_enabled=false                              ║
@@ -23,7 +23,7 @@
 ╚══════════════════════════════════════════════════════════════════════════════╝
 ```
 
-**Created / last rewritten:** 2026-09-27 (post–Evidence 119 / WP2 DONE)  
+**Created / last rewritten:** 2026-09-27 (post–Evidence 119b / WP2b DONE)  
 **Purpose:** Pasteable operating prompt for the next agent. Design + Mode-1 offline prep only unless a live A/B/C trigger fires.  
 **Repo:** `/home/slamer-lim/telegram-lead-monitor` (NOT Quantum-Trading-System)
 
@@ -54,7 +54,7 @@ deterministic discovery → stable evidence datasets → **Optuna** (rule/thresh
 ```text
 MODE=CONTINUOUS OBSERVE (event-driven)
 REPO=/home/slamer-lim/telegram-lead-monitor
-HEAD≈e9409b3 (re-check: git rev-parse --short HEAD)
+HEAD≈ac9d14e+ (re-check: git rev-parse --short HEAD)
 commercial_discovery_enabled=true
 commercial_discovery_version=disc_v6
 cap=120/hour
@@ -63,12 +63,13 @@ path_b=FROZEN (Evidence 109, deploy 2026-09-26T06:53:16Z)
 path_c=FROZEN (Evidence 108)
 ml_training_enabled=false (hard; shared/validation/gate.py)
 LIVE_CLASSIFICATION=RESIDUAL_SCARCITY (Evidence 117)
-OFFLINE_CLASSIFICATION=UPSTREAM_LOSS@G3 + WP2_E118_ADJUDICATED_CONTAMINATION_DOMINANT
+OFFLINE_CLASSIFICATION=UPSTREAM_LOSS@G3 + WP2/WP2b_CONTAMINATION_DOMINANT
 human_labels=1524
 AI_CONFIRMED=4
 WP1=DONE → Evidence 118
 WP2=DONE → Evidence 119 (8/8 FALSE; batch e118_wp2_adjudication_2026-09-27)
-NEXT=expand near-miss freezes (118b) + adjudicate → then WP3 dataset (n=8 underpowered)
+WP2b=DONE → Evidence 118b + 119b (16/16 FALSE; batch e118b_wp2b_adjudication_2026-09-27)
+NEXT=owner decision: sourcing experiment vs further freeze expand; WP3 blocked (0 genuine positives in 24 adjudicated freezes)
 ```
 
 **Evidence anchors**
@@ -80,8 +81,10 @@ NEXT=expand near-miss freezes (118b) + adjudicate → then WP3 dataset (n=8 unde
 | E116 | `docs/audit/evidence/116-first-iteration-closure-observe-cycle10.*` | first iteration closed → OBSERVE |
 | E117 | `docs/audit/evidence/117-disc-v6-observe-remeasure.*` | Cycle 11 live: NEW=0 / scores=7649 / ~4.1h → RESIDUAL_SCARCITY |
 | E118 | `docs/audit/evidence/118-offline-corpus-loss-attribution.*` + `118-offline-freeze-samples.json` | WP1 DONE: messages-only UPSTREAM_LOSS@G3 |
-| E119 | `docs/audit/evidence/119-commercial-target-wp2-e118.*` (+ `scripts/audit_commercial_target_wp2_e118.py`) | WP2 DONE: 8/8 FALSE (6 JOB_VACANCY / 1 MARKETING / 1 OFF_DOMAIN); isolation 1524/4 |
-| Runbook | `docs/ops/COMMERCIAL_DISCOVERY_OBSERVE_RUNBOOK.md` | A/B/C triggers + cheap watch (already cites E118) |
+| E119 | `docs/audit/evidence/119-commercial-target-wp2-e118.*` (+ `scripts/audit_commercial_target_wp2_e118.py`) | WP2 DONE: 8/8 FALSE; isolation 1524/4 |
+| E118b | `docs/audit/evidence/118b-offline-freeze-*.{txt,json}` (+ `scripts/expand_offline_freeze_118b.py`) | WP2b freeze expand: stride=89 offsets=11,23,41; n=16 new IDs |
+| E119b | `docs/audit/evidence/119b-wp2b-e118b-freeze-adjudication.*` (+ `scripts/adjudicate_wp2b_e118b_freeze_label_reviews.py`) | WP2b DONE: 16/16 FALSE; 2 RETRIEVED FPs; contamination_share=1.0 |
+| Runbook | `docs/ops/COMMERCIAL_DISCOVERY_OBSERVE_RUNBOOK.md` | A/B/C triggers + cheap watch |
 | This prompt | `docs/ops/MASTER_CONTINUATION_PROMPT_COMMERCIAL_DISCOVERY.md` | pasteable continuation |
 | Discovery | `shared/commercial_ai/discovery.py` | disc_v6 / path_b (~1142) / path_c (~1162) / `evaluate_discovery` (~1414) |
 | Enqueue | `services/analyzer/app/main.py` (~192–226) | discovery only when enabled + tier LOW + eligible |
@@ -97,6 +100,8 @@ NEXT=expand near-miss freezes (118b) + adjudicate → then WP3 dataset (n=8 unde
 | `scripts/freeze_classify_new_disc_v6.py` | Trigger A freeze helper (dormant until NEW) |
 | `scripts/audit_offline_corpus_loss_attribution_360d.py` | WP1 audit (DONE; may re-run read-only to expand freezes) |
 | `scripts/audit_commercial_target_wp2_e118.py` | WP2 target + E118 freeze adjudication (DONE on n=8) |
+| `scripts/expand_offline_freeze_118b.py` | WP2b read-only freeze expand (DONE → E118b) |
+| `scripts/adjudicate_wp2b_e118b_freeze_label_reviews.py` | WP2b new-ID adjudication (DONE → E119b) |
 | `scripts/verify_commercial_discovery_post_enable.py` | Full verifier — Trigger A/B only, not idle remesure |
 | `scripts/build_independent_review_sample.py` | Prior pattern for `label_review_samples` batches |
 
@@ -229,7 +234,7 @@ G0 ingestion → G1 tier (LOW vs MEDIUM/HIGH CRM path) → G2 hard-exclude/vetoe
 
 Classify loss as: source scarcity | scoring coverage | semantic | veto | carve | ranking | dedup | cap | runtime | AI qualification | observability.  
 Do not call a semantic problem a message that never reached discovery.  
-**E118 first_loss_stage=`semantic_loss` / G3.** WP2 on the freeze set found **contamination-dominant** labels (0 commercial TRUE). Expand freezes (WP2b) before any Mode-2 semantic change proposal.
+**E118 first_loss_stage=`semantic_loss` / G3.** WP2+WP2b freezes are **contamination-dominant** (24/24 FALSE, 0 commercial TRUE; 2 RETRIEVED FPs). No Mode-2 semantic change without owner auth.
 
 ---
 
@@ -239,7 +244,7 @@ Do not call a semantic problem a message that never reached discovery.
 |-------|------|--------|---------------|
 | S0 | OBSERVE steady state | ACTIVE | watcher + runbook |
 | S1 | Unbiased loss attribution | **DONE (E118)** | UPSTREAM_LOSS@G3 + freezes |
-| S2 | Commercial target + adjudication | **E118 freeze set DONE (contam.)** — expand power next | Evidence 119 (+ optional 119b larger set) |
+| S2 | Commercial target + adjudication | **DONE contam.** (E119 + E119b = 24/24 FALSE) | Evidence 119 + 119b; still 0 genuine positives |
 | S3 | Frozen datasets + leakage contract | after adequate adjudicated n | Evidence 120 — hashed splits + feature manifest |
 | S4 | Deterministic baseline | after S3 | disc_v6 replay metrics at fixed volume budget |
 | S5 | Optuna on deterministic knobs | after S4 | offline tuned rules; beat baseline on holdout |
@@ -290,14 +295,13 @@ Do **not** redo as a busy loop. Artifacts:
 
 Idempotent re-run of the WP2 script updates the same 8 rows only; do not invent a parallel batch for the same IDs.
 
-### WP2b — Expand freeze power (recommended Mode-1 next if E119 committed)
+### WP2b — Expand freeze power — **DONE** (Evidence 118b + 119b)
 
-E118 freeze_n=8 is underpowered for Optuna/LGBM. While OBSERVE:
-
-1. Read-only re-run / extend `audit_offline_corpus_loss_attribution_360d.py` (or new helper) with higher freeze caps → `docs/audit/evidence/118b-offline-freeze-samples.json` (do not overwrite E118).  
-2. Prefer strata that are less job-board contaminated (NON job_board / NON exchange_official if possible; document selection).  
-3. Adjudicate **new** IDs only into a new batch (e.g. `e118b_wp2_…`) via `label_reviews` only.  
-4. Pre-register: if expanded set still ≥X% contamination → lean SOURCE_ABSENT / sourcing experiment for owner; if genuine buyer RFQs appear → document Mode-2 hypothesis (still needs auth).
+1. Read-only expand: `scripts/expand_offline_freeze_118b.py` → `118b-offline-freeze-samples.json` (stride=89, offsets=11,23,41; prefer non-JOB_BOARD/EXCHANGE; exclude E118 WP2 IDs).  
+2. Adjudicated **16 new** IDs → batch `e118b_wp2b_adjudication_2026-09-27` / `audit_e118b_wp2b_adjudicator` (Evidence 119b).  
+3. Result: **16/16 FALSE**, commercially_actionable true=0, contamination_share=1.0.  
+4. Notable: **2 disc_v6 RETRIEVED false positives** (LaborX job listing mid=60620; MEXC FOMO commentary mid=4780480) — Mode-2 hypothesis only with owner auth; **do not** reopen path_b/c from this alone.  
+5. Combined WP2+WP2b = 24 adjudicated freezes, **0 genuine_buyer_project**. WP3 / Optuna still blocked.
 
 ### WP3 — Frozen dataset + leakage contract → Evidence 120 — **AFTER adequate adjudicated n**
 
@@ -376,10 +380,11 @@ If `--once` is still `OBSERVE_OK` and isolation holds (1524/4):
 
 1. Stay Mode 0/1 — **do not** reopen paths, enable shadow/ML, or mutate `human_labels`.  
 2. **Verify WP2 artifacts:** `ls docs/audit/evidence/119-*`; confirm batch `e118_wp2_adjudication_2026-09-27` in DB; **do not re-adjudicate** those 8 message_ids.  
-3. **Mode-1 next work:** WP2b expand freezes (118b) with less job-board bias, then adjudicate **new** IDs only — OR pause offline expansion per owner.  
-4. WP3 only after a larger adjudicated set; then S4 baseline → S5 Optuna ladder.  
-5. Keep `observe_abc_watch.sh` running; on A freeze+classify; on B fix correctness; on C halt.  
-6. Do **not** start Optuna/LightGBM/SHAP/Cursor SDK yet.
+3. **WP2b DONE.** Do not re-adjudicate batches `e118_wp2_adjudication_2026-09-27` or `e118b_wp2b_adjudication_2026-09-27`.  
+4. **Owner decision next:** sourcing experiment vs further freeze expansion; optional Mode-2 auth for RETRIEVED-FP hypothesis (jobboard/exchange commentary).  
+5. WP3 only after genuine-positive adjudicated n; then S4 baseline → S5 Optuna ladder.  
+6. Keep `observe_abc_watch.sh` running; on A freeze+classify; on B fix correctness; on C halt.  
+7. Do **not** start Optuna/LightGBM/SHAP/Cursor SDK yet.
 
 If a trigger is already firing: handle per §3 before any offline WP.
 
@@ -397,7 +402,7 @@ If a trigger is already firing: handle per §3 before any offline WP.
 
 ## Execution notes (for planner / human)
 
-- Next agent: **WP2b expand freezes** (or pause per owner) while OBSERVE stays active for live A/B/C.  
-- Do **not** re-adjudicate batch `e118_wp2_adjudication_2026-09-27`.  
+- Next agent: owner decision on **sourcing vs more freeze expand**; live A/B/C still governs OBSERVE.  
+- Do **not** re-adjudicate batches `e118_wp2_*` / `e118b_wp2b_*`.  
 - Proposed ML thresholds need owner sign-off before becoming gates.  
-- E118 UPSTREAM_LOSS@G3 ≠ authorization to reopen path_b/c; WP2 n=8 contamination reinforces that.
+- E118 UPSTREAM_LOSS@G3 ≠ path reopen; WP2+WP2b (24/24 contamination, 2 RETRIEVED FPs) reinforces freeze.

@@ -86,7 +86,8 @@ Note: since-enable aggregate still includes 6 historical CONTAMINATED rows; prim
 
 - **RESIDUAL_SCARCITY** — Evidence 117: 0 NEW / 7649 scored / ~4.1h post–path_b (rate 0 vs UB 0.018/h; expected≈0.07). Post-E117 traffic continues without NEW (spot-check may show larger scored denom).
 - **UPSTREAM_LOSS@G3 (offline)** — Evidence 118: messages-only stratified sample (n=8788 / ~360d) found **0** disc_v6-eligible (`RETRIEVED=0`); dominant loss `NO_PATH_MATCH` (8235); est near-miss buyer-RX ≈3031; freezes under `docs/audit/evidence/118-offline-freeze-samples.json`. Does **not** authorize path reopen.
-- **WP2_E118_ADJUDICATED_CONTAMINATION_DOMINANT** — Evidence 119: all 8 E118 freezes → `HUMAN_REVIEWED_FALSE` / `commercially_actionable=false` (6×JOB_VACANCY, 1×MARKETING_BROADCAST, 1×OFF_DOMAIN) via batch `e118_wp2_adjudication_2026-09-27` / reviewer `audit_e118_wp2_adjudicator` (non-independent). Isolation held 1524/4. Path reopen still unauthorized; WP3 needs a larger adjudicated set.
+- **WP2_E118_ADJUDICATED_CONTAMINATION_DOMINANT** — Evidence 119: all 8 E118 freezes → `HUMAN_REVIEWED_FALSE` / `commercially_actionable=false` via batch `e118_wp2_adjudication_2026-09-27`. Isolation 1524/4.
+- **WP2B_CONTAMINATION_DOMINANT** — Evidence 118b/119b: expanded freezes (n=16 new IDs; stride=89 offsets=11,23,41) → 16/16 FALSE / actionable=false (12×JOB_VACANCY, 2×OFF_DOMAIN, 1×SERVICE_AD, 1×MARKETING_BROADCAST); batch `e118b_wp2b_adjudication_2026-09-27`. Includes **2 disc_v6 RETRIEVED FPs** (LaborX job mid=60620; MEXC FOMO mid=4780480). Combined WP2+WP2b = 24/24 contamination, 0 genuine buyer. Path reopen still unauthorized; WP3 blocked pending positives / owner sourcing decision.
 - **EXPECTED_IDLE** — 900s scheduler waves (Evidence 114)
 - **INTENTIONAL_SHADOW_OFF** — episode→AI handoff gated (Evidence 111)
 - **Invite-expired** — community 132 NOISE (Evidence 115)
@@ -102,14 +103,24 @@ python3 scripts/offline_ml_dataset_readiness_inventory.py
 docker compose run --rm --no-deps -v "$PWD:/app" -w /app analyzer \
   sh -c 'PYTHONPATH=/app python scripts/audit_offline_corpus_loss_attribution_360d.py'
 
-# WP2 Evidence 119 — E118 freeze adjudication → label_reviews only (append)
+# WP2 Evidence 119 — E118 freeze adjudication → label_reviews only (append; DONE)
 docker compose run --rm --no-deps -e GIT_HEAD=$(git rev-parse --short HEAD) \
   -v "$PWD:/app" -w /app analyzer \
   sh -c 'PYTHONPATH=/app python scripts/audit_commercial_target_wp2_e118.py'
+
+# WP2b Evidence 118b — expand freezes (read-only; DONE)
+docker compose run --rm --no-deps -e GIT_HEAD=$(git rev-parse --short HEAD) \
+  -v "$PWD:/app" -w /app analyzer \
+  sh -c 'PYTHONPATH=/app python scripts/expand_offline_freeze_118b.py'
+
+# WP2b Evidence 119b — adjudicate NEW freeze IDs only (append; DONE)
+docker compose run --rm --no-deps -e GIT_HEAD=$(git rev-parse --short HEAD) \
+  -v "$PWD:/app" -w /app analyzer \
+  sh -c 'PYTHONPATH=/app python scripts/adjudicate_wp2b_e118b_freeze_label_reviews.py'
 ```
 
 Master continuation prompt: `docs/ops/MASTER_CONTINUATION_PROMPT_COMMERCIAL_DISCOVERY.md`
 
 ## Next hypothesis
 
-Live resume only on **(A)** first NEW disc_v6 (quality-classify; do not reopen path_b/c), **(B)** pipeline/Redis/worker/query failure, or **(C)** isolation drift. Offline next: **WP2b** expand freezes (118b, less job-board bias) and adjudicate **new** IDs only — do not re-adjudicate batch `e118_wp2_adjudication_2026-09-27`. **WP3** dataset only after a larger adjudicated set (E118 n=8 is contamination-dominated / underpowered for Optuna). Do not busy remesure. Do not enable shadow / reopen paths without auth.
+Live resume only on **(A)** first NEW disc_v6 (quality-classify; do not reopen path_b/c), **(B)** pipeline/Redis/worker/query failure, or **(C)** isolation drift. Offline: **WP2b DONE** (E118b/E119b) — do not re-adjudicate `e118_wp2_*` / `e118b_wp2b_*`. Owner decision: sourcing experiment vs further freeze expand; optional Mode-2 auth for RETRIEVED-FP hypothesis. **WP3** blocked until genuine-positive adjudicated n. Do not busy remesure. Do not enable shadow / reopen paths without auth.

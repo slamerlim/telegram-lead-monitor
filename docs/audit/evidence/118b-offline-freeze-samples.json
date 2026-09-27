@@ -1,0 +1,186 @@
+{
+  "evidence_id": "118b",
+  "generated_at": "2026-09-27T09:52:07.248637+00:00",
+  "head": "ac9d14e",
+  "parent_evidence": "118",
+  "selection_policy": "Prefer community_class NOT IN (JOB_BOARD, EXCHANGE_OFFICIAL); prefer NO_PATH_MATCH near-miss; exclude E118 WP2 message_ids; stride=89 offsets=[11, 23, 41] (≠ E118 97/3).",
+  "excluded_prior_message_ids": [
+    197,
+    294,
+    391,
+    22895,
+    60628,
+    73917,
+    3595211,
+    8568013
+  ],
+  "nopath_near_miss": [
+    {
+      "message_id": 7908373,
+      "bucket": "31_90d",
+      "sample_offset": 11,
+      "first_loss": "NO_PATH_MATCH",
+      "community_class": "OTHER",
+      "near_miss_buyer_rx": true,
+      "refined_commercial_rx": false,
+      "preview": "Than market buying at resistance fixes both early entry and bad risk reward ratios.",
+      "direction": "UNKNOWN"
+    }
+  ],
+  "veto_near_or_refined": [
+    {
+      "message_id": 389386,
+      "bucket": "31_90d",
+      "sample_offset": 11,
+      "first_loss": "VETO_support_question",
+      "community_class": "OTHER",
+      "near_miss_buyer_rx": false,
+      "refined_commercial_rx": true,
+      "preview": "MT5 Cash Risk Probe is a read-only MetaTrader 5 script that validates a single cash-risk sizing boundary before order logic is added. It never sends, modifies, or closes orders, and reports order_sent=false. It uses OrderCalcProfit() on a h"
+    },
+    {
+      "message_id": 61451,
+      "bucket": "91d_plus",
+      "sample_offset": 41,
+      "first_loss": "VETO_job_aggregator",
+      "community_class": "TRADER_COMMUNITY",
+      "near_miss_buyer_rx": false,
+      "refined_commercial_rx": true,
+      "preview": "💡 Freelancer Tip: How to write a winning proposal Your proposal is your first impression. Make it count: 1. Address the client's specific problem — not generic pitches 2. Show relevant past work (3 examples max) 3. Propose a realistic timel"
+    },
+    {
+      "message_id": 112,
+      "bucket": "8_30d",
+      "sample_offset": 23,
+      "first_loss": "VETO_job_aggregator",
+      "community_class": "JOB_BOARD",
+      "near_miss_buyer_rx": true,
+      "refined_commercial_rx": true,
+      "preview": "🌟 Freelance Opportunity: Germany — Online Banking Payment Test I 2 HOURS DEADLINE 💰 Budget: $50 🤝 With: Demergud Franker"
+    },
+    {
+      "message_id": 367,
+      "bucket": "8_30d",
+      "sample_offset": 11,
+      "first_loss": "HARD_EXCLUDE_EARLY",
+      "community_class": "JOB_BOARD",
+      "near_miss_buyer_rx": false,
+      "refined_commercial_rx": true,
+      "preview": "💰 TOP-PAYING PROJECTS THIS WEEK 1️⃣ $15,000 — Smart Sat Connect → https://laborx.com/jobs/smart-sat-connect-102576 2️⃣ $10,000 — Seed Investor Needed – GhostContract MVP Built → https://laborx.com/jobs/seed-investor-needed-ghostcontract-mvp"
+    },
+    {
+      "message_id": 189,
+      "bucket": "31_90d",
+      "sample_offset": 11,
+      "first_loss": "VETO_job_aggregator",
+      "community_class": "JOB_BOARD",
+      "near_miss_buyer_rx": true,
+      "refined_commercial_rx": true,
+      "preview": "🌟 Freelance Opportunity: 2.500 PEPE - TRADE BOT 💰 Budget: $15 🤝 With: Quetta Audy"
+    },
+    {
+      "message_id": 219,
+      "bucket": "31_90d",
+      "sample_offset": 41,
+      "first_loss": "VETO_job_aggregator",
+      "community_class": "JOB_BOARD",
+      "near_miss_buyer_rx": true,
+      "refined_commercial_rx": true,
+      "preview": "🌟 Freelance Opportunity: programmer 💰 Budget: $20 🤝 With: Michael Ted"
+    },
+    {
+      "message_id": 278,
+      "bucket": "31_90d",
+      "sample_offset": 11,
+      "first_loss": "VETO_job_aggregator",
+      "community_class": "JOB_BOARD",
+      "near_miss_buyer_rx": true,
+      "refined_commercial_rx": true,
+      "preview": "🌟 Freelance Opportunity: Translation 💰 Budget: $100 🤝 With: Emily Morgan"
+    },
+    {
+      "message_id": 290,
+      "bucket": "31_90d",
+      "sample_offset": 23,
+      "first_loss": "VETO_job_aggregator",
+      "community_class": "JOB_BOARD",
+      "near_miss_buyer_rx": true,
+      "refined_commercial_rx": true,
+      "preview": "🌟 Freelance Opportunity: DeFi project 💰 Budget: $9000 🤝 With: Cristina Prina"
+    },
+    {
+      "message_id": 308,
+      "bucket": "31_90d",
+      "sample_offset": 41,
+      "first_loss": "VETO_job_aggregator",
+      "community_class": "JOB_BOARD",
+      "near_miss_buyer_rx": true,
+      "refined_commercial_rx": true,
+      "preview": "🌟 Freelance Opportunity: Data Entry 💰 Budget: $500 🤝 With: Jones Bigie"
+    },
+    {
+      "message_id": 397,
+      "bucket": "31_90d",
+      "sample_offset": 41,
+      "first_loss": "VETO_job_aggregator",
+      "community_class": "JOB_BOARD",
+      "near_miss_buyer_rx": true,
+      "refined_commercial_rx": true,
+      "preview": "🆕 NEW PROJECT ON LABORX 💼 Need an Influencer Marketer in Nigeria 💰 Budget: $100 🏷 IT & Networking 👤 Kester Adeyelu It’s a very simple tasks. an influencer who influence people to use a certain platform for TikTok growth. And each referral w"
+    },
+    {
+      "message_id": 22884,
+      "bucket": "91d_plus",
+      "sample_offset": 11,
+      "first_loss": "VETO_job_aggregator",
+      "community_class": "JOB_BOARD",
+      "near_miss_buyer_rx": true,
+      "refined_commercial_rx": true,
+      "preview": "🌟 Freelance Opportunity: Professional Web Development Services 💰 Budget: $30 🤝 With: Youcef Youcef"
+    },
+    {
+      "message_id": 22896,
+      "bucket": "91d_plus",
+      "sample_offset": 23,
+      "first_loss": "VETO_job_aggregator",
+      "community_class": "JOB_BOARD",
+      "near_miss_buyer_rx": true,
+      "refined_commercial_rx": true,
+      "preview": "🌟 Freelance Opportunity: Test 💰 Budget: $20 🤝 With: Joe Smith"
+    },
+    {
+      "message_id": 22914,
+      "bucket": "91d_plus",
+      "sample_offset": 41,
+      "first_loss": "VETO_job_aggregator",
+      "community_class": "JOB_BOARD",
+      "near_miss_buyer_rx": true,
+      "refined_commercial_rx": true,
+      "preview": "🌟 Freelance Opportunity: I will create modern websites and web apps 💰 Budget: $150 🤝 With: ALEX TROD"
+    }
+  ],
+  "eligible_retrieved": [
+    {
+      "message_id": 60620,
+      "bucket": "31_90d",
+      "sample_offset": 11,
+      "first_loss": "RETRIEVED",
+      "community_class": "TRADER_COMMUNITY",
+      "near_miss_buyer_rx": true,
+      "refined_commercial_rx": true,
+      "preview": "🆕 NEW PROJECT ON LABORX 🟨 Trading Platform–Security Fix,Feature Completion&Deployment 💰 Budget: $800 🏷 Web, Mobile & Software Dev · Javascript · React 👤 arlo ski · ⭐5★ I have an existing Next.js 15 (App Router) + Prisma + PostgreSQL trading",
+      "trigger_type": "v6_budget_deliverable"
+    },
+    {
+      "message_id": 4780480,
+      "bucket": "31_90d",
+      "sample_offset": 23,
+      "first_loss": "RETRIEVED",
+      "community_class": "EXCHANGE_OFFICIAL",
+      "near_miss_buyer_rx": false,
+      "refined_commercial_rx": false,
+      "preview": "BTC just hit $81,000! 🚀 After such a strong move, I wouldn’t rush into buying or selling based on FOMO. My strategy would be to hold the majority of my BTC as a long-term position while taking a small portion of profits to lock in gains. I’",
+      "trigger_type": "v6_budget_deliverable"
+    }
+  ]
+}
