@@ -1,0 +1,165 @@
+{
+  "evidence_id": "118",
+  "generated_at": "2026-09-27T09:10:40.736503+00:00",
+  "head": "51b53c2",
+  "runtime_sec": 16.72,
+  "read_only": true,
+  "mode": "OFFLINE_PREP_READONLY",
+  "pre_registered": {
+    "hypothesis": "NEW=0 may be SOURCE_ABSENT and/or UPSTREAM_LOSS; score-coverage bias must be corrected via messages-only stratified sampling.",
+    "decision_rule": "SOURCE_ABSENT if ~0 eligible and ~0 near-miss RFQs in sample; else UPSTREAM_LOSS@dominant gate with freezes. Not global market proof.",
+    "mode": "OFFLINE_PREP_READONLY",
+    "path_freeze": "path_b+path_c",
+    "ml_training_enabled": false
+  },
+  "isolation": {
+    "human_labels": 1524,
+    "ai_confirmed": 4,
+    "message_scores": 179975,
+    "messages": 8676406,
+    "disc_v6_new": 0,
+    "expect_human_labels": 1524,
+    "expect_ai_confirmed": 4,
+    "isolation_ok": true
+  },
+  "sample": {
+    "per_bucket": 2500,
+    "stride": 97,
+    "offset": 3,
+    "n_sampled_total": 8788,
+    "discovery_version": "disc_v6"
+  },
+  "bucket_stats": {
+    "0_7d": {
+      "lo": "2026-09-20T09:10:40.736503+00:00",
+      "hi": "2026-09-27T09:10:40.736503+00:00",
+      "n_messages": 126948,
+      "n_scored": 126948,
+      "score_coverage": 1.0,
+      "sampled": 1288,
+      "sample_eligible": 0,
+      "sample_near_miss_rx": 1,
+      "sample_refined_rx": 2,
+      "est_eligible_in_bucket": 0.0,
+      "est_near_miss_in_bucket": 98.56
+    },
+    "8_30d": {
+      "lo": "2026-08-28T09:10:40.736503+00:00",
+      "hi": "2026-09-19T09:10:40.736503+00:00",
+      "n_messages": 369764,
+      "n_scored": 4574,
+      "score_coverage": 0.01237,
+      "sampled": 2500,
+      "sample_eligible": 0,
+      "sample_near_miss_rx": 0,
+      "sample_refined_rx": 0,
+      "est_eligible_in_bucket": 0.0,
+      "est_near_miss_in_bucket": 0.0
+    },
+    "31_90d": {
+      "lo": "2026-06-29T09:10:40.736503+00:00",
+      "hi": "2026-08-27T09:10:40.736503+00:00",
+      "n_messages": 1102973,
+      "n_scored": 1337,
+      "score_coverage": 0.001212,
+      "sampled": 2500,
+      "sample_eligible": 0,
+      "sample_near_miss_rx": 3,
+      "sample_refined_rx": 5,
+      "est_eligible_in_bucket": 0.0,
+      "est_near_miss_in_bucket": 1323.57
+    },
+    "91d_plus": {
+      "lo": "2025-10-02T09:10:40.736503+00:00",
+      "hi": "2026-06-28T09:10:40.736503+00:00",
+      "n_messages": 4022527,
+      "n_scored": 1349,
+      "score_coverage": 0.000335,
+      "sampled": 2500,
+      "sample_eligible": 0,
+      "sample_near_miss_rx": 1,
+      "sample_refined_rx": 4,
+      "est_eligible_in_bucket": 0.0,
+      "est_near_miss_in_bucket": 1609.01
+    }
+  },
+  "first_loss_histogram": {
+    "VETO_support_question": 378,
+    "NO_PATH_MATCH": 8235,
+    "HARD_EXCLUDE_EARLY": 51,
+    "VETO_service_provider": 98,
+    "VETO_job_aggregator": 14,
+    "VETO_corporate_employment": 7,
+    "VETO_job_seeker": 2,
+    "VETO_generic_recruiter": 1,
+    "VETO_news_digest": 2
+  },
+  "first_loss_by_bucket": {
+    "0_7d": {
+      "VETO_support_question": 92,
+      "NO_PATH_MATCH": 1128,
+      "HARD_EXCLUDE_EARLY": 9,
+      "VETO_service_provider": 56,
+      "VETO_job_aggregator": 3
+    },
+    "8_30d": {
+      "NO_PATH_MATCH": 2314,
+      "VETO_service_provider": 36,
+      "VETO_support_question": 122,
+      "VETO_job_aggregator": 4,
+      "HARD_EXCLUDE_EARLY": 17,
+      "VETO_corporate_employment": 6,
+      "VETO_job_seeker": 1
+    },
+    "31_90d": {
+      "NO_PATH_MATCH": 2384,
+      "VETO_support_question": 87,
+      "HARD_EXCLUDE_EARLY": 19,
+      "VETO_service_provider": 3,
+      "VETO_job_aggregator": 5,
+      "VETO_generic_recruiter": 1,
+      "VETO_corporate_employment": 1
+    },
+    "91d_plus": {
+      "NO_PATH_MATCH": 2409,
+      "VETO_support_question": 77,
+      "HARD_EXCLUDE_EARLY": 6,
+      "VETO_service_provider": 3,
+      "VETO_job_aggregator": 2,
+      "VETO_job_seeker": 1,
+      "VETO_news_digest": 2
+    }
+  },
+  "gate_counts": {
+    "G2_veto_or_hard": 553,
+    "G3_no_path": 8235
+  },
+  "eligible_by_tier": {},
+  "community_class_hist": {
+    "EXCHANGE_OFFICIAL": 7991,
+    "OTHER": 712,
+    "JOB_BOARD": 63,
+    "TRADER_COMMUNITY": 20,
+    "DEV_COMMUNITY": 2
+  },
+  "selection_corrected_estimates": {
+    "est_disc_v6_eligible_messages": 0.0,
+    "est_near_miss_buyer_rx_messages": 3031.14,
+    "est_refined_commercial_rx_messages": 8839.11
+  },
+  "classification": "UPSTREAM_LOSS@G3",
+  "first_loss_stage": "semantic_loss",
+  "freeze_counts": {
+    "nopath_near_miss": 1,
+    "veto_near_or_refined": 7,
+    "eligible_non_low": 0
+  },
+  "business": {
+    "outreach": false,
+    "ml_go": false,
+    "threshold_loosen": false,
+    "discovery_semantic_change": false,
+    "path_b_path_c_reopened": false
+  },
+  "next": "WP2: adjudicate freeze samples into label_reviews only. If SOURCE_ABSENT: owner sourcing decision (not path reopen). Remain OBSERVE for live A/B/C."
+}

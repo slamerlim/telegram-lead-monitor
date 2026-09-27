@@ -1,0 +1,74 @@
+{
+  "evidence_id": "118",
+  "generated_at": "2026-09-27T09:10:40.736503+00:00",
+  "head": "51b53c2",
+  "nopath_near_miss": [
+    {
+      "message_id": 3595211,
+      "bucket": "31_90d",
+      "first_loss": "NO_PATH_MATCH",
+      "direction": "UNKNOWN",
+      "community_class": "EXCHANGE_OFFICIAL",
+      "preview": "Fixing foundational bottlenecks should come first; extra layers should complement that work, not hide inefficiencies."
+    }
+  ],
+  "veto_near_or_refined": [
+    {
+      "message_id": 8568013,
+      "bucket": "0_7d",
+      "first_loss": "VETO_job_aggregator",
+      "community_class": "JOB_BOARD",
+      "near_miss_buyer_rx": true,
+      "preview": "\ud83c\udf1f Freelance Opportunity: Clipper Needed \ud83d\udcb0 Budget: $150 \ud83e\udd1d With: Patrick Boswell"
+    },
+    {
+      "message_id": 197,
+      "bucket": "31_90d",
+      "first_loss": "VETO_job_aggregator",
+      "community_class": "JOB_BOARD",
+      "near_miss_buyer_rx": true,
+      "preview": "\ud83c\udf1f Freelance Opportunity: 5 TASKS - 5000 PEPE \ud83d\udcb0 Budget: $50 \ud83e\udd1d With: Quetta Audy"
+    },
+    {
+      "message_id": 391,
+      "bucket": "31_90d",
+      "first_loss": "HARD_EXCLUDE_EARLY",
+      "community_class": "JOB_BOARD",
+      "near_miss_buyer_rx": false,
+      "preview": "\ud83d\udcb0 TOP-PAYING PROJECTS THIS WEEK 1\ufe0f\u20e3 $10,000 \u2014 Building A Company Website Using MERN \u2192 https://laborx.com/jobs/building-a-company-website-using-mern-104148 2\ufe0f\u20e3 $10,000 \u2014 Seed Investor Needed \u2013 GhostContract MVP Built \u2192 https://laborx.com/job"
+    },
+    {
+      "message_id": 294,
+      "bucket": "31_90d",
+      "first_loss": "VETO_job_aggregator",
+      "community_class": "JOB_BOARD",
+      "near_miss_buyer_rx": true,
+      "preview": "\ud83c\udf1f Freelance Opportunity: AI Project Partner \ud83d\udcb0 Budget: $800 \ud83e\udd1d With: Mike Gike"
+    },
+    {
+      "message_id": 60628,
+      "bucket": "31_90d",
+      "first_loss": "HARD_EXCLUDE_EARLY",
+      "community_class": "TRADER_COMMUNITY",
+      "near_miss_buyer_rx": false,
+      "preview": "\ud83d\udcb0 TOP-PAYING PROJECTS THIS WEEK 1\ufe0f\u20e3 $10,000 \u2014 Building A Company Website Using MERN \u2192 https://laborx.com/jobs/building-a-company-website-using-mern-104148 2\ufe0f\u20e3 $10,000 \u2014 Seed Investor Needed \u2013 GhostContract MVP Built \u2192 https://laborx.com/job"
+    },
+    {
+      "message_id": 22895,
+      "bucket": "91d_plus",
+      "first_loss": "VETO_job_aggregator",
+      "community_class": "JOB_BOARD",
+      "near_miss_buyer_rx": true,
+      "preview": "\ud83c\udf1f Freelance Opportunity: Louisville Roofing \ud83d\udcb0 Budget: $2222 \ud83e\udd1d With: Louisville Roofing"
+    },
+    {
+      "message_id": 73917,
+      "bucket": "91d_plus",
+      "first_loss": "VETO_support_question",
+      "community_class": "JOB_BOARD",
+      "near_miss_buyer_rx": false,
+      "preview": "Still burning budget on ad spend when you can grow your business faster with conversion-ready leads that drive revenue across every sector \ud83c\udfe1 Homeowners Leads Target people with high purchasing power \u2014 ideal for real estate, home services, i"
+    }
+  ],
+  "eligible_non_low": []
+}

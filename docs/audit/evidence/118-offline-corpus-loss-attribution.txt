@@ -1,0 +1,42 @@
+Evidence 118: Offline corpus loss attribution (WP1 / Mode 1)
+experiment_id=OFFLINE_CORPUS_LOSS_ATTRIBUTION_360D
+decision=OBSERVE / UPSTREAM_LOSS@G3
+path_freeze=path_b+path_c
+shadow=OFF ml_training_enabled=false
+code_change=read-only audit script only (no discovery semantics)
+generated_at=2026-09-27T09:10:40.736503+00:00 head=51b53c2
+runtime_sec=16.72 read_only=true
+
+=== 0. PRE-REGISTERED ===
+  hypothesis=NEW=0 may be SOURCE_ABSENT and/or UPSTREAM_LOSS; score-coverage bias must be corrected via messages-only stratified sampling.
+  decision_rule=SOURCE_ABSENT if ~0 eligible and ~0 near-miss RFQs in sample; else UPSTREAM_LOSS@dominant gate with freezes. Not global market proof.
+
+=== 1. ISOLATION ===
+  human_labels=1524 AI_CONFIRMED=4 isolation_ok=True
+  messages=8676406 message_scores=179975 disc_v6_NEW=0
+
+=== 2. BUCKET POPULATIONS (messages-only) ===
+  0_7d: messages=126948 scored=126948 coverage=1.0 sampled=1288 sample_eligible=0 est_eligible≈0.0 est_near≈98.56
+  8_30d: messages=369764 scored=4574 coverage=0.01237 sampled=2500 sample_eligible=0 est_eligible≈0.0 est_near≈0.0
+  31_90d: messages=1102973 scored=1337 coverage=0.001212 sampled=2500 sample_eligible=0 est_eligible≈0.0 est_near≈1323.57
+  91d_plus: messages=4022527 scored=1349 coverage=0.000335 sampled=2500 sample_eligible=0 est_eligible≈0.0 est_near≈1609.01
+
+=== 3. SAMPLE FIRST-LOSS (disc_v6 in-process; no DB writes) ===
+  n_sampled=8788 stride=97 offset=3
+  histogram={'VETO_support_question': 378, 'NO_PATH_MATCH': 8235, 'HARD_EXCLUDE_EARLY': 51, 'VETO_service_provider': 98, 'VETO_job_aggregator': 14, 'VETO_corporate_employment': 7, 'VETO_job_seeker': 2, 'VETO_generic_recruiter': 1, 'VETO_news_digest': 2}
+  gate_counts={'G2_veto_or_hard': 553, 'G3_no_path': 8235}
+  eligible_by_tier={}
+  est_eligible≈0.0
+  est_near_miss_rx≈3031.14
+
+=== 4. CLASSIFICATION ===
+  classification=UPSTREAM_LOSS@G3
+  first_loss_stage=semantic_loss
+  freeze_nopath_near=1 freeze_veto=7 freeze_eligible_non_low=0
+
+=== 5. BUSINESS / LOCKS ===
+  {'outreach': False, 'ml_go': False, 'threshold_loosen': False, 'discovery_semantic_change': False, 'path_b_path_c_reopened': False}
+
+=== 6. NEXT ===
+  WP2: adjudicate freeze samples into label_reviews only. If SOURCE_ABSENT: owner sourcing decision (not path reopen). Remain OBSERVE for live A/B/C.
+

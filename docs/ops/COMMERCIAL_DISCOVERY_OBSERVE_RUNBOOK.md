@@ -85,6 +85,7 @@ Note: since-enable aggregate still includes 6 historical CONTAMINATED rows; prim
 ## Standing classification (until resume)
 
 - **RESIDUAL_SCARCITY** — Evidence 117: 0 NEW / 7649 scored / ~4.1h post–path_b (rate 0 vs UB 0.018/h; expected≈0.07). Post-E117 traffic continues without NEW (spot-check may show larger scored denom).
+- **UPSTREAM_LOSS@G3 (offline)** — Evidence 118: messages-only stratified sample (n=8788 / ~360d) found **0** disc_v6-eligible (`RETRIEVED=0`); dominant loss `NO_PATH_MATCH` (8235); est near-miss buyer-RX ≈3031; freezes under `docs/audit/evidence/118-offline-freeze-samples.json`. Does **not** authorize path reopen — next is WP2 adjudication.
 - **EXPECTED_IDLE** — 900s scheduler waves (Evidence 114)
 - **INTENTIONAL_SHADOW_OFF** — episode→AI handoff gated (Evidence 111)
 - **Invite-expired** — community 132 NOISE (Evidence 115)
@@ -95,8 +96,14 @@ Note: since-enable aggregate still includes 6 historical CONTAMINATED rows; prim
 ```bash
 # Read-only inventory — does not enable ML/Optuna/SHAP/LLM or alter discovery
 python3 scripts/offline_ml_dataset_readiness_inventory.py
+
+# WP1 Evidence 118 — unbiased corpus loss attribution (Mode 1; no prod writes)
+docker compose run --rm --no-deps -v "$PWD:/app" -w /app analyzer \
+  sh -c 'PYTHONPATH=/app python scripts/audit_offline_corpus_loss_attribution_360d.py'
 ```
+
+Master continuation prompt: `docs/ops/MASTER_CONTINUATION_PROMPT_COMMERCIAL_DISCOVERY.md`
 
 ## Next hypothesis
 
-Resume only on **(A)** first NEW disc_v6 (quality-classify; do not reopen path_b/c), **(B)** pipeline/Redis/worker/query failure, or **(C)** isolation drift. Do not busy remesure. Do not enable shadow without auth.
+Live resume only on **(A)** first NEW disc_v6 (quality-classify; do not reopen path_b/c), **(B)** pipeline/Redis/worker/query failure, or **(C)** isolation drift. Offline next: **WP2** adjudicate E118 freeze samples via new `label_reviews` only. Do not busy remesure. Do not enable shadow / reopen paths without auth.
