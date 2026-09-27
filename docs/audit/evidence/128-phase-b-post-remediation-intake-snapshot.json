@@ -1,0 +1,261 @@
+{
+  "evidence_id": "128",
+  "title": "Phase B post-remediation intake snapshot (post E127)",
+  "experiment_id": "PHASE_B_POST_REMEDIATION_INTAKE_SNAPSHOT_128",
+  "generated_at": "2026-09-27T15:40:43+00:00",
+  "head": "3bd704c",
+  "mode": "CONTINUOUS_OBSERVE",
+  "classification": "PHASE_B_PARTIAL_INTAKE_POST_REMEDIATION",
+  "live_class_residual": "RESIDUAL_SCARCITY",
+  "triggers": [],
+  "t0": "2026-09-27T10:16:46.876011+00:00",
+  "t0_source": "docs/audit/evidence/121-sourcing-experiment-t0.json",
+  "e127_apply_at": "2026-09-27T15:37:45.635561+00:00",
+  "e127_source": "docs/audit/evidence/127-sourcing-phase-b-remediation-applied.json",
+  "path_b_at": "2026-09-26T06:53:16Z",
+  "hours_since_t0": 5.399,
+  "hours_since_e127": 0.0493,
+  "parent": [
+    "Evidence 121 SOURCING_T0_APPLIED",
+    "Evidence 123 PHASE_B_INTAKE_GAP",
+    "Evidence 127 PHASE_B_REMEDIATION_APPLIED",
+    "Evidence 125 mid-window T0 (pre-remediation)"
+  ],
+  "observe_once": {
+    "at": "2026-09-27T15:40:23+00:00",
+    "line": "OBSERVE_OK",
+    "new": 0,
+    "hl": 1524,
+    "ac": 4,
+    "msg_1h": 764,
+    "score_1h": 764,
+    "msgs_since_t0": 3837,
+    "scores_since_t0": 3837,
+    "disc_v6_since_t0": 0,
+    "t0": "2026-09-27T10:16:46Z",
+    "xlen": 6,
+    "pending": 0,
+    "lag": 0,
+    "consumers": 1,
+    "exit": 0
+  },
+  "health": {
+    "status": "ok",
+    "postgres": "ok",
+    "redis": "ok"
+  },
+  "validation_gates": {
+    "ai_validation_gate_ready": false,
+    "ai_validated_messages": 94,
+    "ai_validated_true": 0,
+    "ai_validated_false": 94,
+    "ml_training_enabled": false,
+    "ml_gate_independence_ready": false,
+    "closed_reasons": [
+      "ai_validated_messages<100",
+      "ai_validated_true<30"
+    ]
+  },
+  "isolation": {
+    "human_labels": 1524,
+    "AI_CONFIRMED": 4,
+    "expect": {
+      "human_labels": 1524,
+      "AI_CONFIRMED": 4
+    },
+    "ok": true
+  },
+  "metrics_since_t0": {
+    "messages_since_t0": 3837,
+    "scores_since_t0": 3837,
+    "disc_v6_since_t0": 0,
+    "approx_msg_rate_per_h": 710.7,
+    "approx_score_rate_per_h": 710.7,
+    "approx_disc_v6_rate_per_h": 0.0
+  },
+  "compare_e127_post_apply_observe": {
+    "evidence_id": "127",
+    "at": "2026-09-27T15:39:22+00:00",
+    "msgs_since_t0": 3837,
+    "scores_since_t0": 3837,
+    "disc_v6_since_t0": 0,
+    "delta_messages": 0,
+    "delta_scores": 0,
+    "delta_disc_v6": 0
+  },
+  "compare_e125": {
+    "evidence_id": "125",
+    "at": "2026-09-27T14:06:50+00:00",
+    "hours_since_t0": 3.8344,
+    "messages_since_t0": 2651,
+    "scores_since_t0": 2651,
+    "disc_v6_since_t0": 0,
+    "delta_messages": 1186,
+    "delta_scores": 1186,
+    "delta_disc_v6": 0
+  },
+  "disc_v6": {
+    "all_historical": 6,
+    "new_since_path_b": 0,
+    "new_since_t0": 0
+  },
+  "totals": {
+    "messages": 8681008,
+    "message_scores": 184577
+  },
+  "phase_b_communities": {
+    "137": {
+      "id": 137,
+      "telegram_ref": "@Freqtrade",
+      "username": "Freqtrade",
+      "enabled": false,
+      "resolve_status": "error",
+      "telegram_chat_id": null,
+      "last_message_id": null,
+      "msgs_total": 0,
+      "msgs_since_e127": 0,
+      "msgs_since_t0": 0,
+      "note": "disabled by E127 Step A"
+    },
+    "138": {
+      "id": 138,
+      "telegram_ref": "@hummingbot_io",
+      "username": "hummingbot_io",
+      "name": "hummingbot",
+      "kind": "group",
+      "enabled": true,
+      "resolve_status": "resolved",
+      "telegram_chat_id": 1318221109,
+      "last_message_id": 1782,
+      "msgs_total": 0,
+      "msgs_since_e127": 0,
+      "msgs_since_t0": 0,
+      "note": "E127 replace resolved; days=14 seen=1 published=0; msg table still 0"
+    },
+    "139": {
+      "id": 139,
+      "telegram_ref": "@NautilusTrader",
+      "username": "NautilusTrader",
+      "name": "NautilusTrader",
+      "kind": "channel",
+      "enabled": true,
+      "resolve_status": "resolved",
+      "telegram_chat_id": 2276323404,
+      "last_message_id": null,
+      "msgs_total": 0,
+      "msgs_since_e127": 0,
+      "msgs_since_t0": 0,
+      "note": "still empty after E127 days=14; VERIFY-JOIN retained; no JoinChannel autofix"
+    },
+    "140": {
+      "id": 140,
+      "telegram_ref": "@backtrader_community",
+      "username": "backtrader_community",
+      "enabled": false,
+      "resolve_status": "error",
+      "telegram_chat_id": null,
+      "last_message_id": null,
+      "msgs_total": 0,
+      "msgs_since_e127": 0,
+      "msgs_since_t0": 0,
+      "note": "disabled by E127 Step A"
+    },
+    "141": {
+      "id": 141,
+      "telegram_ref": "@jesse_trade",
+      "username": "jesse_trade",
+      "name": "Jesse.Trade",
+      "kind": "channel",
+      "enabled": true,
+      "resolve_status": "resolved",
+      "telegram_chat_id": 1308360769,
+      "last_message_id": 212,
+      "msgs_total": 8,
+      "msgs_since_e127": 8,
+      "msgs_since_t0": 8,
+      "note": "E127 replace success; days=14 published 8"
+    }
+  },
+  "phase_b_msg_summary": {
+    "msgs_total_137_141": 8,
+    "msgs_since_e127_137_141": 8,
+    "msgs_since_t0_137_141": 8,
+    "enabled_with_intake": [141],
+    "enabled_still_zero": [138, 139],
+    "disabled": [137, 140]
+  },
+  "scan_runs_e127": [
+    {
+      "id": 69487,
+      "community_id": 138,
+      "days": 14,
+      "status": "completed",
+      "messages_seen": 1,
+      "messages_published": 0
+    },
+    {
+      "id": 69488,
+      "community_id": 139,
+      "days": 14,
+      "status": "completed",
+      "messages_seen": 0,
+      "messages_published": 0
+    },
+    {
+      "id": 69489,
+      "community_id": 141,
+      "days": 14,
+      "status": "completed",
+      "messages_seen": 8,
+      "messages_published": 8
+    }
+  ],
+  "phase_a_disabled_still": [
+    {"id": 57, "username": "BybitEnglish", "enabled": false, "last_message_id": 4748841},
+    {"id": 59, "username": "OKXOfficial_English", "enabled": false, "last_message_id": 12431466},
+    {"id": 64, "username": "BitgetENOfficial", "enabled": false, "last_message_id": 10480032},
+    {"id": 96, "username": "WeexGlobal_Group", "enabled": false, "last_message_id": 4086143}
+  ],
+  "durable_watcher": {
+    "alive": true,
+    "pid": 794476,
+    "started_approx": "2026-09-27T14:05:38Z",
+    "interval_sec": 5400,
+    "nohup_log": "logs/observe_abc_watch.nohup.log",
+    "last_heartbeat": {
+      "at": "2026-09-27T15:35:39+00:00",
+      "msgs_since_t0": 3592,
+      "scores_since_t0": 3592,
+      "disc_v6_since_t0": 0
+    },
+    "next_heartbeat_approx": "2026-09-27T17:05:39+00:00"
+  },
+  "redis": {
+    "telegram:commercial_discovery": {
+      "consumers": 1,
+      "pending": 0,
+      "lag": 0,
+      "xlen": 6
+    }
+  },
+  "authorizations": {
+    "path_b_path_c_reopen": false,
+    "e127_applied": true,
+    "timed_remeasure_invented": false,
+    "update_goal_complete": false,
+    "ml_enable": false,
+    "human_labels_mutated": false,
+    "scoring_yaml_loosen": false,
+    "joinchannel_autofix": false
+  },
+  "decision": "OBSERVE_OK — Phase B post-E127 partial intake (141=8 msgs; 138/139 still 0); disc_v6 NEW=0 RESIDUAL_SCARCITY; isolation 1524/4; does NOT authorize path reopen / ML / UpdateGoal complete",
+  "next": "Continue durable watch (INTERVAL 5400). Trigger A quality-classify on first NEW disc_v6 (no path reopen). Owner VERIFY-JOIN for 139 if intake desired. Do not UpdateGoal complete.",
+  "locks": {
+    "path_b_path_c": "FROZEN",
+    "shadow": "OFF",
+    "ml_training_enabled": false,
+    "scoring_yaml_loosen": false,
+    "human_labels_mutated": false,
+    "update_goal_complete": false
+  }
+}

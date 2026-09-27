@@ -1,0 +1,77 @@
+Evidence 128: Phase B post-remediation intake snapshot (post E127)
+experiment_id=PHASE_B_POST_REMEDIATION_INTAKE_SNAPSHOT_128
+decision=OBSERVE_OK
+classification=PHASE_B_PARTIAL_INTAKE_POST_REMEDIATION + RESIDUAL_SCARCITY (disc_v6 NEW=0)
+measure_at=2026-09-27T15:40:43+00:00 head=3bd704c
+t0=2026-09-27T10:16:46.876011+00:00 hours_since_t0=5.399
+e127_apply_at=2026-09-27T15:37:45.635561+00:00 hours_since_e127≈0.05
+path_b_at=2026-09-26T06:53:16Z
+parent=Evidence 121 (T0) + 123 (gap) + 127 (remediation applied) + 125 (pre-remediation mid-window)
+read_only=true code_change=none deploy=not_needed
+mode=CONTINUOUS_OBSERVE Mode-0/1 post-remediation intake snapshot (one --once; not a remesure loop)
+
+=== 0. PRE-REGISTERED / LOCKS ===
+  Post-E127 Phase B intake measurement under CONTINUOUS OBSERVE.
+  Does NOT authorize:
+    - path_b / path_c reopen
+    - ML enable / Optuna / SHAP / LLM augmentation
+    - scoring.yaml threshold loosen / human_labels mutation
+    - JoinChannel autofix / invite autofix
+    - inventing timed remesure loops beyond this single --once
+    - UpdateGoal complete
+  Stay Mode 0/1; wait durable watcher exit 10 (A/B/C) or owner VERIFY-JOIN for 139.
+
+=== 1. QUICK VERIFY ===
+  HEAD=3bd704c (Apply Evidence 127 Phase B remediation; >= 3bd704c ✓)
+  ./scripts/observe_abc_watch.sh --once → OBSERVE_OK exit=0
+  OBSERVE_OK {"at":"2026-09-27T15:40:23+00:00","new":0,"hl":1524,"ac":4,
+              "msg_1h":764,"score_1h":764,"msgs_since_t0":3837,"scores_since_t0":3837,
+              "disc_v6_since_t0":0,"t0":"2026-09-27T10:16:46Z","xlen":6,"pending":0,
+              "lag":0,"consumers":1}
+  isolation hl=1524 ac=4 ok=True
+  health={"status":"ok","postgres":"ok","redis":"ok"}
+  gates: ai_validated=94/0/94 ready=false ml_training_enabled=false
+
+=== 2. T0 TOTALS (msgs / scores / disc_v6) ===
+  messages_since_t0=3837 scores_since_t0=3837 disc_v6_since_t0=0
+  disc_v6_new_since_path_b=0 (historical all=6 CONTAMINATED retained)
+  messages_total=8681008 message_scores=184577
+  approx rate since T0: ~711 msg/h + score/h; disc_v6 0/h
+  vs E125 (14:06Z, msgs_t0=2651): Δ +1186 msgs / +1186 scores / +0 disc_v6
+  vs E127 post-apply observe (15:39Z, msgs_t0=3837): Δ +0 (same tick window)
+
+=== 3. PHASE B COMMUNITIES 137–141 (post E127) ===
+  id=137 @Freqtrade              enabled=f resolve=error   msgs_total=0 since_e127=0 since_t0=0  (disabled Step A)
+  id=138 @hummingbot_io          enabled=t resolve=resolved group chat=1318221109 last_msg=1782
+         msgs_total=0 since_e127=0 since_t0=0  (days=14 seen=1 pub=0; table still 0)
+  id=139 @NautilusTrader         enabled=t resolve=resolved channel chat=2276323404 last_msg=null
+         msgs_total=0 since_e127=0 since_t0=0  (VERIFY-JOIN note retained; no autofix)
+  id=140 @backtrader_community   enabled=f resolve=error   msgs_total=0 since_e127=0 since_t0=0  (disabled Step A)
+  id=141 @jesse_trade            enabled=t resolve=resolved channel Jesse.Trade chat=1308360769 last_msg=212
+         msgs_total=8 since_e127=8 since_t0=8  (days=14 published 8)
+
+  Phase B summary: total=8 since_e127=8 since_t0=8; intake=[141]; zero_enabled=[138,139]; disabled=[137,140]
+
+=== 4. E127 SCAN RUNS (days=14) ===
+  69487 community=138 days=14 completed seen=1 published=0
+  69488 community=139 days=14 completed seen=0 published=0
+  69489 community=141 days=14 completed seen=8 published=8
+
+=== 5. PHASE A (still disabled EXCHANGE — E121; cursors preserved) ===
+  BybitEnglish(57) enabled=f last_message_id=4748841
+  OKXOfficial_English(59) enabled=f last_message_id=12431466
+  BitgetENOfficial(64) enabled=f last_message_id=10480032
+  WeexGlobal_Group(96) enabled=f last_message_id=4086143
+
+=== 6. DURABLE WATCHER ===
+  PID=794476 started≈2026-09-27T14:05:38Z INTERVAL_SEC=5400
+  nohup logs/observe_abc_watch.nohup.log
+  last heartbeat OBSERVE_OK at=2026-09-27T15:35:39+00:00 msgs_t0=3592
+  next heartbeat ≈2026-09-27T17:05:39+00:00
+  wake exit 10 on A/B/C only
+
+=== 7. BUSINESS / DECISION / NEXT ===
+  Stay CONTINUOUS OBSERVE. E127 remediation yielded partial Phase B intake (141 only).
+  disc_v6 still RESIDUAL_SCARCITY (NEW=0). Isolation intact 1524/4.
+  Does NOT authorize path reopen / ML / UpdateGoal complete.
+  NEXT: durable watch for Trigger A/B/C; owner VERIFY-JOIN for 139 if still empty and intake wanted.
