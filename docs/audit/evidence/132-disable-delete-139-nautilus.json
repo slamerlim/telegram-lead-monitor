@@ -1,0 +1,217 @@
+{
+  "evidence_id": "132",
+  "experiment_id": "DISABLE_DELETE_139_NAUTILUS_132",
+  "decision": "APPLIED",
+  "owner_choice": "E131_B_plus_delete",
+  "verify_join_a": "CLOSED_ABANDONED",
+  "measure_at": "2026-09-29T14:04:55.307343+00:00",
+  "head": "fde4a3f",
+  "dry_run": false,
+  "auth": {
+    "authorized_by": "owner",
+    "auth_record": "Owner decision this chat: E131 option B + delete \u2014 'disable 139 now \u2026 and delete it from list. it's really dead'. VERIFY-JOIN path A closed as abandoned. NOT path_b/c reopen; NOT ML/shadow; NOT human_labels mutate; NOT JoinChannel invent.",
+    "parent_evidence": [
+      "docs/audit/evidence/131-verify-join-139-nautilus-blocked.*",
+      "docs/audit/evidence/127-sourcing-phase-b-remediation-applied.*",
+      "docs/audit/evidence/124-sourcing-phase-b-remediation-proposal.*"
+    ],
+    "authorized_at": "2026-09-29T14:04:55.307343+00:00",
+    "lever": "communities.enabled=false for id=139 then hard DELETE row (no soft-delete column; API has PATCH enabled only; REVIEW_UI_LOCKDOWN blocks /communities \u2014 SessionLocal like E127)",
+    "forbidden": [
+      "path_b/path_c reopen",
+      "scoring.yaml threshold loosen",
+      "human_labels mutation",
+      "ML/shadow enable",
+      "last_message_id wipe on non-target rows",
+      "docker compose down -v",
+      "JoinChannel invent",
+      "Optuna / freeze expand"
+    ]
+  },
+  "delete_mode": "hard_delete",
+  "delete_error": null,
+  "target": {
+    "id": 139,
+    "expected_ref": "@NautilusTrader",
+    "related_before": {
+      "messages": 0,
+      "scan_runs": 209,
+      "message_scores": 0,
+      "human_labels": 0
+    }
+  },
+  "before": {
+    "isolation": {
+      "human_labels": 1524,
+      "ai_confirmed": 4,
+      "messages": 8712213,
+      "message_scores": 215782,
+      "disc_v6_new": 1
+    },
+    "phase_b_communities": {
+      "137": {
+        "id": 137,
+        "telegram_ref": "@Freqtrade",
+        "username": "Freqtrade",
+        "name": null,
+        "kind": null,
+        "enabled": false,
+        "resolve_status": "error",
+        "telegram_chat_id": null,
+        "last_message_id": null,
+        "last_error": "@Freqtrade: UsernameInvalidError: Nobody is using this username or the username is unacceptable (caused by ResolveUsernameRequest)"
+      },
+      "138": {
+        "id": 138,
+        "telegram_ref": "@hummingbot_io",
+        "username": "hummingbot_io",
+        "name": "hummingbot",
+        "kind": "group",
+        "enabled": true,
+        "resolve_status": "resolved",
+        "telegram_chat_id": 1318221109,
+        "last_message_id": 1782,
+        "last_error": null
+      },
+      "139": {
+        "id": 139,
+        "telegram_ref": "@NautilusTrader",
+        "username": "NautilusTrader",
+        "name": "NautilusTrader",
+        "kind": "channel",
+        "enabled": true,
+        "resolve_status": "resolved",
+        "telegram_chat_id": 2276323404,
+        "last_message_id": null,
+        "last_error": null
+      },
+      "140": {
+        "id": 140,
+        "telegram_ref": "@backtrader_community",
+        "username": "backtrader_community",
+        "name": null,
+        "kind": null,
+        "enabled": false,
+        "resolve_status": "error",
+        "telegram_chat_id": null,
+        "last_message_id": null,
+        "last_error": "@backtrader_community: ValueError: No user has \"backtrader_community\" as username"
+      },
+      "141": {
+        "id": 141,
+        "telegram_ref": "@jesse_trade",
+        "username": "jesse_trade",
+        "name": "Jesse.Trade",
+        "kind": "channel",
+        "enabled": true,
+        "resolve_status": "resolved",
+        "telegram_chat_id": 1308360769,
+        "last_message_id": 213,
+        "last_error": null
+      }
+    }
+  },
+  "steps": [
+    {
+      "step": "disable",
+      "id": 139,
+      "telegram_ref": "@NautilusTrader",
+      "enabled": false,
+      "last_message_id": null,
+      "last_message_id_unchanged": true
+    },
+    {
+      "step": "delete",
+      "id": 139,
+      "mode": "hard_delete",
+      "messages_at_delete": 0,
+      "scan_runs_at_delete": 209,
+      "note": "scan_runs.community_id ON DELETE SET NULL"
+    }
+  ],
+  "after": {
+    "isolation": {
+      "human_labels": 1524,
+      "ai_confirmed": 4,
+      "messages": 8712213,
+      "message_scores": 215782,
+      "disc_v6_new": 1
+    },
+    "phase_b_communities": {
+      "137": {
+        "id": 137,
+        "telegram_ref": "@Freqtrade",
+        "username": "Freqtrade",
+        "name": null,
+        "kind": null,
+        "enabled": false,
+        "resolve_status": "error",
+        "telegram_chat_id": null,
+        "last_message_id": null,
+        "last_error": "@Freqtrade: UsernameInvalidError: Nobody is using this username or the username is unacceptable (caused by ResolveUsernameRequest)"
+      },
+      "138": {
+        "id": 138,
+        "telegram_ref": "@hummingbot_io",
+        "username": "hummingbot_io",
+        "name": "hummingbot",
+        "kind": "group",
+        "enabled": true,
+        "resolve_status": "resolved",
+        "telegram_chat_id": 1318221109,
+        "last_message_id": 1782,
+        "last_error": null
+      },
+      "139": null,
+      "140": {
+        "id": 140,
+        "telegram_ref": "@backtrader_community",
+        "username": "backtrader_community",
+        "name": null,
+        "kind": null,
+        "enabled": false,
+        "resolve_status": "error",
+        "telegram_chat_id": null,
+        "last_message_id": null,
+        "last_error": "@backtrader_community: ValueError: No user has \"backtrader_community\" as username"
+      },
+      "141": {
+        "id": 141,
+        "telegram_ref": "@jesse_trade",
+        "username": "jesse_trade",
+        "name": "Jesse.Trade",
+        "kind": "channel",
+        "enabled": true,
+        "resolve_status": "resolved",
+        "telegram_chat_id": 1308360769,
+        "last_message_id": 213,
+        "last_error": null
+      }
+    },
+    "phase_b_enabled": {
+      "137": false,
+      "138": true,
+      "139": "DELETED",
+      "140": false,
+      "141": true
+    },
+    "target_gone": true,
+    "target_disabled_only": false
+  },
+  "cursors_preserved_137_138_140_141": true,
+  "cursor_before_others": {
+    "137": null,
+    "138": 1782,
+    "140": null,
+    "141": 213
+  },
+  "cursor_after_others": {
+    "137": null,
+    "138": 1782,
+    "140": null,
+    "141": 213
+  },
+  "accidental_disable_138_141": [],
+  "isolation_held": true,
+  "api_note": "No DELETE /communities route; PATCH /enabled exists but REVIEW_UI_LOCKDOWN blocks list/mutate via HTTP \u2014 used SessionLocal"
+}

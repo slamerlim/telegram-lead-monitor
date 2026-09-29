@@ -1,0 +1,51 @@
+Evidence 132: Disable + delete community 139 (@NautilusTrader)
+evidence_id=132
+experiment_id=DISABLE_DELETE_139_NAUTILUS_132
+decision=APPLIED
+owner_choice=E131 option B + delete (this chat)
+verify_join_A=CLOSED_ABANDONED
+measure_at=2026-09-29T14:04:55.307343+00:00 head=fde4a3f
+dry_run=False delete_mode=hard_delete
+
+=== 0. OWNER AUTH ===
+  Owner decision this chat: E131 option B + delete — 'disable 139 now … and delete it from list. it's really dead'. VERIFY-JOIN path A closed as abandoned. NOT path_b/c reopen; NOT ML/shadow; NOT human_labels mutate; NOT JoinChannel invent.
+  authorized_at=2026-09-29T14:04:55.307343+00:00
+  lever=communities.enabled=false for id=139 then hard DELETE row (no soft-delete column; API has PATCH enabled only; REVIEW_UI_LOCKDOWN blocks /communities — SessionLocal like E127)
+
+=== 1. BEFORE ===
+  isolation={'human_labels': 1524, 'ai_confirmed': 4, 'messages': 8712213, 'message_scores': 215782, 'disc_v6_new': 1}
+  target={'id': 139, 'telegram_ref': '@NautilusTrader', 'username': 'NautilusTrader', 'name': 'NautilusTrader', 'kind': 'channel', 'enabled': True, 'resolve_status': 'resolved', 'telegram_chat_id': 2276323404, 'last_message_id': None, 'last_error': None}
+  related={'messages': 0, 'scan_runs': 209, 'message_scores': 0, 'human_labels': 0}
+  phase_b:
+    {'id': 137, 'telegram_ref': '@Freqtrade', 'username': 'Freqtrade', 'name': None, 'kind': None, 'enabled': False, 'resolve_status': 'error', 'telegram_chat_id': None, 'last_message_id': None, 'last_error': '@Freqtrade: UsernameInvalidError: Nobody is using this username or the username is unacceptable (caused by ResolveUsernameRequest)'}
+    {'id': 138, 'telegram_ref': '@hummingbot_io', 'username': 'hummingbot_io', 'name': 'hummingbot', 'kind': 'group', 'enabled': True, 'resolve_status': 'resolved', 'telegram_chat_id': 1318221109, 'last_message_id': 1782, 'last_error': None}
+    {'id': 139, 'telegram_ref': '@NautilusTrader', 'username': 'NautilusTrader', 'name': 'NautilusTrader', 'kind': 'channel', 'enabled': True, 'resolve_status': 'resolved', 'telegram_chat_id': 2276323404, 'last_message_id': None, 'last_error': None}
+    {'id': 140, 'telegram_ref': '@backtrader_community', 'username': 'backtrader_community', 'name': None, 'kind': None, 'enabled': False, 'resolve_status': 'error', 'telegram_chat_id': None, 'last_message_id': None, 'last_error': '@backtrader_community: ValueError: No user has "backtrader_community" as username'}
+    {'id': 141, 'telegram_ref': '@jesse_trade', 'username': 'jesse_trade', 'name': 'Jesse.Trade', 'kind': 'channel', 'enabled': True, 'resolve_status': 'resolved', 'telegram_chat_id': 1308360769, 'last_message_id': 213, 'last_error': None}
+
+=== 2. STEPS ===
+  {'step': 'disable', 'id': 139, 'telegram_ref': '@NautilusTrader', 'enabled': False, 'last_message_id': None, 'last_message_id_unchanged': True}
+  {'step': 'delete', 'id': 139, 'mode': 'hard_delete', 'messages_at_delete': 0, 'scan_runs_at_delete': 209, 'note': 'scan_runs.community_id ON DELETE SET NULL'}
+
+=== 3. AFTER ===
+  isolation={'human_labels': 1524, 'ai_confirmed': 4, 'messages': 8712213, 'message_scores': 215782, 'disc_v6_new': 1}
+  target_gone=True target_disabled_only=False
+  phase_b_enabled={'137': False, '138': True, '139': 'DELETED', '140': False, '141': True}
+  cursors_preserved_137_138_140_141=True
+  accidental_disable_138_141=none
+  phase_b:
+    {'id': 137, 'telegram_ref': '@Freqtrade', 'username': 'Freqtrade', 'name': None, 'kind': None, 'enabled': False, 'resolve_status': 'error', 'telegram_chat_id': None, 'last_message_id': None, 'last_error': '@Freqtrade: UsernameInvalidError: Nobody is using this username or the username is unacceptable (caused by ResolveUsernameRequest)'}
+    {'id': 138, 'telegram_ref': '@hummingbot_io', 'username': 'hummingbot_io', 'name': 'hummingbot', 'kind': 'group', 'enabled': True, 'resolve_status': 'resolved', 'telegram_chat_id': 1318221109, 'last_message_id': 1782, 'last_error': None}
+    None
+    {'id': 140, 'telegram_ref': '@backtrader_community', 'username': 'backtrader_community', 'name': None, 'kind': None, 'enabled': False, 'resolve_status': 'error', 'telegram_chat_id': None, 'last_message_id': None, 'last_error': '@backtrader_community: ValueError: No user has "backtrader_community" as username'}
+    {'id': 141, 'telegram_ref': '@jesse_trade', 'username': 'jesse_trade', 'name': 'Jesse.Trade', 'kind': 'channel', 'enabled': True, 'resolve_status': 'resolved', 'telegram_chat_id': 1308360769, 'last_message_id': 213, 'last_error': None}
+
+=== 4. NOT DONE ===
+  path_b/c reopen · ML/shadow · human_labels · scoring.yaml
+  JoinChannel · Optuna · freeze expand · docker compose down -v
+  last_message_id wipe on 137/138/140/141
+
+=== 5. VERDICT ===
+  isolation_held=True (expect 1524/4)
+  139_removed_from_list=True
+  VERIFY-JOIN A abandoned; E131 B+delete applied

@@ -1,7 +1,7 @@
 # Commercial discovery OBSERVE runbook (post first-iteration)
 
 **Status:** CONTINUOUS OBSERVE ACTIVE  
-**Standing note:** While `OBSERVE_OK` — do **not** invent timed remesure wakes; wait for durable `INTERVAL_SEC=5400` watcher exit 10 (A/B/C). E127 applied E124 Steps A–F (disable 137/140; replace 138→`@hummingbot_io`, 141→`@jesse_trade`; days=14 scans). Post-scan: 141 published 8; 138 resolved group (seen=1/pub=0); 139 still 0. **Evidence 129:** first NEW disc_v6 (`candidate_id=67`) → **provider_vendor / CONTAMINATED** — sticky `A_NEW` is expected; do not re-adjudicate. **Evidence 130:** Mode-1 offline LeadScorer+disc_v6 replay (n=1600 RETRIEVED=0) + readiness inventory — artifact-only; OBSERVE ≠ ML unlock. **Evidence 131:** VERIFY-JOIN 139 **BLOCKED** (no JoinChannel lever in-repo) — owner must choose join-script auth / disable 139 / leave empty. Do **not** reopen path_b/c / enable ML from remediation alone.  
+**Standing note:** While `OBSERVE_OK` — do **not** invent timed remesure wakes; wait for durable `INTERVAL_SEC=5400` watcher exit 10 (A/B/C). E127 applied E124 Steps A–F (disable 137/140; replace 138→`@hummingbot_io`, 141→`@jesse_trade`; days=14 scans). Post-scan: 141 published 8; 138 resolved group (seen=1/pub=0). **Evidence 129:** first NEW disc_v6 (`candidate_id=67`) → **provider_vendor / CONTAMINATED** — sticky `A_NEW` is expected; do not re-adjudicate. **Evidence 130:** Mode-1 offline LeadScorer+disc_v6 replay (n=1600 RETRIEVED=0) + readiness inventory — artifact-only; OBSERVE ≠ ML unlock. **Evidence 132:** owner E131 option B+delete — community **139** `@NautilusTrader` disabled then hard-deleted; VERIFY-JOIN A **CLOSED abandoned**. Do **not** reopen path_b/c / enable ML from remediation alone.  
 **Closed first-iteration:** Evidence 116 (`docs/audit/evidence/116-first-iteration-closure-observe-cycle10.*`)  
 **Path freeze:** path_c (E108) + path_b (E109) — do not reopen without auth + new loss evidence  
 **Shadow:** `COMMERCIAL_EPISODE_SHADOW_ENABLED=false` intentional — do not enable without explicit authorization  
@@ -97,7 +97,8 @@ Note: since-enable aggregate still includes 6 historical CONTAMINATED rows; prim
 - **PHASE_B_REMEDIATION_APPLIED** — Evidence 127: E124 Steps A–F applied under prior Option B auth. Disabled 137/140; replaced 138→`@hummingbot_io`, 141→`@jesse_trade`; queued days=14 for 138/139/141. Immediate scan outcomes: 141 published 8; 138 resolved correct group (seen=1/pub=0); 139 still 0 (VERIFY-JOIN note; no autofix). Isolation 1524/4.
 - **TRIGGER_A_FIRST_NEW_CLASSIFIED** — Evidence 129: candidate_id=67 CONTAMINATED provider_vendor; paths stay frozen.
 - **MODE1_OFFLINE_REPLAY_130** — Evidence 130: in-process LeadScorer+disc_v6 messages-only sample n=1600; RETRIEVED=0; ML inventory not ready; no prod rescore.
-- **VERIFY_JOIN_139_BLOCKED** — Evidence 131: no JoinChannel/membership script/API; owner-next A join-script / B disable / C leave empty.
+- **VERIFY_JOIN_139_BLOCKED** — Evidence 131: no JoinChannel/membership script/API; owner-next A/B/C (superseded by E132).
+- **DISABLE_DELETE_139_DONE** — Evidence 132: owner E131 B+delete; 139 `@NautilusTrader` disabled then hard-deleted (msgs=0); VERIFY-JOIN A abandoned; 138/141 untouched; isolation 1524/4.
 - **EXPECTED_IDLE** — 900s scheduler waves (Evidence 114)
 - **INTENTIONAL_SHADOW_OFF** — episode→AI handoff gated (Evidence 111)
 - **Invite-expired** — community 132 NOISE (Evidence 115)
@@ -138,4 +139,4 @@ Master continuation prompt: `docs/ops/MASTER_CONTINUATION_PROMPT_COMMERCIAL_DISC
 
 ## Next hypothesis
 
-NEXT = Trigger A/B/C from durable watcher (further NEW beyond E129 still freeze+classify); owner chooses E131 A/B/C for 139. Live resume only on **(A)** additional NEW disc_v6 (no path reopen), **(B)** pipeline failure, or **(C)** isolation drift. Offline: E130 replay artifacts ready; WP2/WP2b/WP2c DONE — do not re-adjudicate `e118_*`; freeze expand needs separate scoped ask. **WP3** blocked until genuine-positive adjudicated n. Do not invent remesure wakes / enable shadow / reopen paths / claim ML GO. Do not UpdateGoal complete.
+NEXT = Trigger A/B/C from durable watcher (further NEW beyond E129 still freeze+classify). E132 done (139 deleted; VERIFY-JOIN A abandoned). Live resume only on **(A)** additional NEW disc_v6 (no path reopen), **(B)** pipeline failure, or **(C)** isolation drift. Offline: E130 replay artifacts ready; WP2/WP2b/WP2c DONE — do not re-adjudicate `e118_*`; freeze expand needs separate scoped ask. **WP3** blocked until genuine-positive adjudicated n. Do not invent remesure wakes / enable shadow / reopen paths / claim ML GO. Do not UpdateGoal complete.
