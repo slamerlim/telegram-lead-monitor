@@ -1,0 +1,123 @@
+{
+  "evidence_id": 129,
+  "title": "Trigger A first NEW disc_v6 freeze + quality classify",
+  "experiment_id": "TRIGGER_A_FIRST_NEW_DISC_V6_129",
+  "decision": "OBSERVE_CONTINUE",
+  "classification": "CONTAMINATED_PROVIDER_VENDOR",
+  "commercially_actionable": false,
+  "genuine_buyer_project": false,
+  "measure_at": "2026-09-29T12:38:07Z",
+  "wake_at": "2026-09-29T12:36:24+00:00",
+  "head": "e7f94e6",
+  "path_b_at": "2026-09-26T06:53:16Z",
+  "sourcing_t0_at": "2026-09-27T10:16:46Z",
+  "parent": [
+    "Evidence 117 (post-path_b remesure / OBSERVE)",
+    "Evidence 127 (Phase B remediation)",
+    "runbook Trigger A"
+  ],
+  "read_only": true,
+  "code_change": "none",
+  "deploy": "not_needed",
+  "locks": {
+    "path_b_reopen": false,
+    "path_c_reopen": false,
+    "ml_go": false,
+    "shadow_enable": false,
+    "scoring_loosen": false,
+    "human_labels_mutate": false,
+    "freeze_expand": false,
+    "update_goal_complete": false
+  },
+  "triggers": {
+    "C_isolation": {
+      "hl": 1524,
+      "ac": 4,
+      "ok": true,
+      "action": "none"
+    },
+    "B_pipeline": {
+      "health": {"status": "ok", "postgres": "ok", "redis": "ok"},
+      "lag": 0,
+      "pending": 0,
+      "consumers": 1,
+      "msg_1h": 683,
+      "score_1h": 683,
+      "action": "none"
+    },
+    "A_new": {
+      "fired": true,
+      "new_since_path_b": 1,
+      "disc_v6_since_t0": 1,
+      "action": "freeze_classify_only"
+    }
+  },
+  "observe_wake": {
+    "line": "AGENT_LOOP_WAKE_observe_abc",
+    "at": "2026-09-29T12:36:24+00:00",
+    "triggers": "A_NEW ",
+    "new": 1,
+    "hl": 1524,
+    "ac": 4,
+    "msg_1h": 683,
+    "score_1h": 683,
+    "msgs_since_t0": 34038,
+    "scores_since_t0": 34038,
+    "disc_v6_since_t0": 1,
+    "t0": "2026-09-27T10:16:46Z",
+    "xlen": 7,
+    "pending": 0,
+    "lag": 0,
+    "consumers": 1
+  },
+  "phase_b_msgs_since_t0": {
+    "138": 0,
+    "139": 0,
+    "141": 9
+  },
+  "candidate": {
+    "candidate_id": 67,
+    "seed_message_id": 8710305,
+    "community_id": 47,
+    "community_name": "cTrader Algorithmic Trading",
+    "community_username": "cTrader_bots",
+    "author_id": 19316,
+    "discovery_version": "disc_v6",
+    "trigger_type": "v6_direct_project_domain",
+    "trigger_score": 2.9,
+    "scorer_tier": "LOW",
+    "score": 0,
+    "lead_type": "NOISE",
+    "status": "EPISODE_BUILT",
+    "episode_id": 67,
+    "matched_paths": ["A"],
+    "created_at": "2026-09-29T11:13:50.551964+00:00",
+    "message_text": "Still letting emotions control your trades? 🤖📉\nMy EA automates the execution, follows predefined trading conditions, and manages the process without hesitation or emotional decisions.\n📊 Results attached,  see it for yourself.\nWant to automate your trading? DM “EA” and I’ll send you the details. 🚀"
+  },
+  "quality_classification": {
+    "assigned": "provider_vendor",
+    "commercially_actionable": false,
+    "buyer_project_evidence": false,
+    "commercial_intent": "seller_promo_dm_funnel",
+    "evidence_strength": "high",
+    "notes": "Author pitches own EA and solicits DM; classic vendor spam. Scorer already NOISE/LOW. Verifier qualitative promo_marketing=1. One observation — does not authorize path reopen.",
+    "verifier_failure_class": "CONTAMINATED",
+    "verifier_qualitative": {
+      "promo_or_support_n": 1,
+      "reason_counts": {"promo_marketing": 1},
+      "live_contamination_pct": 100.0
+    }
+  },
+  "verifier_rate": {
+    "primary_window": "since_path_b",
+    "disc_v6_since_path_b": 1,
+    "scores_since_path_b": 66898,
+    "per_hour": 0.0129,
+    "expected_per_hour_ub": 0.018,
+    "expected_count": 1.4,
+    "classification": "CONTAMINATED",
+    "isolation_ok": true
+  },
+  "path_action": "DO_NOT_REOPEN_path_b_or_path_c — one candidate is one observation",
+  "next": "Continue CONTINUOUS OBSERVE on durable INTERVAL_SEC=5400 watcher. Resume only on next A/B/C. No path reopen / ML / shadow / UpdateGoal complete."
+}
