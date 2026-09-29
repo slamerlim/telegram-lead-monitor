@@ -1,0 +1,149 @@
+{
+  "evidence_id": 134,
+  "title": "Trigger A third NEW disc_v6 freeze + quality classify (id=69)",
+  "experiment_id": "TRIGGER_A_THIRD_NEW_DISC_V6_134",
+  "decision": "OBSERVE_CONTINUE",
+  "classification": "CONTAMINATED_OTHER_EDUCATION",
+  "commercially_actionable": false,
+  "genuine_buyer_project": false,
+  "measure_at": "2026-09-29T23:07:52Z",
+  "wake_at": "2026-09-29T23:06:42+00:00",
+  "head_at_measure": "67fe268",
+  "path_b_at": "2026-09-26T06:53:16Z",
+  "sourcing_t0_at": "2026-09-27T10:16:46Z",
+  "parent": [
+    "Evidence 129 (first NEW id=67 CONTAMINATED provider_vendor)",
+    "Evidence 133 (second NEW id=68 CONTAMINATED employment)",
+    "Evidence 132 (139 deleted)",
+    "runbook Trigger A"
+  ],
+  "read_only": true,
+  "code_change": "none",
+  "deploy": "not_needed",
+  "locks": {
+    "path_b_reopen": false,
+    "path_c_reopen": false,
+    "ml_go": false,
+    "shadow_enable": false,
+    "scoring_loosen": false,
+    "human_labels_mutate": false,
+    "freeze_expand": false,
+    "recreate_139": false,
+    "optuna": false,
+    "update_goal_complete": false
+  },
+  "triggers": {
+    "C_isolation": {
+      "hl": 1524,
+      "ac": 4,
+      "ok": true,
+      "action": "none"
+    },
+    "B_pipeline": {
+      "health": {
+        "status": "ok",
+        "postgres": "ok",
+        "redis": "ok"
+      },
+      "lag": 0,
+      "pending": 0,
+      "consumers": 1,
+      "msg_1h": 301,
+      "score_1h": 301,
+      "action": "none"
+    },
+    "A_new": {
+      "fired": true,
+      "new_since_path_b": 3,
+      "new_ids": [
+        67,
+        68,
+        69
+      ],
+      "prior_handled": [
+        67,
+        68
+      ],
+      "this_evidence": [
+        69
+      ],
+      "sticky_note": "Prior wakes sticky new=2 ids 67+68 Mode 0 (E129/E133). 23:06Z new=3 requires classify id=69."
+    }
+  },
+  "observe_wake_23_06": {
+    "line": "AGENT_LOOP_WAKE_observe_abc",
+    "at": "2026-09-29T23:06:42+00:00",
+    "triggers": "A_NEW ",
+    "new": 3,
+    "hl": 1524,
+    "ac": 4,
+    "msg_1h": 301,
+    "score_1h": 301,
+    "msgs_since_t0": 39644,
+    "scores_since_t0": 39644,
+    "disc_v6_since_t0": 3,
+    "xlen": 9,
+    "pending": 0,
+    "lag": 0,
+    "consumers": 1
+  },
+  "session_once_23_07": {
+    "at": "2026-09-29T23:07:05+00:00",
+    "exit": 10,
+    "new": 3,
+    "msgs_since_t0": 39644,
+    "scores_since_t0": 39644,
+    "disc_v6_since_t0": 3
+  },
+  "phase_b": {
+    "138_hummingbot_io_msgs_since_t0": 0,
+    "141_jesse_trade_msgs_since_t0": 10,
+    "139_exists": false,
+    "139_count": 0
+  },
+  "candidate_69": {
+    "candidate_id": 69,
+    "seed_message_id": 8716465,
+    "community_id": 55,
+    "community_name": "Binance English",
+    "community_username": "binanceexchange",
+    "author_id": 191920,
+    "discovery_version": "disc_v6",
+    "trigger_type": "v6_direct_project_domain",
+    "trigger_score": 2.9,
+    "scorer_tier": "LOW",
+    "score": 0,
+    "lead_type": "NOISE",
+    "status": "EPISODE_BUILT",
+    "episode_id": 69,
+    "matched_paths": [
+      "A"
+    ],
+    "created_at": "2026-09-29T21:59:59.057109+00:00",
+    "message_text": "I need someone to teach us trading, please.",
+    "message_summary": "Seeks a trading tutor/teacher; education request in exchange chat; not project procurement."
+  },
+  "quality_classification": {
+    "assigned": "other_contamination",
+    "commercially_actionable": false,
+    "buyer_project_evidence": false,
+    "intent": "seeking_trading_tutor_education",
+    "evidence_strength": "high",
+    "also_considered": [
+      "support",
+      "uncertain"
+    ],
+    "path_action": "DO_NOT_REOPEN \u2014 third NEW observation also CONTAMINATED; paths stay frozen"
+  },
+  "isolation_after": {
+    "human_labels": 1524,
+    "AI_CONFIRMED": 4,
+    "ok": true
+  },
+  "next": [
+    "Continue CONTINUOUS OBSERVE INTERVAL_SEC=5400",
+    "Sticky A same ids 67+68+69 = Mode 0",
+    "Further NEW ids beyond 69 \u2192 freeze+classify only",
+    "No path reopen / ML / Optuna / shadow / recreate 139 / UpdateGoal complete"
+  ]
+}

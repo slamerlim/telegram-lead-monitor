@@ -1,0 +1,140 @@
+{
+  "status": "TRIGGER_A_FROZEN",
+  "at": "2026-09-29T23:07:19.672926+00:00",
+  "path_b_at": "2026-09-26T06:53:16Z",
+  "new_count": 3,
+  "instruction": "Quality-classify each frozen candidate. Do not modify discovery semantics. Paths path_b/path_c remain FROZEN unless systematic loss evidence appears.",
+  "candidates": [
+    {
+      "candidate_id": 67,
+      "seed_message_id": 8710305,
+      "community_id": 47,
+      "author_id": 19316,
+      "discovery_version": "disc_v6",
+      "trigger_type": "v6_direct_project_domain",
+      "trigger_score": 2.9,
+      "scorer_tier": "LOW",
+      "status": "EPISODE_BUILT",
+      "skip_reason": null,
+      "episode_id": 67,
+      "signals_json": "{\"aggregator_signal\": false, \"automation_signal\": false, \"bot_deliverable_signal\": false, \"budget_language\": false, \"budget_signal\": false, \"buyer_direction\": \"BUYER\", \"buyer_persistence_signal\": 0.0, \"buyer_signal_families\": [], \"commercial_patterns\": [\"\\\\b(?:need|looking for|seeking|want|hire|hiring|commission|purchase|buy|quote|budget|proposal)\\\\b.{0,180}\\\\b(?:developer|engineer|programmer|freelancer|contractor|bot|trading|strategy|quant|ml|ai|system)\\\\b\"], \"contractor_patterns\": [], \"direct_request_signal\": false, \"discovery_score\": 2.9, \"discovery_version\": \"disc_v6\", \"domain_categories\": [], \"eligible\": true, \"employment_signal\": false, \"exclude_reasons\": [], \"gig_project_carve\": false, \"hard_exclude\": false, \"hard_veto\": false, \"hiring_patterns\": [], \"implementation_patterns\": [], \"marketing_signal\": false, \"matched_categories\": [], \"matched_paths\": [\"A\"], \"news_signal\": false, \"ownership_signal\": false, \"project_procurement_signal\": false, \"project_scope\": true, \"provider_signal\": false, \"recruiter_signal\": false, \"repair_patterns\": [], \"repair_signal\": false, \"seeker_signal\": false, \"soft_direction\": false, \"support_signal\": false, \"technical_project_terms\": [], \"timeline_language\": false, \"timeline_signal\": false, \"topic_fingerprint\": \"none\", \"trigger_score\": 2.9, \"trigger_type\": \"v6_direct_project_domain\", \"true_budget_signal\": false, \"veto_categories\": []}",
+      "created_at": "2026-09-29T11:13:50.551964+00:00",
+      "message_text": "Still letting emotions control your trades? \ud83e\udd16\ud83d\udcc9\nMy EA automates the execution, follows predefined trading conditions, and manages the process without hesitation or emotional decisions.\n\ud83d\udcca Results attached,  see it for yourself.\nWant to automate your trading? DM \u201cEA\u201d and I\u2019ll send you the details. \ud83d\ude80",
+      "score_tier": "LOW",
+      "score": 0,
+      "lead_type": "NOISE",
+      "community_name": "cTrader Algorithmic Trading",
+      "community_username": "cTrader_bots",
+      "quality_classification": {
+        "assigned": null,
+        "allowed_classes": [
+          "genuine_buyer_project",
+          "recruiter",
+          "employment",
+          "provider_vendor",
+          "support",
+          "aggregator",
+          "marketplace_gig",
+          "other_contamination",
+          "uncertain"
+        ],
+        "buyer_project_evidence": null,
+        "commercial_intent": null,
+        "evidence_strength": null,
+        "notes": null
+      },
+      "path_action": "DO_NOT_REOPEN_path_b_or_path_c \u2014 one candidate is one observation"
+    },
+    {
+      "candidate_id": 68,
+      "seed_message_id": 8712940,
+      "community_id": 9,
+      "author_id": 191788,
+      "discovery_version": "disc_v6",
+      "trigger_type": "v6_direct_project_domain",
+      "trigger_score": 2.9,
+      "scorer_tier": "LOW",
+      "status": "EPISODE_BUILT",
+      "skip_reason": null,
+      "episode_id": 68,
+      "signals_json": "{\"aggregator_signal\": false, \"automation_signal\": false, \"bot_deliverable_signal\": false, \"budget_language\": true, \"budget_signal\": true, \"buyer_direction\": \"BUYER\", \"buyer_persistence_signal\": 0.0, \"buyer_signal_families\": [\"BUDGETED_REQUEST\"], \"commercial_patterns\": [], \"contractor_patterns\": [\"\\\\b(?:hire|hiring|looking for|seeking)\\\\b.{0,120}\\\\b(?:developers?|engineers?|programmers?|quant|quantitative|ml engineer|ai engineer|machine learning|freelancers?|contractors?)\\\\b\"], \"direct_request_signal\": false, \"discovery_score\": 3.25, \"discovery_version\": \"disc_v6\", \"domain_categories\": [], \"eligible\": true, \"employment_signal\": false, \"exclude_reasons\": [], \"gig_project_carve\": false, \"hard_exclude\": false, \"hard_veto\": false, \"hiring_patterns\": [\"\\\\b(?:hire|hiring|looking for|seeking)\\\\b.{0,120}\\\\b(?:developers?|engineers?|programmers?|quant|quantitative|ml engineer|ai engineer|machine learning|freelancers?|contractors?)\\\\b\"], \"implementation_patterns\": [], \"marketing_signal\": false, \"matched_categories\": [], \"matched_paths\": [\"A\"], \"news_signal\": false, \"ownership_signal\": false, \"project_procurement_signal\": false, \"project_scope\": false, \"provider_signal\": false, \"recruiter_signal\": false, \"repair_patterns\": [], \"repair_signal\": false, \"seeker_signal\": false, \"soft_direction\": false, \"support_signal\": false, \"technical_project_terms\": [], \"timeline_language\": false, \"timeline_signal\": false, \"topic_fingerprint\": \"none\", \"trigger_score\": 2.9, \"trigger_type\": \"v6_direct_project_domain\", \"true_budget_signal\": true, \"veto_categories\": []}",
+      "created_at": "2026-09-29T15:14:27.578646+00:00",
+      "message_text": "\ud83d\ude80 \u041d\u0443\u0436\u043d\u044b \u0440\u0430\u0437\u0440\u0430\u0431\u043e\u0442\u0447\u0438\u043a\u0438 \u0434\u043b\u044f \u0441\u043e\u0437\u0434\u0430\u043d\u0438\u044f \u043f\u0440\u043e\u0435\u043a\u0442\u043e\u0432 \u043f\u043e\u0434 \u0437\u0430\u043f\u0443\u0441\u043a\n\n\u0420\u0430\u0431\u043e\u0442\u0430\u0435\u043c \u0441 Robinhood \u0438 \u0434\u0440\u0443\u0433\u0438\u043c\u0438 \u0447\u0435\u0439\u043d\u0430\u043c\u0438, \u0440\u0435\u0433\u0443\u043b\u044f\u0440\u043d\u043e \u0437\u0430\u043f\u0443\u0441\u043a\u0430\u0435\u043c \u0442\u043e\u043a\u0435\u043d\u044b \u0432 \u0440\u0430\u043c\u043a\u0430\u0445 \u043f\u043e\u043b\u043d\u043e\u0446\u0435\u043d\u043d\u044b\u0445 \u043f\u0440\u043e\u0435\u043a\u0442\u043e\u0432.\n\n\ud83d\udd0e \u0418\u0449\u0435\u043c \u0441\u043f\u0435\u0446\u0438\u0430\u043b\u0438\u0441\u0442\u043e\u0432, \u043a\u043e\u0442\u043e\u0440\u044b\u0435 \u0441\u043c\u043e\u0433\u0443\u0442 \u0432\u0437\u044f\u0442\u044c \u0438\u0441\u0445\u043e\u0434\u043d\u0443\u044e \u0438\u0434\u0435\u044e \u0438\u043b\u0438 \u0430\u043a\u0442\u0443\u0430\u043b\u044c\u043d\u044b\u0439 \u043d\u0430\u0440\u0440\u0430\u0442\u0438\u0432 \u0438 \u0441\u0430\u043c\u043e\u0441\u0442\u043e\u044f\u0442\u0435\u043b\u044c\u043d\u043e \u0434\u043e\u0432\u0435\u0441\u0442\u0438 \u0435\u0433\u043e \u0434\u043e \u0433\u043e\u0442\u043e\u0432\u043e\u0433\u043e \u043f\u0440\u043e\u0434\u0443\u043a\u0442\u0430.\n\n\ud83d\udccc \u0412\u0430\u0448\u0430 \u0437\u043e\u043d\u0430 \u043e\u0442\u0432\u0435\u0442\u0441\u0442\u0432\u0435\u043d\u043d\u043e\u0441\u0442\u0438:\n\n\u2022 \ud83d\udca1 \u0440\u0430\u0437\u0440\u0430\u0431\u043e\u0442\u043a\u0430 \u043a\u043e\u043d\u0446\u0435\u043f\u0446\u0438\u0438 \u0438 \u043c\u0435\u0445\u0430\u043d\u0438\u043a\u0438 \u043f\u0440\u043e\u0435\u043a\u0442\u0430;\n\u2022 \ud83d\udcdd \u043f\u043e\u0434\u0433\u043e\u0442\u043e\u0432\u043a\u0430 \u043e\u043f\u0438\u0441\u0430\u043d\u0438\u044f \u0438 \u0441\u0442\u0430\u0442\u044c\u0438;\n\u2022 \ud83c\udff7\ufe0f \u0441\u043e\u0437\u0434\u0430\u043d\u0438\u0435 \u043d\u0430\u0437\u0432\u0430\u043d\u0438\u044f;\n\u2022 \ud83c\udfa8 \u0440\u0430\u0437\u0440\u0430\u0431\u043e\u0442\u043a\u0430 \u0432\u0438\u0437\u0443\u0430\u043b\u0430 \u2014 \u043b\u043e\u0433\u043e \u0438 \u0431\u0430\u043d\u043d\u0435\u0440\u0430;\n\u2022 \ud83d\udcf1 \u043e\u0444\u043e\u0440\u043c\u043b\u0435\u043d\u0438\u0435 Twitter/X \u0438 \u043f\u043e\u0434\u0433\u043e\u0442\u043e\u0432\u043a\u0430 \u043a\u043e\u043d\u0442\u0435\u043d\u0442\u0430;\n\u2022 \ud83d\udcbb \u0441\u043e\u0437\u0434\u0430\u043d\u0438\u0435 \u0441\u0442\u0438\u043b\u044c\u043d\u043e\u0433\u043e \u043b\u0435\u043d\u0434\u0438\u043d\u0433\u0430 \u043f\u043e\u0434 \u043f\u0440\u043e\u0435\u043a\u0442.\n\n\ud83d\udd25 \u041f\u043e\u0441\u043b\u0435 \u043f\u043e\u0434\u0433\u043e\u0442\u043e\u0432\u043a\u0438 \u043f\u0440\u043e\u0435\u043a\u0442\u0430 \u0432\u0441\u0451, \u0447\u0442\u043e \u0441\u0432\u044f\u0437\u0430\u043d\u043e \u043d\u0435\u043f\u043e\u0441\u0440\u0435\u0434\u0441\u0442\u0432\u0435\u043d\u043d\u043e \u0441 \u043b\u0430\u0443\u043d\u0447\u0435\u043c \u0442\u043e\u043a\u0435\u043d\u0430, \u043e\u0441\u0442\u0430\u0451\u0442\u0441\u044f \u043d\u0430 \u043d\u0430\u0448\u0435\u0439 \u0441\u0442\u043e\u0440\u043e\u043d\u0435.\n\n\ud83d\udcb0 \u041e\u043f\u043b\u0430\u0442\u0430: $100\u2013150 \u0441 \u043e\u0434\u043d\u043e\u0433\u043e \u043f\u0440\u043e\u0435\u043a\u0442\u0430 + \u0431\u043e\u043d\u0443\u0441\u044b. \u041d\u0430\u0447\u0438\u043d\u0430\u0435\u043c \u0440\u0430\u0431\u043e\u0442\u0430\u0442\u044c \u0441 \u0442\u0435\u0441\u0442\u043e\u0432\u043e\u0433\u043e \u043f\u0440\u043e\u0435\u043a\u0442\u0430.\n\n\ud83d\udcc8 \u0427\u0435\u043c \u0438\u043d\u0442\u0435\u0440\u0435\u0441\u043d\u0435\u0435 \u0438\u0434\u0435\u044f \u0438 \u043a\u0430\u0447\u0435\u0441\u0442\u0432\u0435\u043d\u043d\u0435\u0435 \u0440\u0435\u0430\u043b\u0438\u0437\u0430\u0446\u0438\u044f, \u0442\u0435\u043c \u0432\u044b\u0448\u0435 \u0438\u0442\u043e\u0433\u043e\u0432\u044b\u0439 \u0437\u0430\u0440\u0430\u0431\u043e\u0442\u043e\u043a.\n\n\ud83e\udd1d \u0415\u0441\u043b\u0438 \u0443\u043c\u0435\u0435\u0442\u0435 \u0441\u0430\u043c\u043e\u0441\u0442\u043e\u044f\u0442\u0435\u043b\u044c\u043d\u043e \u0441\u043e\u0431\u0438\u0440\u0430\u0442\u044c \u043f\u0440\u043e\u0435\u043a\u0442 \u043e\u0442 \u043f\u0435\u0440\u0432\u043e\u043d\u0430\u0447\u0430\u043b\u044c\u043d\u043e\u0439 \u0438\u0434\u0435\u0438 \u0434\u043e \u0433\u043e\u0442\u043e\u0432\u043e\u0433\u043e \u043f\u0440\u043e\u0434\u0443\u043a\u0442\u0430, \u043f\u0438\u0448\u0438\u0442\u0435: @salomofriedlaender\n\n\nENG:\n\n\ud83d\ude80 We\u2019re looking for developers to build projects ready for launch\n\nWe work with Robinhood and other blockchains, and regularly launch tokens as part of full-scale projects.\n\n\ud83d\udd0e We\u2019re looking for professionals who can take an initial idea or a current narrative and independently turn it into a finished product.\n\n\ud83d\udccc Your responsibilities:\n\n\u2022 \ud83d\udca1 Developing the project\u2019s concept and mechanics;\n\u2022 \ud83d\udcdd Preparing descriptions and articles;\n\u2022 \ud83c\udff7\ufe0f Coming up with a name;\n\u2022 \ud83c\udfa8 Designing visuals\u2014logos and banners;\n\u2022 \ud83d\udcf1 Setting up Twitter/X and preparing content;\n\u2022 \ud83d\udcbb Creating a stylish landing page for the project.\n\n\ud83d\udd25 Once the project is prepared, everything directly related to the token launch will be handled by us.\n\n\ud83d\udcb0 Payment: $100\u2013150 per project + bonuses. We\u2019ll start by working on a test project.\n\n\ud83d\udcc8 The more interesting the idea and the higher the quality of the execution, the higher your final earnings will be.\n\n\ud83e\udd1d If you\u2019re capable of building a project from scratch\u2014from the initial idea to the finished product\u2014reach out to: @salomofriedlaender",
+      "score_tier": "LOW",
+      "score": 34,
+      "lead_type": "TECHNICAL_QUESTION",
+      "community_name": "SOLANA Jobs",
+      "community_username": "solana_jobs",
+      "quality_classification": {
+        "assigned": null,
+        "allowed_classes": [
+          "genuine_buyer_project",
+          "recruiter",
+          "employment",
+          "provider_vendor",
+          "support",
+          "aggregator",
+          "marketplace_gig",
+          "other_contamination",
+          "uncertain"
+        ],
+        "buyer_project_evidence": null,
+        "commercial_intent": null,
+        "evidence_strength": null,
+        "notes": null
+      },
+      "path_action": "DO_NOT_REOPEN_path_b_or_path_c \u2014 one candidate is one observation"
+    },
+    {
+      "candidate_id": 69,
+      "seed_message_id": 8716465,
+      "community_id": 55,
+      "author_id": 191920,
+      "discovery_version": "disc_v6",
+      "trigger_type": "v6_direct_project_domain",
+      "trigger_score": 2.9,
+      "scorer_tier": "LOW",
+      "status": "EPISODE_BUILT",
+      "skip_reason": null,
+      "episode_id": 69,
+      "signals_json": "{\"aggregator_signal\": false, \"automation_signal\": false, \"bot_deliverable_signal\": false, \"budget_language\": false, \"budget_signal\": false, \"buyer_direction\": \"BUYER\", \"buyer_persistence_signal\": 0.0, \"buyer_signal_families\": [\"DIRECT_PROJECT_REQUEST\"], \"commercial_patterns\": [\"\\\\b(?:need|looking for|seeking|want|hire|hiring|commission|purchase|buy|quote|budget|proposal)\\\\b.{0,180}\\\\b(?:developer|engineer|programmer|freelancer|contractor|bot|trading|strategy|quant|ml|ai|system)\\\\b\"], \"contractor_patterns\": [], \"direct_request_signal\": true, \"discovery_score\": 2.95, \"discovery_version\": \"disc_v6\", \"domain_categories\": [], \"eligible\": true, \"employment_signal\": false, \"exclude_reasons\": [], \"gig_project_carve\": false, \"hard_exclude\": false, \"hard_veto\": false, \"hiring_patterns\": [], \"implementation_patterns\": [], \"marketing_signal\": false, \"matched_categories\": [], \"matched_paths\": [\"A\"], \"news_signal\": false, \"ownership_signal\": false, \"project_procurement_signal\": false, \"project_scope\": true, \"provider_signal\": false, \"recruiter_signal\": false, \"repair_patterns\": [], \"repair_signal\": false, \"seeker_signal\": false, \"soft_direction\": false, \"support_signal\": false, \"technical_project_terms\": [], \"timeline_language\": false, \"timeline_signal\": false, \"topic_fingerprint\": \"none\", \"trigger_score\": 2.9, \"trigger_type\": \"v6_direct_project_domain\", \"true_budget_signal\": false, \"veto_categories\": []}",
+      "created_at": "2026-09-29T21:59:59.057109+00:00",
+      "message_text": "I need someone to teach us trading, please.",
+      "score_tier": "LOW",
+      "score": 0,
+      "lead_type": "NOISE",
+      "community_name": "Binance English",
+      "community_username": "binanceexchange",
+      "quality_classification": {
+        "assigned": "other_contamination",
+        "allowed_classes": [
+          "genuine_buyer_project",
+          "recruiter",
+          "employment",
+          "provider_vendor",
+          "support",
+          "aggregator",
+          "marketplace_gig",
+          "other_contamination",
+          "uncertain"
+        ],
+        "buyer_project_evidence": false,
+        "commercial_intent": "seeking_trading_tutor_education",
+        "evidence_strength": "high",
+        "notes": "Short education request 'teach us trading' in Binance English; score=0 NOISE; not project procurement / employment / vendor pitch.",
+        "also_considered": [
+          "support",
+          "uncertain"
+        ]
+      },
+      "path_action": "DO_NOT_REOPEN_path_b_or_path_c \u2014 one candidate is one observation"
+    }
+  ],
+  "quality_adjudication": {
+    "candidate_id": 69,
+    "assigned": "other_contamination",
+    "commercially_actionable": false,
+    "genuine_buyer_project": false,
+    "path_action": "DO_NOT_REOPEN"
+  }
+}

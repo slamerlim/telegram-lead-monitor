@@ -1,7 +1,7 @@
 # Commercial discovery OBSERVE runbook (post first-iteration)
 
 **Status:** CONTINUOUS OBSERVE ACTIVE  
-**Standing note:** While `OBSERVE_OK` — do **not** invent timed remesure wakes; wait for durable `INTERVAL_SEC=5400` watcher exit 10 (A/B/C). E127 applied E124 Steps A–F (disable 137/140; replace 138→`@hummingbot_io`, 141→`@jesse_trade`; days=14 scans). Post-scan: 141 published 8; 138 resolved group (seen=1/pub=0). **Evidence 129:** first NEW (`candidate_id=67`) → **provider_vendor / CONTAMINATED** — sticky `A_NEW` same id = Mode 0. **Evidence 133:** second NEW (`candidate_id=68`, SOLANA Jobs) → **employment / CONTAMINATED** — paths stay frozen. **Evidence 130:** Mode-1 offline replay — artifact-only; OBSERVE ≠ ML unlock. **Evidence 132:** community **139** `@NautilusTrader` hard-deleted; VERIFY-JOIN A abandoned. Phase B live = 138+141 only. Do **not** reopen path_b/c / recreate 139 / enable ML.  
+**Standing note:** While `OBSERVE_OK` — do **not** invent timed remesure wakes; wait for durable `INTERVAL_SEC=5400` watcher exit 10 (A/B/C). E127 applied E124 Steps A–F (disable 137/140; replace 138→`@hummingbot_io`, 141→`@jesse_trade`; days=14 scans). Post-scan: 141 published 8; 138 resolved group (seen=1/pub=0). **Evidence 129:** first NEW (`candidate_id=67`) → **provider_vendor / CONTAMINATED** — sticky `A_NEW` same id = Mode 0. **Evidence 133:** second NEW (`candidate_id=68`, SOLANA Jobs) → **employment / CONTAMINATED**. **Evidence 134:** third NEW (`candidate_id=69`, Binance English) → **other_contamination / education** ("teach us trading") — paths stay frozen. **Evidence 130:** Mode-1 offline replay — artifact-only; OBSERVE ≠ ML unlock. **Evidence 132:** community **139** `@NautilusTrader` hard-deleted; VERIFY-JOIN A abandoned. Phase B live = 138+141 only. Do **not** reopen path_b/c / recreate 139 / enable ML.  
 **Closed first-iteration:** Evidence 116 (`docs/audit/evidence/116-first-iteration-closure-observe-cycle10.*`)  
 **Path freeze:** path_c (E108) + path_b (E109) — do not reopen without auth + new loss evidence  
 **Shadow:** `COMMERCIAL_EPISODE_SHADOW_ENABLED=false` intentional — do not enable without explicit authorization  
@@ -97,6 +97,7 @@ Note: since-enable aggregate still includes 6 historical CONTAMINATED rows; prim
 - **PHASE_B_REMEDIATION_APPLIED** — Evidence 127: E124 Steps A–F applied under prior Option B auth. Disabled 137/140; replaced 138→`@hummingbot_io`, 141→`@jesse_trade`; queued days=14 for 138/139/141. Immediate scan outcomes: 141 published 8; 138 resolved correct group (seen=1/pub=0); 139 still 0 (VERIFY-JOIN note; no autofix). Isolation 1524/4.
 - **TRIGGER_A_FIRST_NEW_CLASSIFIED** — Evidence 129: candidate_id=67 CONTAMINATED provider_vendor; paths stay frozen.
 - **TRIGGER_A_SECOND_NEW_CLASSIFIED** — Evidence 133: candidate_id=68 CONTAMINATED employment (token-launch gig hiring @solana_jobs); paths stay frozen.
+- **TRIGGER_A_THIRD_NEW_CLASSIFIED** — Evidence 134: candidate_id=69 CONTAMINATED other/education ("teach us trading" @binanceexchange); paths stay frozen.
 - **MODE1_OFFLINE_REPLAY_130** — Evidence 130: in-process LeadScorer+disc_v6 messages-only sample n=1600; RETRIEVED=0; ML inventory not ready; no prod rescore.
 - **VERIFY_JOIN_139_BLOCKED** — Evidence 131: no JoinChannel/membership script/API; owner-next A/B/C (superseded by E132).
 - **DISABLE_DELETE_139_DONE** — Evidence 132: owner E131 B+delete; 139 `@NautilusTrader` disabled then hard-deleted (msgs=0); VERIFY-JOIN A abandoned; 138/141 untouched; isolation 1524/4.
@@ -140,4 +141,4 @@ Master continuation prompt: `docs/ops/MASTER_CONTINUATION_PROMPT_COMMERCIAL_DISC
 
 ## Next hypothesis
 
-NEXT = Trigger A/B/C from durable watcher (further NEW beyond E133 still freeze+classify; sticky same ids = Mode 0). E132 done (139 deleted). Live resume only on **(A)** additional NEW disc_v6 ids (no path reopen), **(B)** pipeline failure, or **(C)** isolation drift. Offline: E130 done; WP3 blocked until genuine-positive adjudicated n. Do not invent remesure wakes / enable shadow / reopen paths / recreate 139 / claim ML GO. Do not UpdateGoal complete.
+NEXT = Trigger A/B/C from durable watcher (further NEW beyond E134 still freeze+classify; sticky same ids 67+68+69 = Mode 0). E132 done (139 deleted). Live resume only on **(A)** additional NEW disc_v6 ids (no path reopen), **(B)** pipeline failure, or **(C)** isolation drift. Offline: E130 done; WP3 blocked until genuine-positive adjudicated n. Do not invent remesure wakes / enable shadow / reopen paths / recreate 139 / claim ML GO. Do not UpdateGoal complete.

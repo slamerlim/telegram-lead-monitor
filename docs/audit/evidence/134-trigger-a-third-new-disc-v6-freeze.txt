@@ -1,0 +1,48 @@
+Evidence 134: Trigger A third NEW disc_v6 freeze + quality classify (id=69)
+experiment_id=TRIGGER_A_THIRD_NEW_DISC_V6_134
+decision=OBSERVE_CONTINUE
+classification=CONTAMINATED_OTHER_EDUCATION (commercially_actionable=false)
+measure_at=2026-09-29T23:07:52Z wake_23:06=2026-09-29T23:06:42+00:00 head=67fe268
+path_b_at=2026-09-26T06:53:16Z t0=2026-09-27T10:16:46Z
+parent=Evidence 129 + 133 + 132 + runbook Trigger A
+read_only=true code_change=none deploy=not_needed
+
+=== 0. LOCKS ===
+  Trigger A only for NEW id beyond E133. Does NOT authorize:
+    - path_b / path_c reopen
+    - ML / Optuna / SHAP / shadow
+    - scoring loosen / human_labels mutate
+    - recreate community 139
+    - freeze expand / UpdateGoal complete
+
+=== 1. C > B > A ===
+  C isolation: hl=1524 ac=4 ok → none
+  B pipeline: health ok; lag=0 pending=0; msg_1h=301=score_1h → none
+  A NEW: path_b ids=[67,68,69]; 67=E129; 68=E133; 69=this evidence
+  Sticky: prior wakes new=2 (67+68) → Mode 0; 23:06Z new=3 requires classify id=69
+
+=== 2. SESSION CHECKLIST ===
+  HEAD=67fe268 health=ok watcher_pid=794476
+  --once @23:07:05Z exit=10 A_NEW new=3
+  T0 msgs=39644 scores=39644 disc_v6=3
+  Phase B since T0: 138=@hummingbot_io msgs=0; 141=@jesse_trade msgs=10
+  community 139 exists=0 (E132 deleted)
+
+=== 3. CANDIDATE 69 ===
+  id=69 seed=8716465 community=55 Binance English (@binanceexchange)
+  trigger=v6_direct_project_domain 2.9 LOW score=0 lead_type=NOISE
+  status=EPISODE_BUILT episode=69 created=2026-09-29T21:59:59Z paths=[A]
+  text: "I need someone to teach us trading, please."
+
+=== 4. QUALITY ===
+  assigned=other_contamination
+  commercially_actionable=false buyer_project_evidence=false
+  intent=seeking_trading_tutor_education
+  evidence_strength=high
+  also_considered=support, uncertain
+  path_action=DO_NOT_REOPEN — 3/3 NEW observations CONTAMINATED
+
+=== 5. NEXT ===
+  Continue CONTINUOUS OBSERVE (INTERVAL_SEC=5400).
+  Sticky A same ids 67+68+69 = Mode 0. Further NEW ids → freeze+classify only.
+  No path reopen / ML / Optuna / recreate 139 / UpdateGoal complete.
