@@ -1,0 +1,114 @@
+{
+  "evidence_id": 133,
+  "title": "Trigger A second NEW disc_v6 freeze + quality classify (id=68)",
+  "experiment_id": "TRIGGER_A_SECOND_NEW_DISC_V6_133",
+  "decision": "OBSERVE_CONTINUE",
+  "classification": "CONTAMINATED_EMPLOYMENT",
+  "commercially_actionable": false,
+  "genuine_buyer_project": false,
+  "measure_at": "2026-09-29T16:39:56Z",
+  "wake_at": "2026-09-29T15:36:29+00:00",
+  "head_at_measure": "bbe177e",
+  "path_b_at": "2026-09-26T06:53:16Z",
+  "sourcing_t0_at": "2026-09-27T10:16:46Z",
+  "parent": [
+    "Evidence 129 (first NEW id=67 CONTAMINATED)",
+    "Evidence 132 (139 deleted)",
+    "runbook Trigger A"
+  ],
+  "read_only": true,
+  "code_change": "none",
+  "deploy": "not_needed",
+  "locks": {
+    "path_b_reopen": false,
+    "path_c_reopen": false,
+    "ml_go": false,
+    "shadow_enable": false,
+    "scoring_loosen": false,
+    "human_labels_mutate": false,
+    "freeze_expand": false,
+    "recreate_139": false,
+    "update_goal_complete": false
+  },
+  "triggers": {
+    "C_isolation": {"hl": 1524, "ac": 4, "ok": true, "action": "none"},
+    "B_pipeline": {
+      "health": {"status": "ok", "postgres": "ok", "redis": "ok"},
+      "lag": 0,
+      "pending": 0,
+      "consumers": 1,
+      "msg_1h": 654,
+      "score_1h": 654,
+      "action": "none"
+    },
+    "A_new": {
+      "fired": true,
+      "new_since_path_b": 2,
+      "new_ids": [67, 68],
+      "prior_handled": [67],
+      "this_evidence": [68],
+      "sticky_note": "14:06Z wake new=1 id=67 already E129 — Mode 0 sticky; 15:36Z new=2 requires classify id=68"
+    }
+  },
+  "observe_wake_15_36": {
+    "line": "AGENT_LOOP_WAKE_observe_abc",
+    "at": "2026-09-29T15:36:29+00:00",
+    "triggers": "A_NEW ",
+    "new": 2,
+    "hl": 1524,
+    "ac": 4,
+    "msgs_since_t0": 35964,
+    "scores_since_t0": 35964,
+    "disc_v6_since_t0": 2
+  },
+  "session_once_16_39": {
+    "at": "2026-09-29T16:39:45+00:00",
+    "exit": 10,
+    "new": 2,
+    "msgs_since_t0": 36618,
+    "scores_since_t0": 36618,
+    "disc_v6_since_t0": 2
+  },
+  "phase_b": {
+    "138_hummingbot_io_msgs_since_t0": 0,
+    "141_jesse_trade_msgs_since_t0": 10,
+    "139_exists": false,
+    "139_nautilus_count": 0
+  },
+  "candidate_68": {
+    "candidate_id": 68,
+    "seed_message_id": 8712940,
+    "community_id": 9,
+    "community_name": "SOLANA Jobs",
+    "community_username": "solana_jobs",
+    "author_id": 191788,
+    "discovery_version": "disc_v6",
+    "trigger_type": "v6_direct_project_domain",
+    "trigger_score": 2.9,
+    "scorer_tier": "LOW",
+    "score": 34,
+    "lead_type": "TECHNICAL_QUESTION",
+    "status": "EPISODE_BUILT",
+    "episode_id": 68,
+    "matched_paths": ["A"],
+    "created_at": "2026-09-29T15:14:27.578646+00:00",
+    "message_summary": "RU/EN hiring post: looking for developers to package token-launch projects (concept, copy, logo, Twitter, landing); pay $100–150/project + bonuses; contact @salomofriedlaender"
+  },
+  "quality_classification": {
+    "assigned": "employment",
+    "commercially_actionable": false,
+    "buyer_project_evidence": false,
+    "commercial_intent": "employer_hiring_gig_devs_for_token_launch_packaging",
+    "evidence_strength": "high",
+    "notes": "Not a buyer RFQ for trading/bot/quant build. Poster hires freelancers at $100–150/project for meme/token packaging (concept, visuals, landing). Matches employment/hiring patterns; disc_v6 path A false positive. One observation — do not reopen path_b/c.",
+    "also_considered": ["marketplace_gig", "recruiter"]
+  },
+  "prior_67_sticky": {
+    "candidate_id": 67,
+    "evidence": 129,
+    "classification": "provider_vendor",
+    "re_adjudicate": false
+  },
+  "path_action": "DO_NOT_REOPEN_path_b_or_path_c — two NEW observations; both CONTAMINATED; paths stay frozen",
+  "next": "Continue CONTINUOUS OBSERVE. Sticky A_NEW with same ids = Mode 0. Further NEW ids freeze+classify only. No path reopen / ML / recreate 139 / UpdateGoal complete."
+}

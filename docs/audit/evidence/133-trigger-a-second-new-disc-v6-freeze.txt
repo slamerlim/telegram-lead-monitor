@@ -1,0 +1,49 @@
+Evidence 133: Trigger A second NEW disc_v6 freeze + quality classify (id=68)
+experiment_id=TRIGGER_A_SECOND_NEW_DISC_V6_133
+decision=OBSERVE_CONTINUE
+classification=CONTAMINATED_EMPLOYMENT (commercially_actionable=false)
+measure_at=2026-09-29T16:39:56Z wake_15:36=2026-09-29T15:36:29+00:00 head=bbe177e
+path_b_at=2026-09-26T06:53:16Z t0=2026-09-27T10:16:46Z
+parent=Evidence 129 + 132 + runbook Trigger A
+read_only=true code_change=none deploy=not_needed
+
+=== 0. LOCKS ===
+  Trigger A only for NEW id beyond E129. Does NOT authorize:
+    - path_b / path_c reopen
+    - ML / Optuna / SHAP / shadow
+    - scoring loosen / human_labels mutate
+    - recreate community 139
+    - freeze expand / UpdateGoal complete
+
+=== 1. C > B > A ===
+  C isolation: hl=1524 ac=4 ok → none
+  B pipeline: health ok; lag=0 pending=0; msg_1h≈score_1h → none
+  A NEW: path_b ids=[67,68]; 67=E129 handled; 68=this evidence
+  Sticky: 14:06Z A_NEW new=1 (id=67 only) → Mode 0; no re-adjudicate
+
+=== 2. SESSION CHECKLIST ===
+  HEAD=bbe177e health=ok
+  --once @16:39:45Z exit=10 A_NEW new=2
+  T0 msgs=36618 scores=36618 disc_v6=2
+  Phase B since T0: 138=@hummingbot_io msgs=0; 141=@jesse_trade msgs=10
+  community 139 exists=0 (E132 deleted; Nautilus username count=0)
+
+=== 3. CANDIDATE 68 ===
+  id=68 seed=8712940 community=9 SOLANA Jobs (@solana_jobs)
+  trigger=v6_direct_project_domain 2.9 LOW score=34 lead_type=TECHNICAL_QUESTION
+  status=EPISODE_BUILT episode=68 created=2026-09-29T15:14:27Z paths=[A]
+  text: hiring post for developers to package token-launch projects
+        (concept/copy/logo/Twitter/landing); pay $100–150/project; contact @salomofriedlaender
+
+=== 4. QUALITY ===
+  assigned=employment
+  commercially_actionable=false buyer_project_evidence=false
+  intent=employer_hiring_gig_devs_for_token_launch_packaging
+  evidence_strength=high
+  also_considered=marketplace_gig, recruiter
+  path_action=DO_NOT_REOPEN — both NEW observations CONTAMINATED
+
+=== 5. NEXT ===
+  Continue CONTINUOUS OBSERVE (INTERVAL_SEC=5400).
+  Sticky A same ids = Mode 0. Further NEW ids → freeze+classify only.
+  No path reopen / ML / recreate 139 / UpdateGoal complete.
