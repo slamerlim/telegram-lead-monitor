@@ -1,0 +1,84 @@
+Evidence 131: VERIFY-JOIN community 139 (@NautilusTrader) — BLOCKED (no safe in-repo lever)
+evidence_id=131
+experiment_id=VERIFY_JOIN_139_NAUTILUS_BLOCKED_131
+decision=BLOCKED_OWNER_NEXT
+classification=MISSING_JOINCHANNEL_LEVER
+measure_at=2026-09-29T12:55:36Z head=120dd6f
+parent=Evidence 124 Step C + Evidence 127 Step C (VERIFY-JOIN note) + owner "everything approved"
+read_only=true join_applied=false cursor_wipe=false
+mode=Mode-1 OFFLINE PREP + attempted Phase B VERIFY-JOIN intake
+
+=== 0. OWNER AUTH INTERPRETATION ===
+  Owner said "everything approved" after offline-vs-OBSERVE research.
+  Interpreted as authorizing VERIFY-JOIN / Phase B intake for community 139
+  IF docs/scripts support a safe remediation like E127.
+  Explicitly NOT authorizing: invite autofix loops, last_message_id wipe,
+  docker compose down -v, path_b/c reopen, ML/shadow enable.
+
+=== 1. LIVE SNAPSHOT (non-destructive) ===
+  community id=139 telegram_ref=@NautilusTrader username=NautilusTrader
+    enabled=true resolve_status=resolved telegram_chat_id=2276323404
+    kind=channel last_message_id=NULL last_error=''
+  messages WHERE community_id=139 → 0
+  Latest scan_runs (scheduler days=2):
+    93796 completed seen=0 published=0 at 2026-09-29 12:43:29Z
+    93674 completed seen=0 published=0 at 2026-09-29 12:28:27Z
+    93531 completed seen=0 published=0 at 2026-09-29 12:13:25Z
+  Prior days=14 (E127):
+    69488 completed seen=0 published=0 at 2026-09-27 15:37:46Z
+  Isolation: human_labels=1524 AI_CONFIRMED=4
+  health={"status":"ok","postgres":"ok","redis":"ok"}
+
+=== 2. WHAT WAS CHECKED ===
+  - docs/audit/evidence/124-sourcing-phase-b-remediation-proposal.* Step C
+  - docs/audit/evidence/127-sourcing-phase-b-remediation-applied.* Step C
+    (join_applied_this_turn=False; VERIFY-JOIN note retained)
+  - scripts/apply_sourcing_phase_b_remediation_127.py — forbids
+    "invite autofix / JoinChannel autofix"; no JoinChannel call exists
+  - services/collector/app/main.py — resolve via get_entity + iter_messages only;
+    no JoinChannelRequest / membership verify helper
+  - services/api — no /join endpoint; REVIEW_UI_LOCKDOWN blocks casual /scans
+  - rg JoinChannel across services/ + scripts/ → only the E127 forbid string
+
+=== 3. EXACT BLOCKER (owner-next) ===
+  BLOCKER: Repo has no safe JoinChannel / membership-verify script or API
+  analogous to E127's Postgres+RedisBus community PATCH/scan enqueue.
+  E124 Step C requires: confirm collector session membership for
+  @NautilusTrader; JoinChannelRequest only under owner auth; no autofix.
+  Without that lever, applying VERIFY-JOIN would mean inventing a new
+  Telethon JoinChannel path (not "like E127") — refused this turn.
+
+  Still empty after days=14 (E127) + ongoing days=2 scheduler scans with
+  seen=0/published=0 while resolve_status=resolved → consistent with
+  inactive/stale announce channel and/or session-not-member limited history
+  (E124 diagnosis). Cannot distinguish membership vs empty-window without
+  a membership probe.
+
+=== 4. WHAT WAS NOT DONE (correctly) ===
+  - No JoinChannelRequest
+  - No invite autofix
+  - No last_message_id wipe (remains NULL)
+  - No disable of 139 this turn (owner may still want join+rescan first)
+  - No alternate @nautilus_* invent
+  - No path_b/c / ML / shadow / scoring.yaml / human_labels mutation
+
+=== 5. OWNER-NEXT (exact asks) ===
+  Pick ONE:
+  A) Authorize a NEW bounded Mode-2 script/API: collector-session
+     membership probe + optional JoinChannelRequest for id=139 only,
+     then enqueue scan_runs days=14; preserve last_message_id; evidence.
+     If still seen=0 after join+rescan → DISABLE 139 (E124 rule).
+  B) DISABLE id=139 now (inactive channel; SOURCE_ABSENT for this slot)
+     without join attempt — smallest ops close-out.
+  C) Leave 139 enabled + empty; continue OBSERVE (status quo).
+
+=== 6. MODE-1 CONTEXT (same turn) ===
+  Trigger A sticky A_NEW (disc_v6_since_t0=1) already handled by Evidence 129
+  (CONTAMINATED provider_vendor) — Mode-1 proceeded after that confirm.
+  Evidence 130 offline replay + inventory completed (isolation held).
+  Freeze expand SKIPPED — needs separate scoped ask (exclude prior 40
+  WP2/WP2b/WP2c IDs + label_review adjudication path).
+
+=== 7. DECISION / NEXT ===
+  VERIFY-JOIN 139 = BLOCKED pending owner choice A/B/C above.
+  Stay CONTINUOUS OBSERVE. Do not UpdateGoal complete.

@@ -1,0 +1,132 @@
+{
+  "evidence_id": "130",
+  "experiment_id": "OFFLINE_ML_REPLAY_DISC_V6_130",
+  "generated_at": "2026-09-29T12:55:16.579623+00:00",
+  "head": "120dd6f",
+  "elapsed_s": 10.48,
+  "pre_registered": {
+    "hypothesis": "In-process LeadScorer+disc_v6 replay on messages-only sample yields an offline feature/outcome matrix for Mode-1 ML prep without mutating production message_scores denominators.",
+    "decision_rule": "Artifact-only; does NOT unlock Optuna/LGBM/SHAP/ML GO. Standing interpretation: live RESIDUAL_SCARCITY + offline contamination (WP2/WP2b/WP2c); OBSERVE \u2260 ML unlock.",
+    "mode": "OFFLINE_PREP_READONLY",
+    "path_freeze": "path_b+path_c",
+    "ml_training_enabled": false,
+    "parent": "inventory + E118 + E44 ML NO-GO",
+    "sample_policy": {
+      "messages_only": true,
+      "stride": 101,
+      "offset": 13,
+      "per_bucket": 400,
+      "distinct_from_e118": "E118 used stride=97 offset=3"
+    }
+  },
+  "isolation": {
+    "human_labels": 1524,
+    "ai_confirmed": 4,
+    "message_scores": 215070,
+    "messages": 8711501,
+    "disc_v6_new": 1,
+    "expect": {
+      "human_labels": 1524,
+      "AI_CONFIRMED": 4
+    },
+    "ok": true
+  },
+  "sample": {
+    "n": 1600,
+    "bucket_stats": {
+      "0_7d": {
+        "lo": "2026-09-22T12:55:16.579623+00:00",
+        "hi": "2026-09-29T12:55:16.579623+00:00",
+        "n_messages": 143047,
+        "n_scored": 143047,
+        "score_coverage": 1.0,
+        "sampled": 400
+      },
+      "8_30d": {
+        "lo": "2026-08-30T12:55:16.579623+00:00",
+        "hi": "2026-09-21T12:55:16.579623+00:00",
+        "n_messages": 333151,
+        "n_scored": 5404,
+        "score_coverage": 0.016221,
+        "sampled": 400
+      },
+      "31_90d": {
+        "lo": "2026-07-01T12:55:16.579623+00:00",
+        "hi": "2026-08-29T12:55:16.579623+00:00",
+        "n_messages": 1093890,
+        "n_scored": 1503,
+        "score_coverage": 0.001374,
+        "sampled": 400
+      },
+      "91d_plus": {
+        "lo": "2025-10-04T12:55:16.579623+00:00",
+        "hi": "2026-06-30T12:55:16.579623+00:00",
+        "n_messages": 4029218,
+        "n_scored": 1352,
+        "score_coverage": 0.000336,
+        "sampled": 400
+      }
+    },
+    "stride": 101,
+    "offset": 13,
+    "per_bucket": 400
+  },
+  "replay": {
+    "first_loss": {
+      "NO_PATH_MATCH": 1438,
+      "VETO_support_question": 96,
+      "VETO_service_provider": 50,
+      "HARD_EXCLUDE_EARLY": 7,
+      "VETO_job_aggregator": 6,
+      "VETO_news_digest": 2,
+      "VETO_corporate_employment": 1
+    },
+    "replay_tier": {
+      "LOW": 1600
+    },
+    "tier_x_first_loss_top": {
+      "LOW|NO_PATH_MATCH": 1438,
+      "LOW|VETO_support_question": 96,
+      "LOW|VETO_service_provider": 50,
+      "LOW|HARD_EXCLUDE_EARLY": 7,
+      "LOW|VETO_job_aggregator": 6,
+      "LOW|VETO_news_digest": 2,
+      "LOW|VETO_corporate_employment": 1
+    },
+    "eligible_by_replay_tier": {},
+    "disc_v6_retrieved_in_sample": 0,
+    "community_class": {
+      "EXCHANGE_OFFICIAL": 1317,
+      "OTHER": 265,
+      "JOB_BOARD": 14,
+      "TRADER_COMMUNITY": 4
+    },
+    "persisted_vs_replay_tier": {
+      "no_persisted_score": 1177,
+      "tier_match": 423
+    }
+  },
+  "label_coverage_in_sample": {
+    "labeled": 0,
+    "unlabeled": 1600,
+    "by_label": {
+      "(unlabeled)": 1600
+    },
+    "commercially_actionable": {
+      "null_or_unlabeled": 1600
+    }
+  },
+  "ml_go_claim": false,
+  "optuna_started": false,
+  "production_rescore": false,
+  "human_labels_mutated": false,
+  "decision": "OFFLINE_REPLAY_ARTIFACT_ONLY \u2014 OBSERVE continues; ML/Optuna/shadow stay off; path_b/c stay frozen.",
+  "preview_row_count": 200,
+  "artifacts": {
+    "evidence_json": "/app/docs/audit/evidence/130-offline-ml-replay-disc-v6.json",
+    "evidence_txt": "/app/docs/audit/evidence/130-offline-ml-replay-disc-v6.txt",
+    "tmp_json": "/tmp/130-offline-ml-replay-disc-v6.json",
+    "tmp_rows_jsonl": "/tmp/130-offline-ml-replay-rows.jsonl",
+    "evidence_rows_jsonl": "/app/docs/audit/evidence/130-offline-ml-replay-rows.jsonl"
+  }
+}

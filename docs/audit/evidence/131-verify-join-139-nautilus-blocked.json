@@ -1,0 +1,62 @@
+{
+  "evidence_id": "131",
+  "experiment_id": "VERIFY_JOIN_139_NAUTILUS_BLOCKED_131",
+  "decision": "BLOCKED_OWNER_NEXT",
+  "classification": "MISSING_JOINCHANNEL_LEVER",
+  "measure_at": "2026-09-29T12:55:36+00:00",
+  "head": "120dd6f",
+  "parent": [
+    "docs/audit/evidence/124-sourcing-phase-b-remediation-proposal.*",
+    "docs/audit/evidence/127-sourcing-phase-b-remediation-applied.*",
+    "owner everything approved (VERIFY-JOIN if E127-like lever exists)"
+  ],
+  "join_applied": false,
+  "cursor_wipe": false,
+  "community": {
+    "id": 139,
+    "telegram_ref": "@NautilusTrader",
+    "username": "NautilusTrader",
+    "enabled": true,
+    "resolve_status": "resolved",
+    "telegram_chat_id": 2276323404,
+    "kind": "channel",
+    "last_message_id": null,
+    "messages_count": 0
+  },
+  "scans": {
+    "latest_days2": [
+      {"id": 93796, "days": 2, "status": "completed", "messages_seen": 0, "messages_published": 0, "requested_at": "2026-09-29T12:43:29.499278+00:00"},
+      {"id": 93674, "days": 2, "status": "completed", "messages_seen": 0, "messages_published": 0, "requested_at": "2026-09-29T12:28:27.588372+00:00"},
+      {"id": 93531, "days": 2, "status": "completed", "messages_seen": 0, "messages_published": 0, "requested_at": "2026-09-29T12:13:25.427977+00:00"}
+    ],
+    "e127_days14": {
+      "id": 69488,
+      "days": 14,
+      "status": "completed",
+      "messages_seen": 0,
+      "messages_published": 0,
+      "requested_at": "2026-09-27T15:37:46.254953+00:00"
+    }
+  },
+  "isolation": {"human_labels": 1524, "AI_CONFIRMED": 4, "ok": true},
+  "health": {"status": "ok", "postgres": "ok", "redis": "ok"},
+  "blocker": {
+    "code": "MISSING_JOINCHANNEL_LEVER",
+    "detail": "No JoinChannelRequest / membership-verify script or API in repo; E127 explicitly forbade JoinChannel autofix and only noted VERIFY-JOIN. Inventing Telethon join is not E127-like remediation.",
+    "rg_hits": ["scripts/apply_sourcing_phase_b_remediation_127.py:179 forbid string only"]
+  },
+  "owner_next_options": [
+    "A_authorize_new_bounded_join_script_then_days14_scan_else_disable",
+    "B_disable_139_now_without_join",
+    "C_leave_enabled_empty_continue_observe"
+  ],
+  "forbidden_not_done": [
+    "JoinChannelRequest",
+    "invite autofix",
+    "last_message_id wipe",
+    "path_b/c reopen",
+    "ML/shadow enable",
+    "scoring.yaml loosen",
+    "human_labels mutation"
+  ]
+}

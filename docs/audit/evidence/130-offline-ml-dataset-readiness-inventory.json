@@ -1,0 +1,53 @@
+{
+  "generated_at": "2026-09-29T12:52:50.270077+00:00",
+  "mode": "OFFLINE_PREP_READONLY",
+  "isolation": {
+    "human_labels": 1524,
+    "AI_CONFIRMED": 4,
+    "expect": {
+      "human_labels": 1524,
+      "AI_CONFIRMED": 4
+    },
+    "ok": true
+  },
+  "inventory": {
+    "messages": 8711501,
+    "message_scores": 215070,
+    "label_reviews": 677,
+    "disc_v6_all_historical": 7,
+    "disc_v6_new_since_path_b": 1,
+    "human_labels_by_label": {
+      "AMBIGUOUS": 203,
+      "FALSE_POSITIVE": 932,
+      "TRUE_LEAD": 389
+    },
+    "human_labels_by_fp_class": {
+      "(null)": 592,
+      "JOB_VACANCY": 289,
+      "MARKETING_BROADCAST": 247,
+      "JOB_SEEKER": 171,
+      "SUPPORT_REQUEST": 104,
+      "SERVICE_AD": 100,
+      "OFF_DOMAIN": 18,
+      "NEWS_DIGEST": 3
+    },
+    "commercially_actionable": {
+      "true": 6,
+      "false": 138,
+      "null": 1380
+    }
+  },
+  "optuna_ml_readiness": {
+    "ready_for_production_optuna": false,
+    "ready_for_production_ml": false,
+    "ready_for_shap": false,
+    "ready_for_llm_augmentation": false,
+    "gaps": [
+      "commercially_actionable=true only 6 \u2014 weak commercial target for supervised ML",
+      "majority of human_labels lack commercially_actionable flag",
+      "ml_training_enabled must remain false until holdout + leakage controls exist",
+      "Optuna/SHAP/LLM scaffolding must stay dormant from production discovery"
+    ],
+    "rationale": "Labels exist (provisional + independent reviews) but live disc_v6 NEW outcomes are absent post-path_b; commercial actionable positives are rare; deterministic RESIDUAL_SCARCITY observation must continue before optimization."
+  }
+}

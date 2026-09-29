@@ -1,0 +1,48 @@
+Evidence 130: Mode-1 in-process offline replay (LeadScorer + disc_v6)
+experiment_id=OFFLINE_ML_REPLAY_DISC_V6_130
+decision=OFFLINE_REPLAY_ARTIFACT_ONLY — OBSERVE continues; ML/Optuna/shadow stay off; path_b/c stay frozen.
+measure_at=2026-09-29T12:55:16.579623+00:00 head=120dd6f elapsed_s=10.48
+read_only=true production_rescore=false ml_go=false path_b_c_frozen=true
+
+=== 0. LOCKS ===
+  No rescore_slice / prod backfill; no human_labels mutation; no Optuna/LGBM/SHAP;
+  no shadow enable; no path reopen; OBSERVE ≠ ML unlock.
+
+=== 1. PRE-REGISTERED ===
+  hypothesis=In-process LeadScorer+disc_v6 replay on messages-only sample yields an offline feature/outcome matrix for Mode-1 ML prep without mutating production message_scores denominators.
+  decision_rule=Artifact-only; does NOT unlock Optuna/LGBM/SHAP/ML GO. Standing interpretation: live RESIDUAL_SCARCITY + offline contamination (WP2/WP2b/WP2c); OBSERVE ≠ ML unlock.
+  sample={'messages_only': True, 'stride': 101, 'offset': 13, 'per_bucket': 400, 'distinct_from_e118': 'E118 used stride=97 offset=3'}
+
+=== 2. ISOLATION ===
+  hl=1524 ac=4 ok=True
+  messages=8711501 scores=215070 disc_v6_new=1
+
+=== 3. SAMPLE ===
+  n=1600 stride=101 offset=13 per_bucket=400
+  0_7d: pop=143047 scored=143047 cov=1.0 sampled=400
+  8_30d: pop=333151 scored=5404 cov=0.016221 sampled=400
+  31_90d: pop=1093890 scored=1503 cov=0.001374 sampled=400
+  91d_plus: pop=4029218 scored=1352 cov=0.000336 sampled=400
+
+=== 4. REPLAY (in-process; no DB writes) ===
+  first_loss={'NO_PATH_MATCH': 1438, 'VETO_support_question': 96, 'VETO_service_provider': 50, 'HARD_EXCLUDE_EARLY': 7, 'VETO_job_aggregator': 6, 'VETO_news_digest': 2, 'VETO_corporate_employment': 1}
+  replay_tier={'LOW': 1600}
+  eligible_by_tier={}
+  retrieved=0
+  persisted_vs_replay={'no_persisted_score': 1177, 'tier_match': 423}
+  community_class_top={'EXCHANGE_OFFICIAL': 1317, 'OTHER': 265, 'JOB_BOARD': 14, 'TRADER_COMMUNITY': 4}
+
+=== 5. LABEL COVERAGE (read-only join) ===
+  labeled=0/1600 actionable={'null_or_unlabeled': 1600}
+  by_label={'(unlabeled)': 1600}
+
+=== 6. ARTIFACTS ===
+  /app/docs/audit/evidence/130-offline-ml-replay-disc-v6.txt
+  /app/docs/audit/evidence/130-offline-ml-replay-disc-v6.json
+  /app/docs/audit/evidence/130-offline-ml-replay-rows.jsonl (n=200)
+  /tmp/130-offline-ml-replay-disc-v6.json (best-effort)
+  /tmp/130-offline-ml-replay-rows.jsonl (best-effort)
+
+=== 7. NEXT ===
+  Continue CONTINUOUS OBSERVE. Mode-1 artifacts ready for offline R&D only.
+  Do not start Optuna/LGBM/SHAP; do not claim ML GO; do not UpdateGoal complete.

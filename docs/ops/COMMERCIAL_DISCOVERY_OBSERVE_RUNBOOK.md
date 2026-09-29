@@ -1,7 +1,7 @@
 # Commercial discovery OBSERVE runbook (post first-iteration)
 
 **Status:** CONTINUOUS OBSERVE ACTIVE  
-**Standing note:** While `OBSERVE_OK` — do **not** invent timed remesure wakes; wait for durable `INTERVAL_SEC=5400` watcher exit 10 (A/B/C). E127 applied E124 Steps A–F (disable 137/140; replace 138→`@hummingbot_io`, 141→`@jesse_trade`; days=14 scans). Post-scan: 141 published 8; 138 resolved group (seen=1/pub=0); 139 still 0 → VERIFY-JOIN note if owner wants intake. Do **not** reopen path_b/c / enable ML from remediation alone. **Evidence 129:** first NEW disc_v6 since path_b (`candidate_id=67`, `v6_direct_project_domain`) quality-classified **provider_vendor / CONTAMINATED** — one observation; paths stay frozen.  
+**Standing note:** While `OBSERVE_OK` — do **not** invent timed remesure wakes; wait for durable `INTERVAL_SEC=5400` watcher exit 10 (A/B/C). E127 applied E124 Steps A–F (disable 137/140; replace 138→`@hummingbot_io`, 141→`@jesse_trade`; days=14 scans). Post-scan: 141 published 8; 138 resolved group (seen=1/pub=0); 139 still 0. **Evidence 129:** first NEW disc_v6 (`candidate_id=67`) → **provider_vendor / CONTAMINATED** — sticky `A_NEW` is expected; do not re-adjudicate. **Evidence 130:** Mode-1 offline LeadScorer+disc_v6 replay (n=1600 RETRIEVED=0) + readiness inventory — artifact-only; OBSERVE ≠ ML unlock. **Evidence 131:** VERIFY-JOIN 139 **BLOCKED** (no JoinChannel lever in-repo) — owner must choose join-script auth / disable 139 / leave empty. Do **not** reopen path_b/c / enable ML from remediation alone.  
 **Closed first-iteration:** Evidence 116 (`docs/audit/evidence/116-first-iteration-closure-observe-cycle10.*`)  
 **Path freeze:** path_c (E108) + path_b (E109) — do not reopen without auth + new loss evidence  
 **Shadow:** `COMMERCIAL_EPISODE_SHADOW_ENABLED=false` intentional — do not enable without explicit authorization  
@@ -95,6 +95,9 @@ Note: since-enable aggregate still includes 6 historical CONTAMINATED rows; prim
 - **SOURCING_T0_APPLIED** — Evidence 121: Phase A disabled 4 high-volume EXCHANGE_OFFICIAL; Phase B added 5 algo/dev rooms + days=14 scans; cursors unchanged.
 - **PHASE_B_INTAKE_GAP (SOURCE_ABSENT)** — Evidence 123: communities 137–141 still 0 messages since T0; 137/140 username resolve failures; 138/139/141 scans completed with messages_seen/published=0. Observational Mode-1 only — does **not** authorize path reopen/ML.
 - **PHASE_B_REMEDIATION_APPLIED** — Evidence 127: E124 Steps A–F applied under prior Option B auth. Disabled 137/140; replaced 138→`@hummingbot_io`, 141→`@jesse_trade`; queued days=14 for 138/139/141. Immediate scan outcomes: 141 published 8; 138 resolved correct group (seen=1/pub=0); 139 still 0 (VERIFY-JOIN note; no autofix). Isolation 1524/4.
+- **TRIGGER_A_FIRST_NEW_CLASSIFIED** — Evidence 129: candidate_id=67 CONTAMINATED provider_vendor; paths stay frozen.
+- **MODE1_OFFLINE_REPLAY_130** — Evidence 130: in-process LeadScorer+disc_v6 messages-only sample n=1600; RETRIEVED=0; ML inventory not ready; no prod rescore.
+- **VERIFY_JOIN_139_BLOCKED** — Evidence 131: no JoinChannel/membership script/API; owner-next A join-script / B disable / C leave empty.
 - **EXPECTED_IDLE** — 900s scheduler waves (Evidence 114)
 - **INTENTIONAL_SHADOW_OFF** — episode→AI handoff gated (Evidence 111)
 - **Invite-expired** — community 132 NOISE (Evidence 115)
@@ -105,6 +108,11 @@ Note: since-enable aggregate still includes 6 historical CONTAMINATED rows; prim
 ```bash
 # Read-only inventory — does not enable ML/Optuna/SHAP/LLM or alter discovery
 python3 scripts/offline_ml_dataset_readiness_inventory.py
+
+# Evidence 130 — in-process LeadScorer + disc_v6 replay (messages-only; no prod writes)
+docker compose run --rm --no-deps -e GIT_HEAD=$(git rev-parse --short HEAD) \
+  -v "$PWD:/app" -w /app analyzer \
+  sh -c 'PYTHONPATH=/app python scripts/audit_offline_ml_replay_disc_v6.py'
 
 # WP1 Evidence 118 — unbiased corpus loss attribution (Mode 1; no prod writes)
 docker compose run --rm --no-deps -v "$PWD:/app" -w /app analyzer \
@@ -130,4 +138,4 @@ Master continuation prompt: `docs/ops/MASTER_CONTINUATION_PROMPT_COMMERCIAL_DISC
 
 ## Next hypothesis
 
-NEXT = Trigger A/B/C from durable watcher (or owner VERIFY-JOIN for 139 if still empty). **Evidence 129** handled first NEW (CONTAMINATED provider_vendor) — continue OBSERVE; further NEW still freeze+classify without path reopen. Live resume only on **(A)** additional NEW disc_v6 (quality-classify; do not reopen path_b/c), **(B)** pipeline/Redis/worker/query failure, or **(C)** isolation drift. Offline: WP2/WP2b/WP2c DONE — do not re-adjudicate `e118_*` batches. **Sourcing T0 (E121)**; **Phase B gap (E123)**; **E124 proposal → E127 APPLIED**. Mode-2 FP harden DONE (E119c). **WP3** blocked until genuine-positive adjudicated n. Do not invent remesure wakes / busy remesure. Do not enable shadow / reopen paths without auth. Do not UpdateGoal complete.
+NEXT = Trigger A/B/C from durable watcher (further NEW beyond E129 still freeze+classify); owner chooses E131 A/B/C for 139. Live resume only on **(A)** additional NEW disc_v6 (no path reopen), **(B)** pipeline failure, or **(C)** isolation drift. Offline: E130 replay artifacts ready; WP2/WP2b/WP2c DONE — do not re-adjudicate `e118_*`; freeze expand needs separate scoped ask. **WP3** blocked until genuine-positive adjudicated n. Do not invent remesure wakes / enable shadow / reopen paths / claim ML GO. Do not UpdateGoal complete.

@@ -6,36 +6,27 @@
 ║                                                                                ║
 ║ HEAD            = (re-check git rev-parse --short HEAD after E127 commit)       ║
 ║ MODE            = CONTINUOUS OBSERVE + sourcing T0 + Phase B remediation       ║
-║ LIVE CLASS      = RESIDUAL_SCARCITY (disc_v6 NEW=0) + residual enabled intake  ║
-║ E127 APPLY      = E124 Steps A–F APPLIED (prior Option B auth; not new expand) ║
-║                 = disable 137/140; 138→@hummingbot_io; 141→@jesse_trade        ║
-║                 = scans 69487/69488/69489 days=14; 141 pub=8; 139 still 0      ║
-║ E126 MIX        = msgs/scores/disc_v6 since T0 = 2793/2793/0 (~3.90h)          ║
+║ LIVE CLASS      = RESIDUAL_SCARCITY + 1 NEW CONTAMINATED (E129); paths frozen   ║
+║ E127 APPLY      = E124 Steps A–F APPLIED; 141 pub; 139 still 0                 ║
+║ E129 Trigger A  = candidate_id=67 provider_vendor CONTAMINATED — sticky A_NEW  ║
+║ E130 Mode-1     = offline LeadScorer+disc_v6 replay n=1600 RETRIEVED=0         ║
+║ E131 VERIFY-JOIN= 139 BLOCKED — no JoinChannel lever; owner A/B/C             ║
 ║ OFFLINE CLASS   = UPSTREAM_LOSS@G3 + WP2/WP2b/WP2c CONTAMINATION_DOMINANT      ║
-║ WP1             = DONE  (Evidence 118)                                         ║
-║ WP2             = DONE  (Evidence 119; 8/8 FALSE; batch e118_wp2_*)             ║
-║ WP2b            = DONE  (E118b + Evidence 119b; 16/16 FALSE; e118b_wp2b_*)      ║
-║ WP2c            = DONE  (E118c + Evidence 119d; 16/16 FALSE; e118c_wp2c_*)      ║
-║ COMBINED FREEZE = 40/40 FALSE — 0 genuine_buyer_project (WP3 BLOCKED)          ║
-║ Mode-2 FPs      = DONE  (Evidence 119c; 60620+4780480 hardened; path_b/c intact)║
-║ Sourcing T0     = APPLIED (E121) + E122/E125 OBSERVE + E126 mix + E127 remed.  ║
-║ Phase B intake  = REMEDIATED (E127); 139 VERIFY-JOIN note if still empty       ║
+║ WP1–WP2c        = DONE (40/40 FALSE freezes; do not re-adjudicate e118_*)      ║
+║ Mode-2 FPs      = DONE  (Evidence 119c; path_b/c intact)                        ║
+║ Sourcing T0     = APPLIED (E121) + E127 remediated Phase B                     ║
+║ Phase B intake  = remediating; 139 blocked on VERIFY-JOIN lever (E131)         ║
 ║ Watcher         = INTERVAL_SEC=5400 observe_abc_watch.sh; wake exit 10         ║
-║ Watch emits     = msgs_since_t0 / scores_since_t0 / disc_v6_since_t0 (+ A/B/C) ║
-║ WP3 / ML ladder = BLOCKED until genuine-positive adjudicated set (S3→S9)       ║
-║ Optuna/LGBM/SHAP= NOT in deps/scripts; Evidence 44 ML NO-GO; M1–M10 fail       ║
-║ AI gates        = CLOSED (~94 validated / 0 VALIDATED_TRUE; need ≥100 / ≥30)   ║
-║ path_b / path_c = FROZEN (E109 / E108) — remediation ≠ path reopen auth        ║
-║ shadow / ML     = OFF / ml_training_enabled=false (hard)                       ║
+║ WP3 / ML ladder = BLOCKED; Optuna/LGBM/SHAP not started; E44 ML NO-GO          ║
+║ path_b / path_c = FROZEN; shadow OFF; ml_training_enabled=false                ║
 ║ isolation expect= human_labels=1524 / AI_CONFIRMED=4                           ║
 ║                                                                                ║
-║ NEXT            = Trigger A/B/C from durable watcher (exit 10); optional        ║
-║                   owner VERIFY-JOIN for 139 @NautilusTrader if still empty     ║
-║ AGENT RULE      = while OBSERVE_OK: do NOT invent timed remesure wakes         ║
+║ NEXT            = Trigger A/B/C (further NEW); owner E131 A/B/C for 139        ║
+║ AGENT RULE      = while idle: do NOT invent timed remesure wakes               ║
 ║ DO NOT          = remesure scarcity · UpdateGoal complete · reopen path_b/c    ║
-║ DO NOT          = more freeze expand · enable shadow/ML · mutate human_labels  ║
-║ DO NOT          = loosen scoring.yaml · timed remesures · claim ML GO          ║
-║ DO NOT          = wipe last_message_id · down -v · audit_* as GT               ║
+║ DO NOT          = freeze expand without scoped ask · enable shadow/ML          ║
+║ DO NOT          = mutate human_labels · loosen scoring.yaml · claim ML GO      ║
+║ DO NOT          = wipe last_message_id · down -v · invent JoinChannel autofix  ║
 ╚══════════════════════════════════════════════════════════════════════════════╝
 ```
 
@@ -97,10 +88,10 @@ Watch_emits=msgs_since_t0 / scores_since_t0 / disc_v6_since_t0 (+ A/B/C fields)
 AI_GATES=CLOSED (~94 msgs / 0 VALIDATED_TRUE; need ≥100 / ≥30)
 Optuna/LGBM/SHAP=NOT implemented (no deps/scripts); Evidence 44 ML NO-GO; M1–M10 fail
 AGENT_RULE=while OBSERVE_OK: do NOT invent timed remesure wakes; wait for watcher exit 10 (A/B/C)
-NEXT=Trigger A/B/C from durable watcher; optional owner VERIFY-JOIN for 139 if still empty; do not UpdateGoal complete
+NEXT=Trigger A/B/C; owner E131 A/B/C for 139; sticky A_NEW after E129 is expected; do not UpdateGoal complete
 ```
 
-### Evidence headline table (117–127)
+### Evidence headline table (117–131)
 
 | ID | Path | Headline |
 |----|------|----------|
@@ -122,6 +113,9 @@ NEXT=Trigger A/B/C from durable watcher; optional owner VERIFY-JOIN for 139 if s
 | E125 | `docs/audit/evidence/125-observe-t0-midwindow.*` | Mid-window T0: **2651/2651/0** @~3.83h vs E122 572/572/0; **SOURCING_T0_INTAKE_WITHOUT_DISC_V6**; Phase B still 0; no path reopen |
 | E126 | `docs/audit/evidence/126-sourcing-t0-community-mix.*` | T0 community mix: **2793/2793/0** @~3.90h; residual enabled intake; Phase A disable OBSERVABLE; EXCHANGE_OFFICIAL-mapped ≈35.95%; Phase B still 0 |
 | E127 | `docs/audit/evidence/127-sourcing-phase-b-remediation-applied.*` | E124 Steps A–F **APPLIED**; 137/140 disabled; 138→`@hummingbot_io`; 141→`@jesse_trade` (pub=8); 139 rescan 0 + VERIFY-JOIN note; isolation 1524/4 |
+| E129 | `docs/audit/evidence/129-trigger-a-first-new-disc-v6-freeze.*` | Trigger A first NEW → CONTAMINATED provider_vendor; paths stay frozen |
+| E130 | `docs/audit/evidence/130-offline-ml-replay-disc-v6.*` + inventory | Mode-1 in-process LeadScorer+disc_v6 replay n=1600 RETRIEVED=0; ML not ready |
+| E131 | `docs/audit/evidence/131-verify-join-139-nautilus-blocked.*` | VERIFY-JOIN 139 **BLOCKED** — no JoinChannel lever; owner A/B/C |
 | E44 | `docs/audit/evidence/44-ml-nogo-attestation.txt` | Explicit ML NO-GO for LGBM/Optuna/SHAP training |
 | Plan ABC | `docs/ops/PLAN_ABC_WP2C_SOURCING_MODE2_2026-09-27.md` | Executed A/B/C plan (WP2c + sourcing + Mode-2) |
 | Runbook | `docs/ops/COMMERCIAL_DISCOVERY_OBSERVE_RUNBOOK.md` | A/B/C triggers + cheap watch |
@@ -362,7 +356,7 @@ Requires genuine-positive adjudicated n (not contamination-only labels). Then S4
 If `--once` is still `OBSERVE_OK` and isolation holds (1524/4):
 
 1. Stay Mode 0/1 — **do not** reopen paths, enable shadow/ML, mutate `human_labels`, remesure scarcity, or UpdateGoal complete.
-2. **NEXT is:** **Trigger A/B/C** from durable watcher (`INTERVAL_SEC=5400`, exit 10); optional owner VERIFY-JOIN for 139 `@NautilusTrader` if still empty.
+2. **NEXT is:** **Trigger A/B/C** from durable watcher (`INTERVAL_SEC=5400`, exit 10); owner chooses Evidence 131 A/B/C for 139 `@NautilusTrader` (VERIFY-JOIN blocked — no JoinChannel lever).
 3. **AGENT RULE:** while OBSERVE_OK — **do NOT invent timed remesure wakes**; wait for watcher exit 10.
 4. Watcher already emits `msgs_since_t0` / `scores_since_t0` / `disc_v6_since_t0` (E121 T0); use those on wake, not invented remesures.
 5. **Do NOT** more freeze expand / WP2d unless owner asks. E127 already applied E124 Phase B remediation.
