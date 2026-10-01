@@ -221,7 +221,7 @@ def test_commercially_actionable_persists_and_blind_flags_false(api_client):
     from shared.independent_review_auth import mint_queue_token
 
     stored: list = []
-    planned = [1, None, 1, None, 1, None]
+    planned = [1, None, 1, None, 1, None, 1, None]
 
     class _FakeSession:
         async def get(self, model, pk):
@@ -256,6 +256,7 @@ def test_commercially_actionable_persists_and_blind_flags_false(api_client):
     cases = [
         ("HUMAN_REVIEWED_TRUE", None, True),
         ("HUMAN_REVIEWED_FALSE", "MARKETING_BROADCAST", False),
+        ("HUMAN_REVIEWED_FALSE", "PLAIN_NONCOMMERCIAL_CONVERSATION", False),
         ("HUMAN_REVIEWED_AMBIGUOUS", None, None),
     ]
     api_main.app.dependency_overrides[get_session] = _override
@@ -280,15 +281,17 @@ def test_commercially_actionable_persists_and_blind_flags_false(api_client):
             assert response.status_code == 201, response.text
             body = response.json()
             assert body["commercially_actionable"] is actionable
+            assert body["fp_class"] == fp_class
             assert body["scorer_shown"] is False
             assert body["prior_label_shown"] is False
             assert body["label"] == label
     finally:
         api_main.app.dependency_overrides.pop(get_session, None)
 
-    assert len(stored) == 3
-    for row, (label, _fp, actionable) in zip(stored, cases, strict=True):
+    assert len(stored) == 4
+    for row, (label, fp_class, actionable) in zip(stored, cases, strict=True):
         assert row.label == label
+        assert row.fp_class == fp_class
         assert row.commercially_actionable is actionable
         assert row.scorer_shown is False
         assert row.prior_label_shown is False
@@ -319,6 +322,10 @@ def test_review_template_on_disk_has_marker_only():
     assert 'type="password"' not in text
     assert "boot();" in text
     assert "hist360_p1_core_2026-09-30" in text
+    assert (
+        '<option value="PLAIN_NONCOMMERCIAL_CONVERSATION">'
+        "Plain non-commercial intent conversation</option>"
+    ) in text
 
 
 def test_render_review_html_empty_session_injects_null():
