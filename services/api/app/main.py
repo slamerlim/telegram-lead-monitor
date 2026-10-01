@@ -1,15 +1,13 @@
 import csv
 import io
 import json
-import logging
 import secrets
 from pathlib import Path
 
 from datetime import datetime, timedelta, timezone
 
 from fastapi import Depends, FastAPI, Header, HTTPException, Query
-from fastapi.responses import JSONResponse, StreamingResponse
-from fastapi.staticfiles import StaticFiles
+from fastapi.responses import HTMLResponse, JSONResponse, StreamingResponse
 from sqlalchemy import func, or_, select, text
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -146,10 +144,73 @@ app.include_router(ai_validation_router)
 app.include_router(ops_router)
 
 _REVIEW_STATIC = Path(__file__).resolve().parents[1] / "static" / "review"
-if _REVIEW_STATIC.is_dir():
-    app.mount("/review", StaticFiles(directory=str(_REVIEW_STATIC), html=True), name="review_ui")
-else:
-    logging.getLogger("api").warning("review UI static dir missing: %s", _REVIEW_STATIC)
+_REVIEW_PAGE = _REVIEW_STATIC / "index.html"
+# Replaced at request time. The file in git must keep this marker and no secret.
+_BURNED_SESSION_MARKER = "__TLM_BURNED_SESSION_JSON__"
+
+
+def select_burned_reviewer(tokens: dict[str, str], allowlist: set[str]) -> tuple[str, str] | None:
+    """Prefer human1 when allowlisted; otherwise the first allowlisted id."""
+    if "human1" in allowlist and tokens.get("human1"):
+        return "human1", tokens["human1"]
+    for reviewer_id in sorted(allowlist):
+        token = tokens.get(reviewer_id)
+        if token:
+            return reviewer_id, token
+    return None
+
+
+def burned_reviewer_session() -> tuple[str, str] | None:
+    """Single reviewer injected into /review/. None unless tokens, HMAC, and allowlist are ready."""
+    tokens, allowlist, _secret, ready = _independence_auth_config()
+    if not ready:
+        return None
+    return select_burned_reviewer(tokens, allowlist)
+
+
+def _js_session_literal(session: tuple[str, str] | None) -> str:
+    if session is None:
+        return "null"
+    reviewer_id, token = session
+    blob = json.dumps(
+        {"reviewerId": reviewer_id, "token": token},
+        ensure_ascii=True,
+        separators=(",", ":"),
+    )
+    return (
+        blob.replace("<", "\\u003c")
+        .replace(">", "\\u003e")
+        .replace("&", "\\u0026")
+        .replace("\u2028", "\\u2028")
+        .replace("\u2029", "\\u2029")
+    )
+
+
+def render_review_html(template: str, session: tuple[str, str] | None) -> str:
+    """Substitute the burned session. Empty or partial config becomes null — no token in the HTML."""
+    if template.count(_BURNED_SESSION_MARKER) != 1:
+        raise RuntimeError("review template missing injection marker")
+    return template.replace(_BURNED_SESSION_MARKER, _js_session_literal(session), 1)
+
+
+@app.get("/review", include_in_schema=False)
+@app.get("/review/", include_in_schema=False)
+async def review_ui_page() -> HTMLResponse:
+    if not _REVIEW_PAGE.is_file():
+        raise HTTPException(status_code=404, detail="review UI missing")
+    template = _REVIEW_PAGE.read_text(encoding="utf-8")
+    try:
+        html = render_review_html(template, burned_reviewer_session())
+    except RuntimeError:
+        raise HTTPException(status_code=500, detail="review UI template rejected")
+    return HTMLResponse(
+        content=html,
+        headers={
+            "Cache-Control": "no-store",
+            "Pragma": "no-cache",
+            "X-Robots-Tag": "noindex, nofollow",
+        },
+    )
 
 
 def _review_lockdown_allowed(path: str) -> bool:

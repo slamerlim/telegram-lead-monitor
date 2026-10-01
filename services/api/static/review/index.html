@@ -43,13 +43,19 @@
       letter-spacing: -0.02em;
       margin: 0 0 0.35rem;
     }
-    header p {
+    header p, .lede {
       margin: 0;
       color: var(--muted);
-      max-width: 36rem;
+      max-width: 40rem;
       line-height: 1.5;
       font-size: 0.95rem;
       font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    }
+    .who {
+      margin-top: 0.65rem;
+      font-family: ui-sans-serif, system-ui, sans-serif;
+      font-size: 0.85rem;
+      color: var(--ink);
     }
     main {
       flex: 1;
@@ -88,10 +94,6 @@
       outline: 2px solid color-mix(in srgb, var(--accent) 45%, white);
       border-color: var(--accent);
     }
-    .grid { display: grid; gap: 0.9rem; }
-    @media (min-width: 640px) {
-      .grid.two { grid-template-columns: 1fr 1fr; }
-    }
     .actions {
       display: flex;
       flex-wrap: wrap;
@@ -116,6 +118,13 @@
     .btn-true { background: var(--ok); color: #fff; }
     .btn-false { background: var(--danger); color: #fff; }
     .btn-uncertain { background: var(--warn); color: #fff; }
+    .batch-switch { display: flex; flex-wrap: wrap; gap: 0.45rem; align-items: center; }
+    .batch-btn { padding: 0.45rem 0.75rem; font-size: 0.85rem; }
+    .batch-btn.is-active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
     .status {
       margin-top: 0.85rem;
       font-size: 0.88rem;
@@ -128,7 +137,7 @@
     .toolbar {
       display: flex;
       justify-content: space-between;
-      align-items: baseline;
+      align-items: flex-start;
       gap: 1rem;
       margin-bottom: 0.85rem;
       flex-wrap: wrap;
@@ -153,7 +162,7 @@
       border-radius: 4px;
       background: #f7faf8;
     }
-    .hint { font-size: 0.8rem; color: var(--muted); margin: 0.35rem 0 0; }
+    .hint { font-size: 0.8rem; color: var(--muted); margin: 0.35rem 0 0; line-height: 1.45; }
     footer {
       text-align: center;
       color: var(--muted);
@@ -166,48 +175,32 @@
 <body>
   <header>
     <h1>Blind Review</h1>
-    <p>Classify messages from the text alone. Scorer output, community, author, and prior labels stay hidden.</p>
+    <p>One reviewer. Classify from the message text alone. Scorer output, community, author, and prior labels stay hidden.</p>
+    <p class="who">Signed in as <strong id="who">…</strong></p>
+    <p class="lede hint" id="kappa-note">With one reviewer, Cohen's kappa will not exist — the overlap batch was for human1 and human2.</p>
   </header>
 
   <main>
-    <section id="login" class="panel">
-      <div class="grid two">
-        <div>
-          <label for="reviewer_id">Reviewer ID</label>
-          <input id="reviewer_id" autocomplete="off" placeholder="human1" />
-        </div>
-        <div>
-          <label for="token">X-Reviewer-Token</label>
-          <input id="token" type="password" autocomplete="off" placeholder="from operator handout" />
-        </div>
-      </div>
-      <div class="grid two" style="margin-top:0.9rem">
-        <div>
-          <label for="batch">Sample batch ID</label>
-          <input id="batch" autocomplete="off" />
-        </div>
-        <div>
-          <label for="limit">Page size</label>
-          <input id="limit" type="number" min="1" max="200" value="25" />
-        </div>
-      </div>
-      <div class="actions">
-        <button type="button" class="btn-primary" id="btn-start">Start reviewing</button>
-      </div>
-      <p class="status" id="login-status"></p>
+    <section id="setup" class="panel">
+      <p class="hint" id="batch-mix">Default batch hist360_p1_core_2026-09-30: 2600 items (random 1200, recall probe 600, community spread 600, negative control 200).</p>
+      <p class="status" id="boot-status">Starting…</p>
     </section>
 
     <section id="workspace" class="panel hidden">
       <div class="toolbar">
-        <div class="meta" id="progress">—</div>
-        <div class="actions" style="margin:0">
-          <button type="button" class="btn-ghost" id="btn-reload">Reload queue</button>
-          <button type="button" class="btn-ghost" id="btn-skip">Skip item</button>
-          <button type="button" class="btn-ghost" id="btn-logout">Sign out</button>
+        <div>
+          <div class="meta" id="progress">—</div>
+          <p class="hint" id="batch-mix-work"></p>
+        </div>
+        <div class="batch-switch" role="group" aria-label="Sample batch">
+          <button type="button" class="btn-ghost batch-btn is-active" data-batch="hist360_p1_core_2026-09-30" id="btn-batch-core">Core 2600</button>
+          <button type="button" class="btn-ghost batch-btn" data-batch="hist360_p1_overlap_2026-09-30" id="btn-batch-overlap">Overlap</button>
+          <button type="button" class="btn-ghost batch-btn" id="btn-reload">Reload</button>
+          <button type="button" class="btn-ghost batch-btn" id="btn-skip">Skip</button>
         </div>
       </div>
       <div id="empty" class="hidden">
-        <p>No remaining items in this batch for you. Thank you.</p>
+        <p>No remaining items in this batch for you.</p>
       </div>
       <div id="card">
         <div class="message" id="message-text"></div>
@@ -236,19 +229,22 @@
         </div>
         <label for="notes" style="margin-top:0.9rem">Notes (optional)</label>
         <textarea id="notes" rows="2" placeholder="Short rationale if helpful"></textarea>
-        <p class="hint">Uses the server-issued review token. Do not open /search, /leads, or /docs while reviewing — that breaks blindness.</p>
+        <p class="hint">Blind review only. Do not open /search, /leads, or /docs in this browser while reviewing.</p>
       </div>
       <p class="status" id="work-status"></p>
     </section>
   </main>
 
-  <footer>Independent review layer only — does not modify human_labels. Prefer REVIEW_UI_LOCKDOWN=true during human sessions.</footer>
+  <footer>Independent review layer only — does not modify human_labels. REVIEW_UI_LOCKDOWN stays on during this session.</footer>
 
   <script>
-    const DEFAULT_BATCH = "indep_review_2026-09-22";
+    const CORE_BATCH = "hist360_p1_core_2026-09-30";
+    const OVERLAP_BATCH = "hist360_p1_overlap_2026-09-30";
+    const CORE_MIX = "2600 items: random 1200, recall probe 600, community spread 600, negative control 200.";
     const FP_LABEL = "HUMAN_REVIEWED_FALSE";
     const TRUE_LABEL = "HUMAN_REVIEWED_TRUE";
     const AMBIGUOUS_LABEL = "HUMAN_REVIEWED_AMBIGUOUS";
+    const BURNED_SESSION = __TLM_BURNED_SESSION_JSON__;
 
     function commerciallyActionableFor(label) {
       if (label === TRUE_LABEL) return true;
@@ -258,7 +254,7 @@
     }
     const el = (id) => document.getElementById(id);
 
-    let session = null; // { reviewerId, token, batch, limit } — token in memory only
+    let session = null;
     let queue = [];
     let index = 0;
     let submittedThisSession = 0;
@@ -273,12 +269,6 @@
     function errDetail(data) {
       if (typeof data?.detail === "string") return data.detail;
       return JSON.stringify(data?.detail || data);
-    }
-
-    function clampLimit(raw) {
-      const n = Math.round(Number(raw));
-      if (!Number.isFinite(n)) return 25;
-      return Math.min(200, Math.max(1, n));
     }
 
     async function api(path, { method = "GET", headers = {}, body } = {}) {
@@ -300,6 +290,22 @@
       return { "X-Reviewer-Token": session.token };
     }
 
+    function paintBatch() {
+      const batch = session ? session.batch : CORE_BATCH;
+      document.querySelectorAll("[data-batch]").forEach((btn) => {
+        btn.classList.toggle("is-active", btn.getAttribute("data-batch") === batch);
+      });
+      const mix = batch === CORE_BATCH
+        ? `Core ${CORE_BATCH}: ${CORE_MIX}`
+        : `Overlap ${OVERLAP_BATCH}. A second reviewer is not required.`;
+      const workMix = el("batch-mix-work");
+      if (workMix) workMix.textContent = mix;
+      const setupMix = el("batch-mix");
+      if (setupMix && el("setup") && !el("setup").classList.contains("hidden")) {
+        setupMix.textContent = `Default batch ${CORE_BATCH}: ${CORE_MIX}`;
+      }
+    }
+
     async function fetchQueue() {
       const params = new URLSearchParams({
         sample_batch_id: session.batch,
@@ -311,26 +317,12 @@
         headers: authHeaders(),
       });
       if (res.status === 401) {
-        forceLogout("Session rejected (401). Sign in again.");
-        const err = new Error("401 unauthorized");
-        err.loggedOut = true;
+        const err = new Error("Session rejected (401).");
+        err.unauthorized = true;
         throw err;
       }
       if (!res.ok) throw new Error(`${res.status}: ${errDetail(data)}`);
       return Array.isArray(data) ? data : [];
-    }
-
-    function forceLogout(msg) {
-      session = null;
-      queue = [];
-      index = 0;
-      el("token").value = "";
-      el("reviewer_id").value = "";
-      el("message-text").textContent = "";
-      el("notes").value = "";
-      el("workspace").classList.add("hidden");
-      el("login").classList.remove("hidden");
-      setStatus(el("login-status"), msg || "Signed out.", msg ? "error" : "ok");
     }
 
     async function ensureItem() {
@@ -349,6 +341,7 @@
     async function render() {
       const empty = el("empty");
       const card = el("card");
+      paintBatch();
       try {
         const has = await ensureItem();
         if (!has) {
@@ -366,48 +359,62 @@
       const item = queue[index];
       el("message-text").textContent = item.text || "";
       el("progress").textContent =
-        `Page item ${index + 1}/${queue.length} · submitted ${submittedThisSession} · batch ${session.batch}`;
+        `Item ${index + 1}/${queue.length} · submitted ${submittedThisSession} · ${session.batch}`;
       el("fp-box").classList.add("hidden");
       el("fp_class").value = "";
       el("notes").value = "";
     }
 
-    async function startSession() {
-      const reviewerId = el("reviewer_id").value.trim();
-      const token = el("token").value.trim();
-      const batch = el("batch").value.trim() || DEFAULT_BATCH;
-      const limit = clampLimit(el("limit").value);
-      el("limit").value = String(limit);
-      if (!reviewerId || !token || !batch) {
-        setStatus(el("login-status"), "Reviewer ID, token, and batch are required.", "error");
+    async function reloadQueue(message) {
+      if (!session || submitting) return;
+      setStatus(el("work-status"), message || "Reloading…");
+      try {
+        queue = await fetchQueue();
+        index = 0;
+        setStatus(el("work-status"), queue.length ? `Loaded ${queue.length} items.` : "Queue empty.", "ok");
+        await render();
+      } catch (err) {
+        setStatus(el("work-status"), err.message || String(err), "error");
+      }
+    }
+
+    async function boot() {
+      paintBatch();
+      if (!BURNED_SESSION || !BURNED_SESSION.reviewerId || !BURNED_SESSION.token) {
+        el("who").textContent = "not configured";
+        setStatus(el("boot-status"), "Reviewer session is not configured on this server.", "error");
         return;
       }
-      setStatus(el("login-status"), "Checking credentials…");
-      session = { reviewerId, token, batch, limit };
-      submittedThisSession = 0;
+      el("who").textContent = BURNED_SESSION.reviewerId;
+      session = {
+        reviewerId: BURNED_SESSION.reviewerId,
+        token: BURNED_SESSION.token,
+        batch: CORE_BATCH,
+        limit: 25,
+      };
+      setStatus(el("boot-status"), "Checking lockdown…");
       try {
         const probe = await api("/search?q=lockdown-probe");
         if (probe.res.status !== 403) {
+          session = null;
           setStatus(
-            el("login-status"),
-            "REVIEW_UI_LOCKDOWN is off — /search is reachable. Ask the operator to enable it and restart the API before blind review.",
+            el("boot-status"),
+            "REVIEW_UI_LOCKDOWN is off — /search is reachable. Enable it and restart the API before blind review.",
             "error",
           );
-          session = null;
           return;
         }
         queue = await fetchQueue();
         index = 0;
-        el("token").value = "";
-        el("login").classList.add("hidden");
+        el("setup").classList.add("hidden");
         el("workspace").classList.remove("hidden");
         setStatus(el("work-status"), queue.length ? `Loaded ${queue.length} items.` : "Queue empty.", "ok");
         await render();
       } catch (err) {
-        if (!err.loggedOut) {
-          session = null;
-          setStatus(el("login-status"), err.message || String(err), "error");
-        }
+        session = null;
+        el("workspace").classList.add("hidden");
+        el("setup").classList.remove("hidden");
+        setStatus(el("boot-status"), err.message || String(err), "error");
       }
     }
 
@@ -439,7 +446,7 @@
           body,
         });
         if (res.status === 401) {
-          forceLogout("Token rejected. Sign in again.");
+          setStatus(el("work-status"), "Session rejected (401).", "error");
           return;
         }
         if (!res.ok) {
@@ -464,20 +471,17 @@
       }
     }
 
-    el("btn-start").addEventListener("click", startSession);
-    el("btn-logout").addEventListener("click", () => forceLogout("Signed out."));
-    el("btn-reload").addEventListener("click", async () => {
-      if (submitting) return;
-      setStatus(el("work-status"), "Reloading…");
-      try {
-        queue = await fetchQueue();
-        index = 0;
-        setStatus(el("work-status"), `Loaded ${queue.length} items.`, "ok");
-        await render();
-      } catch (err) {
-        setStatus(el("work-status"), err.message || String(err), "error");
-      }
+    document.querySelectorAll("[data-batch]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        if (!session || submitting) return;
+        const next = btn.getAttribute("data-batch");
+        if (!next || next === session.batch) return;
+        session.batch = next;
+        paintBatch();
+        reloadQueue(`Switching to ${next}…`);
+      });
     });
+    el("btn-reload").addEventListener("click", () => reloadQueue("Reloading…"));
     el("btn-skip").addEventListener("click", async () => {
       if (submitting || !queue.length || index >= queue.length) return;
       index += 1;
@@ -489,7 +493,7 @@
         const label = btn.getAttribute("data-label");
         if (label === FP_LABEL) {
           el("fp-box").classList.remove("hidden");
-          setStatus(el("work-status"), "Select FP class, then submit.", "");
+          setStatus(el("work-status"), "Select a false-positive class, then submit.", "");
           return;
         }
         submit(label, null);
@@ -503,7 +507,7 @@
       el("fp_class").value = "";
     });
 
-    el("batch").value = DEFAULT_BATCH;
+    boot();
   </script>
 </body>
 </html>
