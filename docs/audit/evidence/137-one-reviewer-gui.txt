@@ -1,0 +1,21 @@
+Evidence 137 — one-reviewer blind GUI
+generated_at=2026-10-01T14:40:00Z
+commit=d21ee932ae9056ce690e970adc41560865d49584
+url=http://127.0.0.1:8010/review/
+
+health=200 {"status":"ok","postgres":"ok","redis":"ok"}
+validation/gates ml_training_enabled=false ml_gate_independence_ready=false
+search lockdown=403
+
+Served /review/ (host curl): Cache-Control=no-store, auto-start boot() present, lockdown-probe present, password field absent, default batch hist360_p1_core_2026-09-30, overlap batch offered, kappa line present.
+Token injection: yes (human1 only). On-disk template contains the marker once and not the token. Marker absent from the served body. Other allowlisted reviewer tokens absent from the served body. Token value not recorded here.
+
+Browser (agent-browser on this host): signed in as human1 with no token field; Loaded 25 items; blinded message length 2254; controls True lead / False positive / Uncertain; Core 2600 and Overlap visible. FALSE with empty fp_class set status "Choose a false-positive class." and issued no POST /labels/reviews. No review was saved.
+
+SQL after browser: human_labels=1524 AI_CONFIRMED=4 label_reviews hist360_p1_%=0
+Samples: hist360_p1_core_2026-09-30=2600 hist360_p1_overlap_2026-09-30=150
+
+pytest: .venv/bin/python -m pytest -q tests/test_independent_review_api.py tests/test_ai_validation_core.py tests/test_commercial_discovery.py tests/test_lead_write_protected.py
+44 passed
+
+ML GO not claimed. human_labels not written. scoring.yaml not changed.
