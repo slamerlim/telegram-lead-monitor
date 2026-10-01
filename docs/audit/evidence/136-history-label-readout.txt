@@ -1,0 +1,16 @@
+Evidence 136 — history label readout
+generated_at=2026-10-01T04:37:18.715882+00:00 head=4b681d6
+review_rows_human1_human2=0
+decision_status=BLOCKED_PENDING_HUMAN_REVIEW
+decision=None
+emitted_code=None
+history_has_demand=False
+history_source_absent=False
+Reviews are not yet complete. HISTORY_SOURCE_ABSENT requires n_random>=1200 and n_probe>=600 actually reviewed. Zero reviews are not source absence.
+Reviews are not yet done.
+Decision is blocked pending human1/human2.
+hist_random reviewed=0 genuine=0
+hist_recall_probe reviewed=0 genuine=0 probe_yield=None
+ml_go_claim=false human_labels_mutated=false training_blocked=true
+isolation human_labels=1524 AI_CONFIRMED=4
+labeling_status=not_started; do not train.

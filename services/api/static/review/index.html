@@ -247,6 +247,15 @@
   <script>
     const DEFAULT_BATCH = "indep_review_2026-09-22";
     const FP_LABEL = "HUMAN_REVIEWED_FALSE";
+    const TRUE_LABEL = "HUMAN_REVIEWED_TRUE";
+    const AMBIGUOUS_LABEL = "HUMAN_REVIEWED_AMBIGUOUS";
+
+    function commerciallyActionableFor(label) {
+      if (label === TRUE_LABEL) return true;
+      if (label === FP_LABEL) return false;
+      if (label === AMBIGUOUS_LABEL) return null;
+      return null;
+    }
     const el = (id) => document.getElementById(id);
 
     let session = null; // { reviewerId, token, batch, limit } — token in memory only
@@ -420,6 +429,7 @@
           reviewer_id: session.reviewerId,
           label,
           fp_class: label === FP_LABEL ? fpClass : null,
+          commercially_actionable: commerciallyActionableFor(label),
           review_token: item.review_token,
           notes: el("notes").value.trim() || null,
         };

@@ -214,6 +214,86 @@ def test_schema_requires_review_token():
     assert r.review_token == "tok"
 
 
+def test_commercially_actionable_persists_and_blind_flags_false(api_client):
+    """POST /labels/reviews stores commercially_actionable; blind insert forces shown flags false."""
+    from services.api.app import main as api_main
+    from shared.db import get_session
+    from shared.independent_review_auth import mint_queue_token
+
+    stored: list = []
+    planned = [1, None, 1, None, 1, None]
+
+    class _FakeSession:
+        async def get(self, model, pk):
+            return object()
+
+        async def scalar(self, stmt):
+            return planned.pop(0)
+
+        def add(self, row):
+            stored.append(row)
+
+        async def commit(self):
+            return None
+
+        async def refresh(self, row):
+            if getattr(row, "id", None) is None:
+                row.id = len(stored)
+
+        async def rollback(self):
+            return None
+
+    async def _override():
+        yield _FakeSession()
+
+    token = mint_queue_token(
+        "hmac-secret-for-tests",
+        reviewer_id="alice",
+        sample_batch_id="b",
+        message_id=99,
+        blind=True,
+    )
+    cases = [
+        ("HUMAN_REVIEWED_TRUE", None, True),
+        ("HUMAN_REVIEWED_FALSE", "MARKETING_BROADCAST", False),
+        ("HUMAN_REVIEWED_AMBIGUOUS", None, None),
+    ]
+    api_main.app.dependency_overrides[get_session] = _override
+    try:
+        for label, fp_class, actionable in cases:
+            payload = {
+                "message_id": 99,
+                "sample_batch_id": "b",
+                "reviewer_id": "alice",
+                "label": label,
+                "fp_class": fp_class,
+                "commercially_actionable": actionable,
+                "review_token": token,
+                "scorer_shown": True,
+                "prior_label_shown": True,
+            }
+            response = api_client.post(
+                "/labels/reviews",
+                json=payload,
+                headers={"X-Reviewer-Token": "tok-alice"},
+            )
+            assert response.status_code == 201, response.text
+            body = response.json()
+            assert body["commercially_actionable"] is actionable
+            assert body["scorer_shown"] is False
+            assert body["prior_label_shown"] is False
+            assert body["label"] == label
+    finally:
+        api_main.app.dependency_overrides.pop(get_session, None)
+
+    assert len(stored) == 3
+    for row, (label, _fp, actionable) in zip(stored, cases, strict=True):
+        assert row.label == label
+        assert row.commercially_actionable is actionable
+        assert row.scorer_shown is False
+        assert row.prior_label_shown is False
+
+
 def test_attestation_blind_means_shown_false():
     secret = "hmac-secret-for-tests"
     tok = mint_queue_token(

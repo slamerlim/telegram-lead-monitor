@@ -1,0 +1,110 @@
+{
+  "evidence_id": "136",
+  "generated_at": "2026-10-01T04:37:18.715882+00:00",
+  "head": "4b681d6",
+  "runtime_sec": 0.04,
+  "read_only": true,
+  "reviewers": [
+    "human1",
+    "human2"
+  ],
+  "batches": [
+    "hist360_p1_core_2026-09-30",
+    "hist360_p1_overlap_2026-09-30"
+  ],
+  "review_rows": 0,
+  "strata": {
+    "hist_random": {
+      "reviewed_n": 0,
+      "genuine_n": 0,
+      "prevalence": null,
+      "clopper_pearson_95": null,
+      "paired_n": 0,
+      "kappa_label": null,
+      "kappa_genuine": null
+    },
+    "hist_recall_probe": {
+      "reviewed_n": 0,
+      "genuine_n": 0,
+      "prevalence": null,
+      "clopper_pearson_95": null,
+      "paired_n": 0,
+      "kappa_label": null,
+      "kappa_genuine": null
+    },
+    "hist_community_spread": {
+      "reviewed_n": 0,
+      "genuine_n": 0,
+      "prevalence": null,
+      "clopper_pearson_95": null,
+      "paired_n": 0,
+      "kappa_label": null,
+      "kappa_genuine": null
+    },
+    "hist_negative_control": {
+      "reviewed_n": 0,
+      "genuine_n": 0,
+      "prevalence": null,
+      "clopper_pearson_95": null,
+      "paired_n": 0,
+      "kappa_label": null,
+      "kappa_genuine": null
+    },
+    "hist_overlap": {
+      "reviewed_n": 0,
+      "genuine_n": 0,
+      "prevalence": null,
+      "clopper_pearson_95": null,
+      "paired_n": 0,
+      "kappa_label": null,
+      "kappa_genuine": null
+    }
+  },
+  "probe_yield": null,
+  "pre_registered_decision_rule": {
+    "reviewers": [
+      "human1",
+      "human2"
+    ],
+    "batches": [
+      "hist360_p1_core_2026-09-30",
+      "hist360_p1_overlap_2026-09-30"
+    ],
+    "genuine_positive": "HUMAN_REVIEWED_TRUE AND commercially_actionable is true, unanimous among human1/human2 rows present on that message",
+    "prevalence_denominator": "hist_random messages with at least one human1/human2 review",
+    "prevalence_interval": "Clopper-Pearson 95% two-sided",
+    "probe_yield": "genuine positives / reviewed hist_recall_probe",
+    "kappa": "Cohen kappa on paired human1/human2 labels",
+    "blocked_unless": {
+      "hist_random_reviewed_n>=": 1200,
+      "hist_recall_probe_reviewed_n>=": 600
+    },
+    "codes": {
+      "HISTORY_SOURCE_ABSENT": "both denominators meet the minimums AND genuine positives are 0 on hist_random AND on hist_recall_probe",
+      "HISTORY_HAS_DEMAND": "denominators meet the minimums AND hist_random Clopper-Pearson lower bound >= 0.005",
+      "HISTORY_DEMAND_SCARCE": "denominators meet the minimums AND the row is neither SOURCE_ABSENT nor HAS_DEMAND"
+    },
+    "zero_reviews": "BLOCKED_PENDING_HUMAN_REVIEW. Do not emit HISTORY_SOURCE_ABSENT or HISTORY_HAS_DEMAND from an empty review set.",
+    "ml_go_claim": false,
+    "not_training_authorization": true
+  },
+  "decision": null,
+  "decision_status": "BLOCKED_PENDING_HUMAN_REVIEW",
+  "emitted_code": null,
+  "history_has_demand": false,
+  "history_source_absent": false,
+  "reason": "Reviews are not yet complete. HISTORY_SOURCE_ABSENT requires n_random>=1200 and n_probe>=600 actually reviewed. Zero reviews are not source absence.",
+  "reviews_not_yet_done": true,
+  "ml_go_claim": false,
+  "human_labels_mutated": false,
+  "ml_training_enabled": false,
+  "training_blocked": true,
+  "labeling_status": "not_started",
+  "isolation": {
+    "human_labels": 1524,
+    "ai_confirmed": 4,
+    "expect_human_labels": 1524,
+    "expect_ai_confirmed": 4,
+    "isolation_ok": true
+  }
+}

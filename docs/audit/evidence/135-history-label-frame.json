@@ -1,0 +1,152 @@
+{
+  "evidence_id": "135",
+  "generated_at": "2026-10-01T04:34:50.268462+00:00",
+  "head": "4b681d6",
+  "runtime_sec": 141.73,
+  "seed": "hist360_p1_2026-09-30",
+  "window_days": 360,
+  "min_text_length": 20,
+  "batches": {
+    "core": "hist360_p1_core_2026-09-30",
+    "overlap": "hist360_p1_overlap_2026-09-30"
+  },
+  "rows_inserted_this_run": 2750,
+  "conditioning": {
+    "hist_random": "360d AND length(text)>=20 only; not score; not disc_v6",
+    "hist_recall_probe": "buyer phrasing; cap 40/community",
+    "hist_community_spread": "round-robin by community_id",
+    "hist_negative_control": "buyer phrasing excluded; prefer non-demand templates",
+    "hist_overlap": "same window as hist_random; distinct seed; exclusive ids"
+  },
+  "negative_control_from_template": 200,
+  "exclusions": {
+    "wp2_freeze_message_ids": [
+      112,
+      189,
+      197,
+      203,
+      219,
+      256,
+      268,
+      278,
+      290,
+      294,
+      308,
+      367,
+      391,
+      397,
+      22878,
+      22884,
+      22895,
+      22896,
+      22914,
+      60277,
+      60597,
+      60620,
+      60628,
+      61451,
+      68030,
+      73917,
+      259428,
+      259465,
+      260888,
+      270504,
+      383479,
+      385572,
+      389386,
+      720957,
+      3595211,
+      4780480,
+      6725924,
+      7908373,
+      8556477,
+      8568013
+    ],
+    "wp2_freeze_n": 40,
+    "label_reviews_or_ai_attempts_or_nonsynthetic_consensus": 239,
+    "combined_with_wp2_freeze": 239
+  },
+  "strata_counts": {
+    "hist_random": 1200,
+    "hist_recall_probe": 600,
+    "hist_community_spread": 600,
+    "hist_negative_control": 200,
+    "hist_overlap": 150
+  },
+  "pre_registered_decision_rule": {
+    "reviewers": [
+      "human1",
+      "human2"
+    ],
+    "batches": [
+      "hist360_p1_core_2026-09-30",
+      "hist360_p1_overlap_2026-09-30"
+    ],
+    "genuine_positive": "HUMAN_REVIEWED_TRUE AND commercially_actionable is true, unanimous among human1/human2 rows present on that message",
+    "prevalence_denominator": "hist_random messages with at least one human1/human2 review",
+    "prevalence_interval": "Clopper-Pearson 95% two-sided",
+    "probe_yield": "genuine positives / reviewed hist_recall_probe",
+    "kappa": "Cohen kappa on paired human1/human2 labels",
+    "blocked_unless": {
+      "hist_random_reviewed_n>=": 1200,
+      "hist_recall_probe_reviewed_n>=": 600
+    },
+    "codes": {
+      "HISTORY_SOURCE_ABSENT": "both denominators meet the minimums AND genuine positives are 0 on hist_random AND on hist_recall_probe",
+      "HISTORY_HAS_DEMAND": "denominators meet the minimums AND hist_random Clopper-Pearson lower bound >= 0.005",
+      "HISTORY_DEMAND_SCARCE": "denominators meet the minimums AND the row is neither SOURCE_ABSENT nor HAS_DEMAND"
+    },
+    "zero_reviews": "BLOCKED_PENDING_HUMAN_REVIEW. Do not emit HISTORY_SOURCE_ABSENT or HISTORY_HAS_DEMAND from an empty review set.",
+    "ml_go_claim": false,
+    "not_training_authorization": true
+  },
+  "annotation_policy": "LeadScorer and evaluate_discovery results are in this manifest and 135-history-label-frame-samples.json only. They are not written to label_review_samples, message_scores, human_labels, or candidates.",
+  "annotation_rollup": {
+    "tier_by_stratum": {
+      "hist_random": {
+        "LOW": 1200
+      },
+      "hist_recall_probe": {
+        "LOW": 595,
+        "HIGH": 4,
+        "MEDIUM": 1
+      },
+      "hist_community_spread": {
+        "LOW": 598,
+        "HIGH": 2
+      },
+      "hist_negative_control": {
+        "LOW": 200
+      },
+      "hist_overlap": {
+        "LOW": 150
+      }
+    },
+    "disc_v6_eligible_by_stratum": {
+      "hist_recall_probe": 13
+    }
+  },
+  "isolation_before": {
+    "human_labels": 1524,
+    "ai_confirmed": 4,
+    "message_scores": 237832,
+    "messages": 8734263,
+    "candidates": 69,
+    "label_reviews": 677
+  },
+  "isolation_after": {
+    "human_labels": 1524,
+    "ai_confirmed": 4,
+    "message_scores": 237863,
+    "messages": 8734294,
+    "candidates": 69,
+    "label_reviews": 677
+  },
+  "human_labels_mutated": false,
+  "ml_go_claim": false,
+  "ml_training_enabled": false,
+  "path_b_path_c": "frozen",
+  "shadow": "off",
+  "observe_watch_rearmed": false,
+  "label_reviews_inserted": 0
+}

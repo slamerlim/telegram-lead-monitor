@@ -1,0 +1,19 @@
+Evidence 135 — history-first label frame
+generated_at=2026-10-01T04:34:50.268462+00:00 head=4b681d6 runtime_sec=141.73
+seed=hist360_p1_2026-09-30 window_days=360 min_text=20
+batches core=hist360_p1_core_2026-09-30 overlap=hist360_p1_overlap_2026-09-30
+inserted_this_run=2750
+strata:
+  hist_random=1200
+  hist_recall_probe=600
+  hist_community_spread=600
+  hist_negative_control=200
+  hist_overlap=150
+wp2_freeze_excluded=40
+exclusion_counts={"combined_with_wp2_freeze": 239, "label_reviews_or_ai_attempts_or_nonsynthetic_consensus": 239}
+isolation_before hl=1524 ac=4 scores=237832 candidates=69
+isolation_after hl=1524 ac=4 scores=237863 candidates=69
+decision_rule: prevalence on hist_random (Clopper-Pearson); HAS_DEMAND if lower>=0.005 after n_random>=1200 and n_probe>=600; SOURCE_ABSENT only if both genuine counts are 0 at those minimums; empty reviews stay BLOCKED.
+annotations=evidence only; human_labels_mutated=false; ml_go_claim=false
+labeling_status=not_started; training_blocked=true
+observe_watch_rearmed=false; path_b/path_c frozen; shadow off
