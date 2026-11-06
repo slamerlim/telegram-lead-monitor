@@ -6,9 +6,7 @@ Writes only via shared/commercial_ai/store.py — never LABEL_WRITE_TOKEN /valid
 from __future__ import annotations
 
 import asyncio
-import json
 import logging
-import os
 import uuid
 from pathlib import Path
 
@@ -34,7 +32,7 @@ from shared.commercial_ai.streams import COMMERCIAL_AI_GROUP, COMMERCIAL_AI_REVI
 from shared.db import SessionLocal
 from shared.logging import configure_logging
 from shared.models import LabelReviewSample, Lead, Message
-from shared.redis_bus import RedisBus
+from shared.redis_bus import RedisBus, RetryLater, consumer_name
 from shared.settings import get_settings
 from shared.validation.blind_input import BlindItem
 
@@ -106,17 +104,19 @@ async def _autopromotes_last_hour(session) -> int:
 async def process_payload(payload: dict, backend) -> None:
     settings = get_settings()
     if not settings.commercial_ai_enabled:
-        return
+        raise RetryLater("commercial AI disabled")
     lead_id = int(payload["lead_id"])
     message_id = int(payload["message_id"])
     expected_sha = payload.get("text_sha256")
 
     async with SessionLocal() as session:
-        lead = await session.get(Lead, lead_id)
+        lead = await session.get(Lead, lead_id, with_for_update=True)
         message = await session.get(Message, message_id)
         if not lead or not message:
             logger.warning("commercial_ai skip missing lead/message %s/%s", lead_id, message_id)
             return
+        if lead.message_id != message.id:
+            raise ValueError("review payload does not match the lead's canonical message")
         if (lead.status or "").upper() not in {"NEW", "REVIEWED"}:
             return
         if (lead.tier or "").upper() == "LOW":
@@ -139,7 +139,12 @@ async def process_payload(payload: dict, backend) -> None:
         max_rev = int(settings.commercial_ai_max_reviews_per_hour or 0)
         if max_rev > 0 and await _reviews_last_hour(session) >= max_rev:
             logger.warning("commercial_ai rate-limit reviews/hour lead_id=%s", lead_id)
-            return
+            raise RetryLater("commercial review capacity")
+
+        max_ap = int(settings.commercial_ai_max_autopromotions_per_hour or 0)
+        if settings.commercial_ai_auto_promote and max_ap > 0:
+            if await _autopromotes_last_hour(session) >= max_ap:
+                raise RetryLater("commercial promotion capacity")
 
         cfg_path = Path(settings.commercial_ai_reviewers_config)
         if not cfg_path.exists():
@@ -164,6 +169,10 @@ async def process_payload(payload: dict, backend) -> None:
             result = await asyncio.to_thread(
                 backend.validate, model=str(slot["model"]), prompt=prompt
             )
+            if result.status != "ok":
+                # Infrastructure errors must not become a permanent AI_UNCERTAIN
+                # decision that makes already_decided() suppress future retries.
+                raise RuntimeError(f"commercial validator returned {result.status}")
             await record_opinion(
                 session,
                 run_id=run_id,
@@ -196,8 +205,7 @@ async def process_payload(payload: dict, backend) -> None:
         if auto_promote:
             max_ap = int(settings.commercial_ai_max_autopromotions_per_hour or 0)
             if max_ap > 0 and await _autopromotes_last_hour(session) >= max_ap:
-                logger.warning("commercial_ai rate-limit autopromote/hour → shadow lead_id=%s", lead_id)
-                auto_promote = False
+                raise RetryLater("commercial promotion capacity")
 
         decision = decide_commercial(
             opinions,
@@ -258,7 +266,7 @@ async def run_forever() -> None:
         logger.warning("COMMERCIAL_AI_ENABLED=false — worker idle")
     backend = _backend()
     bus = RedisBus(settings.redis_url)
-    consumer = f"cai-{os.getpid()}"
+    consumer = consumer_name("cai")
     logger.info(
         "commercial_ai worker starting group=%s backend=%s auto_promote=%s",
         COMMERCIAL_AI_GROUP,
@@ -277,19 +285,16 @@ async def run_forever() -> None:
                 COMMERCIAL_AI_GROUP,
                 consumer,
                 block_ms=5000,
-                count=5,
+                count=1,
             )
             if not rows:
                 continue
             for _stream, messages in rows:
                 for msg_id, fields in messages:
-                    try:
-                        payload = json.loads(fields.get("payload") or "{}")
-                        await process_payload(payload, backend)
-                        await bus.ack(COMMERCIAL_AI_REVIEW_STREAM, COMMERCIAL_AI_GROUP, msg_id)
-                    except Exception:
-                        logger.exception("commercial_ai process failed id=%s", msg_id)
-                        # leave pending for retry / XAUTOCLAIM
+                    await bus.handle(
+                        COMMERCIAL_AI_REVIEW_STREAM, COMMERCIAL_AI_GROUP, consumer,
+                        msg_id, fields, lambda payload: process_payload(payload, backend),
+                    )
         except Exception:
             logger.exception("commercial_ai loop error")
             await asyncio.sleep(2)

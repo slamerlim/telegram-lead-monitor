@@ -8,9 +8,6 @@ from __future__ import annotations
 import asyncio
 import json
 import logging
-import os
-from datetime import datetime, timezone
-from pathlib import Path
 
 from sqlalchemy import select
 
@@ -18,7 +15,6 @@ from services.analyzer.app.scoring import LeadScorer
 from shared.commercial_ai.context import build_commercial_context
 from shared.commercial_ai.discovery import DISCOVERY_VERSION, episode_key
 from shared.commercial_ai.streams import (
-    COMMERCIAL_DISCOVERY_DLQ,
     COMMERCIAL_DISCOVERY_GROUP,
     COMMERCIAL_DISCOVERY_STREAM,
     COMMERCIAL_EPISODE_SHADOW_STREAM,
@@ -32,17 +28,17 @@ from shared.models import (
     Lead,
     Message,
 )
-from shared.redis_bus import RedisBus
+from shared.redis_bus import RedisBus, RetryLater, consumer_name
+from shared.outbox import enqueue
 from shared.settings import get_settings
 
 logger = logging.getLogger("commercial_discovery")
-MAX_DELIVERY = 5
 
 
 async def process_discovery(payload: dict, scorer: LeadScorer, bus: RedisBus) -> None:
     settings = get_settings()
     if not settings.commercial_discovery_enabled and not settings.commercial_episode_shadow_enabled:
-        return
+        raise RetryLater("commercial discovery disabled")
 
     seed_id = int(payload["seed_message_id"])
     async with SessionLocal() as session:
@@ -147,9 +143,9 @@ async def process_discovery(payload: dict, scorer: LeadScorer, bus: RedisBus) ->
         cand.context_hash = ctx_b.context_hash
         cand.context_version = ctx_b.context_version
         cand.status = "EPISODE_BUILT"
-        await session.commit()
 
         if not settings.commercial_episode_shadow_enabled:
+            await session.commit()
             return
 
         for arm, include_related in (("A", False), ("B", True)):
@@ -161,10 +157,11 @@ async def process_discovery(payload: dict, scorer: LeadScorer, bus: RedisBus) ->
                 "context_version": ctx_b.context_version,
                 "trigger": "discovery_worker",
             }
-            try:
-                await bus.publish(COMMERCIAL_EPISODE_SHADOW_STREAM, shadow_payload, maxlen=10_000)
-            except Exception as exc:
-                logger.warning("shadow_enqueue_failed arm=%s err=%s", arm, exc)
+            await enqueue(
+                session, COMMERCIAL_EPISODE_SHADOW_STREAM, shadow_payload,
+                key=f"episode-shadow:{episode.id}:{ctx_b.context_hash}:{arm}",
+            )
+        await session.commit()
 
 
 async def main() -> None:
@@ -172,8 +169,7 @@ async def main() -> None:
     configure_logging(settings.log_level)
     bus = RedisBus(settings.redis_url)
     scorer = LeadScorer(settings.scoring_config)
-    consumer = f"disc-{os.getpid()}"
-    deliveries: dict[str, int] = {}
+    consumer = consumer_name("disc")
 
     if not settings.commercial_discovery_enabled:
         logger.warning("COMMERCIAL_DISCOVERY_ENABLED=false — worker idle")
@@ -196,34 +192,16 @@ async def main() -> None:
             COMMERCIAL_DISCOVERY_GROUP,
             consumer,
             block_ms=5000,
-            count=5,
+            count=1,
         )
         if not rows:
             continue
         for _stream, messages in rows:
             for msg_id, fields in messages:
-                try:
-                    payload = json.loads(fields.get("payload") or "{}")
-                    await process_discovery(payload, scorer, bus)
-                    await bus.ack(COMMERCIAL_DISCOVERY_STREAM, COMMERCIAL_DISCOVERY_GROUP, msg_id)
-                    deliveries.pop(msg_id, None)
-                except Exception as exc:
-                    n = deliveries.get(msg_id, 0) + 1
-                    deliveries[msg_id] = n
-                    logger.exception("discovery_process_failed id=%s n=%s err=%s", msg_id, n, exc)
-                    if n >= MAX_DELIVERY:
-                        try:
-                            await bus.publish(
-                                COMMERCIAL_DISCOVERY_DLQ,
-                                {"orig_id": msg_id, "error": str(exc), "fields": fields},
-                                maxlen=5_000,
-                            )
-                            await bus.ack(
-                                COMMERCIAL_DISCOVERY_STREAM, COMMERCIAL_DISCOVERY_GROUP, msg_id
-                            )
-                        except Exception:
-                            logger.exception("discovery_dlq_failed")
-                        deliveries.pop(msg_id, None)
+                await bus.handle(
+                    COMMERCIAL_DISCOVERY_STREAM, COMMERCIAL_DISCOVERY_GROUP, consumer,
+                    msg_id, fields, lambda payload: process_discovery(payload, scorer, bus),
+                )
 
 
 if __name__ == "__main__":

@@ -494,3 +494,20 @@ class ScanRun(Base):
     messages_seen: Mapped[int] = mapped_column(Integer, default=0)
     messages_published: Mapped[int] = mapped_column(Integer, default=0)
     error: Mapped[str | None] = mapped_column(Text, nullable=True)
+
+
+class DispatchOutbox(Base):
+    """Durable stream publications committed with their source database changes."""
+
+    __tablename__ = "dispatch_outbox"
+    __table_args__ = (Index("ix_outbox_due", "published_at", "available_at", "id"),)
+
+    id: Mapped[int] = mapped_column(BigInteger, primary_key=True, autoincrement=True)
+    event_key: Mapped[str] = mapped_column(String(255), unique=True)
+    stream: Mapped[str] = mapped_column(String(128))
+    payload: Mapped[str] = mapped_column(Text)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=datetime.utcnow)
+    available_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=datetime.utcnow)
+    published_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    attempts: Mapped[int] = mapped_column(Integer, default=0)
+    last_error: Mapped[str | None] = mapped_column(String(128), nullable=True)

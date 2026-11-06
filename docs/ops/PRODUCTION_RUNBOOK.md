@@ -1,5 +1,7 @@
 # Production Runbook — telegram-lead-monitor
 
+**Current deployment (owner instruction, 6 November 2026): native services, no Docker.** Use [NATIVE_PRODUCTION_RUNBOOK.md](NATIVE_PRODUCTION_RUNBOOK.md). The Compose instructions below document the retired deployment; do not recreate it.
+
 Host: Ubuntu Compose stack at `/home/slamer-lim/telegram-lead-monitor`  
 API: `127.0.0.1:8010`  
 Services: `api`, `collector`, `analyzer`, `scheduler`, `postgres`, `redis`

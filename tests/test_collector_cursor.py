@@ -72,7 +72,7 @@ async def test_scan_community_advances_cursor_monotonically():
     )
 
     class _Session:
-        async def get(self, _model, _id):
+        async def get(self, _model, _id, **_kwargs):
             return community_row
 
         async def commit(self):

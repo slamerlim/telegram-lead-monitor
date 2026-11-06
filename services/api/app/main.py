@@ -35,6 +35,7 @@ from shared.models import (
     ScanRun,
 )
 from shared.opportunity import opportunity_key as make_opportunity_key
+from shared.outbox import enqueue
 from shared.redis_bus import RedisBus, SCAN_STREAM
 from shared.settings import get_settings
 from services.api.app.schemas import (
@@ -371,13 +372,12 @@ async def request_scan(
 
     run = ScanRun(community_id=community_id, days=days, status="queued")
     session.add(run)
+    await session.flush()
+    await enqueue(session, SCAN_STREAM,
+                  {"run_id": run.id, "community_id": community_id, "days": days},
+                  key=f"scan:{run.id}")
     await session.commit()
     await session.refresh(run)
-    bus = RedisBus(settings.redis_url)
-    try:
-        await bus.publish(SCAN_STREAM, {"run_id": run.id, "community_id": community_id, "days": days})
-    finally:
-        await bus.close()
     return ScanOut(run_id=run.id, status=run.status, communities=count, days=days)
 
 

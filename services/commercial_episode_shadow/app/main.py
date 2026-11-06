@@ -3,9 +3,7 @@
 from __future__ import annotations
 
 import asyncio
-import json
 import logging
-import os
 import time
 import uuid
 from pathlib import Path
@@ -31,19 +29,17 @@ from shared.commercial_ai.store import (
     text_sha256,
 )
 from shared.commercial_ai.streams import (
-    COMMERCIAL_EPISODE_SHADOW_DLQ,
     COMMERCIAL_EPISODE_SHADOW_GROUP,
     COMMERCIAL_EPISODE_SHADOW_STREAM,
 )
 from shared.db import SessionLocal
 from shared.logging import configure_logging
 from shared.models import CommercialAIReview, LabelReviewSample, Lead, Message
-from shared.redis_bus import RedisBus
+from shared.redis_bus import RedisBus, RetryLater, consumer_name
 from shared.settings import get_settings
 from shared.validation.blind_input import BlindItem
 
 logger = logging.getLogger("commercial_episode_shadow")
-MAX_DELIVERY = 5
 
 
 def _load_roster(path: Path) -> list[dict]:
@@ -88,7 +84,7 @@ async def _episode_reviews_last_hour(session) -> int:
 async def process_shadow(payload: dict, backend, scorer: LeadScorer) -> None:
     settings = get_settings()
     if not settings.commercial_episode_shadow_enabled:
-        return
+        raise RetryLater("episode review disabled")
 
     seed_id = int(payload["seed_message_id"])
     arm = str(payload.get("experiment_arm") or "A").upper()
@@ -112,7 +108,7 @@ async def process_shadow(payload: dict, backend, scorer: LeadScorer) -> None:
         max_rev = int(settings.commercial_episode_max_reviews_per_hour or 0)
         if max_rev > 0 and await _episode_reviews_last_hour(session) >= max_rev:
             logger.warning("episode_shadow rate-limit seed=%s", seed_id)
-            return
+            raise RetryLater("episode review capacity")
 
         ctx = await build_commercial_context(
             session,
@@ -277,8 +273,7 @@ async def main() -> None:
     bus = RedisBus(settings.redis_url)
     backend = _backend()
     scorer = LeadScorer(settings.scoring_config)
-    consumer = f"cep-{os.getpid()}"
-    deliveries: dict[str, int] = {}
+    consumer = consumer_name("cep")
 
     if not settings.commercial_episode_shadow_enabled:
         logger.warning("COMMERCIAL_EPISODE_SHADOW_ENABLED=false — worker idle")
@@ -304,35 +299,16 @@ async def main() -> None:
             COMMERCIAL_EPISODE_SHADOW_GROUP,
             consumer,
             block_ms=5000,
-            count=3,
+            count=1,
         )
         if not rows:
             continue
         for _stream, messages in rows:
             for msg_id, fields in messages:
-                try:
-                    payload = json.loads(fields.get("payload") or "{}")
-                    await process_shadow(payload, backend, scorer)
-                    await bus.ack(
-                        COMMERCIAL_EPISODE_SHADOW_STREAM, COMMERCIAL_EPISODE_SHADOW_GROUP, msg_id
-                    )
-                    deliveries.pop(msg_id, None)
-                except Exception as exc:
-                    n = deliveries.get(msg_id, 0) + 1
-                    deliveries[msg_id] = n
-                    logger.exception("shadow_failed id=%s n=%s", msg_id, n)
-                    if n >= MAX_DELIVERY:
-                        await bus.publish(
-                            COMMERCIAL_EPISODE_SHADOW_DLQ,
-                            {"orig_id": msg_id, "error": str(exc)},
-                            maxlen=5_000,
-                        )
-                        await bus.ack(
-                            COMMERCIAL_EPISODE_SHADOW_STREAM,
-                            COMMERCIAL_EPISODE_SHADOW_GROUP,
-                            msg_id,
-                        )
-                        deliveries.pop(msg_id, None)
+                await bus.handle(
+                    COMMERCIAL_EPISODE_SHADOW_STREAM, COMMERCIAL_EPISODE_SHADOW_GROUP, consumer,
+                    msg_id, fields, lambda payload: process_shadow(payload, backend, scorer),
+                )
 
 
 if __name__ == "__main__":

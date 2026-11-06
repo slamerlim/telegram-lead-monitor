@@ -1,5 +1,7 @@
 # Telegram Lead Monitor
 
+Production now uses native Ubuntu PostgreSQL, Redis, and systemd user services, following the owner's 6 November 2026 instruction to rebuild without Docker. Start with the [native runbook](docs/ops/NATIVE_PRODUCTION_RUNBOOK.md). Compose instructions below describe the former deployment.
+
 Self-hosted FastAPI microservice system for discovering potential customers for trading-bot, algorithmic-trading, exchange-API, execution, arbitrage, copy-trading, Solana/DEX and quantitative-development services.
 
 ## Architecture

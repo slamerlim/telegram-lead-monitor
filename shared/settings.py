@@ -1,6 +1,7 @@
 from functools import lru_cache
 from pathlib import Path
 
+from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -12,13 +13,13 @@ class Settings(BaseSettings):
     postgres_port: int = 5432
     postgres_db: str = "telegram_leads"
     postgres_user: str = "telegram_leads"
-    postgres_password: str = "change-me"
+    postgres_password: str = Field(default="change-me", repr=False)
 
     redis_url: str = "redis://redis:6379/0"
 
     telegram_api_id: int
-    telegram_api_hash: str
-    telegram_phone: str
+    telegram_api_hash: str = Field(repr=False)
+    telegram_phone: str = Field(repr=False)
     telegram_session_path: str = "/data/telegram/telegram_lead_monitor.session"
 
     collector_concurrency: int = 3
@@ -27,6 +28,10 @@ class Settings(BaseSettings):
     scan_default_days: int = 30
     scheduler_interval_seconds: int = 900
     scheduler_scan_days: int = 2
+    storage_data_path: str = "."
+    storage_min_free_gb: float = 10.0
+    storage_max_database_gb: float = 8.0
+    redis_intake_max_memory_mb: float = 384.0
 
     semantic_enabled: bool = False
     semantic_model: str = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
@@ -37,15 +42,15 @@ class Settings(BaseSettings):
     independent_human_reviewer_ids: str = ""
     # id:token pairs required for independent queue/write when non-empty.
     # Format: alice:secret1,bob:secret2
-    independent_human_reviewer_tokens: str = ""
+    independent_human_reviewer_tokens: str = Field(default="", repr=False)
     # HMAC secret for queue attestations that bind blind mode to POST /labels/reviews.
     # Empty => independence gate never opens (blind flags cannot be server-proven).
-    independent_review_hmac_secret: str = ""
+    independent_review_hmac_secret: str = Field(default="", repr=False)
     # Comma-separated labeled_by values that count toward M1/positive gates.
     # Empty (default) => those gates never open (client cannot inflate via arbitrary labeled_by).
     human_label_reviewer_ids: str = ""
     # Optional shared secret for POST /labels. Empty => writes allowed without header.
-    label_write_token: str = ""
+    label_write_token: str = Field(default="", repr=False)
     # When true, only review UI + independent-review endpoints + health are reachable.
     # Enable during human blind-review sessions to reduce same-origin scorer/search leaks.
     review_ui_lockdown: bool = False
@@ -77,15 +82,15 @@ class Settings(BaseSettings):
     # --- Cursor-only AI validation (no third-party LLM APIs) ---
     ai_validators_config: str = "/app/config/ai_validators.yaml"
     ai_validator_ids: str = ""
-    ai_validator_tokens: str = ""
-    ai_validation_queue_hmac_secret: str = ""
-    ai_validation_row_secret: str = ""
+    ai_validator_tokens: str = Field(default="", repr=False)
+    ai_validation_queue_hmac_secret: str = Field(default="", repr=False)
+    ai_validation_row_secret: str = Field(default="", repr=False)
     ai_validation_require_distinct_families: bool = True
     ai_validation_gate_min_messages: int = 100
     ai_validation_gate_min_true: int = 30
-    cursor_api_key: str = ""  # orchestrator only; never required for API
+    cursor_api_key: str = Field(default="", repr=False)  # never required for API
 
-    model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8", extra="ignore")
+    model_config = SettingsConfigDict(env_file=(".env", ".env.validation"), env_file_encoding="utf-8", extra="ignore", hide_input_in_errors=True)
 
     @property
     def database_url(self) -> str:

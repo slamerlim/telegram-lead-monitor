@@ -4,7 +4,7 @@
 
 1. End every substantive turn with a **Turn Report** (see `.cursor/rules/end-of-turn-report.mdc`).
 2. On implement/ship/finish/`commit-and-push`: **commit → push → deploy → runtime verify** on this host (see `.cursor/rules/push-deploy-verify.mdc`).
-3. Work on the Ubuntu production host Docker/Postgres; do not substitute a Cloud Agent VM for live data.
+3. Work on this Ubuntu production host using native PostgreSQL, Redis, and systemd user services. The owner authorized a fresh database without Docker on 2026-11-06 after deleting the old Docker deployment. Do not substitute a Cloud Agent VM or an old backup for live data.
 
 ## Never
 

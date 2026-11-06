@@ -1,7 +1,5 @@
 import asyncio
 import hashlib
-import json
-import os
 import time
 from datetime import datetime, timedelta, timezone
 
@@ -17,7 +15,10 @@ from shared.events import MessageEvent
 from shared.lead_write import upsert_opportunity_lead
 from shared.logging import configure_logging
 from shared.models import Author, CommercialDiscoveryCandidate, Community, Message
-from shared.redis_bus import COMMERCIAL_AI_REVIEW_STREAM, MESSAGES_STREAM, RedisBus
+from shared.outbox import enqueue
+from shared.redis_bus import COMMERCIAL_AI_REVIEW_STREAM, MESSAGES_STREAM, RedisBus, consumer_name
+from shared.commercial_ai.prompts import PROMPT_VERSION
+from shared.commercial_ai.policy import POLICY_VERSION
 from shared.score_persist import persist_message_score
 from shared.settings import get_settings
 
@@ -45,7 +46,7 @@ class Analyzer:
         await self.bus.close()
 
     async def run_forever(self) -> None:
-        consumer = f"analyzer-{os.getpid()}"
+        consumer = consumer_name("analyzer")
         log.info("analyzer_started", consumer=consumer, semantic_enabled=settings.semantic_enabled)
         while True:
             entries = await self.bus.consume(
@@ -53,39 +54,28 @@ class Analyzer:
                 "analyzer-workers",
                 consumer,
                 block_ms=5000,
-                count=50,
+                count=1,
             )
             if not entries:
                 continue
             for _stream, messages in entries:
                 for redis_message_id, fields in messages:
-                    try:
-                        event = MessageEvent.model_validate(json.loads(fields["payload"]))
-                        result = await self.process(event)
-                        self.processed += 1
-                        if result.tier == "HIGH":
-                            self.high += 1
-                        elif result.tier == "MEDIUM":
-                            self.medium += 1
-                        if self.processed % 250 == 0:
-                            elapsed = max(time.monotonic() - self.started_at, 0.001)
-                            log.info(
-                                "analyzer_progress",
-                                processed=self.processed,
-                                high=self.high,
-                                medium=self.medium,
-                                errors=self.errors,
-                                messages_per_second=round(self.processed / elapsed, 2),
-                            )
-                        await self.bus.ack(
-                            MESSAGES_STREAM,
-                            "analyzer-workers",
-                            redis_message_id,
-                        )
-                    except Exception as exc:
+                    if not await self.bus.handle(
+                        MESSAGES_STREAM, "analyzer-workers", consumer,
+                        redis_message_id, fields, self.process_payload,
+                    ):
                         self.errors += 1
-                        log.exception("message_analysis_failed", error=str(exc))
-                        # Do not ACK: leave the entry pending for retry/inspection.
+
+    async def process_payload(self, payload: dict) -> None:
+        result = await self.process(MessageEvent.model_validate(payload))
+        self.processed += 1
+        self.high += result.tier == "HIGH"
+        self.medium += result.tier == "MEDIUM"
+        if self.processed % 250 == 0:
+            elapsed = max(time.monotonic() - self.started_at, 0.001)
+            log.info("analyzer_progress", processed=self.processed, high=self.high,
+                     medium=self.medium, errors=self.errors,
+                     messages_per_second=round(self.processed / elapsed, 2))
 
     async def process(self, event: MessageEvent):
         async with SessionLocal() as db:
@@ -245,42 +235,28 @@ class Analyzer:
                             "topic_fingerprint": feats.topic_fingerprint,
                         }
 
-            await db.commit()
             if discovery_payload is not None:
-                try:
-                    await self.bus.publish(
-                        COMMERCIAL_DISCOVERY_STREAM,
-                        discovery_payload,
-                        maxlen=10_000,
-                    )
-                except Exception as exc:
-                    log.warning(
-                        "commercial_discovery_publish_failed",
-                        error=str(exc),
-                        seed_message_id=discovery_payload.get("seed_message_id"),
-                    )
+                await enqueue(
+                    db, COMMERCIAL_DISCOVERY_STREAM, discovery_payload,
+                    key=f"discovery:{message.id}:{discovery_payload['discovery_version']}",
+                )
             if (
                 settings.commercial_ai_enabled
                 and lead is not None
-                and action in {"created", "updated", "deduped_updated"}
                 and result.tier != "LOW"
                 and (lead.status or "NEW").upper() == "NEW"
             ):
-                try:
-                    await self.bus.publish(
-                        COMMERCIAL_AI_REVIEW_STREAM,
-                        {
-                            "lead_id": lead.id,
-                            "message_id": message.id,
-                            "text_sha256": hashlib.sha256(
-                                (message.text or "").encode("utf-8")
-                            ).hexdigest(),
-                            "trigger": "analyzer_upsert",
-                        },
-                        maxlen=10_000,
+                # Deduplication can retain another message as the canonical lead.
+                canonical = message if lead.message_id == message.id else await db.get(Message, lead.message_id)
+                if canonical is not None:
+                    digest = hashlib.sha256((canonical.text or "").encode()).hexdigest()
+                    await enqueue(
+                        db, COMMERCIAL_AI_REVIEW_STREAM,
+                        {"lead_id": lead.id, "message_id": canonical.id,
+                         "text_sha256": digest, "trigger": "analyzer_upsert"},
+                        key=f"review:{lead.id}:{digest}:{PROMPT_VERSION}:{POLICY_VERSION}",
                     )
-                except Exception as exc:
-                    log.warning("commercial_ai_publish_failed", error=str(exc), lead_id=lead.id)
+            await db.commit()
             if action in {"deduped_skipped", "deduped_updated"}:
                 log.info(
                     "opportunity_deduped",

@@ -1,6 +1,4 @@
 import asyncio
-import json
-import os
 from datetime import datetime, timedelta, timezone
 
 import structlog
@@ -13,8 +11,9 @@ from shared.db import SessionLocal
 from shared.events import MessageEvent
 from shared.logging import configure_logging
 from shared.models import Community, ScanRun
-from shared.redis_bus import MESSAGES_STREAM, RedisBus, SCAN_STREAM
+from shared.redis_bus import MESSAGES_STREAM, RedisBus, SCAN_STREAM, consumer_name
 from shared.settings import get_settings
+from shared.capacity import ensure_capacity
 
 settings = get_settings()
 configure_logging(settings.log_level)
@@ -69,28 +68,11 @@ class Collector:
             )
             return
 
-        # Only reach this branch when the session genuinely has no
-        # valid Telegram authorization.
-        await self.client.start(phone=settings.telegram_phone)
-
-        if not await self.client.is_user_authorized():
-            raise RuntimeError("Telegram authentication failed")
-
-        import structlog
-
-        me = await self.client.get_me()
-        if not await self.client.is_user_authorized():
-            raise RuntimeError("Telegram authentication failed")
-
-        log.info(
-            "telegram_authenticated",
-            user_id=getattr(me, "id", None),
-            username=getattr(me, "username", None),
-        )
+        raise RuntimeError("Telegram login required: run .venv/bin/python scripts/telegram_login.py")
 
     async def run_forever(self) -> None:
         await self.ensure_login()
-        consumer = f"collector-{os.getpid()}"
+        consumer = consumer_name("collector")
         log.info("collector_started", consumer=consumer)
         while True:
             entries = await self.bus.consume(
@@ -98,23 +80,16 @@ class Collector:
                 "collector-workers",
                 consumer,
                 block_ms=5000,
-                count=5,
+                count=1,
             )
             if not entries:
                 continue
             for _stream, messages in entries:
                 for redis_message_id, fields in messages:
-                    try:
-                        payload = json.loads(fields["payload"])
-                        await self.execute_scan(payload)
-                        await self.bus.ack(
-                            SCAN_STREAM,
-                            "collector-workers",
-                            redis_message_id,
-                        )
-                    except Exception as exc:
-                        log.exception("scan_failed", error=str(exc))
-                        # Do not ACK failed scans so they can be retried/inspected.
+                    await self.bus.handle(
+                        SCAN_STREAM, "collector-workers", consumer,
+                        redis_message_id, fields, self.execute_scan,
+                    )
 
     async def execute_scan(self, payload: dict) -> None:
         run_id = int(payload["run_id"])
@@ -123,9 +98,12 @@ class Collector:
         since = datetime.now(timezone.utc) - timedelta(days=days)
 
         async with SessionLocal() as db:
+            await ensure_capacity(db, self.bus.redis)
             run = await db.get(ScanRun, run_id)
             if not run:
                 log.warning("scan_run_missing", run_id=run_id)
+                return
+            if run.status in {"completed", "completed_with_errors"}:
                 return
             run.status = "running"
             run.started_at = datetime.now(timezone.utc)
@@ -144,7 +122,7 @@ class Collector:
             for community in communities:
                 try:
                     # Bound each community so one hung Telethon call cannot stall the run.
-                    # On timeout/failure the prior Community.last_message_id is kept.
+                    # Completed pages keep their contiguous cursor; a partial page is replayed.
                     seen, published = await asyncio.wait_for(
                         self.scan_community(
                             community.id,
@@ -271,6 +249,8 @@ class Collector:
             latest_message_id = max(latest_message_id or 0, int(message.id))
             text = message.message or ""
             if not text.strip():
+                if seen % max(1, settings.collector_batch_size) == 0:
+                    await self._checkpoint_cursor(community_id, latest_message_id)
                 continue
             sender = None
             if message.sender_id:
@@ -307,31 +287,48 @@ class Collector:
             )
             await self.bus.publish(MESSAGES_STREAM, event.model_dump(mode="json"))
             published += 1
+            if seen % max(1, settings.collector_batch_size) == 0:
+                await self._checkpoint_cursor(community_id, latest_message_id)
 
-        # Advance cursor only after a fully successful iteration. Failures/timeouts
-        # leave the previous last_message_id untouched.
-        async with SessionLocal() as db:
-            row = await db.get(Community, community_id)
-            if row and latest_message_id is not None:
-                row.last_message_id = max(int(row.last_message_id or 0), latest_message_id)
-                await db.commit()
+        if latest_message_id is not None:
+            await self._checkpoint_cursor(community_id, latest_message_id)
         return seen, published
+
+    async def _checkpoint_cursor(self, community_id: int, message_id: int) -> None:
+        # History is traversed oldest-first. Every earlier message has already been
+        # published (or was empty), so a completed page is safe to checkpoint.
+        async with SessionLocal() as db:
+            row = await db.get(Community, community_id, with_for_update=True)
+            if row:
+                row.last_message_id = max(int(row.last_message_id or 0), message_id)
+                await db.commit()
 
     async def _iter_messages(self, entity: object, since: datetime, min_id: int = 0):
         waits = 0
+        cursor = min_id
+        page_size = max(1, settings.collector_batch_size)
         while True:
             try:
+                count = 0
+                # reverse=True makes offset_date a lower bound. Use it only on
+                # the initial scan. An existing cursor must drain ALL newer work,
+                # even after an outage longer than scheduler_scan_days.
+                offsets = {"offset_date": since} if cursor == 0 else {}
                 async for message in self.client.iter_messages(
                     entity,
-                    offset_date=datetime.now(timezone.utc),
-                    min_id=min_id,
-                    limit=settings.collector_batch_size,
+                    min_id=cursor,
+                    limit=page_size,
+                    reverse=True,
+                    **offsets,
                 ):
-                    msg_date = message.date if message.date.tzinfo else message.date.replace(tzinfo=timezone.utc)
-                    if msg_date < since:
-                        break
+                    if int(message.id) <= cursor:
+                        raise RuntimeError("Telegram history did not advance in ascending order")
                     yield message
-                break
+                    cursor = int(message.id)
+                    count += 1
+                if count < page_size:
+                    break
+                waits = 0
             except FloodWaitError as exc:
                 waits += 1
                 if waits > 5:

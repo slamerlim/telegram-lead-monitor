@@ -16,8 +16,10 @@ os.environ.setdefault(
 
 # Clear cached settings if something imported Settings earlier.
 try:
-    from shared.settings import get_settings
+    from shared.settings import Settings, get_settings
 
+    # Unit tests must never read production credentials or enabled feature flags.
+    Settings.model_config["env_file"] = None
     get_settings.cache_clear()
 except Exception:
     pass
