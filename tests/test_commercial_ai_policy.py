@@ -9,6 +9,8 @@ from shared.commercial_ai.policy import (
     DECISION_UNCERTAIN,
     OpinionView,
     decide_commercial,
+    opinion_from_payload,
+    grounded_commercial_evidence,
 )
 
 
@@ -94,3 +96,35 @@ def test_shadow_mode_label():
     ]
     d = decide_commercial(ops, auto_promote=False)
     assert d.decision == "SHADOW_CONFIRMED"
+
+
+def test_skeptical_rejection_does_not_become_confirmation_from_topic_match():
+    op = opinion_from_payload(mode="B", status="ok", synthetic=False, model_family="openai",
+        payload={"is_commercial_opportunity": False, "matches_objectives": True,
+                 "confidence": .95, "lead_type": "BOT_PURCHASE", "uncertain": False})
+    assert not op.commercial
+
+
+def test_two_votes_from_same_family_are_not_independent_confirmation():
+    decision = decide_commercial([_op("A", commercial=True), _op("B", commercial=True)])
+    assert decision.decision == DECISION_CANDIDATE
+    assert decision.reason_code == "insufficient_confirming_families"
+
+
+def test_positive_evidence_must_be_present_in_original_request():
+    payload = {"is_commercial_opportunity": True, "buyer_action": "COMMISSION", "evidence": ["Budget $3000"]}
+    assert grounded_commercial_evidence(payload, "Can someone build a trading bot? Budget $3000") == (True, None)
+    assert not grounded_commercial_evidence(payload, "Can someone teach me trading?")[0]
+    assert not grounded_commercial_evidence({**payload, "evidence": []}, "Budget $3000")[0]
+
+
+def test_missing_type_and_nonfinite_confidence_cannot_confirm():
+    for value in (None, float('nan'), float('inf'), '0.99', True, 2):
+        op = opinion_from_payload(mode="A", status="ok", synthetic=False, model_family="openai",
+            payload={"is_commercial_opportunity": True, "matches_objectives": True,
+                     "confidence": value, "lead_type": "BOT_PURCHASE", "uncertain": False})
+        assert not op.commercial and op.uncertain
+    op = opinion_from_payload(mode="B", status="ok", synthetic=False, model_family="openai",
+        payload={"is_commercial_opportunity": True, "matches_objectives": True,
+                 "confidence": .99, "lead_type": None, "uncertain": False})
+    assert not op.commercial

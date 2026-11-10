@@ -105,6 +105,23 @@ def main():
         private_write(marker, "native Ubuntu user services\n")
     current = dotenv_values(envfile)
 
+    # The owner explicitly requested Telegram alerts. Default to Saved Messages;
+    # an existing chosen destination is preserved on every redeploy.
+    for key, value in {"OWNER_NOTIFICATIONS_ENABLED": "true", "OWNER_TELEGRAM_TARGET": "me",
+                       "HOT_LEAD_MAX_AGE_HOURS": "48"}.items():
+        if key not in current:
+            set_key(str(envfile), key, value, quote_mode="always")
+    operators = {v.strip() for v in (current.get("COMMERCIAL_OPERATOR_IDS") or "").split(",") if v.strip()}
+    operators.add("owner")
+    set_key(str(envfile), "COMMERCIAL_OPERATOR_IDS", ",".join(sorted(operators)), quote_mode="always")
+    set_key(str(envfile), "COMMERCIAL_OPS_ENABLED", "true", quote_mode="always")
+    if not current.get("LABEL_WRITE_TOKEN"):
+        set_key(str(envfile), "LABEL_WRITE_TOKEN", secrets.token_hex(32), quote_mode="always")
+    envfile.chmod(0o600)
+
+    if current.get("COMMERCIAL_DISCOVERY_VERSION") in (None, "disc_v6"):
+        set_key(str(envfile), "COMMERCIAL_DISCOVERY_VERSION", "disc_v7", quote_mode="always")
+
     validation = ROOT / ".env.validation"
     if validation.exists():
         set_key(str(validation), "AI_VALIDATORS_CONFIG", str(ROOT / "config/ai_validators.yaml"), quote_mode="always")

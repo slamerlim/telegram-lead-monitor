@@ -4,8 +4,9 @@ from __future__ import annotations
 
 from shared.validation.blind_input import BlindItem
 from shared.validation.definition import objectives_text
+from shared.commercial_scope import COMMERCIAL_SCOPE_TEXT
 
-PROMPT_VERSION = "commercial_ai_v1"
+PROMPT_VERSION = "commercial_ai_v2"
 
 _LEAD_TYPES = (
     "BOT_PURCHASE|BOT_REPAIR|BOT_CUSTOMIZATION|STRATEGY_IMPLEMENTATION|"
@@ -58,6 +59,7 @@ def build_commercial_mode_prompt(
         f"Prompt version: {PROMPT_VERSION}\n"
         f"Role: {role}\n\n"
         f"Commercial objectives:\n{objectives}\n"
+        f"Scope and buyer attribution:\n{COMMERCIAL_SCOPE_TEXT}\n"
         f"{meta}\n"
         "Rules:\n"
         "- matches_objectives must be JSON boolean true only when objectives clearly match.\n"
@@ -88,7 +90,7 @@ def build_outreach_draft_prompt(
     )
 
 
-EPISODE_PROMPT_VERSION = "commercial_ai_v2_ep"
+EPISODE_PROMPT_VERSION = "commercial_ai_v3_ep"
 
 _EPISODE_SCHEMA = (
     '{"episode_commercial":boolean,'
@@ -159,6 +161,7 @@ def build_episode_mode_prompt(
         f"Role: {role}\n"
         f"Seed message_id: {seed_message_id}\n\n"
         f"Commercial objectives:\n{objectives}\n"
+        f"Scope and buyer attribution:\n{COMMERCIAL_SCOPE_TEXT}\n"
         f"{meta}\n"
         "Critical rules:\n"
         "- Exactly one message is the SEED; others are system-selected supporting context.\n"

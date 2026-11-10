@@ -143,6 +143,8 @@ from services.api.app.ops_routes import router as ops_router
 
 app.include_router(ai_validation_router)
 app.include_router(ops_router)
+from services.api.app.sales_routes import router as sales_router
+app.include_router(sales_router)
 
 _REVIEW_STATIC = Path(__file__).resolve().parents[1] / "static" / "review"
 _REVIEW_PAGE = _REVIEW_STATIC / "index.html"

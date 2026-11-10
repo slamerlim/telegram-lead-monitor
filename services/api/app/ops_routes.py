@@ -474,7 +474,7 @@ async def post_lead_event(
     session: AsyncSession = Depends(get_session),
     operator_id: str = Depends(_require_operator),
 ):
-    lead = await session.get(Lead, lead_id)
+    lead = await session.get(Lead, lead_id, with_for_update=True)
     if not lead:
         raise HTTPException(status_code=404, detail="lead not found")
 
@@ -483,6 +483,8 @@ async def post_lead_event(
             select(LeadEvent).where(LeadEvent.idempotency_key == body.idempotency_key)
         )
         if existing:
+            if existing.lead_id != lead_id:
+                raise HTTPException(status_code=409, detail="idempotency key belongs to another lead")
             return OpsEventOut.model_validate(existing)
 
     now = datetime.now(timezone.utc)

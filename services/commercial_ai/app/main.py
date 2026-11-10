@@ -8,13 +8,14 @@ from __future__ import annotations
 import asyncio
 import logging
 import uuid
+from dataclasses import replace
 from pathlib import Path
 
 import yaml
 from sqlalchemy import func, select
 
 from services.validator.app.providers.cursor_backend import FakeCursorBackend, SdkCursorBackend
-from shared.commercial_ai.policy import decide_commercial, opinion_from_payload
+from shared.commercial_ai.policy import decide_commercial, opinion_from_payload, grounded_commercial_evidence
 from shared.commercial_ai.prompts import (
     PROMPT_VERSION,
     build_commercial_mode_prompt,
@@ -34,6 +35,8 @@ from shared.logging import configure_logging
 from shared.models import LabelReviewSample, Lead, Message
 from shared.redis_bus import RedisBus, RetryLater, consumer_name
 from shared.settings import get_settings
+from shared.sales import queue_owner_alert
+from shared.provider_health import classify_sdk_error, record_sdk_health, sdk_health
 from shared.validation.blind_input import BlindItem
 
 logger = logging.getLogger("commercial_ai")
@@ -105,6 +108,13 @@ async def process_payload(payload: dict, backend) -> None:
     settings = get_settings()
     if not settings.commercial_ai_enabled:
         raise RetryLater("commercial AI disabled")
+    if settings.commercial_ai_backend == "sdk":
+        from datetime import datetime, timedelta, timezone
+        health = sdk_health()
+        checked = health.get("ai_checked_at")
+        if health["ai_status"] in {"blocked_plan", "blocked_credentials", "error"} and checked:
+            if datetime.now(timezone.utc) - datetime.fromisoformat(checked) < timedelta(minutes=5):
+                raise RetryLater("Cursor SDK outage backoff")
     lead_id = int(payload["lead_id"])
     message_id = int(payload["message_id"])
     expected_sha = payload.get("text_sha256")
@@ -172,8 +182,14 @@ async def process_payload(payload: dict, backend) -> None:
             if result.status != "ok":
                 # Infrastructure errors must not become a permanent AI_UNCERTAIN
                 # decision that makes already_decided() suppress future retries.
+                if result.status in {"error", "timeout"}:
+                    # Plan/auth/provider outages should not exhaust the poison
+                    # payload budget. Keep the review pending until service returns.
+                    record_sdk_health(classify_sdk_error(result.error_detail))
+                    raise RetryLater("Cursor SDK unavailable")
                 raise RuntimeError(f"commercial validator returned {result.status}")
-            await record_opinion(
+            evidence_ok, evidence_reason = grounded_commercial_evidence(result.structured, message.text)
+            opinion_row = await record_opinion(
                 session,
                 run_id=run_id,
                 lead=lead,
@@ -190,17 +206,22 @@ async def process_payload(payload: dict, backend) -> None:
                 latency_ms=result.latency_ms,
                 raw=result.raw,
             )
-            opinions.append(
-                opinion_from_payload(
+            opinion_row.evidence_valid = evidence_ok
+            opinion_row.evidence_reject_reason = evidence_reason
+            opinion = opinion_from_payload(
                     mode=mode,
                     status=result.status,
                     payload=result.structured,
                     synthetic=bool(result.synthetic),
                     model_family=str(slot.get("model_family") or ""),
                     confidence_floor=settings.commercial_ai_confidence_floor,
-                )
             )
+            if not evidence_ok:
+                opinion = replace(opinion, commercial=False, uncertain=True)
+            opinions.append(opinion)
 
+        if settings.commercial_ai_backend == "sdk":
+            record_sdk_health("ok")
         auto_promote = bool(settings.commercial_ai_auto_promote)
         if auto_promote:
             max_ap = int(settings.commercial_ai_max_autopromotions_per_hour or 0)
@@ -250,6 +271,9 @@ async def process_payload(payload: dict, backend) -> None:
                 reject_reason=reason,
             )
 
+        # Commit the decision, draft and owner notification/outbox atomically.
+        await session.flush()
+        await queue_owner_alert(session, lead, message)
         await session.commit()
         logger.info(
             "commercial_ai done lead_id=%s decision=%s prompt=%s",

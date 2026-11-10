@@ -20,8 +20,9 @@ def _scorer() -> LeadScorer:
     return LeadScorer(str(CFG))
 
 
-def test_default_version_is_v6():
-    assert DISCOVERY_VERSION == DISCOVERY_VERSION_V6 == "disc_v6"
+def test_default_version_is_v7():
+    assert DISCOVERY_VERSION == "disc_v7"
+    assert DISCOVERY_VERSION_V6 == "disc_v6"
     assert DISCOVERY_VERSION_V4 == "disc_v4"
 
 

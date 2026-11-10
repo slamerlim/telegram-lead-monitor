@@ -20,9 +20,10 @@ def _scorer() -> LeadScorer:
     return LeadScorer(str(CFG))
 
 
-def test_default_version_is_v6_v5_remains_opt_in():
-    """Production default is disc_v6; v5 stays opt-in (C HOLD)."""
-    assert DISCOVERY_VERSION == DISCOVERY_VERSION_V6 == "disc_v6"
+def test_default_version_is_v7_v5_remains_opt_in():
+    """Production default is disc_v7; historical v5 remains explicitly selectable."""
+    assert DISCOVERY_VERSION == "disc_v7"
+    assert DISCOVERY_VERSION_V6 == "disc_v6"
     assert DISCOVERY_VERSION_V5 == "disc_v5"
     assert DISCOVERY_VERSION_V4 == "disc_v4"
 

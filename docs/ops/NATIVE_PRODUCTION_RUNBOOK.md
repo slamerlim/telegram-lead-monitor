@@ -62,3 +62,30 @@ Native integration tests use disposable PostgreSQL/Redis processes and synthetic
 ```bash
 .venv/bin/python -m pytest -q tests/test_delivery_integration.py tests/test_collector_backlog.py tests/test_capacity.py
 ```
+
+## Sales inbox and owner alerts
+
+Open `http://127.0.0.1:8010/ops/inbox/` on this host (or through your existing SSH forwarding). Show the owner credentials in your interactive terminal with `.venv/bin/python scripts/inbox_access.py`. The command refuses to print a token into captured output. Credentials are held only in browser memory; disconnect clears them. All lead data and CRM actions require the operator token.
+
+`OWNER_TELEGRAM_TARGET=me` sends to the monitoring account's Saved Messages. `OWNER_NOTIFICATIONS_ENABLED=true` enables owner delivery after successful commercial review. No prospect messages are sent. The collector owns the Telegram session and delivers owner alerts through the same client. Notifications persist with the review/draft transaction; retries reuse a stored Telegram random ID. Exact whitespace-normalized reposts across communities receive one alert and appear under Duplicates. This is not semantic/paraphrase deduplication.
+
+Only confirmed leads at most `HOT_LEAD_MAX_AGE_HOURS=48` hours old qualify for owner alerts. Delivery rechecks age, workflow status, and owner rejection. Older opportunities remain in the inbox. Contacts are labelled by evidence; quoted usernames are not assumed to be the buyer. Drafts are editable and copied for manual sending.
+
+Owner acceptance/rejection and proposals are `lead_events`, never `human_labels`. The pilot starts at the first successful owner notification and measures its first seven days. Acceptance is accepted / (accepted + rejected), with delivered and reviewed counts exposed separately. The quality target requires at least 20 delivered leads, feedback on all of them, and at least 80% acceptance after seven days. Replies/wins require operator-recorded evidence. Alert latency runs from Telegram posting to successful owner delivery. Source attribution uses the canonical delivered opportunity; duplicates do not inflate the delivery denominator.
+
+## Cursor SDK access check
+
+On 10 November, all three configured SDK model probes were rejected with `plan_required`: the configured account did not have Cloud Agent plan access. This occurs before model execution. Model availability and successful commercial adjudication remain unverified. Enable the required access or privately update `CURSOR_API_KEY` in `.env.validation` to an eligible account, then run:
+
+```bash
+.venv/bin/python scripts/sdk_preflight.py
+systemctl --user restart tlm-commercial-ai
+```
+
+The preflight uses an empty temporary workspace and a synthetic JSON connectivity prompt. It writes only a private SDK health snapshot, not leads or validation records. It prints status categories, never credentials or raw SDK errors. A changed key invalidates the snapshot. The inbox shows the last check for up to 24 hours. Runtime provider failures defer reviews with five-minute global backoff; rate-limit/provider deferrals do not consume the poison-message budget. Check `/health`, authenticated inbox health, and actual reviewed/delivered counts separately.
+
+The Cursor credential exposed by the earlier test failure should be rotated. Settings representations now redact secrets, and tests disable production dotenv loading.
+
+## Remaining live acceptance work
+
+Do not reimport the entire old source list. After login, verify 5–10 accessible communities and inspect recent buyer requests/contact routes. Start with a bounded two-day scan and measure source yield. Raw messages, including LOW/unscored messages, need a recent retrieval audit. Discovery episodes still have no production CRM bridge; shadow evaluation is disabled until real contextual examples and buyer attribution can be tested. Neither an empty healthy service nor synthetic test success proves commercial recall, precision, or revenue.

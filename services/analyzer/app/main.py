@@ -183,7 +183,7 @@ class Analyzer:
                 settings.commercial_discovery_enabled
                 and result.tier == "LOW"
             ):
-                feats = self.scorer.discovery_features(event.message_text)
+                feats = self.scorer.discovery_features(event.message_text, version=settings.commercial_discovery_version)
                 if feats.eligible:
                     # Rate limit candidates/hour (best-effort).
                     max_c = int(settings.commercial_discovery_max_candidates_per_hour or 0)

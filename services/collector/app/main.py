@@ -1,4 +1,5 @@
 import asyncio
+import json
 from datetime import datetime, timedelta, timezone
 
 import structlog
@@ -14,6 +15,7 @@ from shared.models import Community, ScanRun
 from shared.redis_bus import MESSAGES_STREAM, RedisBus, SCAN_STREAM, consumer_name
 from shared.settings import get_settings
 from shared.capacity import ensure_capacity
+from shared.sales import OWNER_ALERT_GROUP, OWNER_ALERT_STREAM, send_owner_alert
 
 settings = get_settings()
 configure_logging(settings.log_level)
@@ -72,6 +74,34 @@ class Collector:
 
     async def run_forever(self) -> None:
         await self.ensure_login()
+        # One authenticated Telegram client owns the session; alert delivery must
+        # not open the same SQLite session from a second process.
+        async with asyncio.TaskGroup() as tasks:
+            tasks.create_task(self.scan_loop())
+            tasks.create_task(self.alert_loop())
+            tasks.create_task(self.heartbeat_loop())
+
+    async def heartbeat_loop(self) -> None:
+        while True:
+            await self.bus.redis.set("tlm:collector:heartbeat", json.dumps({
+                "connected": self.client.is_connected(),
+                "checked_at": datetime.now(timezone.utc).isoformat(),
+            }), ex=90)
+            await asyncio.sleep(30)
+
+    async def alert_loop(self) -> None:
+        consumer = consumer_name("owner-alert")
+        async def deliver(payload):
+            async with SessionLocal() as db:
+                await send_owner_alert(db, self.client, payload)
+        while True:
+            entries = await self.bus.consume(OWNER_ALERT_STREAM, OWNER_ALERT_GROUP, consumer, count=1)
+            for _stream, messages in entries or []:
+                for message_id, fields in messages:
+                    await self.bus.handle(OWNER_ALERT_STREAM, OWNER_ALERT_GROUP, consumer,
+                                          message_id, fields, deliver)
+
+    async def scan_loop(self) -> None:
         consumer = consumer_name("collector")
         log.info("collector_started", consumer=consumer)
         while True:

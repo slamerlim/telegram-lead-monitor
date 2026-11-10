@@ -7,6 +7,7 @@ from pathlib import Path
 from typing import Any
 
 import yaml
+from shared.commercial_scope import paid_request_category
 
 
 @dataclass
@@ -165,7 +166,10 @@ class LeadScorer:
         return list(dict.fromkeys(matched_keywords)), list(dict.fromkeys(categories)), by_category
 
     def _pattern_hits(self, text: str, category: str) -> list[str]:
-        return [pattern.pattern for pattern in self.patterns.get(category, []) if pattern.search(text)]
+        hits = [pattern.pattern for pattern in self.patterns.get(category, []) if pattern.search(text)]
+        if category.startswith("commercial_") and paid_request_category(text) == category:
+            hits.append("paid target deliverable + explicit buyer request")
+        return hits
 
     def _has_explicit_commercial_intent(self, text: str) -> tuple[bool, list[str]]:
         hits: list[str] = []
@@ -275,6 +279,9 @@ class LeadScorer:
                 if not hiring_other:
                     reasons.append("job-seeker/CV language detected (overrides weak hire match)")
                     return "JOB_SEEKER", reasons
+        if paid_request_category(text):
+            reasons.append("paid target engineering request (buyer action and deliverable)")
+            return "CLIENT", reasons
         if recruiter:
             # Vacancy/job-ad language stays RECRUITER. Explicit commercial commission
             # phrasing ("looking for a developer to build …") is buyer-side CLIENT.
@@ -638,7 +645,7 @@ class LeadScorer:
             score = min(score, 10.0)
             promotion_score -= 45
             reasons.append("non-buyer veto")
-        if job_agg and not contract_target:
+        if job_agg and not contract_target and not paid_request_category(clean):
             score = min(score, 25.0)
             if lead_type not in self._COMMERCIAL_TYPES or multi_job_agg:
                 lead_type = "JOB_VACANCY"

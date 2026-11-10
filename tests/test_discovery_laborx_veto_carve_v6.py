@@ -41,9 +41,10 @@ def _scorer() -> LeadScorer:
     return LeadScorer(str(CFG))
 
 
-def test_default_version_is_v6_after_acceptance():
-    """Production default is disc_v6 after FO carve acceptance (evidence 99)."""
-    assert DISCOVERY_VERSION == DISCOVERY_VERSION_V6 == "disc_v6"
+def test_default_version_is_v7_after_acceptance():
+    """Production default is disc_v7; v6 remains available for historical replay."""
+    assert DISCOVERY_VERSION == "disc_v7"
+    assert DISCOVERY_VERSION_V6 == "disc_v6"
     assert DISCOVERY_VERSION_V4 == "disc_v4"
 
 

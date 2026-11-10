@@ -9,6 +9,7 @@ from shared.redis_bus import RedisBus
 from shared.redis_bus import MESSAGES_STREAM, SCAN_STREAM, COMMERCIAL_AI_REVIEW_STREAM
 from shared.commercial_ai.streams import COMMERCIAL_DISCOVERY_STREAM, COMMERCIAL_EPISODE_SHADOW_STREAM
 from shared.settings import get_settings
+from shared.sales import OWNER_ALERT_STREAM
 
 
 async def main():
@@ -20,7 +21,8 @@ async def main():
             try:
                 if time.monotonic() >= next_cleanup:
                     for stream in (MESSAGES_STREAM, SCAN_STREAM, COMMERCIAL_AI_REVIEW_STREAM,
-                                   COMMERCIAL_DISCOVERY_STREAM, COMMERCIAL_EPISODE_SHADOW_STREAM):
+                                   COMMERCIAL_DISCOVERY_STREAM, COMMERCIAL_EPISODE_SHADOW_STREAM,
+                                   OWNER_ALERT_STREAM):
                         await bus.trim_acknowledged(stream)
                     next_cleanup = time.monotonic() + 60
                 async with SessionLocal() as session:

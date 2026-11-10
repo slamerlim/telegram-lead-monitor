@@ -1,0 +1,351 @@
+{
+  "generated_at": "2026-11-05T05:51:30.713992+03:00",
+  "host": "1831dan",
+  "head": "4852a2050d36c2c007db3677af5fcd1f842fd013",
+  "scope": "Read-only runtime/code investigation plus local diagnostic simulations. Production database was not reachable; historical data below is not a current snapshot.",
+  "runtime_checks": [
+    {
+      "command": [
+        "docker",
+        "compose",
+        "ps"
+      ],
+      "exit_code": 0,
+      "stdout": "NAME      IMAGE     COMMAND   SERVICE   CREATED   STATUS    PORTS",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "ps",
+        "-a",
+        "--format",
+        "{{.Names}}\t{{.Status}}"
+      ],
+      "exit_code": 0,
+      "stdout": "qts-postgres\tUp 6 weeks",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "volume",
+        "ls",
+        "--format",
+        "{{.Name}}"
+      ],
+      "exit_code": 0,
+      "stdout": "qts_pgdata",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "curl",
+        "-sS",
+        "--max-time",
+        "5",
+        "-w",
+        "\nHTTP %{http_code}\n",
+        "http://127.0.0.1:8010/health"
+      ],
+      "exit_code": 7,
+      "stdout": "HTTP 000",
+      "stderr": "curl: (7) Failed to connect to 127.0.0.1 port 8010 after 0 ms: Couldn't connect to server"
+    },
+    {
+      "command": [
+        "curl",
+        "-sS",
+        "--max-time",
+        "5",
+        "-w",
+        "\nHTTP %{http_code}\n",
+        "http://127.0.0.1:8010/validation/gates"
+      ],
+      "exit_code": 7,
+      "stdout": "HTTP 000",
+      "stderr": "curl: (7) Failed to connect to 127.0.0.1 port 8010 after 0 ms: Couldn't connect to server"
+    },
+    {
+      "command": [
+        "curl",
+        "-sS",
+        "--max-time",
+        "5",
+        "-w",
+        "\nHTTP %{http_code}\n",
+        "http://127.0.0.1:8010/metrics"
+      ],
+      "exit_code": 7,
+      "stdout": "HTTP 000",
+      "stderr": "curl: (7) Failed to connect to 127.0.0.1 port 8010 after 0 ms: Couldn't connect to server"
+    }
+  ],
+  "source_sha256": {
+    "services/collector/app/main.py": "3bef51486d3cbf2e674999c7a53bd1cef583589c05312bff207f409f6aed909a",
+    "services/analyzer/app/scoring.py": "28b82567fde6dd9e29fb30b73ada0f325431399731f3bc74c53b169f9c892ad1",
+    "services/analyzer/app/main.py": "e12d154b096530a6dbc187038d22126982d908efbc8b5b9676ba55aa251b29ad",
+    "shared/redis_bus.py": "dece53bc4938a831afa51a5de7a6353a42d7fa9725ea9cc16996c984c307102a",
+    "shared/commercial_ai/discovery.py": "971466b5234340aa024615f70f50e21ab5fc47774fa33b5cef310fb8a2b25efb",
+    "services/commercial_ai/app/main.py": "8224112c270a646bcfe0fcad36831dc42e03c9fcf80e6c174b5a2eb0ec09bf82",
+    "services/api/app/ops_routes.py": "692997d7662dad76da810b8e38baea26537fe17e115ee6c202ff02b47cf3b2a2",
+    "config/scoring.yaml": "5f3b4ef59963f61916715d57e0df143415b915423dea7e5ab88467becc4bb363"
+  },
+  "local_configuration_not_proof_of_runtime": {
+    "scheduler_interval_seconds": 900,
+    "collector_batch_size": 200,
+    "collector_concurrency": 3,
+    "commercial_discovery_enabled": true,
+    "commercial_episode_shadow_enabled": false,
+    "commercial_ai_enabled": true,
+    "commercial_ai_auto_promote": true,
+    "commercial_ai_backend": "sdk"
+  },
+  "synthetic_probes_not_measured_precision_or_recall": [
+    {
+      "text": "Looking for a developer to build a trading bot for Binance. Budget $3000.",
+      "community_profile": "general",
+      "tier": "HIGH",
+      "score": 100.0,
+      "buyer_type": "CLIENT",
+      "lead_type": "BOT_PURCHASE",
+      "discovery_eligible": true,
+      "paths": [
+        "A",
+        "C",
+        "D",
+        "E"
+      ],
+      "vetoes": []
+    },
+    {
+      "text": "Can someone build a trading bot for me?",
+      "community_profile": "general",
+      "tier": "LOW",
+      "score": 18.0,
+      "buyer_type": "UNKNOWN",
+      "lead_type": "TECHNICAL_QUESTION",
+      "discovery_eligible": false,
+      "paths": [],
+      "vetoes": []
+    },
+    {
+      "text": "Can someone build a trading bot for me? Budget $3000, paid project.",
+      "community_profile": "general",
+      "tier": "LOW",
+      "score": 30.0,
+      "buyer_type": "UNKNOWN",
+      "lead_type": "TECHNICAL_QUESTION",
+      "discovery_eligible": false,
+      "paths": [],
+      "vetoes": []
+    },
+    {
+      "text": "Who can build me a Binance trading bot? Paid work, budget $3000.",
+      "community_profile": "general",
+      "tier": "LOW",
+      "score": 30.0,
+      "buyer_type": "UNKNOWN",
+      "lead_type": "TECHNICAL_QUESTION",
+      "discovery_eligible": true,
+      "paths": [
+        "A",
+        "D",
+        "E"
+      ],
+      "vetoes": []
+    },
+    {
+      "text": "Need someone to fix my Bybit trading bot. Budget $500.",
+      "community_profile": "general",
+      "tier": "HIGH",
+      "score": 93.0,
+      "buyer_type": "CLIENT",
+      "lead_type": "BOT_REPAIR",
+      "discovery_eligible": true,
+      "paths": [
+        "A",
+        "B",
+        "D",
+        "E"
+      ],
+      "vetoes": []
+    },
+    {
+      "text": "I can build a trading bot for you. DM me. Budget $500.",
+      "community_profile": "general",
+      "tier": "LOW",
+      "score": 10.0,
+      "buyer_type": "SERVICE_PROVIDER",
+      "lead_type": "SERVICE_ADVERTISEMENT",
+      "discovery_eligible": false,
+      "paths": [],
+      "vetoes": [
+        "service_provider"
+      ]
+    },
+    {
+      "text": "Ищу разработчика для торгового бота Binance, бюджет 100000 рублей.",
+      "community_profile": "general",
+      "tier": "LOW",
+      "score": 30.0,
+      "buyer_type": "UNKNOWN",
+      "lead_type": "TECHNICAL_QUESTION",
+      "discovery_eligible": true,
+      "paths": [
+        "A",
+        "D",
+        "E"
+      ],
+      "vetoes": []
+    },
+    {
+      "text": "Кто может написать торгового бота для Binance? Бюджет 100000 рублей.",
+      "community_profile": "general",
+      "tier": "LOW",
+      "score": 30.0,
+      "buyer_type": "UNKNOWN",
+      "lead_type": "TECHNICAL_QUESTION",
+      "discovery_eligible": false,
+      "paths": [],
+      "vetoes": []
+    },
+    {
+      "text": "Can someone recommend a developer to automate my trading strategy? Paid work.",
+      "community_profile": "general",
+      "tier": "LOW",
+      "score": 0.0,
+      "buyer_type": "UNKNOWN",
+      "lead_type": "NOISE",
+      "discovery_eligible": true,
+      "paths": [
+        "C"
+      ],
+      "vetoes": []
+    },
+    {
+      "text": "We need an AI engineer to build a customer support chatbot. Budget $5000.",
+      "community_profile": "general",
+      "tier": "LOW",
+      "score": 20.0,
+      "buyer_type": "SUPPORT_SEEKER",
+      "lead_type": "PLATFORM_SUPPORT",
+      "discovery_eligible": false,
+      "paths": [],
+      "vetoes": [
+        "support_question"
+      ]
+    },
+    {
+      "text": "Freelance Opportunity: Quick Fix Needed for Python Trading Bot. Budget: $320",
+      "community_profile": "general",
+      "tier": "HIGH",
+      "score": 98.0,
+      "buyer_type": "RECRUITER",
+      "lead_type": "TRADING_SYSTEM_CONTRACT",
+      "discovery_eligible": true,
+      "paths": [
+        "A",
+        "E",
+        "CARVE"
+      ],
+      "vetoes": []
+    },
+    {
+      "text": "NEW PROJECT ON LABORX: Quick Fix Needed for Python Trading Bot. Budget: $320",
+      "community_profile": "general",
+      "tier": "LOW",
+      "score": 34.0,
+      "buyer_type": "UNKNOWN",
+      "lead_type": "TECHNICAL_QUESTION",
+      "discovery_eligible": false,
+      "paths": [],
+      "vetoes": [
+        "job_aggregator",
+        "corporate_employment"
+      ]
+    },
+    {
+      "text": "How do I fix this error in my Binance bot?",
+      "community_profile": "general",
+      "tier": "LOW",
+      "score": 18.0,
+      "buyer_type": "UNKNOWN",
+      "lead_type": "TECHNICAL_QUESTION",
+      "discovery_eligible": false,
+      "paths": [],
+      "vetoes": []
+    },
+    {
+      "text": "I need someone to teach us trading, please.",
+      "community_profile": "general",
+      "tier": "LOW",
+      "score": 0.0,
+      "buyer_type": "UNKNOWN",
+      "lead_type": "NOISE",
+      "discovery_eligible": true,
+      "paths": [
+        "A"
+      ],
+      "vetoes": []
+    }
+  ],
+  "collector_overflow_reproduction": {
+    "simulation_only": true,
+    "real_network_or_db_calls": false,
+    "configured_limit": 200,
+    "new_messages": 500,
+    "first_scan_seen_published": [
+      200,
+      200
+    ],
+    "second_scan_seen_published": [
+      0,
+      0
+    ],
+    "cursor_after": 600,
+    "unique_published": 200,
+    "skipped_count": 300,
+    "skipped_id_min": 101,
+    "skipped_id_max": 400
+  },
+  "existing_tests": {
+    "command": ".venv/bin/python -m pytest -q tests/test_scoring.py tests/test_scoring_commercial_gate.py tests/test_discovery_buyer_signals_v4.py tests/test_discovery_buyer_signals_v5.py tests/test_discovery_laborx_veto_carve_v6.py tests/test_commercial_ai_policy.py tests/test_collector_cursor.py tests/test_opportunity_dedup.py",
+    "exit_code": 0,
+    "result": "91 passed in 1.92s",
+    "production_integration_test": false
+  },
+  "historical_sources": [
+    {
+      "file": "docs/audit/evidence/130-offline-ml-dataset-readiness-inventory.json",
+      "date": "2026-09-29",
+      "messages": 8711501,
+      "message_scores": 215070,
+      "AI_CONFIRMED": 4,
+      "human_labels": 1524,
+      "commercially_actionable_true": 6,
+      "commercially_actionable_null": 1380
+    },
+    {
+      "file": "docs/audit/evidence/90-commercial-ai-live-sdk-pilot-20260923.txt",
+      "date": "2026-09-23",
+      "AI_CONFIRMED": 4,
+      "contacted": 0,
+      "responded": 0,
+      "won": 0,
+      "cohort": "historical/provisional backfill; not four new live prospects"
+    },
+    {
+      "file": "docs/audit/evidence/138-commercial-semantics-review.json",
+      "date": "2026-10-01",
+      "core_batch_n": 2600,
+      "reviewed_messages": 2,
+      "reviewed_false": 2,
+      "historical_source_prevalence_proven": false
+    }
+  ],
+  "changed_runtime": false,
+  "data_or_cursors_mutated": false,
+  "thresholds_changed": false,
+  "ml_go_claim": false
+}

@@ -209,6 +209,25 @@ class CommercialAIReview(Base):
     idempotency_key: Mapped[str | None] = mapped_column(String(160), unique=True, nullable=True)
 
 
+class LeadNotification(Base):
+    """Durable owner alert; never a prospect outreach message."""
+
+    __tablename__ = "lead_notifications"
+
+    id: Mapped[int] = mapped_column(BigInteger, primary_key=True, autoincrement=True)
+    lead_id: Mapped[int] = mapped_column(ForeignKey("leads.id", ondelete="NO ACTION"), unique=True)
+    dedup_key: Mapped[str] = mapped_column(String(64), unique=True)
+    target: Mapped[str] = mapped_column(String(128))
+    random_id: Mapped[int] = mapped_column(BigInteger, unique=True)
+    status: Mapped[str] = mapped_column(String(24), default="PENDING", index=True)
+    payload: Mapped[str] = mapped_column(Text)
+    reason: Mapped[str | None] = mapped_column(String(128), nullable=True)
+    telegram_message_id: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    retry_after: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=datetime.utcnow)
+    sent_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+
+
 class CommercialDiscoveryCandidate(Base):
     """HIGH-recall discovery row for LOW messages (not a CRM lead)."""
 

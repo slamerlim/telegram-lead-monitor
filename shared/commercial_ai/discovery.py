@@ -14,12 +14,13 @@ import re
 from dataclasses import dataclass, field
 from typing import Any, Literal
 
-DISCOVERY_VERSION = "disc_v6"
+DISCOVERY_VERSION = "disc_v7"
 DISCOVERY_VERSION_V2 = "disc_v2"
 DISCOVERY_VERSION_V3 = "disc_v3"
 DISCOVERY_VERSION_V4 = "disc_v4"
 DISCOVERY_VERSION_V5 = "disc_v5"
 DISCOVERY_VERSION_V6 = "disc_v6"
+DISCOVERY_VERSION_V7 = "disc_v7"
 
 BuyerDirection = Literal[
     "BUYER",
@@ -1427,6 +1428,35 @@ def evaluate_discovery(
     """Compute discovery eligibility using existing LeadScorer pattern helpers only."""
     ver = version or DISCOVERY_VERSION
     clean = " ".join((text or "").split())
+    if ver == DISCOVERY_VERSION_V7:
+        # Preserve versioned historical experiments; apply the current business
+        # scope as an explicit new retrieval version with auditable evidence.
+        from shared.commercial_scope import paid_request_category
+        feats = evaluate_discovery(scorer, text, version=DISCOVERY_VERSION_V6,
+                                   buyer_persistence_signal=buyer_persistence_signal)
+        feats.discovery_version = ver
+        paid = paid_request_category(clean)
+        education = bool(re.search(r"\b(?:teach|tutor|course|learn)\b|\b(?:научить|обучени\w*|курс\w*)\b", clean, re.I))
+        employment = bool(re.search(r"\b(?:full[- ]?time|permanent\s+(?:role|position)|salary)\b|\b(?:в\s+штат|зарплат\w*)\b", clean, re.I))
+        if education or employment:
+            feats.eligible = False
+            feats.hard_veto = True
+            feats.veto_categories = list(dict.fromkeys(feats.veto_categories + ["education_only" if education else "employment_out_of_scope"]))
+        elif paid and not (feats.provider_signal or feats.seeker_signal or feats.marketing_signal or feats.news_signal):
+            # Buyer request + paid target deliverable recovers EN/RU questions
+            # and equivalent marketplace headings. This is retrieval, not truth.
+            feats.eligible = True
+            feats.hard_exclude = False
+            feats.hard_veto = False
+            feats.exclude_reasons = []
+            feats.veto_categories = []
+            feats.buyer_direction = "BUYER"
+            feats.project_scope = feats.project_procurement_signal = True
+            feats.true_budget_signal = True
+            feats.trigger_type = "v7_paid_target_request"
+            feats.trigger_score = max(feats.trigger_score, 50)
+            feats.matched_paths = list(dict.fromkeys(feats.matched_paths + ["PAID_TARGET_REQUEST"]))
+        return feats
     feats = DiscoveryFeatures(discovery_version=ver)
     feats.buyer_persistence_signal = float(buyer_persistence_signal or 0.0)
 

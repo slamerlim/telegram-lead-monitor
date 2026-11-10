@@ -59,6 +59,10 @@ class Settings(BaseSettings):
     # Optional dedicated commercial operator ids (comma-separated).
     commercial_operator_ids: str = ""
     ops_candidate_max_age_days: int = 90
+    hot_lead_max_age_hours: int = 48
+    owner_notifications_enabled: bool = False
+    # "me" = Saved Messages of the authenticated monitoring account.
+    owner_telegram_target: str = "me"
 
     # --- Commercial AI adjudication (separate from independent AI validation) ---
     commercial_ai_enabled: bool = False
@@ -76,7 +80,7 @@ class Settings(BaseSettings):
     commercial_episode_max_reviews_per_hour: int = 40
     commercial_episode_max_context_messages: int = 20
     commercial_episode_max_context_chars: int = 12000
-    commercial_discovery_version: str = "disc_v6"
+    commercial_discovery_version: str = "disc_v7"
     commercial_context_version: str = "ctx_v1"
 
     # --- Cursor-only AI validation (no third-party LLM APIs) ---

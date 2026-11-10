@@ -3,9 +3,10 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+import math
 from typing import Any
 
-POLICY_VERSION = "commercial_v1"
+POLICY_VERSION = "commercial_v2"
 
 COMMERCIAL_LEAD_TYPES = frozenset(
     {
@@ -73,6 +74,23 @@ def _as_bool_true(v: Any) -> bool:
     return v is True
 
 
+def grounded_commercial_evidence(payload: dict | None, message_text: str) -> tuple[bool, str | None]:
+    """A positive vote must cite the actual request, not invented buyer evidence."""
+    p = payload or {}
+    if p.get("is_commercial_opportunity") is not True:
+        return True, None
+    quotes = p.get("evidence")
+    if not isinstance(quotes, list) or not quotes:
+        return False, "missing_verbatim_evidence"
+    source = " ".join(message_text.split()).casefold()
+    for quote in quotes:
+        if not isinstance(quote, str) or len(quote.strip()) < 5 or " ".join(quote.split()).casefold() not in source:
+            return False, "evidence_not_in_source"
+    if p.get("buyer_action") not in {"PURCHASE", "REPAIR", "HIRE", "COMMISSION", "IMPLEMENT"}:
+        return False, "buyer_action_unknown"
+    return True, None
+
+
 def opinion_from_payload(
     *,
     mode: str,
@@ -96,7 +114,9 @@ def opinion_from_payload(
             synthetic=synthetic,
             model_family=model_family,
         )
-    conf = float(p.get("confidence") or 0.0)
+    raw_conf = p.get("confidence")
+    valid_conf = type(raw_conf) in (float, int) and math.isfinite(raw_conf) and 0 <= raw_conf <= 1
+    conf = float(raw_conf) if valid_conf else 0.0
     uncertain = bool(p.get("uncertain"))
     hard_veto = _as_bool_true(p.get("hard_veto"))
     matches = _as_bool_true(p.get("matches_objectives"))
@@ -109,6 +129,8 @@ def opinion_from_payload(
         if lt not in COMMERCIAL_LEAD_TYPES:
             lt = None
             commercial = False
+    else:
+        commercial = False
     # Mode B may encode FP instead of is_commercial_opportunity
     if mode.upper() == "B":
         if _as_bool_true(p.get("is_false_positive")):
@@ -116,8 +138,8 @@ def opinion_from_payload(
             fp = str(p.get("fp_class") or "").upper()
             if fp in _HARD_VETO_FP and conf >= 0.75:
                 hard_veto = True
-        elif matches and not uncertain and conf >= confidence_floor:
-            commercial = True
+        # A declared non-commercial result must never become a confirmation just
+        # because its subject matches the service objectives.
     return OpinionView(
         mode=mode,
         status=status,
@@ -125,7 +147,7 @@ def opinion_from_payload(
         lead_type=lt,
         matches_objectives=matches,
         hard_veto=hard_veto,
-        uncertain=uncertain or status != "ok",
+        uncertain=uncertain or not valid_conf or status != "ok",
         confidence=conf,
         synthetic=synthetic,
         model_family=model_family,
@@ -138,7 +160,7 @@ def decide_commercial(
     scorer_score: float = 0.0,
     auto_promote: bool = True,
 ) -> CommercialDecision:
-    """Apply commercial_v1 majority policy. Never invents RESPONSE/WON."""
+    """Apply commercial_v2 majority policy. Never invents RESPONSE/WON."""
     ok = [o for o in opinions if o.status == "ok" and not o.synthetic]
     families = {o.model_family for o in ok if o.model_family}
     if len(ok) < 2:
@@ -183,6 +205,12 @@ def decide_commercial(
         )
 
     if n_c >= 2:
+        if len({o.model_family for o in confirms if o.model_family}) < 2:
+            return CommercialDecision(
+                decision=DECISION_CANDIDATE, reason_code="insufficient_confirming_families",
+                n_confirm=n_c, n_reject=n_r, n_uncertain=n_u, lead_type=None,
+                rank_score=0.0, model_family_count=len(families),
+            )
         types = [o.lead_type for o in confirms if o.lead_type]
         lead_type = types[0] if types and all(t == types[0] for t in types) else (
             types[0] if types else None

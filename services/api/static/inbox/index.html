@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="referrer" content="no-referrer">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'">
+  <title>Lead inbox — Telegram Lead Monitor</title>
+  <style>
+    :root{color-scheme:light;--paper:#f5f3ed;--surface:#fffefb;--ink:#202a25;--muted:#626b61;--line:#d8ddd2;--green:#245c43;--green-dark:#18432f;--tint:#eaf0e7;--amber:#805512;--amber-tint:#fbf3e2;--red:#9d3430;--red-tint:#fcf0ec;--mono:ui-monospace,"SFMono-Regular",Consolas,"Liberation Mono",monospace}
+    *{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:14px;line-height:1.55}button,input,textarea{font:inherit}button,a,input,textarea{touch-action:manipulation}button{cursor:pointer}button:disabled{cursor:not-allowed;opacity:.48}button,a{ -webkit-tap-highlight-color:transparent}button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid #91ae78;outline-offset:3px}a{color:var(--green);text-underline-offset:3px}button{border-radius:4px}h1,h2,h3,p{margin:0}h1{font-size:clamp(28px,3.7vw,42px);font-weight:550;letter-spacing:-1.5px;line-height:1.2}h2{font-weight:550;letter-spacing:-.6px}h3{font-size:13px;letter-spacing:.02em;font-weight:650}input,textarea{width:100%;min-width:0;border:1px solid #b8c3b4;border-radius:4px;background:var(--surface);padding:10px 12px;color:var(--ink)}textarea{resize:vertical;line-height:1.65}label{display:block;font-size:12px;font-weight:650;margin-bottom:7px}input::placeholder,textarea::placeholder{color:#73776f;opacity:1}[hidden]{display:none!important}.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}.muted{color:var(--muted)}.eyebrow{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}.hint{font-size:12px;color:var(--muted);line-height:1.6}.button{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:39px;padding:8px 14px;border:1px solid #bec8b8;background:transparent;color:var(--ink);text-decoration:none;font-size:12px;font-weight:650;white-space:normal;transition:background .15s,border-color .15s}.button:hover:not(:disabled){background:var(--tint);border-color:#92a58a}.primary{background:var(--green);color:white;border-color:var(--green)}.primary:hover:not(:disabled){background:var(--green-dark);border-color:var(--green-dark)}.danger{color:var(--red);border-color:#d9b4aa}.danger:hover:not(:disabled){background:var(--red-tint);border-color:#be8075}.quiet{border-color:transparent;color:var(--muted)}.quiet:hover:not(:disabled){border-color:var(--line)}.icon{width:16px;height:16px;flex:none;stroke:currentColor;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}.page{width:min(1440px,100%);margin:auto;padding:0 40px}.masthead{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:22px 0 20px;border-bottom:1px solid var(--line)}.brand{display:flex;align-items:center;gap:10px;font-size:12px;font-weight:650;letter-spacing:.01em}.brand-mark{display:grid;place-items:center;width:26px;height:26px;background:var(--green);color:white;border-radius:3px}.brand-mark .icon{width:18px;height:18px}.masthead-note{font-size:11px;color:var(--muted);font-family:var(--mono)}.page-heading{display:flex;align-items:flex-end;justify-content:space-between;gap:22px;margin:32px 0 26px}.page-heading .eyebrow{margin-bottom:9px;color:var(--green)}.heading-description{margin-top:10px;color:var(--muted);max-width:620px}.session-controls{display:flex;align-items:center;gap:7px;flex-wrap:wrap;justify-content:flex-end}.refresh-meta{font-size:10px;color:var(--muted);text-align:right;flex-basis:100%;margin-top:2px}.notice{display:flex;gap:13px;align-items:flex-start;border:1px solid var(--line);border-left:3px solid var(--green);background:var(--tint);padding:13px 16px;margin-bottom:20px;font-size:12px}.notice .icon{margin-top:2px}.notice strong{display:block;font-size:12px;margin-bottom:2px}.notice.warning{background:var(--amber-tint);border-color:#e1d2ac;border-left-color:var(--amber);color:#6b4a1c}.notice.error{background:var(--red-tint);border-color:#e2c5bc;border-left-color:var(--red);color:#7f2d27}.notice p{line-height:1.6}.notice-footer{font-size:11px;margin-top:5px;opacity:.9}.global-error{margin-bottom:18px}.auth-layout{display:grid;grid-template-columns:1.2fr 1fr;min-height:470px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin:36px 0 56px}.auth-intro{padding:58px 56px 52px 0;position:relative}.auth-intro h2{font-size:clamp(28px,3vw,40px);line-height:1.25;max-width:470px;letter-spacing:-1.3px;margin:20px 0 18px}.auth-intro p{color:var(--muted);max-width:390px;line-height:1.8}.auth-steps{display:flex;gap:22px;margin-top:42px;font-size:11px;color:var(--green)}.auth-steps span{display:flex;align-items:center;gap:8px}.auth-steps b{font:11px var(--mono);color:#7d8977}.auth-panel{border-left:1px solid var(--line);padding:52px 0 46px 56px;max-width:440px}.auth-panel h3{font-size:18px;font-weight:600;letter-spacing:-.3px;margin-bottom:6px}.auth-panel form{margin-top:24px}.field{margin-top:18px}.auth-panel .primary{margin-top:22px;width:100%;min-height:43px}.auth-panel .privacy{margin-top:19px;padding-top:16px;border-top:1px solid var(--line);font-size:11px;color:var(--muted)}.auth-status{font-size:12px;margin-top:14px;color:var(--red)}.pilot{border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:17px 0 12px;margin-bottom:28px}.pilot-top{display:flex;align-items:center;gap:34px}.pilot-title{width:115px;flex-shrink:0;color:var(--muted);font-size:11px;line-height:1.6}.pilot-title strong{font-size:12px;color:var(--ink);font-weight:650;display:block}.pilot-measure{display:flex;align-items:baseline;gap:10px;min-width:0}.pilot-number{font-family:var(--mono);font-size:22px;letter-spacing:-1px;line-height:1.3;color:var(--green)}.pilot-label{font-size:11px;line-height:1.4;color:var(--muted);max-width:95px}.pilot-bottom{display:flex;justify-content:space-between;gap:15px;flex-wrap:wrap;margin-top:13px;font-size:10px;color:var(--muted)}.toolbar{display:flex;align-items:center;justify-content:space-between;gap:16px;border-bottom:1px solid var(--line)}.tabs{display:flex;gap:24px}.tab{border:0;background:transparent;border-bottom:2px solid transparent;border-radius:0;padding:13px 0 14px;margin-bottom:-1px;display:flex;align-items:center;gap:9px;font-size:12px;color:var(--muted);min-height:46px}.tab[aria-current="page"]{border-bottom-color:var(--green);color:var(--green);font-weight:700}.tab:hover{color:var(--green)}.count{font-family:var(--mono);font-size:10px;padding:1px 5px;background:#e8e9e1;border-radius:3px;min-width:20px}.tab[aria-current="page"] .count{background:#dfe9d9}.view-note{font-size:10px;color:var(--muted)}.workspace{display:grid;grid-template-columns:330px minmax(0,1fr);background:var(--surface);border-bottom:1px solid var(--line);min-height:480px;margin-bottom:30px}.list-panel{border-right:1px solid var(--line);min-width:0}.list-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px 19px;border-bottom:1px solid var(--line);font-size:10px;color:var(--muted)}.opportunities{list-style:none;padding:0;margin:0;max-height:calc(100vh - 220px);overflow-y:auto}.opportunity{display:block;text-align:left;border:0;border-bottom:1px solid var(--line);border-left:3px solid transparent;border-radius:0;background:transparent;width:100%;padding:19px 18px 18px 16px;color:var(--ink);position:relative}.opportunity:hover{background:#f4f6ee}.opportunity[aria-current="true"]{background:#edf2e8;border-left-color:var(--green)}.item-top{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px}.item-source{font-size:10px;color:var(--muted);text-overflow:ellipsis;overflow:hidden;white-space:nowrap}.item-age{font-family:var(--mono);font-size:10px;color:var(--green);white-space:nowrap}.item-age.stale{color:var(--amber)}.item-title{font-size:14px;line-height:1.45;font-weight:650;margin-bottom:8px;display:block}.item-preview{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-size:11px;line-height:1.6;color:var(--muted);white-space:pre-wrap;overflow-wrap:anywhere}.item-footer{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:13px;font-size:10px}.item-budget{font-family:var(--mono);font-weight:600}.badge{display:inline-block;background:var(--tint);color:var(--green);font-size:9px;font-weight:700;letter-spacing:.045em;text-transform:uppercase;padding:3px 6px;border-radius:2px}.badge.neutral{background:#ecece5;color:#5b6255}.badge.amber{background:var(--amber-tint);color:var(--amber)}.list-empty{padding:28px 20px;color:var(--muted);font-size:12px}.detail{padding:29px 34px 34px;min-width:0}.detail-top{display:flex;gap:16px;justify-content:space-between;align-items:flex-start;margin-bottom:24px}.lead-id{font-size:10px;letter-spacing:.06em;color:var(--muted);margin-bottom:8px}.detail h2{font-size:26px;line-height:1.3;max-width:670px;overflow-wrap:anywhere}.detail-top .badge{margin-top:2px;white-space:nowrap}.evidence-rail{display:grid;grid-template-columns:1.1fr 1.05fr .8fr 1.15fr;background:#f4f5ee;border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin:0 0 25px;padding:16px 0;gap:0}.evidence-cell{padding:0 14px;min-width:0;border-right:1px solid var(--line)}.evidence-cell:last-child{border-right:0}.evidence-cell dt{font-size:9px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin:0 0 7px;font-weight:650}.evidence-cell dd{margin:0;font-size:12px;line-height:1.55;overflow-wrap:anywhere}.evidence-cell .evidence-note{font-size:9px;line-height:1.7;color:var(--muted);margin-top:5px}.evidence-cell .age-value{color:var(--green);font-family:var(--mono);font-size:13px}.evidence-cell .age-value.stale{color:var(--amber)}.section-label{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px}.section-label h3{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}.message{font-size:15px;line-height:1.8;white-space:pre-wrap;overflow-wrap:anywhere;margin-bottom:20px;max-height:520px;overflow:auto;padding-right:6px}.lead-links{display:flex;flex-wrap:wrap;gap:8px;align-items:center}.reason{border-left:2px solid #9eb591;padding-left:13px;margin:23px 0 0;font-size:12px;color:var(--muted);line-height:1.7}.reason strong{display:block;font-size:10px;font-weight:650;color:var(--green);letter-spacing:.04em;margin-bottom:4px;text-transform:uppercase}.deadline{margin-top:13px;font-size:12px;color:var(--muted);overflow-wrap:anywhere}.detail-section{border-top:1px solid var(--line);margin-top:25px;padding-top:21px}.draft{min-height:144px;font-size:13px;background:#fbfcf8}.draft-footer{display:flex;justify-content:space-between;gap:14px;align-items:center;margin-top:10px}.draft-tag{font-size:10px;color:var(--muted)}.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}.feedback-grid{display:grid;grid-template-columns:1fr 1fr;gap:26px}.feedback-grid .detail-section{margin-top:24px}.feedback-grid input{font-size:12px}.feedback-grid .hint{font-size:11px;margin-top:8px}.action-status{font-size:12px;line-height:1.6;margin-top:13px;padding:10px 12px;background:var(--tint);color:var(--green);border-left:2px solid var(--green)}.action-status.error{background:var(--red-tint);color:var(--red);border-color:var(--red)}fieldset{border:0;padding:0;margin:0;min-width:0}fieldset:disabled .button{opacity:.5}.empty-detail{display:flex;align-items:center;justify-content:center;min-height:440px;padding:60px 30px}.empty-inner{max-width:400px;text-align:center}.empty-symbol{width:48px;height:48px;margin:0 auto 22px;border:1px solid #c5d1bd;background:var(--tint);border-radius:50%;display:grid;place-items:center;color:var(--green)}.empty-symbol .icon{width:22px;height:22px}.empty-inner h2{font-size:25px;font-weight:500;letter-spacing:-.7px;margin-bottom:11px;line-height:1.3}.empty-inner p{font-size:12px;color:var(--muted);line-height:1.8}.empty-inner .empty-setup{margin-top:16px;padding-top:16px;border-top:1px solid var(--line);color:var(--amber)}.empty-inner .eyebrow{color:var(--green);font-size:9px;margin-bottom:10px}.loading-line{height:2px;position:relative;overflow:hidden;background:var(--line);margin-bottom:-2px;z-index:1}.loading-line:after{content:"";display:block;width:30%;height:100%;background:var(--green);animation:loading 1.3s ease-in-out infinite}.footer{display:flex;align-items:center;justify-content:space-between;gap:15px;padding:2px 0 26px;color:var(--muted);font-size:10px}.footer a{color:var(--muted)}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}@keyframes loading{from{transform:translateX(-100%)}to{transform:translateX(435%)}}@media(min-width:1500px){.workspace{grid-template-columns:360px minmax(0,1fr)}.detail{padding:32px 40px}}@media(max-width:1120px){.page{padding:0 28px}.workspace{grid-template-columns:290px minmax(0,1fr)}.detail{padding:26px}.pilot-top{gap:24px}.pilot-title{width:100px}.pilot-measure{gap:8px}.evidence-rail{grid-template-columns:1fr 1fr;row-gap:16px}.evidence-cell:nth-child(2){border-right:0}.evidence-cell:nth-child(n+3){padding-top:13px;border-top:1px solid var(--line)}.feedback-grid{grid-template-columns:1fr;gap:0}.auth-panel{padding-left:36px}.auth-intro{padding-right:36px}}@media(max-width:800px){.page{padding:0 20px}.masthead{padding:18px 0}.masthead-note{display:none}.page-heading{margin:26px 0 23px;align-items:flex-start}.heading-description{font-size:12px;max-width:400px}.session-controls{max-width:190px;gap:3px}.session-controls .button{padding:7px 10px;font-size:11px}.refresh-meta{font-size:9px}.pilot-top{gap:20px;flex-wrap:wrap}.pilot-title{width:100%;display:flex;gap:10px;align-items:baseline}.pilot-measure{flex:1;min-width:105px}.pilot-number{font-size:20px}.pilot-label{font-size:10px}.pilot-bottom{font-size:9px}.workspace{grid-template-columns:240px minmax(0,1fr)}.detail{padding:22px 20px}.detail-top{display:block}.detail-top>.badge{margin-top:10px}.detail h2{font-size:23px}.opportunity{padding:16px 14px 16px 12px}.list-heading{padding:16px}.item-footer{flex-wrap:wrap}.message{font-size:14px}.view-note{display:none}.tabs{gap:22px}.auth-layout{grid-template-columns:1fr 1fr}.auth-intro{padding-top:40px;padding-right:25px}.auth-intro h2{font-size:29px}.auth-panel{padding:40px 0 35px 26px}.auth-steps{gap:14px;flex-wrap:wrap;margin-top:28px}.auth-steps span{font-size:10px}}@media(max-width:640px){.page{padding:0 16px}.page-heading{flex-wrap:wrap;gap:19px}.page-heading h1{font-size:34px}.page-heading .eyebrow{font-size:10px}.session-controls{max-width:none;justify-content:flex-start;width:100%;gap:8px}.refresh-meta{flex-basis:auto;margin-left:auto;font-size:9px;max-width:135px}.notice{padding:12px;margin-bottom:18px}.notice-footer{font-size:10px}.pilot{margin-bottom:17px;padding-top:14px}.pilot-top{column-gap:10px;row-gap:13px}.pilot-measure{min-width:calc(50% - 10px);flex:0 1 calc(50% - 10px)}.pilot-label{max-width:none}.pilot-bottom{display:block;margin-top:13px}.pilot-bottom span{display:block;margin-top:5px}.toolbar{gap:0}.tabs{width:100%;justify-content:space-between;gap:12px}.tab{font-size:12px;gap:7px;padding-top:11px;padding-bottom:12px}.workspace{display:block;min-height:0}.list-panel{border-right:0;border-bottom:1px solid var(--line)}.list-heading{padding:13px 15px}.opportunities{max-height:280px}.opportunity{padding:15px 16px 15px 13px}.item-top{margin-bottom:7px}.item-title{font-size:14px;margin-bottom:6px}.item-preview{-webkit-line-clamp:1;font-size:11px}.item-footer{margin-top:9px}.item-age,.item-source{font-size:10px}.detail{padding:25px 17px 26px;scroll-margin-top:12px}.detail-top{display:flex;gap:12px;margin-bottom:22px}.detail h2{font-size:23px}.detail-top>.badge{margin-top:0;font-size:8px;max-width:95px;white-space:normal}.evidence-rail{padding:14px 0;margin-bottom:23px}.evidence-cell{padding:0 12px}.evidence-cell dt{font-size:9px}.evidence-cell dd{font-size:11px}.evidence-cell .evidence-note{font-size:9px}.message{font-size:14px;line-height:1.75;max-height:440px}.draft-footer{align-items:flex-start}.draft-tag{max-width:210px}.empty-detail{min-height:330px;padding:42px 24px}.empty-inner h2{font-size:24px}.footer{align-items:flex-start;font-size:9px;gap:20px}.footer span:first-child{max-width:260px}.auth-layout{display:block;margin-top:20px}.auth-intro{padding:31px 6px 29px}.auth-intro h2{font-size:30px;max-width:360px;margin-top:12px}.auth-intro p{font-size:13px}.auth-steps{margin-top:22px;gap:20px}.auth-panel{border-left:0;border-top:1px solid var(--line);padding:28px 6px 33px;max-width:none}.auth-panel form{margin-top:20px}.auth-panel .primary{min-height:44px}}@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.loading-line:after{width:100%}}
+    /* Keep evidence legible and navigation available on a narrow workbench. */
+    .refresh-meta,.pilot-bottom,.view-note,.list-heading,.item-source,.item-age,.item-footer,.lead-id,.draft-tag,.notice-footer,.footer{font-size:11px}
+    .evidence-cell dt,.evidence-cell .evidence-note{font-size:11px}
+    .badge{font-size:10px}.pilot-label{font-size:11px}.reason strong{font-size:11px}
+    .back-to-list{display:none}.copy-note{display:block;font-size:11px;color:var(--muted);margin-top:9px}
+    .duplicate-notice{margin-bottom:24px}.duplicate-notice strong{font-size:13px}
+    .health-services{display:flex;flex-wrap:wrap;gap:5px 20px;margin-top:6px}
+    .health-services span{display:block}.tab[aria-busy="true"]{color:var(--muted);border-bottom-style:dashed}
+    @media(max-width:800px){.tabs{gap:15px}}
+    @media(max-width:640px){.tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px}.tab{flex-direction:column;gap:3px;font-size:11px;padding:10px 2px}.count{font-size:10px}.back-to-list{display:inline-flex;margin-bottom:17px;min-height:36px;padding:6px 0;border:0;color:var(--green)}.detail-top>.badge{font-size:10px}.list-panel{scroll-margin-top:12px}.refresh-meta{font-size:10px;max-width:145px}.evidence-cell dt,.evidence-cell .evidence-note{font-size:10px}.pilot-bottom,.footer{font-size:10px}.notice-footer{font-size:11px}}
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="masthead">
+      <div class="brand"><span class="brand-mark" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24"><path d="M4 17V9m8 8V4m8 13v-5M4 21h16"/></svg></span>Telegram Lead Monitor</div>
+      <span class="masthead-note">TRADING / QUANT / ML ENGINEERING</span>
+    </header>
+    <main>
+      <div class="page-heading">
+        <div><p class="eyebrow">The opportunity desk</p><h1>Lead inbox</h1><p class="heading-description">Paid requests, original evidence, and a clear next conversation.</p></div>
+        <div id="session-controls" class="session-controls" hidden><button id="refresh" class="button" type="button"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 7v5h-5M4 17v-5h5M6.1 7a7 7 0 0 1 11.7-1L20 9M4 15l2.2 3A7 7 0 0 0 18 17"/></svg>Refresh</button><button id="disconnect" class="button quiet" type="button">Disconnect</button><span id="last-refresh" class="refresh-meta mono">Waiting for first refresh</span></div>
+      </div>
+
+      <section id="auth" class="auth-layout" aria-labelledby="auth-title">
+        <div class="auth-intro"><p class="eyebrow muted">From request to relationship</p><h2>Read the evidence.<br>Make the connection.</h2><p>Review fresh trading, quant, and ML engineering requests. Check the source, make your decision, and reach out personally.</p><div class="auth-steps" aria-label="Workflow"><span><b>01</b> Review</span><span><b>02</b> Reach out</span><span><b>03</b> Track the outcome</span></div></div>
+        <div class="auth-panel"><h3 id="auth-title">Connect to your inbox</h3><p class="hint">Use your operator credentials for this local deployment.</p><form id="auth-form" autocomplete="off"><div class="field"><label for="operator-id">Operator ID</label><input id="operator-id" name="operator-id" autocomplete="off" autocapitalize="none" spellcheck="false" required maxlength="200" placeholder="Your operator ID"></div><div class="field"><label for="operator-token">Operator token</label><input id="operator-token" name="operator-token" type="password" autocomplete="off" required spellcheck="false" placeholder="Enter your operator token"></div><button id="connect" class="button primary" type="submit">Open inbox <span aria-hidden="true">→</span></button><p id="auth-status" class="auth-status" role="status" aria-live="polite" hidden></p></form><p class="privacy">Credentials stay in memory for this tab. Disconnecting or reloading clears the session. This inbox never sends a message to a prospect.</p></div>
+      </section>
+
+      <div id="app" hidden>
+        <div id="global-error" class="notice error global-error" role="alert" hidden></div>
+        <aside id="health" class="notice" aria-label="Collection health"></aside>
+        <section class="pilot" aria-label="Real outcome pilot"><div class="pilot-top"><div class="pilot-title"><strong>Outcome pilot</strong><span id="pilot-duration">Not started</span></div><div class="pilot-measure"><span id="pilot-delivered" class="pilot-number">—</span><span class="pilot-label">Telegram alerts delivered</span></div><div class="pilot-measure"><span id="pilot-accepted" class="pilot-number">—</span><span class="pilot-label">Owner accepted / reviewed</span></div><div class="pilot-measure"><span id="pilot-conversations" class="pilot-number">—</span><span class="pilot-label">Conversations</span></div><div class="pilot-measure"><span id="pilot-wins" class="pilot-number">—</span><span class="pilot-label">Won</span></div></div><div class="pilot-bottom"><span id="pilot-target">Waiting for outcome data</span><span id="pilot-latency" class="mono">Alert latency not measured</span></div></section>
+        <div class="toolbar"><nav class="tabs" aria-label="Opportunity views"><button class="tab" data-view="fresh" type="button" aria-current="page">Fresh <span id="count-fresh" class="count">—</span></button><button class="tab" data-view="stale" type="button">Older <span id="count-stale" class="count">—</span></button><button class="tab" data-view="pipeline" type="button">In progress <span id="count-pipeline" class="count">—</span></button><button class="tab" data-view="duplicates" type="button">Duplicates <span id="count-duplicates" class="count">—</span></button></nav><span id="view-note" class="view-note">Freshness is measured from the original post</span></div>
+        <div id="loading" class="loading-line" role="status" aria-label="Loading opportunities" hidden><span class="sr-only">Loading opportunities…</span></div>
+        <div id="workspace" class="workspace" aria-busy="false"><aside id="list-panel" class="list-panel" aria-label="Opportunities" tabindex="-1"><div class="list-heading"><span id="list-title">FRESH OPPORTUNITIES</span><span id="list-count" class="mono">—</span></div><ul id="opportunities" class="opportunities"></ul><p id="list-empty" class="list-empty" hidden></p></aside><article id="detail" class="detail" aria-label="Selected opportunity"></article></div>
+      </div>
+    </main>
+    <footer class="footer"><span>Original evidence first. Every prospect conversation stays in your hands.</span><span class="mono">OPERATOR WORKSPACE</span></footer>
+  </div>
+  <script>
+  'use strict';
+  (() => {
+    const $ = id => document.getElementById(id);
+    const state = { credentials: null, version: 0, view: 'fresh', requestedView: 'fresh', data: null, selectedId: null, refreshing: false, queuedRefresh: false, actionBusy: false, timer: null, controllers: new Set(), drafts: new Map(), notes: new Map(), evidence: new Map(), actionMessages: new Map(), copyMessages: new Map() };
+    const statusNames = { AI_CONFIRMED: 'AI confirmed', QUALIFIED: 'Qualified', CONTACTED: 'Contacted', RESPONDED: 'Replied', WON: 'Won', LOST: 'Lost', REJECTED: 'Rejected', NEW: 'New' };
+    const viewNames = { fresh: 'Fresh opportunities', stale: 'Older opportunities', pipeline: 'In progress', duplicates: 'Duplicate requests' };
+    function element(tag, className, text) { const node = document.createElement(tag); if (className) node.className = className; if (text !== undefined && text !== null) node.textContent = String(text); return node; }
+    function number(value) { return typeof value === 'number' && Number.isFinite(value) ? value : null; }
+    function count(value) { const n = number(value); return n === null ? '—' : String(Math.max(0, n)); }
+    function humanStatus(value) { return statusNames[value] || String(value || 'Status unavailable').replaceAll('_', ' ').toLowerCase(); }
+    function age(hours) { const n = number(hours); if (n === null || n < 0) return 'Age unavailable'; if (n < 1 / 60) return 'Just posted'; if (n < 1) return Math.floor(n * 60) + 'm ago'; if (n < 24) return Math.floor(n) + 'h ' + Math.floor((n % 1) * 60) + 'm ago'; return Math.floor(n / 24) + 'd ' + Math.floor(n % 24) + 'h ago'; }
+    function timestamp(value) { if (!value) return 'Time unavailable'; return String(value); }
+    function safeURL(value) { if (typeof value !== 'string' || !value.trim()) return null; try { const url = new URL(value); if (!['https:', 'http:'].includes(url.protocol) || url.username || url.password) return null; return url.href; } catch (_) { return null; } }
+    function link(label, url) { const href = safeURL(url); if (!href) return null; const node = element('a', 'button', label + ' ↗'); node.href = href; node.target = '_blank'; node.rel = 'noopener noreferrer'; return node; }
+    function button(label, handler, className = '') { const node = element('button', 'button ' + className, label); node.type = 'button'; node.addEventListener('click', handler); return node; }
+    function clearError() { $('global-error').hidden = true; $('global-error').replaceChildren(); }
+    function showError(message) { $('global-error').replaceChildren(element('p', '', message)); $('global-error').hidden = false; }
+    function cleanError(message) { let text = String(message || 'The request could not be completed.'); if (state.credentials) { for (const value of Object.values(state.credentials)) if (value) text = text.split(value).join('[redacted]'); } return text.slice(0, 450); }
+    class RequestError extends Error { constructor(message, status) { super(message); this.status = status; } }
+    async function request(path, options = {}) {
+      if (!state.credentials) throw new RequestError('Connect to your inbox first.', 401);
+      const controller = new AbortController(); state.controllers.add(controller);
+      const timeout = setTimeout(() => controller.abort(), 20000);
+      try {
+        const response = await fetch(path, { ...options, cache: 'no-store', credentials: 'omit', redirect: 'error', signal: controller.signal, headers: { 'Accept': 'application/json', 'X-Operator-Id': state.credentials.id, 'X-Label-Token': state.credentials.token, ...(options.body ? { 'Content-Type': 'application/json' } : {}) } });
+        let data = null; try { data = await response.json(); } catch (_) { /* Report invalid successful responses below. */ }
+        if (!response.ok) {
+          if (response.status === 401 || response.status === 403) throw new RequestError('Authentication failed or access expired. Check your operator ID and token, then reconnect.', response.status);
+          const detail = data && typeof data.detail === 'string' ? data.detail : null;
+          throw new RequestError(detail ? cleanError(detail) : 'The server rejected this request (HTTP ' + response.status + '). Please try again.', response.status);
+        }
+        if (data === null) throw new RequestError('The server returned an unreadable response. Please refresh and try again.', response.status);
+        return data;
+      } catch (error) {
+        if (error.name === 'AbortError') throw new RequestError('The request timed out. Check the connection and try again.', 0);
+        if (error instanceof RequestError) throw error;
+        throw new RequestError('Cannot reach the inbox service. Check the connection and try again.', 0);
+      } finally { clearTimeout(timeout); state.controllers.delete(controller); }
+    }
+    function disconnect(message = '') {
+      state.version += 1; state.credentials = null; clearInterval(state.timer); state.timer = null;
+      for (const controller of state.controllers) controller.abort(); state.controllers.clear();
+      state.data = null; state.view = 'fresh'; state.requestedView = 'fresh'; state.selectedId = null; state.refreshing = false; state.queuedRefresh = false; state.actionBusy = false;
+      state.drafts.clear(); state.notes.clear(); state.evidence.clear(); state.actionMessages.clear(); state.copyMessages.clear();
+      $('auth-form').reset(); $('app').hidden = true; $('session-controls').hidden = true; $('auth').hidden = false;
+      $('opportunities').replaceChildren(); $('detail').replaceChildren(); $('health').replaceChildren(); $('list-empty').textContent = '';
+      for (const id of ['pilot-delivered', 'pilot-accepted', 'pilot-conversations', 'pilot-wins', 'count-fresh', 'count-stale', 'count-pipeline', 'count-duplicates', 'list-count']) $(id).textContent = '—';
+      $('pilot-duration').textContent = 'Not started'; $('pilot-target').textContent = 'Waiting for outcome data'; $('pilot-latency').textContent = 'Alert latency not measured'; $('last-refresh').textContent = 'Waiting for first refresh';
+      clearError(); $('loading').hidden = true; $('workspace').setAttribute('aria-busy', 'false'); $('connect').disabled = false; $('connect').textContent = 'Open inbox →';
+      $('auth-status').textContent = message; $('auth-status').hidden = !message; $('operator-id').focus();
+    }
+    function setupProblems(health) {
+      const problems = [];
+      if (!health || health.telegram_authorized !== true) problems.push('Telegram login is required.');
+      if (!health || !(number(health.enabled_sources) > 0)) problems.push('No sources are enabled.');
+      if (health && health.intake_allowed === false) problems.push('Collection is paused by a storage safeguard.');
+      if (health && health.ai_status === 'blocked_plan') problems.push('AI review is blocked: ' + cleanError(health.ai_detail || 'Cursor SDK account requires plan access').trim().replace(/[.!?]+$/, '') + '.');
+      else if (!health || health.ai_status !== 'ok') problems.push('AI review availability has not been verified.');
+      return problems;
+    }
+    function renderHealth(health) {
+      const box = $('health'); box.replaceChildren(); const problems = setupProblems(health); const paused = health && health.intake_allowed === false;
+      box.className = 'notice' + (problems.length ? (paused ? ' error' : ' warning') : '');
+      const symbol = element('span', 'mono', problems.length ? '!' : '●'); symbol.setAttribute('aria-hidden', 'true'); symbol.style.paddingTop = '1px'; box.append(symbol);
+      const content = element('div'); content.append(element('strong', '', problems.length ? 'Pipeline needs attention' : 'Pipeline services available'));
+      content.append(element('p', '', problems.length ? problems.join(' ') : count(health.enabled_sources) + ' sources enabled. Freshness is based on when a request was posted.'));
+      const services = element('p', 'health-services'); services.append(element('span', '', health && health.telegram_authorized === true ? 'Telegram: connected' : 'Telegram: login required'), element('span', '', 'AI review: ' + (health && health.ai_status === 'ok' ? 'available' : health && health.ai_status === 'blocked_plan' ? 'account plan access required' : 'unverified'))); content.append(services);
+      const details = [];
+      if (health && health.last_message_at) details.push('Latest captured message: ' + timestamp(health.last_message_at)); else details.push('No messages captured yet');
+      if (health && number(health.database_gb) !== null && number(health.free_gb) !== null) details.push(health.database_gb.toFixed(2) + ' GB database · ' + health.free_gb.toFixed(1) + ' GB disk free');
+      content.append(element('p', 'notice-footer mono', details.join('  /  '))); box.append(content);
+    }
+    function renderPilot(pilot = {}) {
+      $('pilot-delivered').textContent = count(pilot.delivered);
+      const accepted = number(pilot.accepted), rejected = number(pilot.rejected);
+      $('pilot-accepted').textContent = accepted !== null && rejected !== null ? accepted + '/' + (accepted + rejected) : '—';
+      $('pilot-conversations').textContent = count(pilot.conversations); $('pilot-wins').textContent = count(pilot.wins);
+      $('pilot-duration').textContent = pilot.first_delivery_at ? count(pilot.elapsed_days) + ' / ' + count(pilot.target_days) + ' days elapsed' : 'Not started';
+      const acceptance = number(pilot.acceptance_rate), target = number(pilot.target_acceptance_rate);
+      const result = accepted !== null && rejected !== null && accepted + rejected > 0 && acceptance !== null ? 'Actual: ' + Math.round(acceptance * 100) + '% accepted' : 'Actual: acceptance not measured';
+      $('pilot-target').textContent = 'Target: ' + count(pilot.target_leads) + ' delivered leads over ' + count(pilot.target_days) + ' days' + (target !== null ? ', ' + Math.round(target * 100) + '% owner acceptance' : '') + ' · ' + result;
+      const latency = number(pilot.p95_alert_seconds); $('pilot-latency').textContent = latency === null ? 'Alert latency not measured' : 'p95 post-to-alert: ' + (latency < 60 ? Math.round(latency) + 's' : (latency / 60).toFixed(1) + 'm');
+    }
+    function renderTabs() {
+      for (const tab of document.querySelectorAll('[data-view]')) { if (tab.dataset.view === state.view) tab.setAttribute('aria-current', 'page'); else tab.removeAttribute('aria-current'); if (state.refreshing && tab.dataset.view === state.requestedView) tab.setAttribute('aria-busy', 'true'); else tab.removeAttribute('aria-busy'); }
+      const summary = state.data && state.data.summary || {};
+      $('count-fresh').textContent = count(summary.fresh); $('count-stale').textContent = count(summary.stale); $('count-pipeline').textContent = count(summary.in_progress); $('count-duplicates').textContent = count(summary.duplicates);
+      $('list-title').textContent = viewNames[state.view].toUpperCase();
+      const maxAge = state.data ? number(state.data.max_age_hours) : null;
+      $('view-note').textContent = state.view === 'fresh' && maxAge !== null ? 'Posted within ' + maxAge + ' hours · newest first' : state.view === 'stale' && maxAge !== null ? 'Older than ' + maxAge + ' hours · check availability' : state.view === 'duplicates' ? 'Repost evidence · one opportunity per buyer request' : 'Track your conversations and outcomes';
+    }
+    function renderList() {
+      const list = $('opportunities'); list.replaceChildren(); const items = state.data ? state.data.items : [];
+      $('list-count').textContent = items.length + (items.length >= 100 ? ' shown' : state.view === 'duplicates' ? (items.length === 1 ? ' copy' : ' copies') : items.length === 1 ? ' lead' : ' leads');
+      $('list-empty').hidden = items.length > 0;
+      $('list-empty').textContent = state.view === 'duplicates' ? 'No duplicate requests.' : state.view === 'pipeline' ? 'No opportunities in progress.' : state.view === 'stale' ? 'No older opportunities.' : 'No qualified opportunities yet.';
+      for (const item of items) {
+        const li = element('li'); const node = element('button', 'opportunity'); node.type = 'button'; node.setAttribute('aria-controls', 'detail');
+        if (item.id === state.selectedId) node.setAttribute('aria-current', 'true');
+        const top = element('span', 'item-top'); top.append(element('span', 'item-source', item.community_name || item.community_username || 'Source unavailable'), element('span', 'item-age' + (item.stale ? ' stale' : ''), age(item.age_hours)));
+        node.append(top, element('span', 'item-title', item.service || 'Engineering request'), element('span', 'item-preview', item.text || 'Original message unavailable.'));
+        const duplicate = isDuplicate(item);
+        const bottom = element('span', 'item-footer'); bottom.append(element('span', 'item-budget', item.budget || 'Budget not stated'), element('span', 'badge' + (item.stale ? ' amber' : ' neutral'), duplicate ? 'Duplicate' : item.stale ? 'Older request' : humanStatus(item.status))); node.append(bottom);
+        if (duplicate) node.append(element('span', 'copy-note', originalIdentity(item)));
+        else if (number(item.duplicate_count) > 0) node.append(element('span', 'copy-note', item.duplicate_count + (item.duplicate_count === 1 ? ' additional copy' : ' additional copies') + ' in Duplicates'));
+        node.addEventListener('click', () => { if (state.actionBusy) return; state.selectedId = item.id; renderList(); renderDetail(); if (window.matchMedia('(max-width: 640px)').matches) $('detail').scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth', block: 'start' }); });
+        li.append(node); list.append(li);
+      }
+    }
+    function isDuplicate(item) { return state.view === 'duplicates' || Number.isSafeInteger(item.duplicate_of_lead_id) && item.duplicate_of_lead_id > 0; }
+    function originalIdentity(item) { return Number.isSafeInteger(item.duplicate_of_lead_id) && item.duplicate_of_lead_id > 0 ? 'Duplicate of opportunity #' + item.duplicate_of_lead_id : 'Duplicate · original identity unavailable'; }
+    function returnToList() { const panel = $('list-panel'); panel.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth', block: 'start' }); const selected = panel.querySelector('[aria-current="true"]'); (selected || panel).focus({ preventScroll: true }); }
+    function renderEmpty() {
+      const detail = $('detail'); detail.className = 'detail empty-detail'; const inner = element('div', 'empty-inner');
+      const symbol = element('div', 'empty-symbol', '↗'); symbol.setAttribute('aria-hidden', 'true');
+      inner.append(symbol, element('p', 'eyebrow', state.view === 'pipeline' ? 'Room for the next conversation' : 'Evidence before volume'));
+      inner.append(element('h2', '', state.view === 'duplicates' ? 'No duplicate requests' : state.view === 'pipeline' ? 'No conversations in progress' : state.view === 'stale' ? 'No older opportunities' : 'No qualified opportunities yet'));
+      const explanation = state.view === 'duplicates' ? 'Exact reposts are kept here as source evidence. Fresh, older, and in-progress views each show the original opportunity once.' : state.view === 'pipeline' ? 'Accept a relevant lead, reach out personally, and record the conversation here.' : state.view === 'stale' ? 'Older qualified requests will appear here. Check that the work is still available before reaching out.' : 'Fresh requests appear here after they qualify. A quiet inbox is a real result; it does not prove that collection or lead detection is working.';
+      inner.append(element('p', '', explanation)); const problems = setupProblems(state.data && state.data.health);
+      if (problems.length) inner.append(element('p', 'empty-setup', problems.join(' ')));
+      else if (state.view === 'fresh') inner.append(element('p', 'hint', 'Collection status and the outcome pilot above show what has actually been observed.'));
+      detail.replaceChildren(inner);
+    }
+    function evidenceCell(label, value, note, className = '') { const cell = element('div', 'evidence-cell'); cell.append(element('dt', '', label), element('dd', className, value)); if (note) cell.append(element('dd', 'evidence-note', note)); return cell; }
+    function sectionTitle(label) { const wrap = element('div', 'section-label'); wrap.append(element('h3', '', label)); return wrap; }
+    function restoreFocus() {
+      const active = document.activeElement;
+      if (!active || !$('detail').contains(active) || !active.id) return () => {};
+      const id = active.id, start = active.selectionStart, end = active.selectionEnd, scrollTop = active.scrollTop;
+      return () => { const target = $(id); if (!target) return; target.focus({ preventScroll: true }); if (typeof start === 'number' && target.setSelectionRange) target.setSelectionRange(start, end); target.scrollTop = scrollTop; };
+    }
+    function renderDetail() {
+      const restore = restoreFocus(); const detail = $('detail'); const item = state.data && state.data.items.find(lead => lead.id === state.selectedId);
+      if (!item) { renderEmpty(); return; }
+      detail.className = 'detail'; detail.replaceChildren(); const duplicate = isDuplicate(item);
+      detail.append(button('← Back to opportunities', returnToList, 'back-to-list'));
+      const head = element('header', 'detail-top'); const title = element('div'); title.append(element('p', 'lead-id mono', 'OPPORTUNITY ' + String(item.id).padStart(4, '0')), element('h2', '', item.service || 'Engineering request')); head.append(title, element('span', 'badge' + (item.stale ? ' amber' : ''), duplicate ? 'Duplicate' : humanStatus(item.status))); detail.append(head);
+      if (duplicate) { const notice = element('div', 'notice duplicate-notice'); const body = element('div'); body.append(element('strong', '', originalIdentity(item)), element('p', '', 'This copy is retained as repost evidence. Use the original opportunity for your assessment and outreach; this is not a separate lead.')); notice.append(body); detail.append(notice); }
+      else if (number(item.duplicate_count) > 0) { const copies = element('p', 'hint'); copies.textContent = item.duplicate_count + (item.duplicate_count === 1 ? ' additional copy is' : ' additional copies are') + ' preserved in Duplicates. This is the original opportunity.'; copies.style.marginBottom = '18px'; detail.append(copies); }
+      const rail = element('dl', 'evidence-rail'); rail.append(evidenceCell('Source', item.community_name || item.community_username || 'Unavailable', item.community_username ? '@' + String(item.community_username).replace(/^@/, '') : null), evidenceCell('Posted', age(item.age_hours), timestamp(item.message_date), 'age-value' + (item.stale ? ' stale' : '')), evidenceCell('Stated budget', item.budget || 'Not stated', item.deadline ? 'Deadline evidence below' : 'Verify scope with buyer'), evidenceCell('Contact confidence', item.contact_label || 'Buyer identity unverified', safeURL(item.contact_url) ? 'Inspect before contacting' : 'No direct contact available')); detail.append(rail);
+      if (item.stale) { const warning = element('div', 'notice warning'); warning.append(element('p', '', 'This request is outside the fresh window. Confirm the buyer is still looking before contacting them.')); detail.append(warning); }
+      detail.append(sectionTitle(duplicate ? 'Exact repost evidence' : 'Original request'), element('div', 'message', item.text || 'Original message unavailable.'));
+      const links = element('div', 'lead-links'); const source = link(duplicate ? 'Open repost source' : 'Open original source', item.message_url), contact = duplicate ? null : link('Inspect contact', item.contact_url); if (source) links.append(source); if (contact) links.append(contact); if (!source && !contact) links.append(element('p', 'hint', 'No valid source or contact link is available.')); detail.append(links);
+      if (item.reason) { const reason = element('div', 'reason'); reason.append(element('strong', '', 'Why it was surfaced'), element('p', '', item.reason)); detail.append(reason); }
+      if (item.deadline) { const deadline = element('p', 'deadline'); deadline.append(element('strong', '', 'Stated deadline: '), document.createTextNode(String(item.deadline))); detail.append(deadline); }
+      const metadata = [];
+      if (item.alert_status) metadata.push('Telegram alert: ' + humanStatus(item.alert_status) + (item.alert_sent_at ? ' · ' + timestamp(item.alert_sent_at) : ''));
+      if (item.next_action_at) metadata.push('Next action: ' + timestamp(item.next_action_at));
+      if (metadata.length) { const meta = element('p', 'hint mono', metadata.join(' / ')); meta.style.marginTop = '17px'; meta.style.fontSize = '11px'; detail.append(meta); }
+      if (duplicate) { restore(); return; }
+      const draftSection = element('section', 'detail-section'); draftSection.append(sectionTitle('Outreach draft'));
+      const draftLabel = element('label', 'sr-only', 'Draft message for opportunity ' + item.id); draftLabel.htmlFor = 'outreach-draft';
+      const draft = element('textarea', 'draft'); draft.id = 'outreach-draft'; draft.spellcheck = true; draft.placeholder = 'Write a personal first message after checking the source and buyer.'; draft.value = state.drafts.has(item.id) ? state.drafts.get(item.id) : item.draft || ''; draftSection.append(draftLabel, draft);
+      const draftFooter = element('div', 'draft-footer'); const draftState = element('p', 'draft-tag', state.drafts.has(item.id) ? 'Unsaved draft · stored only in this tab' : 'Editable draft · review and send manually');
+      draft.addEventListener('input', () => { state.drafts.set(item.id, draft.value); state.copyMessages.delete(item.id); draftState.textContent = 'Unsaved draft · stored only in this tab'; const copyMessage = $('copy-message'); if (copyMessage) copyMessage.hidden = true; });
+      const copy = button('Copy draft', async () => {
+        const version = state.version; if (!draft.value.trim()) { copyStatus('Write a draft before copying.', true); return; }
+        try { if (!navigator.clipboard || !navigator.clipboard.writeText) throw new Error('Clipboard unavailable'); await navigator.clipboard.writeText(draft.value); if (version === state.version && state.credentials) copyStatus('Copied. Review it before sending in Telegram.', false); }
+        catch (_) { if (version === state.version && state.credentials) copyStatus('Copy was unavailable. Select the draft and copy it manually.', true); }
+      });
+      function copyStatus(message, error) { state.copyMessages.set(item.id, { message, error }); const node = $('copy-message'); if (node && state.selectedId === item.id) { node.textContent = message; node.className = 'action-status' + (error ? ' error' : ''); node.hidden = false; } }
+      draftFooter.append(draftState, copy); draftSection.append(draftFooter);
+      const copyMessage = element('p', 'action-status'); copyMessage.id = 'copy-message'; copyMessage.setAttribute('role', 'status'); const savedCopy = state.copyMessages.get(item.id); copyMessage.hidden = !savedCopy; if (savedCopy) { copyMessage.textContent = savedCopy.message; if (savedCopy.error) copyMessage.classList.add('error'); } draftSection.append(copyMessage); detail.append(draftSection);
+      const controls = element('fieldset'); controls.disabled = state.actionBusy; controls.append(element('legend', 'sr-only', 'Record owner feedback and manual outreach'));
+      const grid = element('div', 'feedback-grid'); const feedback = element('section', 'detail-section'); feedback.append(sectionTitle('Your assessment'));
+      const noteLabel = element('label', '', 'Reason / note'); noteLabel.htmlFor = 'feedback-reason'; const reasonInput = element('input'); reasonInput.id = 'feedback-reason'; reasonInput.type = 'text'; reasonInput.maxLength = 2000; reasonInput.placeholder = 'Required when rejecting a lead'; reasonInput.value = state.notes.get(item.id) || ''; reasonInput.addEventListener('input', () => state.notes.set(item.id, reasonInput.value)); feedback.append(noteLabel, reasonInput);
+      const feedbackActions = element('div', 'actions'); feedbackActions.append(button('Accept lead', () => submitAction(item, 'feedback', { decision: 'accepted', reason: reasonInput.value.trim() || null }, 'Lead accepted.'), 'primary'), button('Reject lead', () => { const reason = reasonInput.value.trim(); if (!reason) { showAction(item.id, 'Add a reason before rejecting this lead.', true); reasonInput.focus(); return; } submitAction(item, 'feedback', { decision: 'rejected', reason }, 'Lead rejected.'); }, 'danger'));
+      feedback.append(feedbackActions, element('p', 'hint', 'Your business assessment counts toward the outcome pilot.'));
+      const activity = element('section', 'detail-section'); activity.append(sectionTitle('Record an outcome'));
+      let evidenceInput = null;
+      if (['CONTACTED', 'RESPONDED'].includes(item.status)) { const evidenceLabel = element('label', '', item.status === 'RESPONDED' ? 'Win evidence' : 'Reply evidence'); evidenceLabel.htmlFor = 'outcome-evidence'; evidenceInput = element('input'); evidenceInput.id = 'outcome-evidence'; evidenceInput.type = 'text'; evidenceInput.maxLength = 2000; evidenceInput.placeholder = 'Message link or specific reference'; evidenceInput.value = state.evidence.get(item.id) || ''; evidenceInput.addEventListener('input', () => state.evidence.set(item.id, evidenceInput.value)); activity.append(evidenceLabel, evidenceInput); }
+      const outcomeActions = element('div', 'actions');
+      if (['AI_CONFIRMED', 'QUALIFIED'].includes(item.status)) outcomeActions.append(button('Mark contacted', () => submitEvent(item, { event_type: 'CONTACT_ATTEMPT', channel: 'telegram_dm' }, 'Manual contact recorded.')));
+      if (item.status === 'CONTACTED') outcomeActions.append(button('Record reply', () => { const evidence = evidenceInput.value.trim(); if (!evidence) { showAction(item.id, 'Add a message link or reference for the reply.', true); evidenceInput.focus(); return; } submitEvent(item, { event_type: 'RESPONSE', evidence_ref: evidence }, 'Reply recorded.'); }));
+      if (['CONTACTED', 'RESPONDED', 'QUALIFIED'].includes(item.status)) outcomeActions.append(button('Record proposal', () => submitAction(item, 'feedback', { decision: 'proposal', reason: reasonInput.value.trim() || null }, 'Proposal recorded.')));
+      if (item.status === 'RESPONDED') outcomeActions.append(button('Record won', () => { const evidence = evidenceInput.value.trim(); if (!evidence) { showAction(item.id, 'Add a message link or reference for the win.', true); evidenceInput.focus(); return; } submitEvent(item, { event_type: 'STATUS_CHANGE', to_status: 'WON', evidence_ref: evidence }, 'Win recorded.'); }, 'primary'));
+      activity.append(outcomeActions, element('p', 'hint', ['AI_CONFIRMED', 'QUALIFIED'].includes(item.status) ? 'Mark contacted only after you have sent a message yourself. This button records that action.' : outcomeActions.children.length ? 'Record only outcomes that have already happened. A reply or win needs supporting evidence.' : 'No further outcome actions are available for this status.'));
+      grid.append(feedback, activity); controls.append(grid); detail.append(controls);
+      const actionMessage = element('p', 'action-status'); actionMessage.id = 'action-message'; actionMessage.setAttribute('role', 'status'); actionMessage.setAttribute('aria-live', 'polite'); const savedAction = state.actionMessages.get(item.id); actionMessage.hidden = !savedAction; if (savedAction) { actionMessage.textContent = savedAction.message; if (savedAction.error) actionMessage.classList.add('error'); } detail.append(actionMessage);
+      restore();
+    }
+    function showAction(id, message, error = false) { state.actionMessages.set(id, { message, error }); const node = $('action-message'); if (node && state.selectedId === id) { node.textContent = message; node.className = 'action-status' + (error ? ' error' : ''); node.hidden = false; } }
+    async function submitEvent(item, fields, success) {
+      if (!globalThis.crypto || typeof crypto.randomUUID !== 'function') { showAction(item.id, 'This browser cannot safely identify the event. Open the inbox through localhost or HTTPS.', true); return; }
+      await submitAction(item, 'events', { ...fields, occurred_at: new Date().toISOString(), idempotency_key: crypto.randomUUID() }, success);
+    }
+    async function submitAction(item, endpoint, payload, success) {
+      if (state.actionBusy || !state.credentials || isDuplicate(item)) return;
+      const version = state.version; state.actionBusy = true; showAction(item.id, 'Saving…'); renderDetail();
+      try {
+        await request('/ops/leads/' + encodeURIComponent(item.id) + '/' + endpoint, { method: 'POST', body: JSON.stringify(payload) });
+        if (version !== state.version || !state.credentials) return;
+        showAction(item.id, success); await refresh();
+      } catch (error) {
+        if (version !== state.version || !state.credentials) return;
+        if ([401, 403].includes(error.status)) { disconnect(error.message); return; }
+        showAction(item.id, cleanError(error.message), true);
+      } finally { if (version === state.version) { state.actionBusy = false; if (state.credentials) renderDetail(); } }
+    }
+    async function refresh() {
+      if (!state.credentials) return false;
+      if (state.refreshing) { state.queuedRefresh = true; return false; }
+      const version = state.version, view = state.requestedView; state.refreshing = true; renderTabs(); $('refresh').disabled = true; $('loading').hidden = false; $('workspace').setAttribute('aria-busy', 'true');
+      try {
+        const data = await request('/ops/inbox/data?view=' + encodeURIComponent(view) + '&limit=100');
+        if (version !== state.version || !state.credentials) return false;
+        if (!data || !Array.isArray(data.items) || !data.health || !data.pilot || !data.summary) throw new RequestError('The inbox response is incomplete. Please refresh and try again.', 0);
+        if (view !== state.requestedView) { state.queuedRefresh = true; return false; }
+        data.items = data.items.filter(item => item && Number.isSafeInteger(item.id) && item.id > 0);
+        if (view !== state.view) state.selectedId = null;
+        state.view = view; state.data = data; if (!data.items.some(item => item.id === state.selectedId)) state.selectedId = data.items.length ? data.items[0].id : null;
+        $('auth').hidden = true; $('app').hidden = false; $('session-controls').hidden = false; $('auth-status').hidden = true;
+        renderHealth(data.health); renderPilot(data.pilot); renderTabs(); renderList(); renderDetail(); clearError();
+        $('last-refresh').textContent = 'Updated ' + new Date().toLocaleTimeString('en-GB', { timeZone: 'UTC', hour: '2-digit', minute: '2-digit', second: '2-digit' }) + ' UTC';
+        return true;
+      } catch (error) {
+        if (version !== state.version || !state.credentials) return false;
+        if ([401, 403].includes(error.status)) { disconnect(error.message); return false; }
+        if (view !== state.requestedView) { state.queuedRefresh = true; return false; }
+        state.requestedView = state.view;
+        if (!state.data) { $('auth-status').textContent = cleanError(error.message); $('auth-status').hidden = false; }
+        else showError(cleanError(error.message) + ' Still showing ' + viewNames[state.view].toLowerCase() + ' from the last successful refresh.');
+        return false;
+      } finally {
+        if (version === state.version) { state.refreshing = false; renderTabs(); $('refresh').disabled = false; $('loading').hidden = true; $('workspace').setAttribute('aria-busy', 'false'); const queued = state.queuedRefresh; state.queuedRefresh = false; if (queued && state.credentials) void refresh(); }
+      }
+    }
+    $('auth-form').addEventListener('submit', async event => {
+      event.preventDefault(); if (state.refreshing) return; const id = $('operator-id').value.trim(), token = $('operator-token').value.trim();
+      $('operator-token').value = ''; $('operator-id').value = ''; if (!id || !token) { $('auth-status').textContent = 'Enter both your operator ID and token.'; $('auth-status').hidden = false; return; }
+      state.version += 1; state.credentials = { id, token }; state.view = 'fresh'; state.requestedView = 'fresh'; $('connect').disabled = true; $('connect').textContent = 'Connecting…'; $('auth-status').hidden = true;
+      const connected = await refresh();
+      if (connected && state.credentials) { clearInterval(state.timer); state.timer = setInterval(() => { if (!state.actionBusy) void refresh(); }, 60000); }
+      else if (state.credentials && !state.data) { state.credentials = null; }
+      $('connect').disabled = false; $('connect').textContent = 'Open inbox →';
+    });
+    $('refresh').addEventListener('click', () => { void refresh(); }); $('disconnect').addEventListener('click', () => disconnect());
+    for (const tab of document.querySelectorAll('[data-view]')) tab.addEventListener('click', () => { if (state.actionBusy || tab.dataset.view === state.requestedView) return; state.requestedView = tab.dataset.view; void refresh(); });
+    window.addEventListener('pagehide', () => { state.credentials = null; for (const controller of state.controllers) controller.abort(); state.controllers.clear(); clearInterval(state.timer); state.data = null; state.drafts.clear(); state.notes.clear(); state.evidence.clear(); state.actionMessages.clear(); state.copyMessages.clear(); $('operator-token').value = ''; });
+  })();
+  </script>
+</body>
+</html>
